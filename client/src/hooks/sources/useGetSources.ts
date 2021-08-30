@@ -13,7 +13,9 @@ const GET_SOURCES = gql`
   }
 `
 
-export const useGetSources = (): Source[] | undefined => {
-  const { data } = useQuery(GET_SOURCES);
+export const useGetSources = (id: string): [] => {
+  const { data } = useQuery(GET_SOURCES, {
+    variables: {id}
+  });
   return data?.sources?.data?.source
 }
