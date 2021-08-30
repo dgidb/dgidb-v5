@@ -1,21 +1,23 @@
 import { gql, useQuery } from "@apollo/client";
-import { Source } from '../../common/interfaces/source.interface'
+import { Response } from '../../common/interfaces/response.interface'
 
 
 const GET_SOURCES = gql`
-  query GetSources($id: string){
-    sources(id: string) {
-      source {
-        sourceDbName
-        sourceDbVersion
+  query source($id: string) {
+    source(id: string) {
+      data {
+        source {
+          sourceDbName
+          sourceDbVersion
+        }
       }
     }
   }
 `
 
-export const useGetSources = (id: string): [] => {
+export const useGetSources = (id: string): Response => {
   const { data } = useQuery(GET_SOURCES, {
-    variables: {id}
+    variables: {id},
   });
-  return data?.sources?.data?.source
+  return data
 }
