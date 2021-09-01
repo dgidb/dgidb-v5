@@ -22,5 +22,14 @@ module Types
     def gene_claim(id: )
       GeneClaim.find_by(id: id)
     end
+
+    field :gene, Types::GeneType, null: true do
+      argument :id, String, required: true
+    end
+
+    def gene(id: )
+      Gene.find_by(id: id)
+    end 
+
   end
 end
