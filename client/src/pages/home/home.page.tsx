@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { useLazyQuery, gql } from "@apollo/client";
 
+import './home.page.scss';
+
 const Home: React.FC = () => {
   
   const [input, setInput ] = useState<string | undefined>('');
 
   const GET_SOURCE = gql`
-  query source($id: String!) {
-    source(id: $id) {
-      sourceDbName
+  query source($sourceDbName: String!) {
+    source(sourceDbName: $sourceDbName) {
+      citation
       sourceDbVersion
     }
   }
 `
-  const [search, {data}] = useLazyQuery(GET_SOURCE, { variables: { id: input}});
+  const [search, {data}] = useLazyQuery(GET_SOURCE, { variables: { sourceDbName: input}});
   
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,20 +23,23 @@ const Home: React.FC = () => {
   }; 
 
   return (
-    <>
+    <div className="home" >
   <form onSubmit={handleSubmit}>
-    <div>Enter an ID. For example: 0009971b-b332-44a2-82a7-45128289099d</div>
+    <div>Enter a source</div>
+    <br />
     <input
       onChange={(e) => setInput(e.target.value)}
     />
     <button type="submit">
       Submit
     </button>
-  </form>
     
-  <div>Source name: {data?.source?.sourceDbName}</div>
-  <div>Source version: {data?.source?.sourceDbVersion}</div>
-  </>
+  </form>
+    <br/>
+  <div><b>Source name:</b> {data?.source?.citation}</div>
+  <br/>
+  <div><b>Source version:</b> {data?.source?.sourceDbVersion}</div>
+  </div>
   )
 }
 
