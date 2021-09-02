@@ -11,7 +11,7 @@ module Types
       argument :id, String, required: true
     end
 
-    def source(id: )
+    def source(id:)
       Source.find_by(id: id)
     end
 
@@ -19,7 +19,7 @@ module Types
       argument :id, String, required: true
     end
 
-    def gene_claim(id: )
+    def gene_claim(id:)
       GeneClaim.find_by(id: id)
     end
   end
