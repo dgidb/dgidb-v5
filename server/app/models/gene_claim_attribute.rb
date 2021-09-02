@@ -1,6 +1,6 @@
 class GeneClaimAttribute < ::ActiveRecord::Base
-    include Genome::Extensions::UUIDPrimaryKey
-    belongs_to :gene_claim
+    # include Genome::Extensions::UUIDPrimaryKey
+    # belongs_to :gene_claim
 
     class << self
       def for_search

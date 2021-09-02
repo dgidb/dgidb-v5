@@ -39,5 +39,37 @@ module Types
       argument :id, String, required: true
     end
 
+    def gene_attribute(name: )
+      GeneAttribute.find_by(name: name)
+    end
+
+    field :gene_attribute, Types::GeneAttributeType, null: true do
+      argument :name, String, required: true
+    end
+
+    # def gene_claim_attribute(name: )
+    #   GeneClaimAttribute.find_by(name: name)
+    # end
+
+    # field :gene_claim_ attribute, Types::GeneClaimAttributeType, null: true do
+    #   argument :name, String, required: true
+    # end
+
+    # def gene_claim_alias(alias: )
+    #   GeneClaimAlias.find_by(alias: alias)
+    # end
+
+    # field :gene_claim_alias, Types::GeneClaimAliasType, null: true do
+    #   argument :alias, String, required: true
+    # end
+
+    # def gene_claim_category(name: )
+    #   GeneClaimCategory.find_by(name: name)
+    # end
+
+    # field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
+    #   arugment :name, String, required: true
+    # end
+
   end
 end
