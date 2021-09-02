@@ -23,6 +23,10 @@ module Types
       GeneClaim.find_by(id: id)
     end
 
+    def gene(name: )
+      Gene.find_by(name: name)
+    end 
+
     field :gene, Types::GeneType, null: true do
       argument :name, String, required: true
     end
@@ -34,10 +38,6 @@ module Types
     field :gene_alias, Types::GeneAliasType, null: true do
       argument :id, String, required: true
     end
-
-    def gene(name: )
-      Gene.find_by(name: name)
-    end 
 
   end
 end
