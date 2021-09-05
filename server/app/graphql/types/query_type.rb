@@ -4,9 +4,6 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-    
     field :source, Types::SourceType, null: true do
       argument :id, String, required: true
     end
@@ -21,6 +18,14 @@ module Types
 
     def gene_claim(id:)
       GeneClaim.find_by(id: id)
+    end
+
+    field :drug_alias, Types::DrugAliasType, null: true do
+      argument :id, String, required: true
+    end
+    
+    def drug_alias(id:)
+      DrugAlias.find_by(id: id)
     end
   end
 end
