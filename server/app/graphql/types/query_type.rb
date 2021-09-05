@@ -27,5 +27,14 @@ module Types
     def drug_alias(id:)
       DrugAlias.find_by(id: id)
     end
+
+    field :drug_attribute, Types::DrugAttributeType, null: true do
+      description "Attribute(s) associated with with a drug"
+      argument :id, ID, required: true
+    end
+
+    def drug_attribute(id:)
+      DrugAttribute.find_by(id: id)
+    end
   end
 end

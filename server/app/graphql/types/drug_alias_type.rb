@@ -7,6 +7,6 @@ module Types
     
     # I believe that I have this implemented correctly, thought the table for this
     # is empty
-    field :sources, [Types::SourceType], null: true
+    field :sources, [Types::SourceType], null: false
   end
 end
