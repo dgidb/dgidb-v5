@@ -36,5 +36,50 @@ module Types
     def drug_attribute(id:)
       DrugAttribute.find_by(id: id)
     end
+
+    field :drug_claim_alias, Types::DrugClaimAliasType, null: true do
+      description "Alias for a drug claim"
+      argument :id, ID, required: true
+    end
+    
+    def drug_claim_alias(id:)
+      DrugClaimAlias.find_by(id: id)
+    end
+
+    field :drug_claim_attribute, Types::DrugClaimAttributeType, null: true do
+      description "Attributes for a claim on a drug"
+      argument :id, ID, required: true
+    end 
+
+    def drug_claim_attribute(id:)
+      DrugClaimAttribute.find_by(id: id)
+    end
+
+    field :drug_claim_type, Types::DrugClaimTypeType, null: true do
+      description "Types of drug claims"
+      argument :id, ID, required: true
+    end
+
+    def drug_claim_type(id:)
+      DrugClaimType.find_by(id: id)
+    end
+
+    field :drug_claim, Types::DrugClaimType, null: true do
+      description "A claim for a drug"
+      argument :id, ID, required: true
+    end
+
+    def drug_claim(id:)
+      DrugClaim.find_by(id: id)
+    end
+
+    field :drug, Types::DrugType, null: true do
+      description "A drug"
+      argument :id, ID, required: true
+    end
+
+    def drug(id:)
+      Drug.find_by(id: id)
+    end
   end
 end

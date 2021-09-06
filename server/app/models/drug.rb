@@ -10,7 +10,7 @@ class Drug < ::ActiveRecord::Base
 
   before_create :populate_flags
 
-  cache_query :all_drug_names, :all_drug_names
+  #cache_query :all_drug_names, :all_drug_names
 
 
   def self.for_search

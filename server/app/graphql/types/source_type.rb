@@ -4,5 +4,6 @@ module Types
     field :source_db_name, String, null: false
     field :source_db_version, String, null: false
     field :citation, String, null: false
+    field :full_name, String, null: false
   end
 end
