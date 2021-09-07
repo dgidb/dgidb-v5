@@ -55,13 +55,13 @@ module Types
       argument :name, String, required: true
     end
 
-    # def gene_claim_alias(alias: )
-    #   GeneClaimAlias.find_by(alias: alias)
-    # end
+    def gene_claim_alias(alias_name: )
+      GeneClaimAlias.find_by(alias: alias_name)
+    end
 
-    # field :gene_claim_alias, Types::GeneClaimAliasType, null: true do
-    #   argument :alias, String, required: true
-    # end
+    field :gene_claim_alias, Types::GeneClaimAliasType, null: true do
+      argument :alias_name, String, required: true
+    end
 
     # def gene_claim_category(name: )
     #   GeneClaimCategory.find_by(name: name)
