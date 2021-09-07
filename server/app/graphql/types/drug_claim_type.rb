@@ -7,9 +7,9 @@ module Types
     field :primary_name, String, null: true
     field :drug_id, String, null: true
 
-    # field :drug, Types::DrugType, null: false
+    field :drug, Types::DrugType, null: false
     field :drug_claim_aliases, [Types::DrugClaimAliasType], null: true
-    # field :interaction_claim, Types::InteractionClaimType, null: true
+    field :interaction_claims, [Types::InteractionClaimType], null: true
     field :gene_claims, [Types::GeneClaimType], null: true
     field :source, Types::SourceType, null: true
     field :drug_claim_attributes, [Types::DrugClaimAttributeType], null: true

@@ -61,7 +61,7 @@ module Types
     end
 
     def drug_claim_type(id:)
-      DrugClaimType.find_by(id: id)
+      ModelTypes::DrugClaimType.find id
     end
 
     field :drug_claim, Types::DrugClaimType, null: true do
@@ -80,6 +80,60 @@ module Types
 
     def drug(id:)
       Drug.find_by(id: id)
+    end
+
+    field :interaction_attribute, Types::InteractionAttributeType, null: true do
+      description "An attribute of an interaction"
+      argument :id, ID, required: true
+    end
+
+    def interaction_attribute(id:)
+      InteractionAttribute.find_by(id: id)
+    end
+
+    field :interaction_claim_attribute, Types::InteractionClaimAttributeType, null: true do
+      description "An attribute of an interaction claim"
+      argument :id, ID, required: true
+    end
+
+    def interaction_claim_attribute(id:)
+      InteractionClaimAttribute.find_by(id: id)
+    end
+
+    field :interaction_claim_link, Types::InteractionClaimLinkType, null: true do
+      description "Links associated with an attribute claim"
+      argument :id, ID, required: true
+    end
+
+    def interaction_claim_link(id:)
+      InteractionClaimLink.find_by(id: id)
+    end
+
+    field :interaction_claim_type, Types::InteractionClaimTypeType, null: true do
+      description "A type associated with an interaction claim"
+      argument :id, ID, required: true
+    end
+
+    def interaction_claim_type(id:)
+      InteractionClaimType.find id
+    end
+
+    field :interaction_claim, Types::InteractionClaimType, null: true do
+      description "A claim on an interaction"
+      argument :id, ID, required: true
+    end
+
+    def interaction_claim(id:)
+      InteractionClaim.find_by(id: id)
+    end
+
+    field :interaction, Types::InteractionType, null: true do
+      description "An interaction"
+      argument :id, ID, required: true
+    end
+
+    def interaction(id:)
+      Interaction.find_by(id: id)
     end
   end
 end
