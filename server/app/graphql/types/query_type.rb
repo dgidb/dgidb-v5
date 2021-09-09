@@ -61,7 +61,7 @@ module Types
     end
 
     def drug_claim_type(id:)
-      ModelTypes::DrugClaimType.find id
+      ::DrugClaimType.find_by(id: id)
     end
 
     field :drug_claim, Types::DrugClaimType, null: true do

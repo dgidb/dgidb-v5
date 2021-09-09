@@ -8,7 +8,7 @@ module Types
     field :concept_id, String, null: false
 
     field :drug_claims, [Types::DrugClaimType], null: true
-    #field :interactions, [Types::InteractionType], null: true
+    field :interactions, [Types::InteractionType], null: true
     field :drug_aliases, [Types::DrugAliasType], null: true
     field :drug_attributes, [Types::DrugAttributeType], null: true
     #field :chembl_molecule, Types::ChemblMoleculeType, null: true
