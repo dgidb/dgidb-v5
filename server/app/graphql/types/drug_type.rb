@@ -11,6 +11,5 @@ module Types
     field :interactions, [Types::InteractionType], null: true
     field :drug_aliases, [Types::DrugAliasType], null: true
     field :drug_attributes, [Types::DrugAttributeType], null: true
-    #field :chembl_molecule, Types::ChemblMoleculeType, null: true
   end
 end

@@ -6,7 +6,6 @@ class Drug < ::ActiveRecord::Base
   has_many :interactions
   has_many :drug_aliases
   has_many :drug_attributes
-  belongs_to :chembl_molecule
 
   before_create :populate_flags
 

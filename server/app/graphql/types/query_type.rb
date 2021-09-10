@@ -12,6 +12,22 @@ module Types
       Source.find_by(id: id)
     end
 
+    field :source_trust_level, Types::SourceTrustLevelType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def source_trust_level(id:)
+      SourceTrustLevel.find_by(id: id)
+    end
+
+    field :source_type, Types::SourceTypeType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def source_type(id:)
+      ::SourceType.find_by(id: id)
+    end
+
     field :gene_claim, Types::GeneClaimType, null: true do
       argument :id, String, required: true
     end
@@ -115,7 +131,7 @@ module Types
     end
 
     def interaction_claim_type(id:)
-      InteractionClaimType.find id
+      ::InteractionClaimType.find id
     end
 
     field :interaction_claim, Types::InteractionClaimType, null: true do
@@ -134,6 +150,15 @@ module Types
 
     def interaction(id:)
       Interaction.find_by(id: id)
+    end
+
+    field :publication, Types::PublicationType, null: true do
+      description "A publication"
+      argument :id, ID, required: true
+    end
+
+    def publication(id:)
+      Publication.find_by(id: id)
     end
   end
 end
