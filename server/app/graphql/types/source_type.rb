@@ -9,7 +9,7 @@ module Types
     field :gene_claims, [Types::GeneClaimType], null: true
     field :drug_claims, [Types::DrugClaimType], null: true
     field :interaction_claims, [Types::InteractionClaimType], null: true
-    field :gene_gene_interaction_claims, [Types::G], null: true
+    field :gene_gene_interaction_claims, [Types::GeneGeneInteractionClaimType], null: true
     field :drug_aliases, [Types::DrugAliasType], null: true
     field :drug_attributes, [Types::DrugAttributeType], null: true
     field :gene_aliases, [Types::GeneAliasType], null: true
