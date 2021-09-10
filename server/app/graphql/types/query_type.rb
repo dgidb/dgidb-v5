@@ -5,7 +5,8 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     field :source, Types::SourceType, null: true do
-      argument :source_db_name, String, required: true
+      description "A source"
+      argument :id, String, required: true
     end
 
     def source(id:)
@@ -13,6 +14,7 @@ module Types
     end
 
     field :source_trust_level, Types::SourceTrustLevelType, null: true do
+      description "Trust level for a source"
       argument :id, ID, required: true
     end
 
@@ -21,6 +23,7 @@ module Types
     end
 
     field :source_type, Types::SourceTypeType, null: true do
+      description "Types of sources"
       argument :id, ID, required: true
     end
 
@@ -29,6 +32,7 @@ module Types
     end
 
     field :gene_claim, Types::GeneClaimType, null: true do
+      description "A claim for a gene"
       argument :id, String, required: true
     end
 
@@ -36,58 +40,65 @@ module Types
       GeneClaim.find_by(id: id)
     end
 
-    def gene(name: )
-      Gene.find_by(name: name)
-    end 
-
     field :gene, Types::GeneType, null: true do
-      argument :name, String, required: true
+      description "A gene"
+      argument :id, String, required: true
+    end
+
+    def gene(id: )
+      Gene.find_by(id: id)
+    end
+
+    field :gene_alias, Types::GeneAliasType, null: true do
+      description "Alias for a gene"
+      argument :id, String, required: true
     end
 
     def gene_alias(id: )
       GeneAlias.find_by(id: id)
     end
 
-    field :gene_alias, Types::GeneAliasType, null: true do
+    field :gene_attribute, Types::GeneAttributeType, null: true do
+      description "Attribute for a gene"
       argument :id, String, required: true
     end
 
-    def gene_attribute(name: )
-      GeneAttribute.find_by(name: name)
-    end
-
-    field :gene_attribute, Types::GeneAttributeType, null: true do
-      argument :name, String, required: true
-    end
-
-    def gene_claim_attribute(name: )
-      GeneClaimAttribute.find_by(name: name)
+    def gene_attribute(id: )
+      GeneAttribute.find_by(id: id)
     end
 
     field :gene_claim_attribute, Types::GeneClaimAttributeType, null: true do
-      argument :name, String, required: true
+      description "Attribute for a gene claim"
+      argument :id, String, required: true
     end
 
-    def gene_claim_alias(alias_name: )
-      GeneClaimAlias.find_by(alias: alias_name)
+    def gene_claim_attribute(id: )
+      GeneClaimAttribute.find_by(id: id)
     end
 
     field :gene_claim_alias, Types::GeneClaimAliasType, null: true do
-      argument :alias_name, String, required: true
+      description "Alias for a gene claim"
+      argument :id, String, required: true
     end
 
-    def gene_claim_category(name: )
-      GeneClaimCategory.find_by(name: name)
+    def gene_claim_alias(id: )
+      GeneClaimAlias.find_by(id: id)
     end
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
-      argument :name, String, required: true
+      description "Category for a drug claim"
+      argument :id, String, required: true
+    end
+
+    def gene_claim_category(id: )
+      GeneClaimCategory.find_by(id: id)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do
+      description "Alias for a drug"
       argument :id, String, required: true
     end
-    
+
     def drug_alias(id:)
       DrugAlias.find_by(id: id)
     end
@@ -105,7 +116,7 @@ module Types
       description "Alias for a drug claim"
       argument :id, ID, required: true
     end
-    
+
     def drug_claim_alias(id:)
       DrugClaimAlias.find_by(id: id)
     end
@@ -113,7 +124,7 @@ module Types
     field :drug_claim_attribute, Types::DrugClaimAttributeType, null: true do
       description "Attributes for a claim on a drug"
       argument :id, ID, required: true
-    end 
+    end
 
     def drug_claim_attribute(id:)
       DrugClaimAttribute.find_by(id: id)
