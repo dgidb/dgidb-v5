@@ -1,0 +1,2 @@
+class DrugAliasBlacklist < ApplicationRecord
+end
