@@ -7,8 +7,8 @@ module Types
     field :interaction_id, String, null: true
     field :interaction_claim_attributes, [Types::InteractionClaimAttributeType], null: true
     field :interaction_claim_links, [Types::InteractionClaimLinkType], null: true
-    field :gene_claim, Types::GeneClaimType, null: true
-    field :drug_claim, Types::DrugClaimType, null: true
+    field :gene_claim, Types::GeneClaimType, null: false
+    field :drug_claim, Types::DrugClaimType, null: false
     field :source, Types::SourceType, null: true
     field :interaction_claim_types, [Types::InteractionClaimTypeType], null: true
     field :interaction, Types::InteractionType, null: true
