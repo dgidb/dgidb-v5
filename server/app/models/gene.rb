@@ -1,4 +1,3 @@
-
 class Gene < ::ActiveRecord::Base
   #include Genome::Extensions::UUIDPrimaryKey
   #include Genome::Extensions::HasCacheableQuery
