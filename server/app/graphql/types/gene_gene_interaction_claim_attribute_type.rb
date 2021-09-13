@@ -4,5 +4,7 @@ module Types
     field :gene_gene_interaction_claim_id, ID, null: false
     field :name, String, null: false
     field :value, String, null: false
+
+    field :gene_gene_interaction_claim, Types::GeneGeneInteractionClaimType, null: false
   end
 end
