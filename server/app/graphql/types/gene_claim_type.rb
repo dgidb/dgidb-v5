@@ -3,7 +3,7 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
     field :nomenclature, String, null: false
-    field :source_id, String, null: false
-    field :gene_id, String, null: false
+    field :source_id, ID, null: false
+    field :gene_id, ID, null: false
   end
 end

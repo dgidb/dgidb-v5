@@ -3,9 +3,9 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
     field :nomenclature, String, null: false
-    field :source_id, String, null: true
+    field :source_id, ID, null: true
     field :primary_name, String, null: true
-    field :drug_id, String, null: true
+    field :drug_id, ID, null: true
 
     field :drug, Types::DrugType, null: false
     field :drug_claim_aliases, [Types::DrugClaimAliasType], null: true
