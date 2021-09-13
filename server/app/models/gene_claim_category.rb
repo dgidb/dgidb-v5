@@ -8,8 +8,8 @@ class GeneClaimCategory < ::ActiveRecord::Base
     join_table: 'gene_categories_genes',
     class_name: 'Gene'
 
-  cache_query :all_category_names, :all_gene_claim_category_names
-  cache_query :categories_in_sources, :categories_in_sources
+  # cache_query :all_category_names, :all_gene_claim_category_names
+  # cache_query :categories_in_sources, :categories_in_sources
 
   def self.all_category_names
     pluck(:name).sort
