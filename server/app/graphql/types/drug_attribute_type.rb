@@ -6,5 +6,13 @@ module Types
     field :value, String, null: false
     field :drug, Types::DrugType, null: false
     field :sources, [Types::SourceType], null: true
+
+    def drug
+      Loaders::RecordLoader.for(Drug).load(object.drug_id)
+    end
+
+    def sources
+      Loaders::AssociationLoader.for(DrugAttribute, :sources).load(object)
+    end
   end
 end

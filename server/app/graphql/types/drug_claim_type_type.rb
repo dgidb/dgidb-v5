@@ -3,5 +3,9 @@ module Types
     field :id, ID, null: false
     field :type, String, null: false
     field :drug_claims, [Types::DrugClaimType], null: true
+
+    def drug_claims
+      Loaders::AssociationLoader.for(::DrugClaimType, :drug_claims).load(object)
+    end
   end
 end
