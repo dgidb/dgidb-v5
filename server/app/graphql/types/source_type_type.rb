@@ -4,5 +4,9 @@ module Types
     field :type, String, null: true
     field :display_name, String, null: true
     field :sources, [Types::SourceType], null: true
+
+    def sources
+      Loaders::AssociationLoader.for(::SourceType, :sources).load(object)
+    end
   end
 end

@@ -5,5 +5,9 @@ module Types
     field :name, String, null: false
     field :value, String, null: false
     field :interaction_claim, Types::InteractionClaimType, null: false
+
+    def interaction_claim
+      Loaders::RecordLoader.for(InteractionClaim).load(object.interaction_claim_id)
+    end
   end
 end

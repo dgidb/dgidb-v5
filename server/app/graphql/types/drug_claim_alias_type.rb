@@ -5,5 +5,9 @@ module Types
     field :alias, String, null: false
     field :nomenclature, String, null: false
     field :drug_claim, Types::DrugClaimType, null: false
+
+    def drug_claim
+      Loaders::RecordLoader.for(DrugClaim).load(object.drug_claim_id)
+    end
   end
 end

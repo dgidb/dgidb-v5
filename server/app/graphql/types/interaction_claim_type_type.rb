@@ -7,5 +7,13 @@ module Types
     field :reference, String, null: true
     field :interaction_claims, [Types::InteractionClaimType], null: true
     field :interactions, [Types::InteractionType], null: true
+
+    def interaction_claims
+      Loaders::AssociationLoader.for(::InteractionClaimType, :interaction_claims).load(object)
+    end
+
+    def interactions
+      Loaders::AssociationLoader.for(::InteractionClaimType, :interactions).load(object)
+    end
   end
 end

@@ -3,5 +3,9 @@ module Types
     field :id, ID, null: false
     field :level, String, null: false
     field :sources, [Types::SourceType], null: true 
+
+    def sources
+      Loaders::AssociationLoader.for(SourceTrustLevel, :sources).load(object)
+    end
   end
 end
