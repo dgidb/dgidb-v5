@@ -1,10 +1,10 @@
 module Types
   class InteractionClaimType < Types::BaseObject
     field :id, ID, null: false
-    field :drug_claim_id, String, null: false
-    field :gene_claim_id, String, null: false
-    field :source_id, String, null: true
-    field :interaction_id, String, null: true
+    field :drug_claim_id, ID, null: false
+    field :gene_claim_id, ID, null: false
+    field :source_id, ID, null: true
+    field :interaction_id, ID, null: true
     field :interaction_claim_attributes, [Types::InteractionClaimAttributeType], null: true
     field :interaction_claim_links, [Types::InteractionClaimLinkType], null: true
     field :gene_claim, Types::GeneClaimType, null: false
