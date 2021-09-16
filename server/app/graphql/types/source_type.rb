@@ -18,16 +18,16 @@ module Types
     field :license, String, null: true
     field :license_link, String, null: true
     
-    field :gene_claims, [Types::GeneClaimType], null: true
-    field :drug_claims, [Types::DrugClaimType], null: true
-    field :interaction_claims, [Types::InteractionClaimType], null: true
-    field :gene_gene_interaction_claims, [Types::GeneGeneInteractionClaimType], null: true
-    field :drug_aliases, [Types::DrugAliasType], null: true
-    field :drug_attributes, [Types::DrugAttributeType], null: true
-    field :gene_aliases, [Types::GeneAliasType], null: true
-    field :gene_attributes, [Types::GeneAttributeType], null: true
-    field :interaction_attributes, [Types::InteractionAttributeType], null: true
-    field :source_types, [Types::SourceTypeType], null: true
+    field :gene_claims, [Types::GeneClaimType], null: false
+    field :drug_claims, [Types::DrugClaimType], null: false
+    field :interaction_claims, [Types::InteractionClaimType], null: false
+    field :gene_gene_interaction_claims, [Types::GeneGeneInteractionClaimType], null: false
+    field :drug_aliases, [Types::DrugAliasType], null: false
+    field :drug_attributes, [Types::DrugAttributeType], null: false
+    field :gene_aliases, [Types::GeneAliasType], null: false
+    field :gene_attributes, [Types::GeneAttributeType], null: false
+    field :interaction_attributes, [Types::InteractionAttributeType], null: false
+    field :source_types, [Types::SourceTypeType], null: false
     field :source_trust_level, Types::SourceTrustLevelType, null: true
 
     def gene_claims

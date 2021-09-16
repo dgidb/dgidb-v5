@@ -4,13 +4,13 @@ module Types
     field :drug_id, ID, null: false
     field :gene_id, ID, null: false
 
-    field :interaction_claims, [Types::InteractionClaimType], null: true
+    field :interaction_claims, [Types::InteractionClaimType], null: false
     field :gene, Types::GeneType, null: false
     field :drug, Types::DrugType, null: false
-    field :interaction_types, [Types::InteractionClaimTypeType], null: true
-    field :interaction_attributes, [Types::InteractionAttributeType], null: true
-    field :publications, [Types::PublicationType], null: true
-    field :sources, [Types::SourceType], null: true
+    field :interaction_types, [Types::InteractionClaimTypeType], null: false
+    field :interaction_attributes, [Types::InteractionAttributeType], null: false
+    field :publications, [Types::PublicationType], null: false
+    field :sources, [Types::SourceType], null: false
 
     def interaction_claims
       Loaders::AssociationLoader.for(Interaction, :interaction_claims).load(object)

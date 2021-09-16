@@ -7,12 +7,12 @@ module Types
     field :primary_name, String, null: true
     field :drug_id, ID, null: true
     field :drug, Types::DrugType, null: true
-    field :drug_claim_aliases, [Types::DrugClaimAliasType], null: true
-    field :interaction_claims, [Types::InteractionClaimType], null: true
-    field :gene_claims, [Types::GeneClaimType], null: true
+    field :drug_claim_aliases, [Types::DrugClaimAliasType], null: false
+    field :interaction_claims, [Types::InteractionClaimType], null: false
+    field :gene_claims, [Types::GeneClaimType], null: false
     field :source, Types::SourceType, null: true
-    field :drug_claim_attributes, [Types::DrugClaimAttributeType], null: true
-    field :drug_claim_types, [Types::DrugClaimTypeType], null: true
+    field :drug_claim_attributes, [Types::DrugClaimAttributeType], null: false
+    field :drug_claim_types, [Types::DrugClaimTypeType], null: false
 
     def drug
       Loaders::RecordLoader.for(Drug).load(object.drug_id)

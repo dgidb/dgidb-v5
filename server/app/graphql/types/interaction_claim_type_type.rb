@@ -5,8 +5,8 @@ module Types
     field :directionality, Int, null: true
     field :definition, String, null: true
     field :reference, String, null: true
-    field :interaction_claims, [Types::InteractionClaimType], null: true
-    field :interactions, [Types::InteractionType], null: true
+    field :interaction_claims, [Types::InteractionClaimType], null: false
+    field :interactions, [Types::InteractionType], null: false
 
     def interaction_claims
       Loaders::AssociationLoader.for(::InteractionClaimType, :interaction_claims).load(object)

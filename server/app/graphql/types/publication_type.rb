@@ -6,7 +6,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: true
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
     field :interactions, [Types::InteractionType], null: true
-    field :interaction_claims, [Types::InteractionClaimType], null: true
+    field :interaction_claims, [Types::InteractionClaimType], null: false
 
     def interactions
       Loaders::AssociationLoader.for(Publication, :interactions).load(object)
