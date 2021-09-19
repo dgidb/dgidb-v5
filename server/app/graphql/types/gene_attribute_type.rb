@@ -7,5 +7,13 @@ module Types
 
     field :gene, Types::GeneType, null: false
     field :sources, [Types::SourceType], null: false
+
+    def gene
+      Loaders::RecordLoader.for(Gene).load(object.gene_id)
+    end
+
+    def sources
+      Loaders::AssociationLoader.for(GeneAttribute, :sources).load(object)
+    end
   end
 end
