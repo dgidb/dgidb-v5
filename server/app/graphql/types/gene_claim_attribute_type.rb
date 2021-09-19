@@ -8,7 +8,7 @@ module Types
     field :gene_claim, Types::GeneClaimType, null: false
 
     def gene_claim
-      Loaders::RecordLoader.for(GeneClaim).load(object.gene_claim_id)
+      Loaders::RecordLoader.for(GeneClaimAttribute).load(object.gene_claim_id)
     end
   end
 end
