@@ -1,0 +1,9 @@
+.interaction-types {
+    font-size: 15px;
+    overflow: visible !important;
+}
+
+.interaction-types td {
+    white-space: normal !important;
+}
+
