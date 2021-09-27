@@ -10,7 +10,6 @@ Welcome to DGIdb's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   test
    about
    publications
    interaction_types
