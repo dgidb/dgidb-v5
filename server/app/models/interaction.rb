@@ -44,11 +44,11 @@ class Interaction < ActiveRecord::Base
 
   def interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
     if known_drug_partners_per_gene.nil?
-      known_drug_partners_per_gene = DataModel::Interaction.group(:gene_id).count
+      known_drug_partners_per_gene = Interaction.group(:gene_id).count
     end
     average_known_drug_partners_per_gene = known_drug_partners_per_gene.values.sum / known_drug_partners_per_gene.values.size.to_f
     if known_gene_partners_per_drug.nil?
-      known_gene_partners_per_drug = DataModel::Interaction.group(:drug_id).count
+      known_gene_partners_per_drug = Interaction.group(:drug_id).count
     end
     average_known_gene_partners_per_drug = known_gene_partners_per_drug.values.sum / known_gene_partners_per_drug.values.size.to_f
     known_drug_partners_for_interaction_gene = known_drug_partners_per_gene[self.gene_id]
