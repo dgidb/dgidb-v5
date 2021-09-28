@@ -1,8 +1,13 @@
 module Types
-    class GeneGeneInteractionClaimType < Types::BaseObject
-        field :id, String, null: false, validates: { length: { maximum: 255 } }
-        field :gene_id, String, null: false, validates: { length: { maximum: 255 } }
-        field :interacting_gene_id, String, null: false, validates: { length: { maximum: 255 } }
-        field :source_id, String, null: false, validates: { length: { maximum: 255 } }
-    end    
+  class GeneGeneInteractionClaimType < Types::BaseObject
+    field :id, ID, null: false
+    field :gene_id, ID, null: false
+    field :interacting_gene_id, ID, null: false
+    field :source_id, ID, null: false
+
+    field :source, Types::SourceType, null: false
+    field :interacting_gene, Types::GeneType, null: false
+    field :gene, Types::GeneType, null: false
+    field :gene_gene_interaction_claim_attributes, [Types::GeneGeneInteractionClaimAttributeType], null: false
+  end
 end

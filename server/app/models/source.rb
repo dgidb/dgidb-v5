@@ -2,17 +2,17 @@ class Source < ::ActiveRecord::Base
   #include Genome::Extensions::UUIDPrimaryKey
   #include Genome::Extensions::HasCacheableQuery
 
-  #has_many :gene_claims, inverse_of: :source, dependent: :delete_all
-  #has_many :drug_claims, inverse_of: :source, dependent: :delete_all
-  #has_many :interaction_claims, inverse_of: :source, dependent: :delete_all
-  #has_many :gene_gene_interaction_claims, inverse_of: :source, dependent: :delete_all
-  #has_and_belongs_to_many :drug_aliases
-  #has_and_belongs_to_many :drug_attributes
-  #has_and_belongs_to_many :gene_aliases
-  #has_and_belongs_to_many :gene_attributes
-  #has_and_belongs_to_many :interaction_attributes
-  #has_and_belongs_to_many :source_types
-  #belongs_to :source_trust_level, inverse_of: :sources
+  has_many :gene_claims, inverse_of: :source, dependent: :delete_all
+  has_many :drug_claims, inverse_of: :source, dependent: :delete_all
+  has_many :interaction_claims, inverse_of: :source, dependent: :delete_all
+  has_many :gene_gene_interaction_claims, inverse_of: :source, dependent: :delete_all
+  has_and_belongs_to_many :drug_aliases
+  has_and_belongs_to_many :drug_attributes
+  has_and_belongs_to_many :gene_aliases
+  has_and_belongs_to_many :gene_attributes
+  has_and_belongs_to_many :interaction_attributes
+  has_and_belongs_to_many :source_types
+  belongs_to :source_trust_level, inverse_of: :sources
 
   #cache_query :source_names_with_interactions, :all_source_names_with_interactions
   #cache_query :potentially_druggable_source_names, :potentially_druggable_source_names

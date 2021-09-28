@@ -1,6 +1,9 @@
 module Types
-    class GeneClaimCategoryType < Types::Base
-        field :id, String, null: false, validates: { length: { maximum: 255 } }
-        field :name, String, null: false, validates: { length: { maximum: 255 } }
-    end
+  class GeneClaimCategoryType < Types::BaseObject
+    field :id, ID, null: false
+    field :name, String, null: false
+
+    field :gene_claims, [Types::GeneClaimType], null: false
+    field :genes, [Types::GeneType], null: false
+  end
 end
