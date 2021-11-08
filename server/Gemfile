@@ -22,6 +22,8 @@ gem 'puma', '~> 5.0'
 
 gem 'graphql', '~> 1.12.15'
 gem 'graphql-batch', '~> 0.4.3'
+gem 'search_object_graphql'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
