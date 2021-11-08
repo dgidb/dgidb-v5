@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from '../header/Header.component';
 import Home from '../../pages/home/home.page'
 
+
 import '../../common/styles';
 import './App.component.scss'
 import { ApolloProvider } from '@apollo/client';

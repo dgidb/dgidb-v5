@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Button } from 'antd';
 
 import './Header.component.scss'
 
@@ -9,7 +10,13 @@ const Header: React.FC = () => {
       <nav>
         <ul>
           <li>
-            {/* <NavLink to="/">Home</NavLink> */}
+            Browse
+          </li>
+          <li>
+            About
+          </li>
+          <li>
+            Download
           </li>
         </ul>
       </nav>

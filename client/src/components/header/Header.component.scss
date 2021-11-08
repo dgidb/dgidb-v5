@@ -1,0 +1,12 @@
+header nav {
+	ul {
+		display: flex;
+		justify-content: flex-end;
+		list-style: none;
+		margin: 0 60px;
+
+		li {
+			margin-left: 60px;
+		}
+	}
+}

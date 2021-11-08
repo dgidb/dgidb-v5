@@ -1,4 +1,13 @@
-.home {
-  margin: 0 auto;
-  padding-left: 20px;
+@import '../../common/styles/variables.scss';
+
+.home-page-container {
+	margin: 0 auto;
+	padding-left: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: $primary-bg;
+	color: white;
 }
