@@ -11,3 +11,13 @@
 	background-color: $primary-bg;
 	color: white;
 }
+
+.logo {
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 100px;
+	font-weight: 800;
+	line-height: 80px;
+	background: -webkit-linear-gradient(#f7f7f8, #ada7bd);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
