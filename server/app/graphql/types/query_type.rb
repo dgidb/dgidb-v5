@@ -4,6 +4,8 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
+    field :drugs, resolver: Resolvers::Drugs
+
     field :source, Types::SourceType, null: true do
       description "A source"
       argument :id, String, required: true
