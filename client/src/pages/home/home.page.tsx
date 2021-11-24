@@ -4,7 +4,7 @@ import { GetInteractions } from '../../hooks/sources/useGetInteractions';
 import ReactTags from 'react-tag-autocomplete'
 
 import 'antd/dist/antd.css';
-import { Input, Button, Tag, Select, AutoComplete, Form } from 'antd';
+import { Button, Select, Form } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 import './home.page.scss';
@@ -53,9 +53,9 @@ const Home: React.FC = () => {
 
   // console.log(antInput)
 
-  useEffect(() => {
-    setNewTag('');
-  }, [selected])
+  // useEffect(() => {
+  //   setNewTag('');
+  // }, [selected])
 
   function handleType(value: any) {
 
@@ -64,22 +64,33 @@ const Home: React.FC = () => {
     if (value.key === 'Backspace'){
       setNewTag(newTag.slice(0, -1))
     } else if (value.key === 'Enter' || value.key === 'Spacebar') {
-      console.log('pushing')
       setOptions([...options, {value: newTag, label: newTag}]);
       setSelected([...selected, newTag])
       clearInputText();
+    } else if (value.key.length > 1) {
+      return;
     } else if(/^[a-zA-Z0-9-_]+$/.test(value.key)){
-      console.log('passed the regex and not backspace or spacebar or enter')
       setNewTag(`${newTag}${value.key}`)
     } else {
       return
     }
 
-
   }
 
   const handleChange = (value: any) => {
+    setNewTag('');
+    // let newValues = value.map((val: string) => {
+    //   return ({value: val, label: val})
+    // })
+
+    // const found = options.some((el: string) => newValues.includes(el));
+
+    // if(!found) {
+    //   setOptions([...options, ...newValues])
+    // }
+    
     setSelected(value);
+    
   }
 
   const clearSelected = () => {
@@ -132,22 +143,19 @@ const Home: React.FC = () => {
           options={options}
           onInputKeyDown={handleType}
           value={selected}
+          dropdownStyle={{backgroundColor: 'red'}}
         />
       </Form.Item>
 
       </div>
     <div className="search-dropdown">
       <Select 
-        defaultValue="lucy" 
-        style={{ width: 120 }} 
+        defaultValue="gene" 
+        style={{ width: 200 }} 
         size="large"
       >
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="disabled" disabled>
-          Disabled
-        </Option>
-        <Option value="Yiminghe">yiminghe</Option>
+        <Option value="gene">Interactions by Gene</Option>
+        <Option value="drug">Interactions by Drug</Option>
       </Select>
     </div>
     </div>
