@@ -4,16 +4,20 @@ import { GetInteractions } from '../../hooks/sources/useGetInteractions';
 import ReactTags from 'react-tag-autocomplete'
 
 import 'antd/dist/antd.css';
-import { Input, Button, Tag, Select } from 'antd';
+import { Input, Button, Tag, Select, AutoComplete, Form } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 import './home.page.scss';
 
 const Home: React.FC = () => {
   
-  const [input, setInput ] = useState<string>('');
-  const [result, setResult] = useState("");
+  // const [input, setInput ] = useState<string>('');
+  // const [result, setResult] = useState("");
+  const [selected, setSelected] = useState<any>([]);
+  const [newTag, setNewTag] = useState<any>('');
+  const [options, setOptions] = useState<any>([{value: 'Apple', label: 'Apple' }, {value: 'Banana', label: 'Banana' }, {value: 'Orange', label: 'Orange' }]);
   const { Option } = Select;
+
 
   const GET_GENE = gql`
   query gene($id: String!) {
@@ -23,42 +27,65 @@ const Home: React.FC = () => {
   }
   `
 
-  const {refetch} = useQuery(GET_GENE, {
-    variables: { id: input}
-  })
+  // const {refetch} = useQuery(GET_GENE, {
+  //   variables: { id: input}
+  // })
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const res = await refetch();
-    setResult(JSON.stringify(res.data.gene.interactions));
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const res = await refetch();
+  //   setResult(JSON.stringify(res.data.gene.interactions));
 
-  }; 
-
-  const [tags, setTags] = useState(
-    {
-      tags: [
-        { id: 1, name: "Apples" },
-        { id: 2, name: "Pears" }
-      ],
-      suggestions: [
-        { id: 3, name: "Bananas" },
-        { id: 4, name: "Mangos" },
-        { id: 5, name: "Lemons" },
-        { id: 6, name: "Apricots" }
-      ]
-    }
-  );
-
-  // const handleAddition = (tag) => {
-  //   console.log("add");
-  //   setTags([...tags, tag]);
-  // };
+  // }; 
 
   const handleDelete = () => {
 
   }
 
-  const reactTags = React.createRef()
+  let antInput = (document.querySelector('input') as HTMLInputElement);
+
+  const clearInputText = () => {
+    console.log('clearing');
+    (document.querySelector('input') as HTMLInputElement).value = '';
+    console.log('why is it still this:');
+    console.log(document.querySelector('input'))
+  }
+
+  // console.log(antInput)
+
+  useEffect(() => {
+    setNewTag('');
+  }, [selected])
+
+  function handleType(value: any) {
+
+    console.log(`newTag is ${newTag}`);
+
+    if (value.key === 'Backspace'){
+      setNewTag(newTag.slice(0, -1))
+    } else if (value.key === 'Enter' || value.key === 'Spacebar') {
+      console.log('pushing')
+      setOptions([...options, {value: newTag, label: newTag}]);
+      setSelected([...selected, newTag])
+      clearInputText();
+    } else if(/^[a-zA-Z0-9-_]+$/.test(value.key)){
+      console.log('passed the regex and not backspace or spacebar or enter')
+      setNewTag(`${newTag}${value.key}`)
+    } else {
+      return
+    }
+
+
+  }
+
+  const handleChange = (value: any) => {
+    setSelected(value);
+  }
+
+  const clearSelected = () => {
+    setSelected([]);
+  }
+
 
 
   return (
@@ -90,37 +117,43 @@ const Home: React.FC = () => {
   THE DRUG GENE INTERACTION DATABASE
   </div>
   <div className="search-container"> 
-    <div className="search-subcontainer">
-      <div className="search-input">
-          <Input 
-            size="large" 
-            placeholder="" 
-            prefix={<UserOutlined />} 
-            style={{ width: 700}}
-          />
-        </div>
-      <div className="search-dropdown">
-        <Select defaultValue="lucy" style={{ width: 120 }} size="large">
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="disabled" disabled>
-            Disabled
-          </Option>
-          <Option value="Yiminghe">yiminghe</Option>
-        </Select>
+  <div className="search-subcontainer">
+
+    <div className="search-input">
+      <Form.Item>
+        <Select 
+          onChange={handleChange}
+          size="large" 
+          placeholder="" 
+          mode="tags"
+          tokenSeparators={[',']}
+          // prefix={<UserOutlined />} 
+          style={{ width: 700}}
+          options={options}
+          onInputKeyDown={handleType}
+          value={selected}
+        />
+      </Form.Item>
+
       </div>
-
+    <div className="search-dropdown">
+      <Select 
+        defaultValue="lucy" 
+        style={{ width: 120 }} 
+        size="large"
+      >
+        <Option value="jack">Jack</Option>
+        <Option value="lucy">Lucy</Option>
+        <Option value="disabled" disabled>
+          Disabled
+        </Option>
+        <Option value="Yiminghe">yiminghe</Option>
+      </Select>
     </div>
-
+    </div>
 
   </div>
 
-  {/* <ReactTags
-    tags={tags}
-    ref={reactTags}
-    onDelete={handleDelete}
-    onAddition={(e) => handleAddition(e)}
-  /> */}
 
   <div className="home-buttons">
     <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>

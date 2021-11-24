@@ -26,20 +26,22 @@
 	}
 
 	.search-container {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-		height: 40px !important;
+		height: 40px;
 		right: 340px;
+		position: relative;
 
 		.search-subcontainer {
 			.search-input {
 				position: absolute;
+
+				.ant-select-selection-overflow {
+					margin-left: 120px;
+				}
 			}
 
 			.search-dropdown {
+				// visibility: hidden;
+				float: left;
 				position: absolute;
 				z-index: 1;
 			}
