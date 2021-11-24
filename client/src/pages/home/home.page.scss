@@ -1,6 +1,9 @@
 @import '../../common/styles/variables.scss';
 
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
+
 .home-page-container {
+	font-family: 'Work Sans';
 	margin: 0 auto;
 	padding-left: 20px;
 	display: flex;
@@ -10,6 +13,61 @@
 	height: 100vh;
 	background-color: $primary-bg;
 	color: white;
+
+	.home-blurb {
+		margin-top: 160px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+		width: 560px;
+		display: flex;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.search-container {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		height: 40px !important;
+		right: 340px;
+
+		.search-subcontainer {
+			.search-input {
+				position: absolute;
+			}
+
+			.search-dropdown {
+				position: absolute;
+				z-index: 1;
+			}
+		}
+	}
+
+	.home-buttons {
+		margin-top: 10px;
+	}
+
+	.home-links {
+		font-family: 'Work Sans';
+		font-size: 20px;
+		margin-top: 10px;
+	}
+
+	.home-footer {
+		background-color: #480a77;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 20px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+	}
 }
 
 .logo {
@@ -21,3 +79,11 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+.ant-btn .ant-btn-link {
+	text-decoration: underline !important;
+}
+
+// .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+// 	height: 10px;
+// }

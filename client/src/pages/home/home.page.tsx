@@ -3,9 +3,8 @@ import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { GetInteractions } from '../../hooks/sources/useGetInteractions';
 import ReactTags from 'react-tag-autocomplete'
 
-
 import 'antd/dist/antd.css';
-import { Input, Button, Tag } from 'antd';
+import { Input, Button, Tag, Select } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 import './home.page.scss';
@@ -14,6 +13,7 @@ const Home: React.FC = () => {
   
   const [input, setInput ] = useState<string>('');
   const [result, setResult] = useState("");
+  const { Option } = Select;
 
   const GET_GENE = gql`
   query gene($id: String!) {
@@ -89,12 +89,31 @@ const Home: React.FC = () => {
   <div className="tagline">
   THE DRUG GENE INTERACTION DATABASE
   </div>
-  <Input 
-    size="large" 
-    placeholder="" 
-    prefix={<UserOutlined />} 
-    style={{ width: 700}}
-  />
+  <div className="search-container"> 
+    <div className="search-subcontainer">
+      <div className="search-input">
+          <Input 
+            size="large" 
+            placeholder="" 
+            prefix={<UserOutlined />} 
+            style={{ width: 700}}
+          />
+        </div>
+      <div className="search-dropdown">
+        <Select defaultValue="lucy" style={{ width: 120 }} size="large">
+          <Option value="jack">Jack</Option>
+          <Option value="lucy">Lucy</Option>
+          <Option value="disabled" disabled>
+            Disabled
+          </Option>
+          <Option value="Yiminghe">yiminghe</Option>
+        </Select>
+      </div>
+
+    </div>
+
+
+  </div>
 
   {/* <ReactTags
     tags={tags}
@@ -104,22 +123,22 @@ const Home: React.FC = () => {
   /> */}
 
   <div className="home-buttons">
-    <Button type="primary">Search</Button>
-    <Button type="primary">Demo</Button>
+    <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
+    <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
   </div>
   <div className="home-blurb">
     An open-source search engine for drug-gene interactions and the druggable genome.
   </div>
   <div className="home-links">
-    <Button type="link">
+    <span style={{color: 'white', padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
       API
-    </Button>
-    <Button type="link">
+    </span>
+    <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
       Downloads
-    </Button>
-    <Button type="link">
+    </span>
+    <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
       Github
-    </Button>
+    </span>
   </div>
 
   <div className="home-footer">
