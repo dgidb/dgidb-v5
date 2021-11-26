@@ -1,11 +1,15 @@
 import React, { useState, useEffect} from 'react';
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
+import SearchBar from '../../components/searchbar/SearchBar.component';
 import { GetInteractions } from '../../hooks/sources/useGetInteractions';
 import ReactTags from 'react-tag-autocomplete'
 
+import {FilterOutlined} from '@ant-design/icons'
+
 import 'antd/dist/antd.css';
-import { Button, Select, Form } from 'antd';
+import { Button, Select, Form, Popover } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import "antd/dist/antd.css";
 
 import './home.page.scss';
 
@@ -16,6 +20,8 @@ const Home: React.FC = () => {
   const [selected, setSelected] = useState<any>([]);
   const [newTag, setNewTag] = useState<any>('');
   const [options, setOptions] = useState<any>([{value: 'Apple', label: 'Apple' }, {value: 'Banana', label: 'Banana' }, {value: 'Orange', label: 'Orange' }]);
+  const [showFilters, setShowFilters] = useState(false);  
+  
   const { Option } = Select;
 
 
@@ -37,66 +43,6 @@ const Home: React.FC = () => {
   //   setResult(JSON.stringify(res.data.gene.interactions));
 
   // }; 
-
-  const handleDelete = () => {
-
-  }
-
-  let antInput = (document.querySelector('input') as HTMLInputElement);
-
-  const clearInputText = () => {
-    console.log('clearing');
-    (document.querySelector('input') as HTMLInputElement).value = '';
-    console.log('why is it still this:');
-    console.log(document.querySelector('input'))
-  }
-
-  // console.log(antInput)
-
-  // useEffect(() => {
-  //   setNewTag('');
-  // }, [selected])
-
-  function handleType(value: any) {
-
-    console.log(`newTag is ${newTag}`);
-
-    if (value.key === 'Backspace'){
-      setNewTag(newTag.slice(0, -1))
-    } else if (value.key === 'Enter' || value.key === 'Spacebar') {
-      setOptions([...options, {value: newTag, label: newTag}]);
-      setSelected([...selected, newTag])
-      clearInputText();
-    } else if (value.key.length > 1) {
-      return;
-    } else if(/^[a-zA-Z0-9-_]+$/.test(value.key)){
-      setNewTag(`${newTag}${value.key}`)
-    } else {
-      return
-    }
-
-  }
-
-  const handleChange = (value: any) => {
-    setNewTag('');
-    // let newValues = value.map((val: string) => {
-    //   return ({value: val, label: val})
-    // })
-
-    // const found = options.some((el: string) => newValues.includes(el));
-
-    // if(!found) {
-    //   setOptions([...options, ...newValues])
-    // }
-    
-    setSelected(value);
-    
-  }
-
-  const clearSelected = () => {
-    setSelected([]);
-  }
-
 
 
   return (
@@ -127,40 +73,8 @@ const Home: React.FC = () => {
   <div className="tagline">
   THE DRUG GENE INTERACTION DATABASE
   </div>
-  <div className="search-container"> 
-  <div className="search-subcontainer">
 
-    <div className="search-input">
-      <Form.Item>
-        <Select 
-          onChange={handleChange}
-          size="large" 
-          placeholder="" 
-          mode="tags"
-          tokenSeparators={[',']}
-          // prefix={<UserOutlined />} 
-          style={{ width: 700}}
-          options={options}
-          onInputKeyDown={handleType}
-          value={selected}
-          dropdownStyle={{backgroundColor: 'red'}}
-        />
-      </Form.Item>
-
-      </div>
-    <div className="search-dropdown">
-      <Select 
-        defaultValue="gene" 
-        style={{ width: 200 }} 
-        size="large"
-      >
-        <Option value="gene">Interactions by Gene</Option>
-        <Option value="drug">Interactions by Drug</Option>
-      </Select>
-    </div>
-    </div>
-
-  </div>
+  <SearchBar />
 
 
   <div className="home-buttons">

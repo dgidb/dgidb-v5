@@ -30,15 +30,13 @@
 		right: 340px;
 
 		.search-subcontainer {
-			position: relative;
+			// position: relative;
+			display: flex;
 
 			.search-input {
 				max-height: 240px;
 				overflow: scroll !important;
-
-				.ant-select-selection-overflow {
-					margin-left: 210px;
-				}
+				position: relative;
 
 				.ant-select-selector {
 					background-color: $primary-bg;
@@ -52,12 +50,24 @@
 				.ant-select-dropdown {
 					width: 50px;
 				}
+
+				.search-filters {
+					padding: 8px 6px 0 5px;
+					cursor: pointer;
+					position: absolute;
+					top: 1%;
+					right: .1%;
+					bottom: 40%;
+					// float: right;
+					// background-color: red;
+					z-index: 1;
+				}
 			}
 
 			.search-dropdown {
-				position: absolute;
-				top: 0;
-				z-index: 1;
+				// position: absolute;
+				// top: 0;
+				// z-index: 1;
 
 				.ant-select-selector {
 					background-color: $primary-bg;
