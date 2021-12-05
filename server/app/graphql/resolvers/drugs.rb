@@ -33,5 +33,19 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(concept_id: value)
   end
 
+  option(:interaction_type, type: String, description: 'Filtering on interaction claim type.') do |scope, value|
+    scope.joins(interactions: :interaction_types).where("interaction_claim_types.type = ?", value)
+  end
 
+  option(:source_name, type: String, description: 'Exact filtering on full name of source for an interaction.') do |scope, value|
+    scope.joins(interactions: :sources).where("sources.full_name = ?", value)
+  end
+
+  option(:source_db_name, type: String, description: 'Exact filtering of source db name for an interaction') do |scope, value|
+    scope.joins(interactions: :sources).where("sources.source_db_name = ?", value)
+  end
+
+  option(:pmid, type: Int, description: 'Exact match filtering on publication pmids.') do |scope, value|
+    scope.joins(interactions: :publications).where("publications.pmid = ?", value)
+  end
 end
