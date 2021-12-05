@@ -33,7 +33,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(concept_id: value)
   end
 
-  option(:interaction_type, type: String, description: 'Filtering on interaction claim type.') do |scope, value|
+  option(:interaction_type, type: String, description: 'Exact filtering on interaction claim type.') do |scope, value|
     scope.joins(interactions: :interaction_types).where("interaction_claim_types.type = ?", value)
   end
 
