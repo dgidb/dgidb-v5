@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import SearchBar from '../../components/searchbar/SearchBar.component';
-import { GetInteractions } from '../../hooks/sources/useGetInteractions';
+import { GetInteractions } from '../../hooks/sources/useGetInteractions (old)';
 import ReactTags from 'react-tag-autocomplete'
 
 import {FilterOutlined} from '@ant-design/icons'
@@ -25,13 +25,13 @@ const Home: React.FC = () => {
   const { Option } = Select;
 
 
-  const GET_GENE = gql`
-  query gene($id: String!) {
-    gene(id: $id) {
-      interactions{interactionClaims{drugClaim{drug{name}}}}
-    }
-  }
-  `
+  // const GET_GENE = gql`
+  // query gene($id: String!) {
+  //   gene(id: $id) {
+  //     interactions{interactionClaims{drugClaim{drug{name}}}}
+  //   }
+  // }
+  // `
 
   // const {refetch} = useQuery(GET_GENE, {
   //   variables: { id: input}

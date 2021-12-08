@@ -28,6 +28,7 @@
 	.search-container {
 		min-height: 40px;
 		right: 340px;
+		margin-top: 20px;
 
 		.search-subcontainer {
 			// position: relative;
@@ -110,6 +111,7 @@
 	font-size: 100px;
 	font-weight: 800;
 	line-height: 80px;
+	margin-bottom: 6px;
 	background: -webkit-linear-gradient(#f7f7f8, #ada7bd);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
