@@ -4,13 +4,10 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 
 import Header from '../header/Header.component';
 import Home from '../../pages/home/home.page'
-
+import { Results } from '../../pages/results/results.page';
 
 import '../../common/styles';
 import './App.component.scss'
-import { ApolloProvider } from '@apollo/client';
-
-import client from '../../common/apollo-client'
 
 const queryClient = new QueryClient();
 
@@ -28,7 +25,6 @@ const App: React.FC = () => {
         </Switch>
       </Router>
     // </ApolloProvider>
-
     
   );
 }

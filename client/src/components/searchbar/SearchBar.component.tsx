@@ -3,6 +3,8 @@ import React, { useState, useEffect} from 'react';
 // import { GetInteractions } from '../../hooks/sources/useGetInteractions (old)';
 import ReactTags from 'react-tag-autocomplete'
 
+import {  useGQLQuery } from '../../hooks/interactions/useGetInteractions';
+
 import { useGetInteractions } from '../../hooks/interactions/useGetInteractions';
 
 import gql from 'graphql-tag'
@@ -48,13 +50,13 @@ const SearchBar: React.FC = () => {
 
 
 
-  // const GET_GENE = gql`
-  // query gene($id: String!) {
-  //   gene(id: $id) {
-  //     interactions{interactionClaims{drugClaim{drug{name}}}}
-  //   }
-  // }
-  // `
+  const GET_GENE_INTERACTION = gql`
+  query gene($id: String!) {
+    gene(id: $id) {
+      interactions{interactionClaims{drugClaim{drug{name}}}}
+    }
+  }
+  `
 
   // const {refetch} = useQuery(GET_GENE, {
   //   variables: { id: input}
@@ -133,11 +135,13 @@ const SearchBar: React.FC = () => {
     setSelected([]);
   }
 
+  const { data, isLoading, error } = useGQLQuery('countries', GET_GENE_INTERACTION, {
+    id: '774e749f-4a89-47aa-8226-f12026812b04'
+  });
 
-  const {data, error, isLoading, isSuccess } = useGetInteractions('774e749f-4a89-47aa-8226-f12026812b04')
+  // const {data, error, isLoading, isSuccess } = useGetInteractions('774e749f-4a89-47aa-8226-f12026812b04')
   if (error) console.log(error)
   if (isLoading) console.log('loading')
-  if (isSuccess) console.log('succeess')
   console.log('data');
   console.log(data);
   return (

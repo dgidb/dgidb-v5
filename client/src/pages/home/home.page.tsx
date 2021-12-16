@@ -3,6 +3,7 @@ import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import SearchBar from '../../components/searchbar/SearchBar.component';
 import { GetInteractions } from '../../hooks/sources/useGetInteractions (old)';
 import ReactTags from 'react-tag-autocomplete'
+import { useGetInteractions } from '../../hooks/interactions/useGetInteractions';
 
 import {FilterOutlined} from '@ant-design/icons'
 
@@ -44,28 +45,18 @@ const Home: React.FC = () => {
 
   // }; 
 
+  const {data, isLoading, error, isSuccess} = useGetInteractions('159249ef-f594-42e0-b630-91ee6173a7cd');
+
+  console.log('data');
+  console.log(data);
+  console.log('isSuccess');
+  console.log(isSuccess);
+
+  
+
 
   return (
     <div className="home-page-container" >
-  {/* <form onSubmit={handleSubmit}>
-    <div>Enter an gene id (like <strong>a12c98b9-06af-4f19-a4c2-8631b774963a</strong>)</div>
-    <br />
-    <input
-      onChange={(e) => setInput(e.target.value)}
-    />
-    <button type="submit">
-      Submit
-    </button>
-    
-  </form>
-    <br/>
-  <div><b>Drug interactions:</b> 
-  <div>
-    {result}
-  </div>
-  
-  </div>
-  <br/> */}
 
   <div className="logo">
     DGIdb

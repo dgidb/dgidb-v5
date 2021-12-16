@@ -3,6 +3,7 @@
 .search-container {
 	min-height: 40px;
 	right: 340px;
+	font-family: 'Lato';
 
 	.search-subcontainer {
 		// position: relative;
@@ -66,11 +67,25 @@
 .filter-options {
 	display: flex;
 	flex-direction: column;
+	font-family: 'Lato' !important;
 	.ant-checkbox-wrapper {
 		margin: 0;
+		color: white;
+		font-family: 'Lato' !important;
+	}
+
+	h5 {
+		color: white;
+		font-family: 'Lato';
 	}
 }
 
 .ant-btn .ant-btn-link {
 	text-decoration: underline !important;
+}
+
+.ant-popover-inner-content {
+	color: white;
+	background-color: #480a77;
+	font-family: 'Lato';
 }
