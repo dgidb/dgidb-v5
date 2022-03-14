@@ -46,10 +46,6 @@ const SearchBar: React.FC = () => {
   
   const { Option } = Select;
 
-
-
-
-
   const GET_GENE_INTERACTION = gql`
   query gene($id: String!) {
     gene(id: $id) {
@@ -139,7 +135,6 @@ const SearchBar: React.FC = () => {
     id: '774e749f-4a89-47aa-8226-f12026812b04'
   });
 
-  // const {data, error, isLoading, isSuccess } = useGetInteractions('774e749f-4a89-47aa-8226-f12026812b04')
   if (error) console.log(error)
   if (isLoading) console.log('loading')
   console.log('data');

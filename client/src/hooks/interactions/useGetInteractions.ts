@@ -18,9 +18,8 @@ const getInteractionsQuery = gql`
 
 export function useGetInteractions(id: string) {
   return useQuery(["get-interactions", id], async () => {
-    const { getInteractions } = await graphQLClient.request(getInteractionsQuery, 
-   { id }
-   );
+    const { getInteractions } = await graphQLClient.request(getInteractionsQuery, { id });
+    console.log('getInteractions', getInteractions)
     return getInteractions;
   });
 }
