@@ -1,9 +1,18 @@
 
 export interface Response {
   "data": {
-    "source": {
-      "sourceDbName": string;
-      "sourceDbVersion": string;
+    "gene": {
+      "interactions": [
+        {
+        "interactionClaims": {
+          "drugClaim": {
+            "drug": {
+              "name": string
+            }
+          }
+        }
+      }
+      ]
     }
   }
 }

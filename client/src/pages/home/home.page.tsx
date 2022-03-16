@@ -1,40 +1,97 @@
-import React, { useState } from 'react';
-import { useLazyQuery, gql } from "@apollo/client";
+import React, { useState, useEffect} from 'react';
+import { useLazyQuery, useQuery, gql } from "@apollo/client";
+import SearchBar from '../../components/searchbar/SearchBar.component';
+import { GetInteractions } from '../../hooks/sources/useGetInteractions (old)';
+import ReactTags from 'react-tag-autocomplete'
+import { useGetInteractions } from '../../hooks/interactions/useGetInteractions';
+
+import {FilterOutlined} from '@ant-design/icons'
+
+import 'antd/dist/antd.css';
+import { Button, Select, Form, Popover } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import "antd/dist/antd.css";
+
+import './home.page.scss';
 
 const Home: React.FC = () => {
   
-  const [input, setInput ] = useState<string | undefined>('');
-
-  const GET_SOURCE = gql`
-  query source($id: String!) {
-    source(id: $id) {
-      sourceDbName
-      sourceDbVersion
-    }
-  }
-`
-  const [search, {data}] = useLazyQuery(GET_SOURCE, { variables: { id: input}});
+  // const [input, setInput ] = useState<string>('');
+  // const [result, setResult] = useState("");
+  const [selected, setSelected] = useState<any>([]);
+  const [newTag, setNewTag] = useState<any>('');
+  const [options, setOptions] = useState<any>([{value: 'Apple', label: 'Apple' }, {value: 'Banana', label: 'Banana' }, {value: 'Orange', label: 'Orange' }]);
+  const [showFilters, setShowFilters] = useState(false);  
   
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    search();
-  }; 
+  const { Option } = Select;
+
+
+  // const GET_GENE = gql`
+  // query gene($id: String!) {
+  //   gene(id: $id) {
+  //     interactions{interactionClaims{drugClaim{drug{name}}}}
+  //   }
+  // }
+  // `
+
+  // const {refetch} = useQuery(GET_GENE, {
+  //   variables: { id: input}
+  // })
+
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const res = await refetch();
+  //   setResult(JSON.stringify(res.data.gene.interactions));
+
+  // }; 
+
+  const {data, isLoading, error, isSuccess} = useGetInteractions('159249ef-f594-42e0-b630-91ee6173a7cd');
+
+  console.log('data');
+  console.log(data);
+  console.log('isSuccess');
+  console.log(isSuccess);
+
+  
+
 
   return (
-    <>
-  <form onSubmit={handleSubmit}>
-    <div>Enter an ID. For example: 0009971b-b332-44a2-82a7-45128289099d</div>
-    <input
-      onChange={(e) => setInput(e.target.value)}
-    />
-    <button type="submit">
-      Submit
-    </button>
-  </form>
-    
-  <div>Source name: {data?.source?.sourceDbName}</div>
-  <div>Source version: {data?.source?.sourceDbVersion}</div>
-  </>
+    <div className="home-page-container" >
+
+  <div className="logo">
+    DGIdb
+  </div>
+  <div className="tagline">
+  THE DRUG GENE INTERACTION DATABASE
+  </div>
+
+  <SearchBar />
+
+
+  <div className="home-buttons">
+    <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
+    <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
+  </div>
+  <div className="home-blurb">
+    An open-source search engine for drug-gene interactions and the druggable genome.
+  </div>
+  <div className="home-links">
+    <span style={{color: 'white', padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
+      API
+    </span>
+    <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
+      Downloads
+    </span>
+    <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
+      Github
+    </span>
+  </div>
+
+  <div className="home-footer">
+    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice. 
+  </div>
+
+  </div>
   )
 }
 
