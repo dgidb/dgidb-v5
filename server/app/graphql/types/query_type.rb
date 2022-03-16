@@ -5,6 +5,7 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     field :genes, resolver: Resolvers::Genes
+    field :drugs, resolver: Resolvers::Drugs
 
     field :source, Types::SourceType, null: true do
       description "A source"
