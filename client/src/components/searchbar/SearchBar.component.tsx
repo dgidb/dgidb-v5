@@ -10,28 +10,11 @@ import "antd/dist/antd.css";
 
 import './SearchBar.component.scss';
 
-
 const SearchBar: React.FC = () => {
-
-  const testData = [
-    {value: 'A2M', label: 'ABL'},
-    {value: 'ABL1', label: 'ABL1'},
-    {value: 'ADCY5', label: 'ADCY5'},
-    {value: 'AGPAT2', label: 'AGPAT2'},
-    {value: 'AGTR1', label: 'AGTR1'},
-    {value: 'AIFM1', label: 'AIFM1'},
-    {value: 'APEX1', label: 'APEX1'},
-    {value: 'APOC3', label: 'APOC3'},
-    {value: 'ATM', label: 'ATM'},
-    {value: 'BAK1', label: 'BAK1'},
-    {value: 'BAX', label: 'BAX'},
-    {value: 'BUB1B', label: 'BUB1B'},
-    {value: 'BUB3', label: 'BUB3'},
-  ]
 
   const [selected, setSelected] = useState<any>([]);
   const [newTag, setNewTag] = useState<any>('');
-  const [options, setOptions] = useState<any>(testData);
+  const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);  
   
   const { Option } = Select;
@@ -104,9 +87,7 @@ const SearchBar: React.FC = () => {
           <div>
             {menu}
           </div>
-        )
-
-        }
+        )}
       >
         <Option value="gene">Interactions by Gene</Option>
         <Option value="drug">Interactions by Drug</Option>
@@ -120,7 +101,6 @@ const SearchBar: React.FC = () => {
           placeholder="" 
           mode="tags"
           tokenSeparators={[',']}
-          // prefix={<UserOutlined />} 
           style={{ width: 700}}
           options={options}
           onInputKeyDown={handleType}
@@ -130,13 +110,12 @@ const SearchBar: React.FC = () => {
 
         <div className="search-filters">
 
+          <Popover content={content} trigger="click" visible={showFilters} onVisibleChange={handlePopoverChange} >
+            <FilterOutlined 
+              style={{ fontSize: '150%', cursor: 'pointer'}}
+            />
 
-      <Popover content={content} trigger="click" visible={showFilters} onVisibleChange={handlePopoverChange} >
-        <FilterOutlined 
-          style={{ fontSize: '150%', cursor: 'pointer'}}
-        />
-
-      </Popover>
+          </Popover>
 
         </div>
 

@@ -13,7 +13,6 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () => {
 	return (
-		// <ApolloProvider client={client}>
 		<Router>
 			<Header />
 			<Switch>
@@ -25,7 +24,6 @@ const App: React.FC = () => {
 				</Route>
 			</Switch>
 		</Router>
-		// </ApolloProvider>
 	);
 };
 
