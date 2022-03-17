@@ -1,0 +1,126 @@
+@import '../../common/styles/variables.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
+
+.home-page-container {
+	font-family: 'Work Sans';
+	margin: 0 auto;
+	padding-left: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: $primary-bg;
+	color: white;
+
+	.home-blurb {
+		margin-top: 160px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+		width: 560px;
+		display: flex;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.search-container {
+		min-height: 40px;
+		right: 340px;
+		margin-top: 20px;
+
+		.search-subcontainer {
+			// position: relative;
+			display: flex;
+
+			.search-input {
+				max-height: 240px;
+				overflow: scroll !important;
+				position: relative;
+
+				.ant-select-selector {
+					background-color: $primary-bg;
+					color: white;
+				}
+
+				.ant-select-selection-item {
+					color: $primary-purple;
+				}
+
+				.ant-select-dropdown {
+					width: 50px;
+				}
+
+				.search-filters {
+					padding: 8px 6px 0 5px;
+					cursor: pointer;
+					position: absolute;
+					top: 1%;
+					right: .1%;
+					bottom: 40%;
+					// float: right;
+					// background-color: red;
+					z-index: 1;
+				}
+			}
+
+			.search-dropdown {
+				// position: absolute;
+				// top: 0;
+				// z-index: 1;
+
+				.ant-select-selector {
+					background-color: $primary-bg;
+					color: white;
+				}
+
+				.ant-select-arrow {
+					color: white;
+				}
+			}
+		}
+	}
+
+	.home-buttons {
+		margin-top: 10px;
+	}
+
+	.home-links {
+		font-family: 'Work Sans';
+		font-size: 20px;
+		margin-top: 10px;
+	}
+
+	.home-footer {
+		background-color: #480a77;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 20px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+	}
+}
+
+.logo {
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 100px;
+	font-weight: 800;
+	line-height: 80px;
+	margin-bottom: 6px;
+	background: -webkit-linear-gradient(#f7f7f8, #ada7bd);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.ant-btn .ant-btn-link {
+	text-decoration: underline !important;
+}
+
+// .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+// 	height: 10px;
+// }
