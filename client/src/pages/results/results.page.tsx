@@ -1,18 +1,13 @@
+// hooks/dependencies
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { request, gql, GraphQLClient } from 'graphql-request';
-import SearchBar from '../../components/searchbar/SearchBar.component';
 import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
 
-import { FilterOutlined } from '@ant-design/icons';
+// components/
+import SearchBar from '../../components/searchbar/SearchBar.component';
 
-import 'antd/dist/antd.css';
-import { Button, Select, Form, Popover, Card, Table, Tag } from 'antd';
-import 'antd/dist/antd.css';
-
+// styles
 import './results.page.scss';
 
-const graphQLClient = new GraphQLClient('http://127.0.0.1:3000/api/graphql');
 
 export const Results: React.FC = () => {
 

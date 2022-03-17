@@ -1,14 +1,13 @@
+// hooks/dependencies
 import React, { useState} from 'react';
-
 import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
 
+
+// styles, icons
+import { Button, Select, Form, Popover, Checkbox } from 'antd';
+import './SearchBar.component.scss';
 import {FilterOutlined} from '@ant-design/icons'
 
-import 'antd/dist/antd.css';
-import { Button, Select, Form, Popover, Checkbox } from 'antd';
-import "antd/dist/antd.css";
-
-import './SearchBar.component.scss';
 
 const SearchBar: React.FC = () => {
 
