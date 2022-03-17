@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 
-import { useGetInteractions } from '../../hooks/interactions/useGetInteractions';
+import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
 
 import {FilterOutlined} from '@ant-design/icons'
 

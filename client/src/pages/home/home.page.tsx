@@ -1,9 +1,8 @@
 import React, { useState, useEffect} from 'react';
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import SearchBar from '../../components/searchbar/SearchBar.component';
-import { GetInteractions } from '../../hooks/sources/useGetInteractions (old)';
 import ReactTags from 'react-tag-autocomplete'
-import { useGetInteractions } from '../../hooks/interactions/useGetInteractions';
+import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
 
 import {FilterOutlined} from '@ant-design/icons'
 
@@ -25,35 +24,11 @@ const Home: React.FC = () => {
   
   const { Option } = Select;
 
-
-  // const GET_GENE = gql`
-  // query gene($id: String!) {
-  //   gene(id: $id) {
-  //     interactions{interactionClaims{drugClaim{drug{name}}}}
-  //   }
-  // }
-  // `
-
-  // const {refetch} = useQuery(GET_GENE, {
-  //   variables: { id: input}
-  // })
-
   // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const res = await refetch();
-  //   setResult(JSON.stringify(res.data.gene.interactions));
 
   // }; 
 
   const {data, isLoading, error, isSuccess} = useGetInteractions('159249ef-f594-42e0-b630-91ee6173a7cd');
-
-  console.log('data');
-  console.log(data);
-  console.log('isSuccess');
-  console.log(isSuccess);
-
-  
-
 
   return (
     <div className="home-page-container" >

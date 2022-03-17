@@ -1,9 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+	Route,
+	Switch,
+	HashRouter,
+	BrowserRouter
+} from 'react-router-dom'
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Header from '../header/Header.component';
-import Home from '../../pages/home/home.page';
 import { Results } from '../../pages/results/results.page';
 
 import '../../common/styles';
@@ -13,7 +18,7 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () => {
 	return (
-		<Router>
+		<HashRouter>
 			<Header />
 			<Switch>
 				<Route path="/">
@@ -23,7 +28,7 @@ const App: React.FC = () => {
 					</QueryClientProvider>
 				</Route>
 			</Switch>
-		</Router>
+		</HashRouter>
 	);
 };
 

@@ -24,7 +24,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.14.1",
     "react-query": "^3.34.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-tag-autocomplete": "^6.3.0",
     "sass": "^1.38.1",
