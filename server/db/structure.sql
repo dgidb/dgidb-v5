@@ -120,16 +120,6 @@ CREATE TABLE public.drug_aliases (
 
 
 --
--- Name: drug_aliases_sources; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.drug_aliases_sources (
-    drug_alias_id text NOT NULL,
-    source_id text NOT NULL
-);
-
-
---
 -- Name: drug_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -330,30 +320,6 @@ CREATE TABLE public.gene_claims (
     nomenclature text NOT NULL,
     source_id text,
     gene_id text
-);
-
-
---
--- Name: gene_gene_interaction_claim_attributes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.gene_gene_interaction_claim_attributes (
-    id character varying(255) NOT NULL,
-    gene_gene_interaction_claim_id character varying(255) NOT NULL,
-    name character varying(255) NOT NULL,
-    value character varying(255) NOT NULL
-);
-
-
---
--- Name: gene_gene_interaction_claims; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.gene_gene_interaction_claims (
-    id character varying(255) NOT NULL,
-    gene_id character varying(255) NOT NULL,
-    interacting_gene_id character varying(255) NOT NULL,
-    source_id character varying(255) NOT NULL
 );
 
 
@@ -627,14 +593,6 @@ ALTER TABLE ONLY public.drug_aliases
 
 
 --
--- Name: drug_aliases_sources drug_aliases_sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_aliases_sources
-    ADD CONSTRAINT drug_aliases_sources_pkey PRIMARY KEY (drug_alias_id, source_id);
-
-
---
 -- Name: drug_attributes drug_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -776,22 +734,6 @@ ALTER TABLE ONLY public.gene_claim_categories
 
 ALTER TABLE ONLY public.gene_claims
     ADD CONSTRAINT gene_claims_pkey PRIMARY KEY (id);
-
-
---
--- Name: gene_gene_interaction_claim_attributes gene_gene_interaction_claim_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claim_attributes
-    ADD CONSTRAINT gene_gene_interaction_claim_attributes_pkey PRIMARY KEY (gene_gene_interaction_claim_id);
-
-
---
--- Name: gene_gene_interaction_claims gene_gene_interaction_claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claims
-    ADD CONSTRAINT gene_gene_interaction_claims_pkey PRIMARY KEY (id);
 
 
 --
@@ -1233,20 +1175,6 @@ CREATE UNIQUE INDEX index_gene_claims_on_name_and_nomenclature_and_source_id ON 
 
 
 --
--- Name: index_gene_gene_interaction_claims_on_gene_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_gene_gene_interaction_claims_on_gene_id ON public.gene_gene_interaction_claims USING btree (gene_id);
-
-
---
--- Name: index_gene_gene_interaction_claims_on_interacting_gene_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_gene_gene_interaction_claims_on_interacting_gene_id ON public.gene_gene_interaction_claims USING btree (interacting_gene_id);
-
-
---
 -- Name: index_genes_on_entrez_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1321,13 +1249,6 @@ CREATE INDEX interaction_claims_gene_claim_id_idx ON public.interaction_claims U
 --
 
 CREATE INDEX interaction_claims_source_id_idx ON public.interaction_claims USING btree (source_id);
-
-
---
--- Name: left_and_interacting_gene_interaction_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX left_and_interacting_gene_interaction_index ON public.gene_gene_interaction_claims USING btree (gene_id, interacting_gene_id);
 
 
 --
@@ -1408,14 +1329,6 @@ CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING b
 
 
 --
--- Name: gene_gene_interaction_claim_attributes fk_attributes_gene_interaction_claim; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claim_attributes
-    ADD CONSTRAINT fk_attributes_gene_interaction_claim FOREIGN KEY (gene_gene_interaction_claim_id) REFERENCES public.gene_gene_interaction_claims(id) MATCH FULL;
-
-
---
 -- Name: drug_claims fk_drug; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1437,14 +1350,6 @@ ALTER TABLE ONLY public.interactions
 
 ALTER TABLE ONLY public.drug_attributes
     ADD CONSTRAINT fk_drug FOREIGN KEY (drug_id) REFERENCES public.drugs(id);
-
-
---
--- Name: drug_aliases_sources fk_drug_alias; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_aliases_sources
-    ADD CONSTRAINT fk_drug_alias FOREIGN KEY (drug_alias_id) REFERENCES public.drug_aliases(id);
 
 
 --
@@ -1600,30 +1505,6 @@ ALTER TABLE ONLY public.interaction_claims
 
 
 --
--- Name: gene_gene_interaction_claims fk_gene_interaction_claims_gene; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claims
-    ADD CONSTRAINT fk_gene_interaction_claims_gene FOREIGN KEY (gene_id) REFERENCES public.genes(id) MATCH FULL;
-
-
---
--- Name: gene_gene_interaction_claims fk_gene_interaction_claims_interacting_gene; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claims
-    ADD CONSTRAINT fk_gene_interaction_claims_interacting_gene FOREIGN KEY (interacting_gene_id) REFERENCES public.genes(id) MATCH FULL;
-
-
---
--- Name: gene_gene_interaction_claims fk_gene_interaction_claims_sources; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gene_gene_interaction_claims
-    ADD CONSTRAINT fk_gene_interaction_claims_sources FOREIGN KEY (source_id) REFERENCES public.sources(id) MATCH FULL;
-
-
---
 -- Name: interaction_claims fk_interaction; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1741,14 +1622,6 @@ ALTER TABLE ONLY public.drug_aliases
 
 ALTER TABLE ONLY public.interaction_claim_links
     ADD CONSTRAINT fk_rails_af235a7f08 FOREIGN KEY (interaction_claim_id) REFERENCES public.interaction_claims(id);
-
-
---
--- Name: drug_aliases_sources fk_source; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_aliases_sources
-    ADD CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES public.sources(id);
 
 
 --
@@ -1909,6 +1782,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200620144029'),
 ('20200811160413'),
 ('20200901140610'),
-('20200904144705');
+('20200904144705'),
+('20220317193102');
 
 
