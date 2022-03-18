@@ -1,13 +1,12 @@
 // hooks/dependencies
 import React, { useState} from 'react';
-import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
-
+import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
 
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
+import 'antd/dist/antd.css';
 import './SearchBar.component.scss';
 import {FilterOutlined} from '@ant-design/icons'
-
 
 const SearchBar: React.FC = () => {
 
@@ -46,7 +45,6 @@ const SearchBar: React.FC = () => {
 
   }
 
-
   function handleType(value: any) {
 
     if (value.key === 'Backspace'){
@@ -71,7 +69,7 @@ const SearchBar: React.FC = () => {
     
   }
 
-  const { data, isLoading, error } = useGetInteractions('774e749f-4a89-47aa-8226-f12026812b04')
+  const { data, isLoading, error } = useGetInteractionsByGene('774e749f-4a89-47aa-8226-f12026812b04')
 
   return (
 

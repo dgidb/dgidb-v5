@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from 'react';
-import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
 
 // components/
 import SearchBar from '../../components/searchbar/SearchBar.component';
@@ -11,7 +11,7 @@ import './results.page.scss';
 
 export const Results: React.FC = () => {
 
-	const { data, error, isLoading, isError, isFetching } = useGetInteractions('5c60a645-e13e-4236-8aaf-5879bd44993e');
+	const { data, error, isLoading, isError, isFetching } = useGetInteractionsByGene('5c60a645-e13e-4236-8aaf-5879bd44993e');
 
 	return (
     <>

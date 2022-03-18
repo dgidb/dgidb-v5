@@ -22,17 +22,17 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<HashRouter>
+			<BrowserRouter>
 				<Header />
 				<Switch>
-					<Route path="/">
-							<Home />
+					<Route path="/" exact>
+						<Home />
 					</Route>
-					<Route path="/interactions">
-							<Results />
+					<Route path="/results">
+						<Results />
 					</Route>
 				</Switch>
-			</HashRouter>
+			</BrowserRouter>
 		</QueryClientProvider>
 	);
 };

@@ -2,7 +2,8 @@
 import React, { useState, useEffect} from 'react';
 import SearchBar from '../../components/searchbar/SearchBar.component';
 import ReactTags from 'react-tag-autocomplete'
-import { useGetInteractions } from '../../api/hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
+import { useHistory } from 'react-router';
 
 // styles
 import { Button } from 'antd';
@@ -10,9 +11,12 @@ import './home.page.scss';
 
 const Home: React.FC = () => {
 
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const history = useHistory();
 
-  // }; 
+  const handleSubmit = async () => {
+    history.push(`results`)
+    // event.preventDefault()
+  }; 
 
   return (
     <div className="home-page-container" >
@@ -28,7 +32,7 @@ const Home: React.FC = () => {
 
 
   <div className="home-buttons">
-    <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
+    <Button onClick={() => handleSubmit()} style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
     <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
   </div>
   <div className="home-blurb">
