@@ -70,6 +70,4 @@ namespace :dgidb do
       push_changes
     end
   end
-
 end
-
