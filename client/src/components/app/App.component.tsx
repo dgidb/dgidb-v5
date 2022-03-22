@@ -1,11 +1,19 @@
+// dependencies
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+	Route,
+	Switch,
+	HashRouter,
+	BrowserRouter
+} from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+// components
 import Header from '../header/Header.component';
-import Home from '../../pages/home/home.page';
 import { Results } from '../../pages/results/results.page';
+import Home from '../../pages/home/home.page';
 
+// styles
 import '../../common/styles';
 import './App.component.scss';
 
@@ -13,19 +21,19 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () => {
 	return (
-		// <ApolloProvider client={client}>
-		<Router>
-			<Header />
-			<Switch>
-				<Route path="/">
-					<QueryClientProvider client={queryClient}>
-						{/* <Home /> */}
+		<QueryClientProvider client={queryClient}>
+			<BrowserRouter>
+				<Header />
+				<Switch>
+					<Route path="/" exact>
+						<Home />
+					</Route>
+					<Route path="/results">
 						<Results />
-					</QueryClientProvider>
-				</Route>
-			</Switch>
-		</Router>
-		// </ApolloProvider>
+					</Route>
+				</Switch>
+			</BrowserRouter>
+		</QueryClientProvider>
 	);
 };
 
