@@ -91,7 +91,7 @@ module Genome
 
       def create_interaction_claim_type(interaction_claim, type)
         claim_type = InteractionClaimType.find_by(
-          type: Genome::Normalizers::InteractionClaimType.name_normalizer(type.strip)
+          type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
         )
         if claim_type.nil?
           raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."

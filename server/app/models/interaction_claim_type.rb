@@ -18,6 +18,7 @@ class InteractionClaimType < ::ActiveRecord::Base
   end
 
   private
+
   def self.enumerable_cache_key
     'all_interaction_claim_types'
   end
