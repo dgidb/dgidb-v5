@@ -145,7 +145,7 @@ module Genome
         ).first_or_create
       end
 
-      def set_date_version
+      def set_current_date_version
         source_db_version = Date.today.strftime('%d-%B-%Y')
         @new_version = source_db_version
       end

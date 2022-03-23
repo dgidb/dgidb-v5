@@ -7,23 +7,19 @@ module Genome; module Importers; module TsvImporters; module Pharmgkb;
       @source_db_name = 'PharmGKB'
     end
 
-    def get_version
-      source_db_version = Date.today.strftime("%d-%B-%Y")
-      @new_version = source_db_version
-    end
-
     def create_claims
       create_interaction_claims
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
           base_url: 'http://www.pharmgkb.org',
           site_url: 'http://www.pharmgkb.org/',
           citation: "Whirl-Carrillo,M., McDonagh,E.M., Hebert,J.M., Gong,L., Sangkuhl,K., Thorn,C.F., Altman,R.B. and Klein,T.E. (2012) Pharmacogenomics knowledge for personalized medicine. Clin. Pharmacol. Ther., 92, 414–417. PMID: 22992668",
-          source_db_version: get_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'PharmGKB - The Pharmacogenomics Knowledgebase',
           license_link: 'https://www.pharmgkb.org/page/dataUsagePolicy',

@@ -9,11 +9,6 @@ module Genome; module Importers; module TsvImporters; module Dtc;
       @source_db_name = 'DTC'
     end
 
-    def retrieve_version
-      source_db_version = Date.today.strftime('%d-%B-%Y')
-      @new_version = source_db_version
-    end
-
     def create_claims
       create_interaction_claims
     end
@@ -25,7 +20,7 @@ module Genome; module Importers; module TsvImporters; module Dtc;
           base_url: 'https://drugtargetcommons.fimm.fi/',
           site_url: 'https://drugtargetcommons.fimm.fi/',
           citation: 'Drug Target Commons 2.0: a community platform for systematic analysis of drug–target interaction profiles. Tanoli Z, Alam Z, Vähä-Koskela M, Malyutina A, Jaiswal A, Tang J, Wennerberg K, Aittokallio T. Database. 2018. PMID: 30219839',
-          source_db_version: retrieve_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Drug Target Commons',
           license: 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)',

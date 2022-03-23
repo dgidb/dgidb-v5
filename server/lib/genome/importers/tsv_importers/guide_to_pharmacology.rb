@@ -155,7 +155,7 @@ module Genome; module Importers; module TsvImporters; module GuideToPharmacology
         license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
         license_link: 'https://www.guidetopharmacology.org/about.jsp'
       ).first_or_initialize
-      source.source_db_version = set_date_version
+      source.source_db_version = set_current_date_version
       source.source_types << SourceType.find_by(type: 'interaction')
       source.source_types << SourceType.find_by(type: 'potentially_druggable')
       source.save

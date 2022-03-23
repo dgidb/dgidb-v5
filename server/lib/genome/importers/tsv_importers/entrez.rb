@@ -24,7 +24,7 @@ module Genome; module Importers; module TsvImporters; module Entrez
         license: 'Unrestricted license, pass-through constraints',
         license_link: 'https://www.nlm.nih.gov/accessibility.html',
       ).first_or_initialize
-      source.source_db_version = Date.today.strftime("%d-%B-%Y")
+      source.source_db_version = set_current_date_version
       source_type = SourceType.find_by(type: 'gene')
       unless source.source_types.include? source_type
         source.source_types << source_type

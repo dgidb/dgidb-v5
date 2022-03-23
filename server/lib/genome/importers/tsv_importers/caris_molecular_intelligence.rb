@@ -19,7 +19,7 @@ module Genome; module Importers; module TsvImporters; module CarisMolecularIntel
           base_url: 'https://www.carislifesciences.com/molecular-profiling-technology/',
           site_url: 'http://www.carismolecularintelligence.com/',
           citation: 'http://www.carismolecularintelligence.com/',
-          source_db_version: Time.new.strftime('%d-%B-%Y'),
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Caris Molecular Intelligence',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,

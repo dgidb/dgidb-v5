@@ -7,11 +7,6 @@ module Genome; module Importers; module TsvImporters; module ClearityFoundationC
       @source_db_name = 'ClearityFoundationClinicalTrial'
     end
 
-    def get_version
-      source_db_version = Date.today.strftime("%d-%B-%Y")
-      @new_version = source_db_version
-    end
-
     def create_claims
       create_interaction_claims
     end

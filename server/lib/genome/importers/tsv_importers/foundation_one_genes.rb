@@ -19,7 +19,7 @@ module Genome; module Importers; module TsvImporters; module FoundationOneGenes;
           base_url: 'https://www.foundationmedicine.com/portfolio',
           citation: 'High-throughput detection of actionable genomic alterations in clinical tumor samples by targeted, massively parallel sequencing. Wagle N, Berger MF, ..., Meyerson M, Gabriel SB, Garraway LA. Cancer Discov. 2012 Jan;2(1):82-93. PMID: 22585170',
           site_url: 'http://www.foundationone.com/',
-          source_db_version: set_date_version,
+          source_db_version: set_current_date_version,
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Foundation One',

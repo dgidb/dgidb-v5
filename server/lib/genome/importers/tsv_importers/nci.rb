@@ -18,7 +18,7 @@ module Genome; module Importers; module TsvImporters; module Nci;
           base_url: 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents',
           site_url: 'https://wiki.nci.nih.gov/display/cageneindex',
           citation: 'https://wiki.nci.nih.gov/display/cageneindex',
-          source_db_version: set_date_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'NCI Cancer Gene Index',
           license: 'Public domain',
