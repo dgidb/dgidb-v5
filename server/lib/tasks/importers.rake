@@ -57,7 +57,7 @@ namespace :dgidb do
 
         puts 'Starting import!'
         importer_instance = importer_class.new(args[:tsv_path])
-        importer_instance.create_claims
+        importer_instance.import
 
         handle_group_params(args[:gene_group], args[:drug_group])
       end
@@ -84,7 +84,7 @@ namespace :dgidb do
 
         puts 'Starting import!'
         importer_instance = importer_class.new
-        importer_instance.create_claims
+        importer_instance.import
 
         handle_group_params(args[:gene_group], args[:drug_group])
       end
