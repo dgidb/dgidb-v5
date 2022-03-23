@@ -29,6 +29,7 @@ module PMID
   end
 
   private
+
   def self.url_for_pubmed_ids(pubmed_ids)
     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=#{pubmed_ids}&retmode=json&tool=DGIdb&email=help@dgidb.org"
   end
@@ -42,6 +43,7 @@ module PMID
 
   class PubMedResponse
     attr_reader :result
+
     def initialize(result)
       @result = result
     end
@@ -64,7 +66,6 @@ module PMID
           return articles['value']
         end
       end
-      return
     end
 
     def first_author
