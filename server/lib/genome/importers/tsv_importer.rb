@@ -13,23 +13,27 @@ module Genome
         end
       end
 
-      def self.each_row(row_delimiter)
-        f = File.open(@tsv_path)
-        if @tsv_path.to_s.ends_with?('.tsv.gz')
-          f = Zlib::GzipReader(f)
-        end
-        f.each_with_index do |line, index|
-          if index.zero? && @header
-            puts "Skipping presumed header line in %s..." % [@tsv_path]
-            next
-          end
-          next if line.blank?
+      class << self
+        private
 
-          begin
-            row = @rowtype.new(line, row_delimiter)
-            yield row if row.valid?
-          rescue
-            print "Row #{index} in file #{@tsv_path} does not match specified attributes\n"
+        def each_row(row_delimiter)
+          f = File.open(@tsv_path)
+          if @tsv_path.to_s.ends_with?('.tsv.gz')
+            f = Zlib::GzipReader(f)
+          end
+          f.each_with_index do |line, index|
+            if index.zero? && @header
+              puts "Skipping presumed header line in %s..." % [@tsv_path]
+              next
+            end
+            next if line.blank?
+
+            begin
+              row = @rowtype.new(line, row_delimiter)
+              yield row if row.valid?
+            rescue
+              print "Row  #{index} in file #{@tsv_path} does not match specified attributes\n"
+            end
           end
         end
       end

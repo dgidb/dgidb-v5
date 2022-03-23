@@ -1,31 +1,31 @@
 module Genome
   module Importers
     module Chembl
-
       def self.source_info
         {
           site_url: 'https://www.ebi.ac.uk/chembl',
           base_url: 'https://www.ebi.ac.uk/chembldb/index.php/target/inspect/',
-          citation: "Mendez,D., Gaulton,A., Bento,A.P., Chambers,J., De Veij,M., Félix,E., Magariños,M.P., Mosquera,J.F., Mutowo,P., Nowotka,M., et al. (2019) ChEMBL: towards direct deposition of bioassay data. Nucleic Acids Res., 47, D930–D940. PMID: 30398643",
+          citation: 'Mendez,D., Gaulton,A., Bento,A.P., Chambers,J., De Veij,M., Félix,E., Magariños,M.P., Mosquera,J.F., Mutowo,P., Nowotka,M., et al. (2019) ChEMBL: towards direct deposition of bioassay data. Nucleic Acids Res., 47, D930–D940. PMID: 30398643',
           source_db_version: 'chembl_20',
-          source_type_id: DataModel::SourceType.INTERACTION,
+          source_type_id: SourceType.INTERACTION,
           source_db_name: 'ChEMBL',
           full_name: 'The ChEMBL Bioactivity Database',
-          source_trust_level_id: DataModel::SourceTrustLevel.EXPERT_CURATED,
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           license: 'Creative Commons Attribution-Share Alike 3.0 Unported License',
-          license_link: 'https://chembl.gitbook.io/chembl-interface-documentation/about',
+          license_link: 'https://chembl.gitbook.io/chembl-interface-documentation/about'
         }
       end
 
       def self.run(tsv_path)
         blank_filter = ->(x) { x.blank? || x == "''" || x == '""' }
-        upcase = ->(x) {x.upcase}
-        downcase = ->(x) {x.downcase}
-        known = ->() {if :action_type.blank?
-                        'unknown'
-                      else
-                        'known'
-                      end
+        upcase = ->(x) { x.upcase }
+        downcase = ->(x) { x.downcase }
+        known = ->() {
+          if :action_type.blank?
+            'unknown'
+          else
+            'known'
+          end
         }
         TSVImporter.import tsv_path, ChemblRow, source_info do
           interaction known_action_type: known, transform: downcase do
@@ -37,6 +37,7 @@ module Genome
               names :uniprot_id, nomenclature: 'UniProt Accession', unless: blank_filter
               names :uniprot_name, nomenclature: 'UniProt Name', unless: blank_filter
               # target_ligand fields are ignored for now.
+              # TODO: don't ignore them???
             end
             attribute :mechanism_of_action, name: 'Mechanism of Interaction', transform: downcase, unless: blank_filter
             attribute :direct_interaction, name: 'Direct Interaction', unless: blank_filter
@@ -45,7 +46,7 @@ module Genome
             attribute :action_type, name: 'Interaction Type', transform: downcase, unless: blank_filter
           end
         end.save!
-        s = DataModel::Source.where(source_db_name: source_info['source_db_name'])
+        s = Source.where(source_db_name: source_info['source_db_name'])
         s.interaction_claims.each do |ic|
           Genome::OnlineUpdater.new.create_interaction_claim_link(ic, 'Drug Mechanisms', "https://www.ebi.ac.uk/chembl/compound_report_card/#{ic.drug_claim.name}/#MechanismOfAction")
         end

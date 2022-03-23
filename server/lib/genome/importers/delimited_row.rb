@@ -10,11 +10,13 @@ module Genome
         parse_row
       end
 
-      def valid?(opts = {})
+      def valid?(_opts = {})
         true
       end
 
-      attr_reader :attributes
+      class << self
+        attr_reader :attributes
+      end
 
       private
 
@@ -30,17 +32,17 @@ module Genome
           raise 'Sorry, only string and array types are supported'
         end
 
-        opts = {delimiter: ','}.merge(opts)
+        opts = { delimiter: ',' }.merge(opts)
 
         (@attributes ||= {})[name] = if opts[:parser]
           opts[:parser]
         else
-          self.send("#{type.to_s.downcase}_parser", opts)
+          send("#{type.to_s.downcase}_parser", opts)
         end
         attr_accessor name
       end
 
-      def self.string_parser(opts = {})
+      def self.string_parser(_opts = {})
         ->(item) { item.strip }
       end
 

@@ -10,9 +10,10 @@ module Genome
         end
 
         private
+
         def self.all_types
           Rails.cache.fetch(enumerable_cache_key) do
-            self.all.inject({}) do |hash, val|
+            all.inject({}) do |hash, val|
               hash.tap do |h|
                 key = transforms.inject(val.send(type_column)) do |curr, transform|
                   curr.send(*transform)
@@ -24,7 +25,7 @@ module Genome
         end
 
         def self.enumerable_cache_key
-          raise "You must implement enumerable_cache_key!"
+          raise 'You must implement enumerable_cache_key!'
         end
 
         def self.type_column

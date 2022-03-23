@@ -1,4 +1,4 @@
-# HERE BE DRAGONS
+#HERE BE DRAGONS
 module Genome
   module Importers
     class Importer
@@ -33,7 +33,7 @@ module Genome
       end
 
       def prepare_new_entity(attrs, key, entities)
-        if (existing = attrs[:id])
+        if existing = attrs[:id]
           entities[key] = attrs
           existing
         else
@@ -46,7 +46,7 @@ module Genome
 
       def create_source(source_info)
         source_info[:id] = SecureRandom.uuid
-        create_entity_from_hash(DataModel::Source, source_info)
+        create_entity_from_hash(Source, source_info)
       end
 
       def create_entity_from_hash(klass, hash)
@@ -101,11 +101,11 @@ module Genome
       end
 
       def has_source?(klass)
-        klass.new.attributes.key?("source_id")
+        klass.new.attributes.key?('source_id')
       end
 
       def class_from_entity(entity)
-        "DataModel::#{entity.classify}".constantize
+        entity.classify.to_s.constantize
       end
     end
   end

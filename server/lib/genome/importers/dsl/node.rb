@@ -35,13 +35,13 @@ module Genome
             create_entity(:alias, val, opts)
           end
         end
-        
+
         def category(column)
           opts = @defaults
           name = get_val(column, opts) # get_val returns the value passed by import, not the associated gene_claim_categories id
-          add_category(name) 
+          add_category(name)
         end
-        
+
         def categories(column)
           opts = @defaults
           @row.send(column).each do |item|
@@ -59,9 +59,9 @@ module Genome
             column
           end
         end
-        
+
         def add_category(name)
-          val = DataModel::GeneClaimCategory.where(:name => name).first[:id] || raise('Category doesn\'t exist!')
+          val = GeneClaimCategory.where(:name => name).first[:id] || raise('Category doesn\'t exist!')
           create_entity(:category, val, @defaults)
         end
 
