@@ -13,6 +13,7 @@ module Genome; module Importers; module TsvImporters; module IDG;
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
