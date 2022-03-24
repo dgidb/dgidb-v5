@@ -26,10 +26,10 @@ class Source < ::ActiveRecord::Base
   end
 
   def self.potentially_druggable_source_names
-    DataModel::SourceType.find(DataModel::SourceType.POTENTIALLY_DRUGGABLE)
-      .sources
-      .pluck(:source_db_name)
-      .sort
+    SourceType.find(SourceType.POTENTIALLY_DRUGGABLE)
+              .sources
+              .pluck(:source_db_name)
+              .sort
   end
 
   def self.cancer_only_interaction_source_names
@@ -49,10 +49,10 @@ class Source < ::ActiveRecord::Base
   end
 
   def self.source_names_with_interactions
-    DataModel::SourceType.find(DataModel::SourceType.INTERACTION)
-      .sources
-      .pluck(:source_db_name)
-      .sort
+    SourceType.find(SourceType.INTERACTION)
+              .sources
+              .pluck(:source_db_name)
+              .sort
   end
 
   def self.source_names_with_category_information
