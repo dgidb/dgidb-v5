@@ -2,7 +2,7 @@ module Genome; module Importers; module TsvImporters; module Ensembl;
   class Importer < Genome::Importers::Base
     attr_reader :file_path, :version
 
-    def initialize(file_path, version)
+    def initialize(file_path, version = '101_38')
       @file_path = file_path
       @version = version
       @source_db_name = 'Ensembl'
@@ -30,7 +30,6 @@ module Genome; module Importers; module TsvImporters; module Ensembl;
     end
 
     def import_symbols
-      # ActiveRecord::Base.transaction do
       File.open(file_path, 'r') do |file|
         reader = Zlib::GzipReader.new(file, encoding: 'iso-8859-1:UTF-8')
         CSV.new(reader, col_sep: "\t", headers: headers, quote_char: "'", skip_lines: /^#!/).each do |line|
@@ -40,7 +39,6 @@ module Genome; module Importers; module TsvImporters; module Ensembl;
         end
         reader.close
       end
-      # end
     end
 
     def headers

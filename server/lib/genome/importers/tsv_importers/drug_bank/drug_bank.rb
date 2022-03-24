@@ -33,7 +33,7 @@ module Genome; module Importers; module TsvImporters; module DrugBank
     end
 
     def import_claims
-      CSV.foreach(file_path, :col_sep => "\t", :headers => true) do |row|
+      CSV.foreach(file_path, col_sep: "\t", headers: true) do |row|
         drug_claim = create_drug_claim(row['drug_id'].upcase, row['drug_name'], 'DrugBank Drug Identifier')
 
         create_drug_claim_alias(drug_claim, row['drug_name'].upcase, 'DrugBank Drug Name')
@@ -65,12 +65,14 @@ module Genome; module Importers; module TsvImporters; module DrugBank
           create_interaction_claim_type(interaction_claim, type) unless type == 'N/A'
         end
         row['pmid'].split(DELIMITER).each do |pmid|
-          create_interaction_claim_publication(interaction_claim, pmid) unless pmid == 'N/A' || pmid == 'None' || pmid.blank? || pmid == 0
+          unless pmid == 'N/A' || pmid == 'None' || pmid.blank? || pmid.zero?
+            create_interaction_claim_publication(interaction_claim, pmid)
+          end
         end
-        create_interaction_claim_link(interaction_claim, "Drug Target", "https://www.drugbank.ca/drugs/#{row['drug_id']}#targets")
+        create_interaction_claim_link(interaction_claim, 'Drug Target', "https://www.drugbank.ca/drugs/#{row['drug_id']}#targets")
         interaction_claim.save
       end
-      backfill_publication_information()
+      backfill_publication_information
     end
   end
 end; end; end; end
