@@ -33,7 +33,7 @@ module Genome; module Importers; module TsvImporters; module BaderLab;
     end
 
     def create_gene_claims
-      CSV.foreach(file_path, encoding: 'iso-8859-1:utf-8', :headers => true, :col_sep => "\t") do |row|
+      CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['Primary Name'], 'Entrez Gene Name')
         create_gene_claim_attribute(gene_claim, 'Initial Gene Query', row['Initial Gene Query'])
         create_gene_claim_attribute(gene_claim, 'Counted Citations from 1950-2009', row['1950-2009'])
