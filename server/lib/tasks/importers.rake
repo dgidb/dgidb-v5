@@ -78,8 +78,7 @@ namespace :dgidb do
         importer_dir,
         %i[gene_group drug_group] => :environment
       ) do |_, args|
-        args.with_defaults(tsv_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
-                           drug_group: 'false')
+        args.with_defaults(gene_group: 'false', drug_group: 'false')
         importer_class = "Genome::Importers::ApiImporters::#{importer_name}::Importer".constantize
         if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
           puts 'Found existing source! Deleting...'
