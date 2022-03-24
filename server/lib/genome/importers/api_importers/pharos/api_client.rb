@@ -2,7 +2,7 @@ require 'open-uri'
 
 module Genome; module Importers; module ApiImporters; module Pharos;
   class ApiClient
-    def genes_for_category(category, start=0, count=10)
+    def genes_for_category(category, start = 0, count = 10)
       get_entries(gene_lookup_base_url, category, start, count)
     end
 
@@ -16,12 +16,13 @@ module Genome; module Importers; module ApiImporters; module Pharos;
 
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
-      raise StandardError.new("Request Failed!") unless res.code == '200'
+      raise StandardError, 'Request Failed!' unless res.code == '200'
+
       res.body
     end
 
     def gene_lookup_base_url
-      "https://pharos-api.ncats.io/graphql"
+      'https://pharos-api.ncats.io/graphql'
     end
 
     def params(category, start, count)

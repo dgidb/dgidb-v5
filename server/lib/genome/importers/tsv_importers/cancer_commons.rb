@@ -11,6 +11,7 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -22,7 +23,7 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
           source_db_name: source_db_name,
           full_name: 'Cancer Commons',
           license: 'Custom non-commercial',
-          license_link: 'https://www.cancercommons.org/terms-of-use/',
+          license_link: 'https://www.cancercommons.org/terms-of-use/'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -30,12 +31,13 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
     end
 
     def create_interaction_claims
-      CSV.foreach(file_path, encoding: 'iso-8850-1:utf-8', :headers => true, :col_sep => "\t") do |row|
+      CSV.foreach(file_path, encoding: 'iso-8859-1:utf-8', :headers => true, :col_sep => "\t") do |row|
         gene_claim = create_gene_claim(row['primary_gene_name'].upcase, 'Gene Target Symbol')
         create_gene_claim_alias(gene_claim, row['entrez_gene_id'], 'Entrez Gene ID')
         create_gene_claim_attribute(gene_claim, 'CancerCommons Reported Gene Name', row['reported_gene_name'])
 
-        drug_claim = create_drug_claim(row['primary_drug_name'].strip.upcase, 'Primary Drug Name')
+        primary_name = row['primary_drug_name'].strip.upcase
+        drug_claim = create_drug_claim(primary_name, primary_name, 'Primary Drug Name')
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
         create_drug_claim_attribute(drug_claim, 'Source Reported Drug Name(s)', row['source_reported_drug_name'])
         create_drug_claim_attribute(drug_claim, 'Pharmaceutical Developer', row['pharmaceutical_developer'])

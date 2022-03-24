@@ -30,8 +30,9 @@ module Genome; module Importers; module TsvImporters; module Ttd;
     end
 
     def import_claims
-      CSV.foreach(file_path, :headers => true, :col_sep => ",") do |row|
-        if row['Highest_status'] == 'Terminated' || row['Highest_status'] == 'Withdrawn from market' || row['Highest_status'].match(/Discontinued/) || row['Highest_status'] == 'Investigative'
+      CSV.foreach(file_path, headers: true, col_sep: ',') do |row|
+        highest_status = row['Highest_status']
+        if ['Terminated', 'Withdrawn from market', 'Investigative'].include?(highest_status) || highest_status =~ /Discontinued/
           next
         end
 

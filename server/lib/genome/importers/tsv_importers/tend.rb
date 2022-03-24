@@ -1,4 +1,4 @@
-module Genome; module Importers; module TsvImporters; module TEND;
+module Genome; module Importers; module TsvImporters; module Tend;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
 

@@ -1,6 +1,4 @@
 module Genome; module Importers; module TsvImporters; module Dtc;
-  # pretty sure: https://drugtargetcommons.fimm.fi/static/Excell_files/DTC_data.csv
-  # but that's a 2gb file so we'll see
   class Importer < Genome::Importers::Base
     attr_reader :file_path
 
@@ -14,6 +12,7 @@ module Genome; module Importers; module TsvImporters; module Dtc;
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -46,7 +45,7 @@ module Genome; module Importers; module TsvImporters; module Dtc;
           gene_name.split(',').each do |indv_gene|
             gene_claim = create_gene_claim(indv_gene, 'DTC Gene Name')
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-            unless pmid.nil? || pmid == "" || pmid == '""' || pmid == "''" || pmid[0] =='-' || pmid =='15288657'
+            unless pmid.nil? || pmid == '' || pmid == '""' || pmid == "''" || pmid[0] == '-' || pmid == '15288657'
               create_interaction_claim_publication(interaction_claim, pmid)
             end
             unless mechanism.nil? || mechanism == ''

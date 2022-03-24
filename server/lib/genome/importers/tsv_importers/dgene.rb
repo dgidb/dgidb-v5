@@ -1,4 +1,4 @@
-module Genome; module Importers; module TsvImporters; module DGene
+module Genome; module Importers; module TsvImporters; module Dgene
   # pretty sure: https://doi.org/10.1371/journal.pone.0067980.s002
   class Importer < Genome::Importers::Base
     attr_reader :file_path

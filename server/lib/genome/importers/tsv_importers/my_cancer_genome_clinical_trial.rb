@@ -19,7 +19,6 @@ module Genome; module Importers; module TsvImporters; module MyCancerGenomeClini
           citation: 'Jain,N., Mittendorf,K.F., Holt,M., Lenoue-Newton,M., Maurer,I., Miller,C., Stachowiak,M., Botyrius,M., Cole,J., Micheel,C., et al. (2020) The My Cancer Genome clinical trial data model and trial curation workflow. J. Am. Med. Inform. Assoc., 27, 1057–1066. PMID: 32483629',
           site_url: 'http://www.mycancergenome.org/',
           source_db_version: '30-Feburary-2014',
-          source_type_id: SourceType.INTERACTION,
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'MyCancerGenome Clinical Trial',

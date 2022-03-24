@@ -15,7 +15,7 @@ module Genome; module Importers; module TsvImporters; module HopkinsGroom;
     def create_new_source
       @source ||= Source.create(
         {
-          base_url: 'http://www.uniprot.org/uniprot/',  # TODO: this seems incorrect
+          base_url: 'http://www.uniprot.org/uniprot/',
           site_url: 'http://www.ncbi.nlm.nih.gov/pubmed/12209152/',
           citation: 'The druggable genome. Hopkins AL, Groom CR. Nat Rev Drug Discov. 2002 Sep;1(9):727-30. PMID: 12209152',
           source_db_version: '11-Sep-2012',
@@ -43,7 +43,7 @@ module Genome; module Importers; module TsvImporters; module HopkinsGroom;
         end
         create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
         unless row['DGIDB_Human_Readable'] == 'N/A'
-          create_gene_claim_category(gene_claim, row['DGIDB_Human_Readable'].gsub('/', ' ').gsub('.', '_').upcase)
+          create_gene_claim_category(gene_claim, row['DGIDB_Human_Readable'].gsub('/', ' ').gsub('.', '_').upcase.strip)
         end
         create_gene_claim_attribute(gene_claim, 'Interpro Acc', row['Interpro_Acc'])
         create_gene_claim_attribute(gene_claim, 'Uniprot Evidence', row['Uniprot_Evidence'])

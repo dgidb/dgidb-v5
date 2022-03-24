@@ -1,6 +1,8 @@
 include ActionView::Helpers::SanitizeHelper
 
 module Genome; module Importers; module TsvImporters; module GuideToPharmacology;
+  # gene_file_path should point to `targets_and_families.csv`
+  # interaction_file_path should point to `interactions.csv`
   class Importer < Genome::Importers::Base
     attr_reader :interaction_file_path, :gene_file_path, :target_to_entrez
 

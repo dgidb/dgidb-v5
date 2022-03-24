@@ -37,7 +37,7 @@ module Genome; module Importers; module TsvImporters; module Fda
           drug_claim = create_drug_claim(drug, drug, 'FDA Drug Name')
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           create_interaction_claim_attribute(interaction_claim, 'Combination therapy', combination_therapy)
-          if not fusion_protein.nil?
+          if !fusion_protein.nil?
             create_interaction_claim_attribute(interaction_claim, 'Fusion protein', fusion_protein)
           end
           create_interaction_claim_link(interaction_claim, 'Table of Pharmacogenomic Biomarkers in Drug Labeling', 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling')

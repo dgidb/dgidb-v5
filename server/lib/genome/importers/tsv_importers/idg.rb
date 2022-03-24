@@ -1,4 +1,4 @@
-module Genome; module Importers; module TsvImporters; module IDG;
+module Genome; module Importers; module TsvImporters; module Idg;
   # https://github.com/druggablegenome/IDGTargets
   class Importer < Genome::Importers::Base
     attr_reader :file_path

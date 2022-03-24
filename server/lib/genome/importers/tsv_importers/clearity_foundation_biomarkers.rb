@@ -1,6 +1,7 @@
 module Genome; module Importers; module TsvImporters; module ClearityFoundationBiomarkers;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
+
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'ClearityFoundationBiomarkers'
@@ -11,6 +12,7 @@ module Genome; module Importers; module TsvImporters; module ClearityFoundationB
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -37,18 +39,23 @@ module Genome; module Importers; module TsvImporters; module ClearityFoundationB
 
         drug_claim = create_drug_claim(row['drug_name'].upcase, row['drug_name'].upcase, 'Primary Drug Name')
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
-        create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name') unless row['drug_trade_name'].blank?
-        create_drug_claim_alias(drug_claim, row['pubchem_id'], 'PubChem Drug ID')
+        unless row['drug_trade_name'].blank?
+          create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
+        end
+        create_drug_claim_alias(drug_claim, row['pubchem_id'], 'PubChem Drug ID') unless row['pubchem_id'].blank?
         create_drug_claim_attribute(drug_claim, 'Drug Classification', row['drug_subclass'])
-        create_drug_claim_attribute(drug_claim, 'Link to Clearity Drug Class Schematic', row['linked_class_info'])
+        unless row['linked_class_info'].blank?
+          create_drug_claim_attribute(drug_claim, 'Link to Clearity Drug Class Schematic', row['linked_class_info'])
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_attribute(interaction_claim, 'Mechanism of Interaction', row['reported_drug_response'])
         # This currently doesn't appear to be an interaction type
         # create_interaction_claim_type(interaction_claim, "BIOMARKER")
+        # TODO: should it be added?
         create_interaction_claim_link(interaction_claim, 'Source TSV', File.join('data', 'source_tsvs', 'ClearityFoundation_INTERACTIONS.tsv'))
       end
-      backfill_publication_information()
+      backfill_publication_information
     end
   end
 end; end; end; end;

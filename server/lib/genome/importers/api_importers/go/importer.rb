@@ -14,14 +14,14 @@ module Genome; module Importers; module ApiImporters; module Go;
     def create_new_source
       @source ||= Source.create(
         {
-          base_url:           'http://amigo.geneontology.org/amigo/gene_product/UniProtKB:',
-          site_url:           'http://www.geneontology.org/',
-          citation:           'Gene ontology: tool for the unification of biology. The unification of biology. The Gene Ontology Consortium. Ashburner M, Ball CA, ..., Rubin GM, Sherlock G. Nat Genet. 2000 May;25(1):25-9. PMID: 10802651.',
-          source_db_version:  @new_version,
-          source_db_name:     source_db_name,
-          full_name:          'The Gene Ontology',
-          license:            'Creative Commons Attribution 4.0 Unported License',
-          license_link:       'http://geneontology.org/docs/go-citation-policy/'
+          base_url: 'http://amigo.geneontology.org/amigo/gene_product/UniProtKB:',
+          site_url: 'http://www.geneontology.org/',
+          citation: 'Gene ontology: tool for the unification of biology. The unification of biology. The Gene Ontology Consortium. Ashburner M, Ball CA, ..., Rubin GM, Sherlock G. Nat Genet. 2000 May;25(1):25-9. PMID: 10802651.',
+          source_db_version: @new_version,
+          source_db_name: source_db_name,
+          full_name: 'The Gene Ontology',
+          license: 'Creative Commons Attribution 4.0 Unported License',
+          license_link: 'http://geneontology.org/docs/go-citation-policy/'
         }
       )
       @source.source_types << SourceType.find_by(type: 'potentially_druggable')
@@ -36,9 +36,7 @@ module Genome; module Importers; module ApiImporters; module Go;
         genes = api_client.genes_for_go_id(go_id, start, rows)
         while genes.count.positive? do
           genes.each do |gene|
-            if gene['taxon_label'] == 'Homo sapiens'
-              create_gene_claim_for_entry(gene, category)
-            end
+            create_gene_claim_for_entry(gene, category) if gene['taxon_label'] == 'Homo sapiens'
           end
           start += rows
           genes = api_client.genes_for_go_id(go_id, start, rows)

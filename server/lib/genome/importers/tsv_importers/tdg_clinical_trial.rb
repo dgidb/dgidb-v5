@@ -18,9 +18,8 @@ module Genome; module Importers; module TsvImporters; module TdgClinicalTrial;
         {
           base_url: 'https://clinicaltrials.gov/ct2/results?Search=Search&term=',  # TODO: is this correct?
           site_url: 'http://www.ncbi.nlm.nih.gov/pubmed/24016212',
-          citation: "The druggable genome: Evaluation of drug targets in clinical trials suggests major shifts in molecular class and indication. Rask-Andersen M, Masuram S, Schioth HB. Annu Rev Pharmacol Toxicol. 2014;54:9-26. doi: 10.1146/annurev-pharmtox-011613-135943. PMID: 24016212",
+          citation: 'The druggable genome: Evaluation of drug targets in clinical trials suggests major shifts in molecular class and indication. Rask-Andersen M, Masuram S, Schioth HB. Annu Rev Pharmacol Toxicol. 2014;54:9-26. doi: 10.1146/annurev-pharmtox-011613-135943. PMID: 24016212',
           source_db_version: 'Jan-2014',
-          source_type_id: SourceType.INTERACTION,
           source_db_name: source_db_name,
           full_name: 'The Druggable Genome: Evaluation of Drug Targets in Clinical Trials Suggests Major Shifts in Molecular Class and Indication (Rask-Andersen, Masuram, Schioth 2014)',
           license: 'Supplementary table from Annual Reviews copyright publication',
@@ -35,7 +34,9 @@ module Genome; module Importers; module TsvImporters; module TdgClinicalTrial;
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['Uniprot Accession number'], 'Uniprot Accession')
         create_gene_claim_alias(gene_claim, row['Gene'], 'Gene Symbol')
-        create_gene_claim_attribute(gene_claim, 'Target Class', row['Target main class']) unless row['Target main class'].blank?
+        unless row['Target main class'].blank?
+          create_gene_claim_attribute(gene_claim, 'Target Class', row['Target main class'])
+        end
         row['Target class'].split(';').each do |subclass|
           create_gene_claim_attribute(gene_claim, 'Target Subclass', subclass)
         end
