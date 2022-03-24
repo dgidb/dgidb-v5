@@ -79,7 +79,7 @@ module Genome
           'modulator'
         when 'positive allosteric modulator', 'regulator (upregulator)', 'enhancer', 'modulator (allosteric modulator)'
           'positive modulator'
-        when 'inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker', 'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor', 'aggregation inhibitor', 'inhibition of synthesis', "translocation inhibitor", 'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors', 'Anti-angiogenic.'
+        when 'inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker', 'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor', 'aggregation inhibitor', 'inhibition of synthesis', "translocation inhibitor", 'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors', 'anti-angiogenic.', 'allosteric inhibitor'
           'inhibitor'
         when 'channel blocker', 'blocker (channel blocker)', 'nucleotide exchange blocker'
           'blocker'
