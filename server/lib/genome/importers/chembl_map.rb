@@ -20,7 +20,30 @@ module Genome
 
             class ChemblMap
 
-                # Some magic to define which tables are needed
+                # Query for relevant data
+
+                SQLite3::Database.new( "db/chembl_30.db" ) do |db|
+                    db.execute( "select drug_mechanism.action_type,
+                                        molecule_dictionary.chembl_id,
+                                        molecule_dictionary.pref_name,
+                                        drug_mechanism.mechanism_of_action,
+                                        drug_mechanism.direct_interaction,
+                                        molecule_dictionary.max_phase,
+                                        target_dictionary.chembl_id,
+                                        target_components.targcomp_id,
+                                        component_sequences.accession,
+                                        component_sequences.description
+                                from drug_mechanism
+                                join molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
+                                join target_dictionary on target_dictionary.tid = drug_mechanism.tid
+                                join target_components on target_components.tid = target_dictionary.tid
+                                join component_sequences on target_components.targcomp_id = component_sequences.component_id"
+                                ) do |row|
+                        p row
+                    end
+                end
+
+                # How to fit all pieces together?
 
             end
 
