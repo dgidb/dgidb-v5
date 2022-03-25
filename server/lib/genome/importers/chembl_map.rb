@@ -32,12 +32,14 @@ module Genome
                                         target_dictionary.chembl_id,
                                         target_components.targcomp_id,
                                         component_sequences.accession,
-                                        component_sequences.description
+                                        component_sequences.description,
+                                        component_synonyms.component_synonym
                                 from drug_mechanism
                                 join molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
                                 join target_dictionary on target_dictionary.tid = drug_mechanism.tid
                                 join target_components on target_components.tid = target_dictionary.tid
-                                join component_sequences on target_components.targcomp_id = component_sequences.component_id"
+                                join component_sequences on target_components.component_id = component_sequences.component_id
+                                join component_synonyms on component_sequences.component_id = component_synonyms.component_id and component_synonyms.syn_type = 'GENE_SYMBOL'"
                                 ) do |row|
                         p row
                     end
