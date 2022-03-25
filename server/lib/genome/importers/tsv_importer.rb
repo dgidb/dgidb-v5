@@ -18,12 +18,11 @@ module Genome
 
         def each_row(row_delimiter)
           f = File.open(@tsv_path)
-          if @tsv_path.to_s.ends_with?('.tsv.gz')
-            f = Zlib::GzipReader(f)
-          end
+          f = Zlib::GzipReader(f) if @tsv_path.to_s.ends_with?('.tsv.gz')
+
           f.each_with_index do |line, index|
             if index.zero? && @header
-              puts "Skipping presumed header line in %s..." % [@tsv_path]
+              puts "Skipping presumed header line in #{@tsv_path}..."
               next
             end
             next if line.blank?
