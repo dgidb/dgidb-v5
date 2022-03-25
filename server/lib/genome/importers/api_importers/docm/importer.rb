@@ -1,7 +1,8 @@
 module Genome; module Importers; module ApiImporters; module Docm
   class Importer < Genome::Importers::Base
     attr_reader :new_version
-    def initialize(source_db_version = Date.today.strftime("%d-%B-%Y"))
+
+    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
       @new_version = source_db_version
       @source_db_name = 'DoCM'
     end
@@ -11,6 +12,7 @@ module Genome; module Importers; module ApiImporters; module Docm
     end
 
     private
+
     def create_interaction_claims
       api_client = ApiClient.new
       api_client.variants.each do |variant|
@@ -23,16 +25,18 @@ module Genome; module Importers; module ApiImporters; module Docm
           ic = create_interaction_claim(gc, dc)
           create_interaction_claim_attributes(ic, interaction_info)
           create_interaction_claim_publications(ic, variant['diseases'])
-          create_interaction_claim_link(ic, "DoCM Website", 'http://docm.info')
+          create_interaction_claim_link(ic, 'DoCM Website', 'http://docm.info')
         end
       end
-      backfill_publication_information()
+      backfill_publication_information
     end
 
     def parse_interaction_information(variant)
       return [] unless variant.include?('meta')
+
       drug_data = variant['meta'].find { |table| table.include?('Drug Interaction Data') }
       return [] unless drug_data.present?
+
       fields = drug_data['Drug Interaction Data']['fields']
       rows = drug_data['Drug Interaction Data']['rows']
       Set.new.tap do |interaction_information|
@@ -44,23 +48,21 @@ module Genome; module Importers; module ApiImporters; module Docm
           row_hash['Therapeutic Context'].split(/,|\+|plus/).each do |drug|
             info = row_hash.dup
             info['Therapeutic Context'] = drug
-            if valid_drug?(drug)
-              interaction_information.add(info)
-            end
+            interaction_information.add(info) if valid_drug?(drug)
           end
         end
       end
     end
 
     def valid_drug?(drug_name)
-      ['inhib', 'HER3', 'TKI', 'anti', 'BRAF', 'radio', 'BH3'].none? { |name| drug_name.include?(name) }
+      %w[inhib HER3 TKI anti BRAF radio BH3].none? { |name| drug_name.include?(name) }
     end
 
     def create_interaction_claim_attributes(interaction_claim, interaction_info)
       {
         'Clinical Status' => 'Status',
         'Pathway' => 'Pathway',
-        'Variant Effect' => 'Effect',
+        'Variant Effect' => 'Effect'
       }.each do |name, interaction_info_key|
         create_interaction_claim_attribute(interaction_claim, name, interaction_info[interaction_info_key])
       end
@@ -83,7 +85,7 @@ module Genome; module Importers; module ApiImporters; module Docm
             source_db_name: source_db_name,
             full_name: 'Database of Curated Mutations',
             license: 'Creative Commons Attribution 4.0 International License',
-            license_link: 'http://www.docm.info/about',
+            license_link: 'http://www.docm.info/about'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
