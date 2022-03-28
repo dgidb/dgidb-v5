@@ -13,20 +13,20 @@ module Genome
 
       def self.normalize_existing_types
         DataModel::InteractionClaimType.all.each do |ict|
-          normalized_ict = DataModel::InteractionClaimType.where(type: name_normalizer(ict.type)).first_or_create()
-          if ict != normalized_ict
-            ict.interaction_claims.each do |ic|
-              add_unless_exists(normalized_ict, ic)
-              ic.interaction_claim_types.delete(ict)
-              ic.save
-            end
-            ict.interactions.each do |i|
-              add_unless_exists_for_interaction(normalized_ict, i)
-              i.interaction_types.delete(ict)
-              i.save
-            end
-            ict.delete
+          normalized_ict = DataModel::InteractionClaimType.where(type: name_normalizer(ict.type)).first_or_create
+          next if ict == normalized_ict
+
+          ict.interaction_claims.each do |ic|
+            add_unless_exists(normalized_ict, ic)
+            ic.interaction_claim_types.delete(ict)
+            ic.save
           end
+          ict.interactions.each do |i|
+            add_unless_exists_for_interaction(normalized_ict, i)
+            i.interaction_types.delete(ict)
+            i.save
+          end
+          ict.delete
         end
       end
 
@@ -62,17 +62,13 @@ module Genome
       end
 
       def self.add_unless_exists_for_interaction(type, interaction)
-        unless interaction.interaction_types.include?(type)
-          interaction.interaction_types << type
-        end
+        interaction.interaction_types << type unless interaction.interaction_types.include?(type)
       end
 
       def self.name_normalizer(val)
         val = val.downcase.strip
 
         case val
-        when 'na', 'n/a'
-          'na'
         when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer', 'diffusing substance', 'vesciant', 'gene replacement'
           'other/unknown'
         when 'neutralizer', 'reducer', 'metabolizer', 'acetylation', 'chelator', 'cross-linking/alkylation', 'regulator'
@@ -124,7 +120,7 @@ module Genome
       end
 
       def self.remove_empty_types
-        DataModel::InteractionClaimType.includes(:interaction_claims).where(interaction_claims: {id: nil}).destroy_all
+        DataModel::InteractionClaimType.includes(:interaction_claims).where(interaction_claims: { id: nil }).destroy_all
       end
     end
   end
