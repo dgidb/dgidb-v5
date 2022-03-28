@@ -1,3 +1,5 @@
 client/package-lock.json
 server/data
 server/lib/data
+docs/build
+*.DS_Store
