@@ -52,7 +52,6 @@ module Genome
               if ei['source']['citation_id'].present? and ei['source']['source_type'] == 'PubMed'
                 create_interaction_claim_publication(ic, ei['source']['citation_id'])
               end
-              create_interaction_claim_type(ic, 'n/a')
               create_interaction_claim_link(ic, ei['name'], "https://civicdb.org/links/evidence/#{ei['id']}")
             end
           end
