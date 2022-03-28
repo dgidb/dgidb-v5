@@ -66,6 +66,7 @@ module Genome
       def create_drug_claim_alias(drug_claim, synonym, nomenclature)
         cleaned = synonym.gsub(/[^\w_]+/,'').upcase
         return nil unless DrugAliasBlacklist.find_by(alias: cleaned).nil?
+
         DrugClaimAlias.where(
           alias: synonym.strip,
           nomenclature: nomenclature.strip,

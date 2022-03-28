@@ -12,6 +12,7 @@ module Genome; module Importers; module TsvImporters; module HopkinsGroom;
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {

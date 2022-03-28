@@ -3,6 +3,7 @@ require 'csv'
 module Genome; module Importers; module TsvImporters; module DrugBank
   class DrugBank < Genome::Importers::Base
     attr_reader :file_path
+
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'DrugBank'
@@ -14,19 +15,19 @@ module Genome; module Importers; module TsvImporters; module DrugBank
 
     private
 
-    DELIMITER = ';'
+    DELIMITER = ';'.freeze
 
     def create_new_source
       @source = Source.where(
         base_url: 'http://www.drugbank.ca',
         site_url: 'http://www.drugbank.ca/',
         citation: "Wishart,D.S., Feunang,Y.D., Guo,A.C., Lo,E.J., Marcu,A., Grant,J.R., Sajed,T., Johnson,D., Li,C., Sayeeda,Z., et al. (2018) DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res., 46, D1074–D1082. PMID: 29126136",
-        source_db_version: "5.1.7",
+        source_db_version: '5.1.7',
         source_db_name: source_db_name,
         full_name: 'DrugBank - Open Data Drug & Drug Target Database',
+        # source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
         license: 'Custom non-commercial',
-        license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816',
-        #source_trust_level_id: SourceTrustLevel.EXPERT_CURATED
+        license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
       ).first_or_create
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
