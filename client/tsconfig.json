@@ -3,11 +3,9 @@
     "target": "es6",
     "module": "esnext",
     "jsx": "react-jsx",
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["./src/*"]
-      }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
     },
     "strict": true,
     "strictPropertyInitialization": true,
