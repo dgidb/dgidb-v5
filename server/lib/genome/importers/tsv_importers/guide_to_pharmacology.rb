@@ -62,9 +62,7 @@ module Genome; module Importers; module TsvImporters; module GuideToPharmacology
           'transporter' => 'TRANSPORTER',
           'vgic' => 'ION CHANNEL'
         }
-        if category_lookup.has_key? line['Type']
-          create_gene_claim_category(gene_claim, category_lookup[line['Type']])
-        end
+        create_gene_claim_category(gene_claim, category_lookup[line['Type']]) if category_lookup.key? line['Type']
       end
       CSV.foreach(interaction_file_path, headers: true) do |line|
         next unless valid_line?(line)
@@ -72,9 +70,13 @@ module Genome; module Importers; module TsvImporters; module GuideToPharmacology
         gene_claim = create_gene_claim(target_to_entrez[line['target_id']], 'Entrez Gene ID')
         create_gene_claim_aliases(gene_claim, line)
 
-        drug_claim = create_drug_claim(line['ligand_pubchem_sid'], strip_tags(line['ligand']).upcase, 'PubChem Drug SID')
+        drug_claim = create_drug_claim(line['ligand_pubchem_sid'],
+                                       strip_tags(line['ligand']).upcase,
+                                       'PubChem Drug SID')
         create_drug_claim_aliases(drug_claim, line)
-        create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species']) unless blank?(line['ligand_species'])
+        unless blank?(line['ligand_species'])
+          create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species'])
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         type = line['type'].downcase
@@ -107,7 +109,7 @@ module Genome; module Importers; module TsvImporters; module GuideToPharmacology
         end
       end
       unless blank?(line['target_uniprot'])
-       line['target_uniprot'].split('|').each do |uniprot_id|
+        line['target_uniprot'].split('|').each do |uniprot_id|
           create_gene_claim_alias(gene_claim, uniprot_id, 'UniProtKB ID')
         end
       end
@@ -142,6 +144,7 @@ module Genome; module Importers; module TsvImporters; module GuideToPharmacology
       }
       attributes.each do |name, value|
         next if blank?(value)
+
         parsed_value = boolean_parser[value] || value
         create_interaction_claim_attribute(interaction_claim, name, parsed_value)
       end

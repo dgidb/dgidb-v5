@@ -12,6 +12,7 @@ namespace :dgidb do
     # They should define an Imoprter class per the following namespace:
     # Genome::Importers::ApiImporters::<SourceName>::Importer
 
+    # TSV importers
     def handle_group_params(gene_group, drug_group)
       if gene_group == 'true'
         puts 'Running Gene Grouper - this takes awhile!'
@@ -37,7 +38,7 @@ namespace :dgidb do
     end
 
     tsv_importer_glob = File.join(Rails.root, 'lib/genome/importers/tsv_importers/*')
-    Dir.glob(tsv_importer_glob).each do |importer_path|
+    Dir.glob(tsv_importer_glob).reject { |path| path =~ /guide_to_pharmacology/ }.each do |importer_path|
       importer_filename = File.basename(importer_path, '.rb')
       importer_name = importer_filename.camelize
       send(
@@ -65,6 +66,36 @@ namespace :dgidb do
       end
     end
 
+    # Guide to Pharmacology is a special case because it needs two input files
+    gtop_name = 'guide_to_pharmacology'
+    send(
+      :desc,
+      'Import GuideToPharmacology from provided TSV files. If the source already exists, it will be overwritten!'
+    )
+    send(
+      :task,
+      gtop_name,
+      %i[interaction_file_path gene_file_path gene_group drug_group] => :environment
+    ) do |_, args|
+      args.with_defaults(
+        interaction_file_path: 'lib/data/guide_to_pharmacology/interactions.csv',
+        gene_file_path: 'lib/data/guide_to_pharmacology/targets_and_families.csv',
+        gene_group: false,
+        drug_group: false
+      )
+      importer_class = 'Genome::Importers::TsvImporters::GuideToPharmacology::Importer'.constantize
+      if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
+        puts 'Found existing source! Deleting...'
+        Utils::Database.delete_source('GuideToPharmacology')
+      end
+      puts 'Starting import!'
+      importer_instance = importer_class.new(args[:interaction_file_path], args[:gene_file_path])
+      importer_instance.import
+
+      handle_group_params(args[:gene_group], args[:drug_group])
+    end
+
+    # API importers
     api_importer_glob = File.join(Rails.root, 'lib/genome/importers/api_importers/*/')
     Dir.glob(api_importer_glob).each do |importer_path|
       importer_dir = File.basename(importer_path)
