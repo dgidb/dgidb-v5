@@ -13,7 +13,6 @@ module Genome
           end
 
           def create_claims
-            create_new_source
             create_interaction_claims
           end
 
