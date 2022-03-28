@@ -6,7 +6,6 @@
 	font-family: 'Lato';
 
 	.search-subcontainer {
-		// position: relative;
 		display: flex;
 
 		.search-input {
@@ -41,16 +40,11 @@
 				top: 1%;
 				right: .1%;
 				bottom: 40%;
-				// float: right;
-				// background-color: red;
 				z-index: 1;
 			}
 		}
 
 		.search-dropdown {
-			// position: absolute;
-			// top: 0;
-			// z-index: 1;
 
 			.ant-select-selector {
 				background-color: $primary-bg;
@@ -88,4 +82,23 @@
 	color: white;
 	background-color: #480a77;
 	font-family: 'Lato';
+}
+
+.ant-form-item .ant-select, .ant-form-item .ant-cascader-picker {
+	width: 700px;
+}
+
+@media screen and (max-width: $medium-screen) {
+	.ant-form-item .ant-select, .ant-form-item .ant-cascader-picker {
+		width: 400px !important;
+	}
+}
+
+// @media screen and (max-width: $small-screen) {
+// 	.ant-form-item .ant-select, .ant-form-item .ant-cascader-picker {
+// 		width: 300px !important;
+// 	}
+// }
+.hi4 {
+	display: hidden !important;
 }

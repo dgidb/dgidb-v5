@@ -4,13 +4,12 @@
 
 .home-page-container {
 	font-family: 'Work Sans';
-	margin: 0 auto;
-	padding-left: 20px;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: 100%;
 	background-color: $primary-bg;
 	color: white;
 
@@ -24,6 +23,16 @@
 		justify-content: center;
 		text-align: center;
 	}
+
+	// @media only screen and (max-width: 1160px) {
+	
+	// 	.home-page-container {
+	// 		background-color: red !important;
+	// 	}
+	// 	.home-blurb {
+	// 		background-color: red;
+	// 	}
+	// }
 
 	.search-container {
 		min-height: 40px;
@@ -94,8 +103,9 @@
 
 	.home-footer {
 		background-color: #480a77;
-		position: absolute;
-		bottom: 0;
+		// position: absolute;
+		// bottom: 0;
+		margin-top: auto;
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -124,3 +134,13 @@
 // .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
 // 	height: 10px;
 // }
+
+@media screen and (max-width: $medium-screen) {
+	.home-footer {
+		font-size: 15px !important;
+	}
+}
+
+@media screen and (max-width: $small-screen) {
+
+}

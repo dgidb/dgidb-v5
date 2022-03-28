@@ -1,6 +1,6 @@
 // hooks/dependencies
-import React, { useState} from 'react';
-import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
+import React, { useState, useEffect} from 'react';
+import { useGetInteractionsByGenes } from '../../api/hooks/interactions/useGetInteractions';
 
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
@@ -35,14 +35,12 @@ const SearchBar: React.FC = () => {
         <Button style={{ width: 80}}>31 of 31</Button>
       </div>
     </div>
-
   )
   const handlePopoverChange = (visible: any) => {
     setShowFilters(visible);
   }
 
   const clearInputText = () => {
-
   }
 
   function handleType(value: any) {
@@ -50,6 +48,7 @@ const SearchBar: React.FC = () => {
     if (value.key === 'Backspace'){
       setNewTag(newTag.slice(0, -1))
     } else if (value.key === 'Enter' || value.key === 'Spacebar') {
+      // TODO: 
       setOptions([...options, {value: newTag, label: newTag}]);
       setSelected([...selected, newTag])
       clearInputText();
@@ -64,60 +63,61 @@ const SearchBar: React.FC = () => {
 
   const handleChange = (value: any) => {
     setNewTag('');
-    
     setSelected(value);
-    
   }
 
-  const { data, isLoading, error } = useGetInteractionsByGene('774e749f-4a89-47aa-8226-f12026812b04')
+  // const { data, isLoading, error } = useGetInteractionsByGene('774e749f-4a89-47aa-8226-f12026812b04')
+  const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
+
+  useEffect(() => {
+    console.log('dataBatch', dataBatch)
+  }, [dataBatch])
 
   return (
-
   <div className="search-container"> 
-  <div className="search-subcontainer">
-    <div className="search-dropdown">
-      <Select 
-        defaultValue="gene" 
-        style={{ width: 200 }} 
-        size="large"
-        dropdownRender={menu => (
-          <div>
-            {menu}
-          </div>
-        )}
-      >
-        <Option value="gene">Interactions by Gene</Option>
-        <Option value="drug">Interactions by Drug</Option>
-      </Select>
-    </div>
-    <div className="search-input">
-      <Form.Item>
+    <div className="search-subcontainer">
+      <div className="search-dropdown">
         <Select 
-          onChange={handleChange}
-          size="large" 
-          placeholder="" 
-          mode="tags"
-          tokenSeparators={[',']}
-          style={{ width: 700}}
-          options={options}
-          onInputKeyDown={handleType}
-          value={selected}
-        />
-      </Form.Item>
+          defaultValue="gene" 
+          style={{ width: 200 }} 
+          size="large"
+          dropdownRender={menu => (
+            <div>
+              {menu}
+            </div>
+          )} 
+        >
+          <Option className="hi4" value="gene">Interactions by Gene</Option>
+          <Option value="drug">Interactions by Drug</Option>
+        </Select>
+      </div>
+      <div className="search-input">
+        <Form.Item>
+          <Select 
+            onChange={handleChange}
+            size="large" 
+            placeholder="" 
+            mode="tags"
+            tokenSeparators={[',']}
+            options={options}
+            onInputKeyDown={handleType}
+            value={selected}
+          />
+        </Form.Item>
 
-        <div className="search-filters">
+          <div className="search-filters">
 
-          <Popover content={content} trigger="click" visible={showFilters} onVisibleChange={handlePopoverChange} >
-            <FilterOutlined 
-              style={{ fontSize: '150%', cursor: 'pointer'}}
-            />
+            <Popover content={content} trigger="click" visible={showFilters} onVisibleChange={handlePopoverChange} >
+              <FilterOutlined 
+                style={{ fontSize: '150%', cursor: 'pointer'}}
+              />
 
-          </Popover>
+            </Popover>
+
+          </div>
 
         </div>
-
       </div>
-    </div>
   </div>
   )
 }

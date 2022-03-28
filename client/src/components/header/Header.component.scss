@@ -3,6 +3,9 @@
 header nav {
 	background-color: $primary-bg;
 	color: white;
+	position: relative;
+	height: 80px;
+
 	ul {
 		display: flex;
 		justify-content: flex-end;
