@@ -43,22 +43,27 @@ const SearchBar: React.FC = () => {
   const clearInputText = () => {
   }
 
-  function handleType(value: any) {
+  function onKeyDown (value: any) {
+    
+    let newCharacter = /^[a-zA-Z0-9-_]+$/.test(value.key) && (value.key.length === 1)
+    let backspace = (value.key === 'Backspace')
+    let savingTag = (value.key === 'Enter' || value.key === 'Spacebar') && newTag
 
-    if (value.key === 'Backspace'){
-      setNewTag(newTag.slice(0, -1))
-    } else if (value.key === 'Enter' || value.key === 'Spacebar') {
-      // TODO: 
-      setOptions([...options, {value: newTag, label: newTag}]);
-      setSelected([...selected, newTag])
-      clearInputText();
-    } else if (value.key.length > 1) {
-      return;
-    } else if(/^[a-zA-Z0-9-_]+$/.test(value.key)){
+    if (newCharacter) {
       setNewTag(`${newTag}${value.key}`)
-    } else {
-      return
     }
+
+    else if (backspace) {
+      setNewTag(newTag.slice(0, -1));
+    } 
+    
+    else if (savingTag) {
+      setOptions([...options, {value: newTag, label: newTag}]);
+      setSelected([...selected, newTag]);
+      clearInputText();
+    } 
+
+    return;
   }
 
   const handleChange = (value: any) => {
@@ -69,10 +74,6 @@ const SearchBar: React.FC = () => {
   // const { data, isLoading, error } = useGetInteractionsByGene('774e749f-4a89-47aa-8226-f12026812b04')
   const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
 
-  useEffect(() => {
-    console.log('dataBatch', dataBatch)
-  }, [dataBatch])
-
   return (
   <div className="search-container"> 
     <div className="search-subcontainer">
@@ -81,7 +82,7 @@ const SearchBar: React.FC = () => {
           defaultValue="gene" 
           style={{ width: 200 }} 
           size="large"
-          dropdownRender={menu => (
+          dropdownRender={(menu: any) => (
             <div>
               {menu}
             </div>
@@ -100,7 +101,7 @@ const SearchBar: React.FC = () => {
             mode="tags"
             tokenSeparators={[',']}
             options={options}
-            onInputKeyDown={handleType}
+            onInputKeyDown={onKeyDown}
             value={selected}
           />
         </Form.Item>
