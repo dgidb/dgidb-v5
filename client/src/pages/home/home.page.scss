@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.scss';
+@import 'utils/styles/variables.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
 
@@ -23,16 +23,6 @@
 		justify-content: center;
 		text-align: center;
 	}
-
-	// @media only screen and (max-width: 1160px) {
-	
-	// 	.home-page-container {
-	// 		background-color: red !important;
-	// 	}
-	// 	.home-blurb {
-	// 		background-color: red;
-	// 	}
-	// }
 
 	.search-container {
 		min-height: 40px;
@@ -67,17 +57,12 @@
 					position: absolute;
 					top: 1%;
 					right: .1%;
-					bottom: 40%;
-					// float: right;
-					// background-color: red;
+					bottom: 40%;;
 					z-index: 1;
 				}
 			}
 
 			.search-dropdown {
-				// position: absolute;
-				// top: 0;
-				// z-index: 1;
 
 				.ant-select-selector {
 					background-color: $primary-bg;

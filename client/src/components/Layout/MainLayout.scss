@@ -1,0 +1,37 @@
+@import 'utils/styles/variables';
+
+header nav {
+  background-color: $primary-bg;
+  color: white;
+  position: relative;
+  height: 80px;
+
+  ul {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0 60px;
+    padding: 12px 0;
+
+    li {
+      margin-left: 60px;
+      font-family: 'Work Sans';
+      font-size: 18px;
+    }
+  }
+}
+
+.home-footer {
+  background-color: #480a77;
+  // position: absolute;
+  // bottom: 0;
+  color: white;
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-size: 20px;
+  font-family: 'Work Sans';
+  font-weight: 300;
+}

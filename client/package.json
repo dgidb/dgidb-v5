@@ -13,10 +13,11 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "@types/react-router-dom": "^5.1.8",
+    "@types/react-router-dom": "^5.3.3",
     "@types/react-tag-autocomplete": "^6.1.1",
     "antd": "^4.16.13",
     "cors": "^2.8.5",
+    "create-react-app": "^5.0.0",
     "graphql": "^15.5.1",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
@@ -25,7 +26,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.14.1",
     "react-query": "^3.34.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.2.2",
     "react-scripts": "4.0.3",
     "react-tag-autocomplete": "^6.3.0",
     "sass": "^1.38.1",
@@ -51,6 +52,9 @@
     ]
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "@ef-carbon/tspm": "^2.2.5",
+    "eslint-import-resolver-babel-module": "^5.3.1",
+    "jest": "26.6.0",
+    "tsconfig-paths": "^3.14.1"
   }
 }

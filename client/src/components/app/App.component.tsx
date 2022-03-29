@@ -1,11 +1,11 @@
 // dependencies
 import React from 'react';
-import {
-	Route,
-	Switch,
-	HashRouter,
-	BrowserRouter
-} from 'react-router-dom'
+// import {
+// 	Route,
+// 	Switch,
+// 	HashRouter,
+// 	BrowserRouter
+// } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 // components
@@ -15,7 +15,7 @@ import { Results } from '../../pages/results/results.page';
 import Home from '../../pages/home/home.page';
 
 // styles
-import '../../common/styles';
+import '../../utils/styles';
 import './App.component.scss';
 
 const queryClient = new QueryClient();
@@ -24,7 +24,7 @@ const App: React.FC = () => {
 	return (
 		<div className="app-container">
 			<QueryClientProvider client={queryClient}>
-				<BrowserRouter>
+				{/* <BrowserRouter>
 					<Header />
 					<Switch>
 						<Route path="/" exact>
@@ -35,7 +35,7 @@ const App: React.FC = () => {
 						</Route>
 					</Switch>
 					<Footer />
-				</BrowserRouter>
+				</BrowserRouter> */}
 			</QueryClientProvider>
 		</div>
 	);

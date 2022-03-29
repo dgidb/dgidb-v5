@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect} from 'react';
-import { useGetInteractionsByGenes } from '../../api/hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';

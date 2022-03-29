@@ -1,7 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from 'react';
-import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
-
+import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
 // components/
 import SearchBar from '../../components/searchbar/SearchBar.component';
 
@@ -15,7 +14,7 @@ export const Results: React.FC = () => {
 
 	return (
     <>
-
+      hi
     </>
   )
 };

@@ -22,7 +22,6 @@ const getInteractionsByGeneQuery = gql`
   });
 }
 
-
 export function useGetInteractionsByGenes(...ids: string[]) {
   let queries = ids.map(id => {
     return { document: getInteractionsByGeneQuery, variables: id}

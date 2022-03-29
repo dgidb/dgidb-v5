@@ -2,8 +2,8 @@
 import React, { useState, useEffect} from 'react';
 import SearchBar from '../../components/searchbar/SearchBar.component';
 import ReactTags from 'react-tag-autocomplete'
-import { useGetInteractionsByGene } from '../../api/hooks/interactions/useGetInteractions';
-import { useHistory } from 'react-router';
+import { useGetInteractionsByGene } from '../../hooks/interactions/useGetInteractions';
+// import { useHistory } from 'react-router';
 
 // styles
 import { Button } from 'antd';
@@ -11,10 +11,10 @@ import './home.page.scss';
 
 const Home: React.FC = () => {
 
-  const history = useHistory();
+  // const history = useHistory();
 
   const handleSubmit = async () => {
-    history.push(`results`)
+    // history.push(`results`)
   }; 
 
   return (
