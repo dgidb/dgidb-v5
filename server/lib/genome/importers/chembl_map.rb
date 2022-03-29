@@ -2,52 +2,77 @@ module Genome
     module Importers
         module Chembl
 
-            class ChemblAttributes
-                attribute :drug_chembl_id
-                attribute :drug_name
-                attribute :gene_chembl_id
-                attribute :gene_symbol, Array, delimiter: '|'
-                attribute :uniprot_id, Array, delimiter: '|'
-                attribute :uniprot_name, Array, delimiter: '|'
-                attribute :action_type
-                attribute :mechanism_of_action
-                attribute :direct_interaction
-                attribute :fda, Array, delimiter: '|'
-                attribute :pmid, Array, delimiter: '|'
-                attribute :tax_id # Must be 9606 to be valid
+            require 'sqlite3'
 
-            end
+            class ChemblRow
 
-            class ChemblMap
+                attr_accessor :drug_chembl_id
+                attr_accessor :drug_name
+                attr_accessor :gene_chembl_id
+                attr_accessor :gene_symbol
+                attr_accessor :uniprot_id
+                attr_accessor :uniprot_name
+                attr_accessor :action_type
+                attr_accessor :mechanism_of_action
+                attr_accessor :direct_interaction
+                attr_accessor :fda
 
-                # Query for relevant data
-
-                SQLite3::Database.new( "db/chembl_30.db" ) do |db|
-                    db.execute( "select drug_mechanism.action_type,
-                                        molecule_dictionary.chembl_id,
-                                        molecule_dictionary.pref_name,
-                                        drug_mechanism.mechanism_of_action,
-                                        drug_mechanism.direct_interaction,
-                                        molecule_dictionary.max_phase,
-                                        target_dictionary.chembl_id,
-                                        target_components.targcomp_id,
-                                        component_sequences.accession,
-                                        component_sequences.description,
-                                        component_synonyms.component_synonym
-                                from drug_mechanism
-                                join molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
-                                join target_dictionary on target_dictionary.tid = drug_mechanism.tid
-                                join target_components on target_components.tid = target_dictionary.tid
-                                join component_sequences on target_components.component_id = component_sequences.component_id
-                                join component_synonyms on component_sequences.component_id = component_synonyms.component_id and component_synonyms.syn_type = 'GENE_SYMBOL'"
-                                ) do |row|
-                        p row
-                    end
+                def initialize(row)
+                    @drug_chembl_id = row[1]
+                    @drug_name = row[2]
+                    @gene_chembl_id = row[6]
+                    @gene_symbol = row[9]
+                    @uniprot_id = row[8]
+                    @uniprot_name = row[9]
+                    @action_type = row[0]
+                    @mechanism_of_action = row[3]
+                    @direct_interaction = row[4]
+                    @fda = row[5]
                 end
 
-                # How to fit all pieces together?
 
+                # attr_accessor :pmid, Array, delimiter: '|'
+                # attr_accessor :tax_id # Must be 9606 to be valid
             end
+
+            class ChemblDatabase
+
+                require 'sqlite3'
+
+                attr_accessor :db
+                attr_accessor :query
+
+                def initialize()
+                    @db = SQLite3::Database.open 'db/chembl_30.db'
+                end
+
+                def query()
+                    db.execute( "select drug_mechanism.action_type,
+                                            molecule_dictionary.chembl_id,
+                                            molecule_dictionary.pref_name,
+                                            drug_mechanism.mechanism_of_action,
+                                            drug_mechanism.direct_interaction,
+                                            molecule_dictionary.max_phase,
+                                            target_dictionary.chembl_id,
+                                            target_components.targcomp_id,
+                                            component_sequences.accession,
+                                            component_sequences.description,
+                                            component_synonyms.component_synonym
+                                    from drug_mechanism
+                                    join molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
+                                    join target_dictionary on target_dictionary.tid = drug_mechanism.tid
+                                    join target_components on target_components.tid = target_dictionary.tid
+                                    join component_sequences on target_components.component_id = component_sequences.component_id
+                                    join component_synonyms on component_sequences.component_id = component_synonyms.component_id and component_synonyms.syn_type = 'GENE_SYMBOL'"
+                                    ) do |entry|
+                                        p entry
+                                        @row = ChemblRow.new(entry)
+                                        p row.action_type
+                                        p row.drug_name
+                                    end
+                end
+            end
+
 
         end
     end

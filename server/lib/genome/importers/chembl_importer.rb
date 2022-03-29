@@ -16,51 +16,57 @@ module Genome
                     license_link: 'https://chembl.gitbook.io/chembl-interface-documentation/about',
                 }
 
-
             def self.run()
 
-                # From the TSV, imports all interactions from known_action_type (if known) and retrieves the drug / gene target (protein) associated
+                ChemblDatabase.query
 
-                # Filters for blank fields and interaction types, standardization for casing
-                blank_filter = ->(x) { x.blank? || x == "''" || x == '""' }
-                upcase = ->(x) {x.upcase}
-                downcase = ->(x) {x.downcase}
-                known = ->() {if :action_type.blank?
-                                'unknown'
-                              else
-                                'known'
-                              end
-                }
 
-                # need to run SQL import methods?
+            # def self.run()
 
-                SQLImporter.import path, ChemblMap, ChemblAttributes, source_info do # some class containing logic for importing from sqlite imported data?
-                    interaction known_action_type: known, transform: downcase do # entry point is action types, drug_mechanism:action_type in SQL
+            #     # From the TSV, imports all interactions from known_action_type (if known) and retrieves the drug / gene target (protein) associated
 
-                        drug :drug_chembl_id, nomenclature: 'ChEMBL Drug Identifier', primary_name: :drug_name, transform: upcase do
-                            name :drug_name, nomenclature: 'ChEMBL Drug Name', transform: upcase
-                        end
+            #     # Filters for blank fields and interaction types, standardization for casing
+            #     blank_filter = ->(x) { x.blank? || x == "''" || x == '""' }
+            #     upcase = ->(x) {x.upcase}
+            #     downcase = ->(x) {x.downcase}
+            #     known = ->() {if :action_type.blank?
+            #                     'unknown'
+            #                   else
+            #                     'known'
+            #                   end
+            #     }
 
-                        gene :gene_chembl_id, nomenclature: 'ChEMBL Gene Identifier' do
-                            names :gene_symbol, nomenclature: 'ChEMBL Gene Symbol', unless: blank_filter
-                            names :uniprot_id, nomenclature: 'UniProt Accession', unless: blank_filter
-                            names :uniprot_name, nomenclature: 'UniProt Name', unless: blank_filter
-                            # target_ligand fields are ignored for now (note taken from DGIdb, still ignore? probably)
-                        end
+            #     # need to run SQL import methods?
 
-                        attribute :mechanism_of_action, name: 'Mechanism of Interaction', transform: downcase, unless: blank_filter
-                        attribute :direct_interaction, name: 'Direct Interaction', unless: blank_filter
-                        attributes :fda, name: 'FDA ID', unless: blank_filter
-                        attributes :pmid, name: 'PMID', unless: blank_filter
-                        attribute :action_type, name: 'Interaction Type', transform: downcase, unless: blank_filter
-                    end
-                end.save! # Saves all records, creates new if doesn't exist previously
+            #     SQLImporter.import path, ChemblMap, ChemblAttributes, source_info do # some class containing logic for importing from sqlite imported data?
+            #         interaction known_action_type: known, transform: downcase do # entry point is action types, drug_mechanism:action_type in SQL
 
-            # Not sure what this accomplishes yet, creating new interaction claims from Chembl data set?
-            s = DataModel::Source.where(source_db_name: source_info['source_db_name'])
-            s.interaction_claims.each do |ic|
-                Genome::OnlineUpdater.new.create_interaction_claim_link(ic, 'Drug Mechanisms', "https://www.ebi.ac.uk/chembl/compound_report_card/#{ic.drug_claim.name}/#MechanismOfAction")
-            end
+            #             drug :drug_chembl_id, nomenclature: 'ChEMBL Drug Identifier', primary_name: :drug_name, transform: upcase do
+            #                 name :drug_name, nomenclature: 'ChEMBL Drug Name', transform: upcase
+            #             end
+
+            #             gene :gene_chembl_id, nomenclature: 'ChEMBL Gene Identifier' do
+            #                 names :gene_symbol, nomenclature: 'ChEMBL Gene Symbol', unless: blank_filter
+            #                 names :uniprot_id, nomenclature: 'UniProt Accession', unless: blank_filter
+            #                 names :uniprot_name, nomenclature: 'UniProt Name', unless: blank_filter
+            #                 # target_ligand fields are ignored for now (note taken from DGIdb, still ignore? probably)
+            #             end
+
+            #             attribute :mechanism_of_action, name: 'Mechanism of Interaction', transform: downcase, unless: blank_filter
+            #             attribute :direct_interaction, name: 'Direct Interaction', unless: blank_filter
+            #             attributes :fda, name: 'FDA ID', unless: blank_filter
+            #             attributes :pmid, name: 'PMID', unless: blank_filter
+            #             attribute :action_type, name: 'Interaction Type', transform: downcase, unless: blank_filter
+            #         end
+            #     end.save! # Saves all records, creates new if doesn't exist previously
+
+            # # Not sure what this accomplishes yet, creating new interaction claims from Chembl data set?
+            # s = DataModel::Source.where(source_db_name: source_info['source_db_name'])
+            # s.interaction_claims.each do |ic|
+            #     Genome::OnlineUpdater.new.create_interaction_claim_link(ic, 'Drug Mechanisms', "https://www.ebi.ac.uk/chembl/compound_report_card/#{ic.drug_claim.name}/#MechanismOfAction")
+            # end
+
+
         end
     end
 end
