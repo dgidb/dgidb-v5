@@ -1,5 +1,5 @@
 class InteractionClaim < ::ActiveRecord::Base
-  #include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::UUIDPrimaryKey
 
   has_many :interaction_claim_attributes, inverse_of: :interaction_claim
   has_many :interaction_claim_links, inverse_of: :interaction_claim

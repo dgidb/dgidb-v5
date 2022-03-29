@@ -1,5 +1,5 @@
 class GeneClaim < ::ActiveRecord::Base
-  # include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::UUIDPrimaryKey
   belongs_to :gene
   has_and_belongs_to_many :gene_claim_categories, :join_table => 'gene_claim_categories_gene_claims'
   has_many :gene_claim_aliases, inverse_of: :gene_claim, dependent: :delete_all

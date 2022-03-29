@@ -1,6 +1,6 @@
 class Drug < ::ActiveRecord::Base
-  # include Genome::Extensions::UUIDPrimaryKey
-  # include Genome::Extensions::HasCacheableQuery
+  include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::HasCacheableQuery
 
   has_many :drug_claims, before_add: :update_anti_neoplastic_add, before_remove: :update_anti_neoplastic_remove
   has_many :interactions
@@ -9,12 +9,11 @@ class Drug < ::ActiveRecord::Base
 
   before_create :populate_flags
 
-  #cache_query :all_drug_names, :all_drug_names
-
+  cache_query :all_drug_names, :all_drug_names
 
   def self.for_search
     eager_load(:interactions)
-      .includes(interactions: [:gene, :interaction_types, :publications, :sources])
+      .includes(interactions: %i[gene interaction_types publications sources])
   end
 
   def self.for_show
@@ -32,6 +31,7 @@ class Drug < ::ActiveRecord::Base
   end
 
   private
+
   def populate_flags
     self.approved = false
     self.immunotherapy = false
@@ -49,7 +49,8 @@ class Drug < ::ActiveRecord::Base
   end
 
   def self.anti_neoplastic_source_names
-    @@anti_neoplastic_source_names ||= %w[TALC ClearityFoundationClinicalTrial ClearityFoundationBiomarkers CancerCommons
-                                    MyCancerGenome CIViC MyCancerGenomeClinicalTrial].to_set
+    @@anti_neoplastic_source_names ||= %w[TALC ClearityFoundationClinicalTrial ClearityFoundationBiomarkers
+                                          CancerCommons MyCancerGenome CIViC
+                                          MyCancerGenomeClinicalTrial].to_set
   end
 end

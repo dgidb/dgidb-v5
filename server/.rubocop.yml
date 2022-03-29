@@ -1,0 +1,9 @@
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/genome/importers/**/*'
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 150
