@@ -4,9 +4,6 @@
     "module": "esnext",
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "strict": true,
     "strictPropertyInitialization": true,
     "esModuleInterop": true,
