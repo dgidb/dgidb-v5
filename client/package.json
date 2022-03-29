@@ -35,10 +35,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -52,6 +51,6 @@
     ]
   },
   "devDependencies": {
-
+    "jest": "^27.5.1"
   }
 }
