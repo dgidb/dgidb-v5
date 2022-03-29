@@ -4,11 +4,8 @@ import { publicRoutes } from './public';
 
 export const AppRoutes = () => {
 
-  // const commonRoutes = [{ path: '/', element: <Landing /> }];
-
-  const routes = publicRoutes;
-
-  const element = useRoutes([...routes]);
+  const element = useRoutes(publicRoutes);
 
   return <>{element}</>;
+
 };

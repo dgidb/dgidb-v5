@@ -14,7 +14,7 @@ export const Results: React.FC = () => {
 
 	return (
     <>
-      hi
+      RESULTS!!!!
     </>
   )
 };

@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
 export const MainLayout = ({children }: MainLayoutProps) => {
 
   return(
-    <div>
+    <div className="layout-container">
       <Header />
       {children}
       <Footer />

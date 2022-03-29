@@ -9,7 +9,7 @@ import { useGetInteractionsByGene } from '../../hooks/interactions/useGetInterac
 import { Button } from 'antd';
 import './home.page.scss';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
 
   // const history = useHistory();
 
@@ -50,5 +50,3 @@ const Home: React.FC = () => {
     </div>
     )
 }
-
-export default Home

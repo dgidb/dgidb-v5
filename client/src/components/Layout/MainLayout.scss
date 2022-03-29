@@ -1,5 +1,16 @@
 @import 'utils/styles/variables';
 
+html, body {
+  background-color: white;
+  margin: 0;
+}
+
+.layout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 header nav {
   background-color: $primary-bg;
   color: white;
@@ -23,8 +34,8 @@ header nav {
 
 .home-footer {
   background-color: #480a77;
-  // position: absolute;
-  // bottom: 0;
+  position: fixed;
+  bottom: 0;
   color: white;
   margin-top: auto;
   width: 100%;
