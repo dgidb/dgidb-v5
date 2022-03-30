@@ -36,60 +36,73 @@ namespace :dgidb do
       puts 'Done.'
     end
 
-    tsv_importer_glob = File.join(Rails.root, 'lib/genome/importers/tsv_importers/*')
-    Dir.glob(tsv_importer_glob).each do |importer_path|
-      importer_filename = File.basename(importer_path, '.rb')
+    def tsv_importer_names
+      tsv_importer_glob = File.join(Rails.root, 'lib/genome/importers/tsv_importers/*')
+      Dir.glob(tsv_importer_glob).map { |path| File.basename(path, '.rb') }
+    end
+
+    def run_tsv_import(importer_filename, args)
       importer_name = importer_filename.camelize
-      send(
-        :desc,
-        "Import #{importer_filename} from a provided tsv file. If the source already exists, it will be overwritten!"
-      )
-      send(
-        :task,
-        importer_filename,
-        %i[tsv_path gene_group drug_group] => :environment
-      ) do |_, args|
-        args.with_defaults(tsv_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
-                           drug_group: 'false')
-        importer_class = "Genome::Importers::TsvImporters::#{importer_name}::Importer".constantize
-        if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
-          puts 'Found existing source! Deleting...'
-          Utils::Database.delete_source(importer_name)
-        end
+      args.with_defaults(tsv_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
+                         drug_group: 'false')
+      importer_class = "Genome::Importers::TsvImporters::#{importer_name}::Importer".constantize
+      puts "Running #{importer_name} importer..."
+      if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
+        puts 'Found existing source! Deleting...'
+        Utils::Database.delete_source(importer_name)
+      end
 
-        puts 'Starting import!'
-        importer_instance = importer_class.new(args[:tsv_path])
-        importer_instance.import
+      puts 'Starting import!'
+      importer_instance = importer_class.new(args[:tsv_path])
+      importer_instance.import
 
-        handle_group_params(args[:gene_group], args[:drug_group])
+      handle_group_params(args[:gene_group], args[:drug_group])
+    end
+
+    def api_importer_names
+      api_importer_glob = File.join(Rails.root, 'lib/genome/importers/api_importers/*/')
+      Dir.glob(api_importer_glob).map { |path| File.basename(path) }
+    end
+
+    def run_api_import(importer_filename, args)
+      importer_name = importer_filename.camelize
+      args.with_defaults(gene_group: 'false', drug_group: 'false')
+      importer_class = "Genome::Importers::ApiImporters::#{importer_name}::Importer".constantize
+      puts "Running #{importer_name} importer..."
+      if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
+        puts 'Found existing source! Deleting...'
+        Utils::Database.delete_source(importer_name)
+      end
+
+      puts 'Starting import!'
+      importer_instance = importer_class.new
+      importer_instance.import
+
+      handle_group_params(args[:gene_group], args[:drug_group])
+    end
+
+    send(:desc, 'Run all importers')
+    send(:task, 'all', %i[gene_group drug_group] => :environment) do |_, args|
+      tsv_importer_names.each do |name|
+        run_tsv_import(name, args.dup)
+      end
+      api_importer_names.each do |name|
+        run_api_import(name, args.dup)
       end
     end
 
-    api_importer_glob = File.join(Rails.root, 'lib/genome/importers/api_importers/*/')
-    Dir.glob(api_importer_glob).each do |importer_path|
-      importer_dir = File.basename(importer_path)
-      importer_name = importer_dir.camelize
-      send(
-        :desc,
-        "Import #{importer_name} from a provided tsv file. If the source already exists, it will be overwritten!"
-      )
-      send(
-        :task,
-        importer_dir,
-        %i[gene_group drug_group] => :environment
-      ) do |_, args|
-        args.with_defaults(gene_group: 'false', drug_group: 'false')
-        importer_class = "Genome::Importers::ApiImporters::#{importer_name}::Importer".constantize
-        if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
-          puts 'Found existing source! Deleting...'
-          Utils::Database.delete_source(importer_name)
-        end
+    tsv_importer_names.each do |importer_filename|
+      send(:desc, "Import #{importer_filename.camelize} from a provided tsv file. If the source already exists, it will be overwritten!")
+      send(:task, importer_filename, %i[tsv_path gene_group drug_group] => :environment) do |_, args|
+        run_tsv_import(importer_filename, args)
+      end
+    end
 
-        puts 'Starting import!'
-        importer_instance = importer_class.new
-        importer_instance.import
-
-        handle_group_params(args[:gene_group], args[:drug_group])
+    api_importer_names.each do |importer_path|
+      importer_filename = File.basename(importer_path)
+      send(:desc, "Import #{importer_filename.camelize} from source API endpoint. If the source already exists, it will be overwritten!")
+      send(:task, importer_filename, %i[gene_group drug_group] => :environment) do |_, args|
+        run_api_import(importer_filename, args)
       end
     end
 
