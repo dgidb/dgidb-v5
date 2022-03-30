@@ -28,13 +28,13 @@ module Genome; module Importers; module TsvImporters; module Chembl;
 
     def query_chembl_db
         db = SQLite3::Database.open file_path
-        db.results_as_hash = true
+        db.results_as_hash = false
         @chembl_data = db.execute( "select drug_mechanism.action_type,
                                     molecule_dictionary.chembl_id,
                                     molecule_dictionary.pref_name,
                                     drug_mechanism.mechanism_of_action,
-                                    drug_mechanism.direct_interaction,
-                                    molecule_dictionary.max_phase,
+                                    cast(drug_mechanism.direct_interaction as text),
+                                    cast(molecule_dictionary.max_phase as text),
                                     target_dictionary.chembl_id,
                                     target_components.targcomp_id,
                                     component_sequences.accession,
@@ -58,14 +58,27 @@ module Genome; module Importers; module TsvImporters; module Chembl;
 
           primary_name = row[2].strip.upcase
           drug_claim = create_drug_claim(primary_name, primary_name, 'Primary Drug Name')
-          create_drug_claim_attribute(drug_claim, 'FDA Approval Phase', row[5]) # cast to varchar instead of int
+          create_drug_claim_attribute(drug_claim, 'FDA Approval Phase', row[5])
           create_drug_claim_alias(drug_claim, row[1], 'ChEMBL ID')
 
-          interaction_claim = create_interaction_claims(gene_claim, drug_claim)
-          create_interaction_claim_type(interaction_claim, row[0])
-          create_interaction_claim_attribute(interaciton_claim, 'Direct Interaction', row[4]) # cast to varchar instead of int
-          create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row[3])
-          create_interaction_claim_link(interaction_claim,'Source', File.join('data','chembl_30.db'))
+          interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+
+          # Catching interaction claim types that don't have database entries, also yes this is a hot mess
+          if row[0] == 'BINDING AGENT'
+          elsif row[0] == 'RELEASING AGENT'
+          elsif row[0] == 'PROTEOLYTIC ENZYME'
+          elsif row[0] == 'NEGATIVE ALLOSTERIC MODULATOR'
+          elsif row[0] == 'HYDROLYTIC ENZYME'
+          elsif row[0] == 'ALLOSTERIC ANTAGONIST'
+          elsif row[0] == 'CROSS-LINKING AGENT'
+          elsif row[0] == 'STABILISER'
+          else
+            create_interaction_claim_type(interaction_claim, row[0])
+            create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', row[4])
+            create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row[3])
+            create_interaction_claim_link(interaction_claim,'Source', File.join('data','chembl_30.db'))
+
+          end
 
       end
     end
