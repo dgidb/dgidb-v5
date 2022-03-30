@@ -1,9 +1,10 @@
 module Genome; module Importers; module TsvImporters; module Chembl;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
+    attr_accessor :chembl_data
     def initialize(file_path)
       @file_path = file_path
-      @source_db_name = 'CancerCommons'
+      @source_db_name = 'ChEMBL'
     end
 
 
@@ -23,7 +24,7 @@ module Genome; module Importers; module TsvImporters; module Chembl;
         )
         @source.source_types << SourceType.find_by(type: 'interaction')
         @source.save
-      end
+    end
 
     def query_chembl_db
         db = SQLite3::Database.open file_path
@@ -49,12 +50,24 @@ module Genome; module Importers; module TsvImporters; module Chembl;
     end
 
     def create_interaction_claims
-        chembl_data.each do |row|
-            # create drug claims
-            # create gene claims
-            # create interaction c laims
-        end
+      @chembl_data.each do |row|
+
+          gene_claim = create_gene_claim(row[9].upcase, 'Gene Target Symbol')
+          p gene_claim
+          create_gene_claim_attribute(gene_claim, 'ChEMBL Description',row[8])
+
+          primary_name = row[2].strip.upcase
+          drug_claim = create_drug_claim(primary_name, primary_name, 'Primary Drug Name')
+          create_drug_claim_attribute(drug_claim, 'FDA Approval Phase', row[5]) # cast to varchar instead of int
+          create_drug_claim_alias(drug_claim, row[1], 'ChEMBL ID')
+
+          interaction_claim = create_interaction_claims(gene_claim, drug_claim)
+          create_interaction_claim_type(interaction_claim, row[0])
+          create_interaction_claim_attribute(interaciton_claim, 'Direct Interaction', row[4]) # cast to varchar instead of int
+          create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row[3])
+          create_interaction_claim_link(interaction_claim,'Source', File.join('data','chembl_30.db'))
+
+      end
     end
-
-
-end
+  end
+end; end; end; end;
