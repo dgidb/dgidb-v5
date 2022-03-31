@@ -1,8 +1,7 @@
 import { useQuery } from 'react-query';
-import { GraphQLClient, gql  } from 'graphql-request';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
-const API_URL = 'http://127.0.0.1:3000/api/graphql';
-const graphQLClient = new GraphQLClient(API_URL);
 
 const getInteractionsByGeneQuery = gql`
   query gene($id: String!) {
@@ -11,6 +10,7 @@ const getInteractionsByGeneQuery = gql`
     }
   }
  `
+ 
  export function useGetInteractionsByGene(id: string) {
   return useQuery('interactions', async () => {
     const res = await graphQLClient.request(
@@ -18,5 +18,6 @@ const getInteractionsByGeneQuery = gql`
       { id }
     );
     return res;
-  });
+  }, 
+  {enabled: id !== ''});
 }
