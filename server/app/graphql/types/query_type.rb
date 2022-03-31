@@ -5,6 +5,7 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     field :genes, resolver: Resolvers::Genes
+    field :drugs, resolver: Resolvers::Drugs
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -44,11 +45,11 @@ module Types
 
     field :gene, Types::GeneType, null: true do
       description "A gene"
-      argument :id, String, required: true
+      argument :name, String, required: true
     end
 
-    def gene(id: )
-      Gene.find_by(id: id)
+    def gene(name: )
+      Gene.find_by(name: name)
     end
 
     field :gene_alias, Types::GeneAliasType, null: true do
