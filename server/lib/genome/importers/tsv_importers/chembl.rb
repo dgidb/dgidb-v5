@@ -7,6 +7,10 @@ module Genome; module Importers; module TsvImporters; module Chembl;
       @source_db_name = 'ChEMBL'
     end
 
+    def create_claims
+      query_chembl_db
+      create_interaction_claims
+    end
 
     def create_new_source
         @source ||= Source.create(
@@ -27,6 +31,7 @@ module Genome; module Importers; module TsvImporters; module Chembl;
     end
 
     def query_chembl_db
+        puts File.absolute_path(file_path)
         db = SQLite3::Database.open file_path
         db.results_as_hash = false
         @chembl_data = db.execute( "select drug_mechanism.action_type,
@@ -63,7 +68,7 @@ module Genome; module Importers; module TsvImporters; module Chembl;
 
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
-          # Catching interaction claim types that don't have database entries, also yes this is a hot mess
+          # Catching interaction claim types that don't have matching database entries, also yes this is a hot mess
           if row[0] == 'BINDING AGENT'
           elsif row[0] == 'RELEASING AGENT'
           elsif row[0] == 'PROTEOLYTIC ENZYME'
@@ -72,6 +77,10 @@ module Genome; module Importers; module TsvImporters; module Chembl;
           elsif row[0] == 'ALLOSTERIC ANTAGONIST'
           elsif row[0] == 'CROSS-LINKING AGENT'
           elsif row[0] == 'STABILISER'
+          elsif row[0] == 'DEGRADER'
+          elsif row[0] == 'DISRUPTING AGENT'
+          elsif row[0] == 'ANTISENSE INHIBITOR'
+          elsif row[0] == 'VACCINE ANTIGEN'
           else
             create_interaction_claim_type(interaction_claim, row[0])
             create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', row[4])
