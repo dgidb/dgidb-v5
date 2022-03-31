@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
 
 // styles, icons
@@ -17,7 +17,6 @@ type SearchBarProps = {
 const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handleSubmit}) => {
 
   const [inputValue, setInputValue] = useState<any>('');
-  // const [newTag, setNewTag] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);  
   
@@ -42,35 +41,20 @@ const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handl
       </div>
     </div>
   )
-  const handlePopoverChange = (visible: any) => {
-    setShowFilters(visible);
-  }
 
   function onKeyDown (value: any) {
 
-    // let newCharacter = /^[a-zA-Z0-9-_]+$/.test(value.key) && (value.key.length === 1) && (value.ctrlKey || value.metaKey)
-    // let backspace = value.key === 'Backspace' && inputValue.length
     let deleteTag = value.key === 'Backspace' && !inputValue.length
     let saveTag = (value.key === 'Enter' || value.key === ' ') && inputValue.length
     let search = value.key === 'Enter' && !inputValue.length && queryParams.length
 
-    // if (newCharacter) {
-    //   // setNewTag(`${newTag}${value.key}`)
-    // }
-
-    // else if (backspace) {
-    //   // setNewTag(newTag.slice(0, -1));
-    // } 
-    
     if (deleteTag) {
       let queryParamsCopy = Array.from(queryParams);
       setQueryParams(queryParamsCopy.slice(0, -1))
     }
     
     else if (saveTag) {
-      // setOptions([...options, {value: newTag, label: newTag}]);
       setQueryParams([...queryParams, inputValue]);
-      // setNewTag('');
       setInputValue('')
     } 
 
@@ -79,16 +63,6 @@ const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handl
     }
 
     return;
-  }
-
-  const handleChange = (value: any) => {
-    // console.log('value is', value)
-    // setNewTag('');
-    setQueryParams(value);
-  }
-
-  const onSearch = (value: any) => {
-    setInputValue(value)
   }
 
 // const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
@@ -124,15 +98,19 @@ const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handl
             options={options}
             onInputKeyDown={onKeyDown}
             value={queryParams}
-            onChange={handleChange}
-            onSearch={onSearch}
-            // searchValue={inputValue || ''}
+            onChange={value => setQueryParams(value)}
+            onSearch={value => setInputValue(value)}
           />
         </Form.Item>
 
           <div className="search-filters">
 
-            <Popover content={content} trigger="click" visible={showFilters} onVisibleChange={handlePopoverChange} >
+            <Popover 
+              content={content} 
+              trigger="click" 
+              visible={showFilters} 
+              onVisibleChange={visible => setShowFilters(visible)} 
+            >
               <FilterOutlined 
                 style={{ fontSize: '150%', cursor: 'pointer'}}
               />
