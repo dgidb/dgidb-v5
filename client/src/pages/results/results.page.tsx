@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
 // components/
-import SearchBar from '../../components/searchbar/SearchBar.component';
+import SearchBar from '../../components/SearchBar/SearchBar.component';
 
 // styles
 import './results.page.scss';
@@ -14,7 +14,15 @@ export const Results: React.FC = () => {
 
 	return (
     <>
-      RESULTS!!!!
+      {data.gene.interactions.map((int: any) => {
+        let intClaims = int?.interactionClaims.map((intClaim: any) => {
+          let name = intClaim?.drugClaim?.drug?.name
+          return(
+            <div>{name}</div>
+          )
+        })
+        return intClaims;
+      })}
     </>
   )
 };

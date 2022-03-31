@@ -1,6 +1,6 @@
 // hooks/dependencies
-import React, { useState, useEffect} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
+import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
 
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
@@ -8,10 +8,16 @@ import 'antd/dist/antd.css';
 import './SearchBar.component.scss';
 import {FilterOutlined} from '@ant-design/icons'
 
-const SearchBar: React.FC = () => {
+type SearchBarProps = {
+  queryParams: string[];
+  setQueryParams: Dispatch<string[]>
+  handleSubmit: () => void;
+};
 
-  const [selected, setSelected] = useState<any>([]);
-  const [newTag, setNewTag] = useState<any>('');
+const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handleSubmit}) => {
+
+  const [inputValue, setInputValue] = useState<any>('');
+  // const [newTag, setNewTag] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);  
   
@@ -40,39 +46,55 @@ const SearchBar: React.FC = () => {
     setShowFilters(visible);
   }
 
-  const clearInputText = () => {
-  }
-
   function onKeyDown (value: any) {
-    
-    let newCharacter = /^[a-zA-Z0-9-_]+$/.test(value.key) && (value.key.length === 1)
-    let backspace = (value.key === 'Backspace')
-    let savingTag = (value.key === 'Enter' || value.key === 'Spacebar') && newTag
 
-    if (newCharacter) {
-      setNewTag(`${newTag}${value.key}`)
+    // let newCharacter = /^[a-zA-Z0-9-_]+$/.test(value.key) && (value.key.length === 1) && (value.ctrlKey || value.metaKey)
+    // let backspace = value.key === 'Backspace' && inputValue.length
+    let deleteTag = value.key === 'Backspace' && !inputValue.length
+    let saveTag = (value.key === 'Enter' || value.key === ' ') && inputValue.length
+    let search = value.key === 'Enter' && !inputValue.length && queryParams.length
+
+    // if (newCharacter) {
+    //   // setNewTag(`${newTag}${value.key}`)
+    // }
+
+    // else if (backspace) {
+    //   // setNewTag(newTag.slice(0, -1));
+    // } 
+    
+    if (deleteTag) {
+      let queryParamsCopy = Array.from(queryParams);
+      setQueryParams(queryParamsCopy.slice(0, -1))
     }
-
-    else if (backspace) {
-      setNewTag(newTag.slice(0, -1));
-    } 
     
-    else if (savingTag) {
-      setOptions([...options, {value: newTag, label: newTag}]);
-      setSelected([...selected, newTag]);
-      clearInputText();
+    else if (saveTag) {
+      // setOptions([...options, {value: newTag, label: newTag}]);
+      setQueryParams([...queryParams, inputValue]);
+      // setNewTag('');
+      setInputValue('')
     } 
+
+    else if (search) {
+      handleSubmit();
+    }
 
     return;
   }
 
   const handleChange = (value: any) => {
-    setNewTag('');
-    setSelected(value);
+    // console.log('value is', value)
+    // setNewTag('');
+    setQueryParams(value);
   }
 
-  // const { data, isLoading, error } = useGetInteractionsByGene('774e749f-4a89-47aa-8226-f12026812b04')
-  const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
+  const onSearch = (value: any) => {
+    setInputValue(value)
+  }
+
+// const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
+// 774e749f-4a89-47aa-8226-f12026812b04
+// 9c907a4f-e65d-447f-9f55-9cf760b8faf5 
+// 774e749f-4a89-47aa-8226-f12026812b04
 
   return (
   <div className="search-container"> 
@@ -95,14 +117,16 @@ const SearchBar: React.FC = () => {
       <div className="search-input">
         <Form.Item>
           <Select 
-            onChange={handleChange}
             size="large" 
             placeholder="" 
             mode="tags"
-            tokenSeparators={[',']}
+            tokenSeparators={[',', ' ']}
             options={options}
             onInputKeyDown={onKeyDown}
-            value={selected}
+            value={queryParams}
+            onChange={handleChange}
+            onSearch={onSearch}
+            // searchValue={inputValue || ''}
           />
         </Form.Item>
 

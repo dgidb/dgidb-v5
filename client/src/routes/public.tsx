@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { Home } from 'pages/home';
-import { Results } from 'pages/results';
+import { Home } from 'pages/Home';
+import { Results } from 'pages/Results';
 import { MainLayout } from 'components/Layout';
 
 
