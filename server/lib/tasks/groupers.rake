@@ -19,6 +19,7 @@ namespace :dgidb do
 
     def delete_drugs
       DrugClaim.update_all('drug_id = NULL')
+      DrugAttribute.delete_all
       Drug.delete_all
     end
 
@@ -32,6 +33,19 @@ namespace :dgidb do
       Gene.delete_all
     end
 
+    def delete_all
+      # clear source data first
+      Source.all.each do |s|
+        s.interaction_attributes = []
+        s.gene_aliases = []
+        s.gene_attributes = []
+      end
+
+      delete_interactions
+      delete_drugs
+      delete_genes
+    end
+
     desc 'run the gene grouper'
     task genes: :environment do
       Utils::Logging.without_sql do
@@ -41,7 +55,9 @@ namespace :dgidb do
     desc 'run the drug grouper'
     task drugs: :environment do
       Utils::Logging.without_sql do
-        Genome::Groupers::DrugGrouper.run
+        # TODO: remove this -- for dev purposes only
+        delete_all
+        Genome::Groupers::DrugGrouper.new.run
       end
     end
     desc 'run the interaction grouper'
@@ -53,16 +69,7 @@ namespace :dgidb do
     desc 'erase all groupings'
     task erase_groups: :environment do
       Utils::Logging.without_sql do
-        # clear source data
-        Source.all.each do |s|
-          s.interaction_attributes = []
-          s.gene_aliases = []
-          s.gene_attributes = []
-        end
-
-        delete_interactions
-        delete_drugs
-        delete_genes
+        delete_all
       end
     end
   end
