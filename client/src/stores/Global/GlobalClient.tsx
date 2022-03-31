@@ -13,7 +13,7 @@ const initialState = {
   searchTerms: [],
 }
 
-const GlobalContext = createContext<{
+const GlobalClientContext = createContext<{
   state: InitialStateType;
   dispatch: Dispatch<SearchTermsActions>;
 }>({
@@ -28,14 +28,14 @@ const mainReducer = (
   searchTerms: searchTermsReducer(searchTerms, action)
 });
 
-const GlobalProvider: React.FC = ({ children }) => {
+const GlobalClient: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   return (
-    <GlobalContext.Provider value={{ state, dispatch }}>
+    <GlobalClientContext.Provider value={{ state, dispatch }}>
       {children}
-    </GlobalContext.Provider>
+    </GlobalClientContext.Provider>
   );
 };
 
-export { GlobalProvider, GlobalContext };
+export { GlobalClient, GlobalClientContext };

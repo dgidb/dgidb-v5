@@ -1,14 +1,17 @@
 // hooks/dependencies
-import React, { useState, useEffect} from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar.component';
 import { useGetInteractionsByGene } from '../../hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // styles
 import { Button } from 'antd';
 import './home.page.scss';
 
 export const Home: React.FC = () => {
+
+  const {state, dispatch} = useContext(GlobalClientContext);
 
   const [queryParams, setQueryParams] = useState<string []>([]);
 
@@ -19,7 +22,7 @@ export const Home: React.FC = () => {
 
   const navigate = useNavigate();
   
-  const { refetch } = useGetInteractionsByGene(queryParams[0] || '');
+  const { refetch } = useGetInteractionsByGene(state.searchTerms[0] || '');
 
   // 774e749f-4a89-47aa-8226-f12026812b04
   // 5c60a645-e13e-4236-8aaf-5879bd44993e

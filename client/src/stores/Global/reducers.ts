@@ -10,7 +10,7 @@ type ActionMap<M extends { [index: string]: any }> = {
 };
 
 export enum ActionTypes {
-  AddTerm = "ADD_TERMS",
+  AddTerm = "ADD_TERM",
   DeleteTerm = "DELETE_TERMS",
   DeleteAllTerms = "DELETE_ALL_TERMS"
 }
