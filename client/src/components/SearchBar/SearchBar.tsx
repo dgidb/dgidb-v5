@@ -7,17 +7,15 @@ import { ActionTypes } from 'stores/Global/reducers';
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
-import './SearchBar.component.scss';
+import './SearchBar.scss';
 import {FilterOutlined} from '@ant-design/icons'
 
 
 type SearchBarProps = {
-  queryParams: string[];
-  setQueryParams: Dispatch<string[]>
   handleSubmit: () => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handleSubmit}) => {
+const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
 
   const {state, dispatch} = useContext(GlobalClientContext);
 

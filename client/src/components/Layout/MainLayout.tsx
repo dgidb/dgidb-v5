@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import './MainLayout.scss';
+import styles from'./MainLayout.module.scss';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -23,22 +23,21 @@ const Header: React.FC = () => {
         </ul>
       </nav>
     </header>
-
   )
 }
 
 const Footer: React.FC = () => {
   return (
-  <div className="home-footer">
+  <footer>
     Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice. 
-  </div>
+  </footer>
   )
 }
 
 export const MainLayout = ({children }: MainLayoutProps) => {
 
   return(
-    <div className="layout-container">
+    <div className={styles["layout-container"]}>
       <Header />
       {children}
       <Footer />
