@@ -18,4 +18,4 @@ export const ButtonAction: React.FC<Props> = ({text, type, disabled, handler}) =
     </div>
   )
 
-}
+} 

@@ -10,7 +10,6 @@ import 'antd/dist/antd.css';
 import './SearchBar.scss';
 import {FilterOutlined} from '@ant-design/icons'
 
-
 type SearchBarProps = {
   handleSubmit: () => void;
 };
@@ -48,7 +47,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
   function onKeyDown (value: any) {
 
     let deleteTag = value.key === 'Backspace' && !inputValue.length
-    let saveTag = (value.key === 'Enter' || value.key === ' ') && inputValue.length
+    let saveTag = (value.key === 'Enter' || value.key === ' ' || value.key === ',') && inputValue.length
     let search = value.key === 'Enter' && !inputValue.length && state.searchTerms.length
 
     if (deleteTag) {

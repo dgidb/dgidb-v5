@@ -2,30 +2,37 @@ import React, { createContext, useReducer, Dispatch } from "react";
 import {
   searchTermsReducer,
   SearchTermsActions,
+  themeSettingsType,
+  themeSettingsReducer,
+  ThemeSettingsActions
 } from "./reducers";
 
-
 type InitialStateType = {
-  searchTerms: string[]
+  searchTerms: string[];
+  themeSettings: themeSettingsType;
 };
 
 const initialState = {
   searchTerms: [],
+  themeSettings: {
+    showDisclaimer: true
+  }
 }
 
 const GlobalClientContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<SearchTermsActions>;
+  dispatch: Dispatch<SearchTermsActions | ThemeSettingsActions>;
 }>({
   state: initialState,
   dispatch: () => null
 });
 
 const mainReducer = (
-  { searchTerms }: InitialStateType,
-  action: SearchTermsActions 
+  { searchTerms, themeSettings }: InitialStateType,
+  action: SearchTermsActions | ThemeSettingsActions
 ) => ({
-  searchTerms: searchTermsReducer(searchTerms, action)
+  searchTerms: searchTermsReducer(searchTerms, action),
+  themeSettings: themeSettingsReducer(themeSettings, action),
 });
 
 const GlobalClient: React.FC = ({ children }) => {
