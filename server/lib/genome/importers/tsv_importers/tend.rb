@@ -5,6 +5,7 @@ module Genome; module Importers; module TsvImporters; module Tend;
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'TEND'
+      @attr_normalizer = Genome::Normalizers::DrugClaimAttribute
     end
 
     def create_claims
@@ -47,7 +48,12 @@ module Genome; module Importers; module TsvImporters; module Tend;
         row['Indication(s)'].split('; ').each do |indication|
           create_drug_claim_attribute(drug_claim, 'Drug Class', indication)
         end
-        create_drug_claim_attribute(drug_claim, 'Year of Approval', row['Year of approval (FDA)'])
+        approval_year = @attr_normalizer.normalize_approval_yr(row['Year of approval (FDA)'])
+        if !approval_year.nil?
+          create_drug_claim_attribute(drug_claim, 'Year of Approval', approval_year)
+        elsif row['Year of approval (FDA)'] == 'not approved by the FDA'
+          create_drug_claim_attribute(drug_claim, 'Regulatory Approval', 'not approved by the FDA')
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_link(interaction_claim, 'Trends in the exploitation of novel drug targets, Table 1', 'https://www.nature.com/articles/nrd3478/tables/1')

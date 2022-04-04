@@ -18,11 +18,12 @@ module Genome
       end
 
       private
-      def self.antineoplastic_drugs
-        drugs_with_attributes = DataModel::Drug.includes(:drug_attributes).where('drug_attributes.value' => antineoplastic_type_names)
-        drugs_from_sources = DataModel::Drug.includes(drug_claims: [:source]).where('sources.source_db_name' => antineoplastic_source_names)
 
-        (drugs_from_sources + drugs_with_attributes).uniq { |d| d.id }
+      def self.antineoplastic_drugs
+        drugs_with_attributes = Drug.includes(:drug_attributes).where('drug_attributes.value' => antineoplastic_type_names)
+        drugs_from_sources = Drug.includes(drug_claims: [:source]).where('sources.source_db_name' => antineoplastic_source_names)
+
+        (drugs_from_sources + drugs_with_attributes).uniq(&:id)
       end
 
       def self.immunotherapy_drugs
@@ -31,12 +32,12 @@ module Genome
 
       def self.immunotherapy_type_names
         [
-            "immunosuppressive agents",
-            "immunosuppressant",
-            "immunomodulatory agents",
-            "immunomodulatory agent",
-            "immunostimulant",
-            "immunosuppressive agent"
+          'immunosuppressive agents',
+          'immunosuppressant',
+          'immunomodulatory agents',
+          'immunomodulatory agent',
+          'immunostimulant',
+          'immunosuppressive agent'
         ]
       end
 

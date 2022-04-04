@@ -6,6 +6,7 @@ module Genome; module Importers; module TsvImporters; module TdgClinicalTrial;
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'TdgClinicalTrial'
+      @attr_normalizer = Genome::Normalizers::DrugClaimAttribute
     end
 
     def create_claims
@@ -46,10 +47,18 @@ module Genome; module Importers; module TsvImporters; module TdgClinicalTrial;
 
         drug_claim = create_drug_claim(row['Drug Name'].upcase, row['Drug Name'].upcase, 'Drug Name')
         row['Indication(s)'].gsub('"', '').split(',').each do |indication|
-          create_drug_claim_attribute(drug_claim, 'Drug Indications', indication)
+          create_drug_claim_attribute(drug_claim, 'Drug Indication', indication)
         end
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['Drug Class'])
-        create_drug_claim_attribute(drug_claim, 'FDA Approval', row['Year of Approval (FDA)'])
+
+        fda_approval_raw = row['Year of Approval (FDA)']
+        fda_approval = @attr_normalizer.normalize_approval(fda_approval_raw)
+        if !fda_approval.nil?
+          create_drug_claim_attribute(drug_claim, 'FDA Approval', fda_approval)
+        else
+          fda_approval_yr = @attr_normalizer.normalize_approval_yr(fda_approval_raw)
+          create_drug_claim_attribute(drug_claim, 'Year of Approval', fda_approval_yr) unless fda_approval_yr.nil?
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_attribute(interaction_claim, 'Trial Name', row['Trial name'])

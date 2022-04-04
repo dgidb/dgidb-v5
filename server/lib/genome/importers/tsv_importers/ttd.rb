@@ -46,7 +46,7 @@ module Genome; module Importers; module TsvImporters; module Ttd;
         create_drug_claim_alias(drug_claim, row['DrugID'], 'TTD Drug ID')
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        if !row['MOA'].nil? and !row['MOA'] == '.'
+        if !row['MOA'].nil? && !row['MOA'] == '.'
           create_interaction_claim_type(interaction_claim, Genome::Normalizers::InteractionClaimType.name_normalzier(row['MOA']))
         end
 

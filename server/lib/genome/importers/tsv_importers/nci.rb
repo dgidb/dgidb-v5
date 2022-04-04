@@ -35,7 +35,7 @@ module Genome; module Importers; module TsvImporters; module Nci;
         gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
         drug = row['Drug'].upcase
         drug_claim = create_drug_claim(drug, drug, 'NCI Drug Name')
-        create_drug_claim_alias(drug_claim, row['NCI drug code'], 'NCI drug code')
+        create_drug_claim_alias(drug_claim, row['NCI drug code'], 'NCI Drug ID')
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_publication(interaction_claim, row['PMID'])
         create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents')

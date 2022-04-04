@@ -75,11 +75,14 @@ module Genome
       end
 
       def create_drug_claim_attribute(drug_claim, name, value)
-        DrugClaimAttribute.where(
-          name: name.strip,
-          value: value.strip,
-          drug_claim_id: drug_claim.id
-        ).first_or_create
+        normalized_value = Genome::Normalizers::DrugClaimAttribute.normalize(name, value)
+        unless normalized_value.nil?
+          DrugClaimAttribute.where(
+            name: name.strip,
+            value: value.strip,
+            drug_claim_id: drug_claim.id
+          ).first_or_create
+        end
       end
 
       def create_interaction_claim(gene_claim, drug_claim)

@@ -1,6 +1,7 @@
 module Genome; module Importers; module TsvImporters; module CancerCommons;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
+
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'CancerCommons'
@@ -31,7 +32,7 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
     end
 
     def create_interaction_claims
-      CSV.foreach(file_path, encoding: 'iso-8859-1:utf-8', :headers => true, :col_sep => "\t") do |row|
+      CSV.foreach(file_path, encoding: 'iso-8859-1:utf-8', headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['primary_gene_name'].upcase, 'Gene Target Symbol')
         create_gene_claim_alias(gene_claim, row['entrez_gene_id'], 'Entrez Gene ID')
         create_gene_claim_attribute(gene_claim, 'CancerCommons Reported Gene Name', row['reported_gene_name'])
@@ -39,8 +40,14 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
         primary_name = row['primary_drug_name'].strip.upcase
         drug_claim = create_drug_claim(primary_name, primary_name, 'Primary Drug Name')
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
-        create_drug_claim_attribute(drug_claim, 'Source Reported Drug Name(s)', row['source_reported_drug_name'])
-        create_drug_claim_attribute(drug_claim, 'Pharmaceutical Developer', row['pharmaceutical_developer'])
+        row['source_reported_drug_name'].split('/').map(&:strip).reject { |name| name == primary_name }.each do |name|
+          create_drug_claim_alias(drug_claim, name, 'CancerCommons Reported Drug Name')
+        end
+        create_drug_claim_attribute(
+          drug_claim,
+          'Pharmaceutical Developer',
+          row['pharmaceutical_developer']
+        )
         create_drug_claim_alias(drug_claim, row['pubchem_drug_name'], 'PubChem Drug Name')
         create_drug_claim_alias(drug_claim, row['pubchem_drug_id'], 'PubChem Drug ID')
         create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
@@ -49,7 +56,9 @@ module Genome; module Importers; module TsvImporters; module CancerCommons;
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['interaction_type'])
         create_interaction_claim_attribute(interaction_claim, 'Reported Cancer Type', row['cancer_type'])
-        create_interaction_claim_link(interaction_claim, 'Source TSV', File.join('data', 'source_tsvs', 'CancerCommons_INTERACTIONS.tsv'))
+        create_interaction_claim_link(
+          interaction_claim, 'Source TSV', File.join('data', 'source_tsvs', 'CancerCommons_INTERACTIONS.tsv')
+        )
       end
     end
   end
