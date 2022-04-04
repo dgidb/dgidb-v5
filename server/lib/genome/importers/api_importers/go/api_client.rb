@@ -16,7 +16,8 @@ module Genome; module Importers; module ApiImporters; module Go;
 
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
-      raise StandardError.new("Request Failed!") unless res.code == '200'
+      raise StandardError, 'Request Failed!' unless res.code == '200'
+
       res.body
     end
 
@@ -27,7 +28,7 @@ module Genome; module Importers; module ApiImporters; module Go;
     def params(start, rows)
       {
         'start' => start,
-        'rows' => rows,
+        'rows' => rows
       }
     end
   end

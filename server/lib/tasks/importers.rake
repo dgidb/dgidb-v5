@@ -1,18 +1,18 @@
 namespace :dgidb do
   namespace :import do
-    # Rake tasks are automatically generated for TSV and API importers.
+    # Rake tasks are automatically generated for file and API importers.
 
-    # TSV importer files should be located in:
-    # lib/genome/importers/tsv_importers/<source>.rb
+    # File importer modules should be located in:
+    # lib/genome/importers/file_importers/<source>.rb
     # They should define an Importer class per the following namespace:
-    # Genome::Importers::TsvImporters::<SourceName>::Importer
+    # Genome::Importers::FileImporters::<SourceName>::Importer
 
     # API importer files should be located in:
     # lib/genome/importers/api_importers/<source_name>/importer.rb
     # They should define an Imoprter class per the following namespace:
     # Genome::Importers::ApiImporters::<SourceName>::Importer
 
-    # TSV importers
+    # File importers
     def handle_group_params(gene_group, drug_group)
       if gene_group == 'true'
         puts 'Running Gene Grouper - this takes awhile!'
@@ -37,29 +37,29 @@ namespace :dgidb do
       puts 'Done.'
     end
 
-    tsv_importer_glob = File.join(Rails.root, 'lib/genome/importers/tsv_importers/*')
-    Dir.glob(tsv_importer_glob).reject { |path| path =~ /guide_to_pharmacology/ }.each do |importer_path|
+    file_importer_glob = File.join(Rails.root, 'lib/genome/importers/file_importers/*')
+    Dir.glob(file_importer_glob).reject { |path| path =~ /guide_to_pharmacology/ }.each do |importer_path|
       importer_filename = File.basename(importer_path, '.rb')
       importer_name = importer_filename.camelize
       send(
         :desc,
-        "Import #{importer_filename} from a provided tsv file. If the source already exists, it will be overwritten!"
+        "Import #{importer_filename} from a provided file. If the source already exists, it will be overwritten!"
       )
       send(
         :task,
         importer_filename,
-        %i[tsv_path gene_group drug_group] => :environment
+        %i[file_path gene_group drug_group] => :environment
       ) do |_, args|
-        args.with_defaults(tsv_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
+        args.with_defaults(file_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
                            drug_group: 'false')
-        importer_class = "Genome::Importers::TsvImporters::#{importer_name}::Importer".constantize
+        importer_class = "Genome::Importers::FileImporters::#{importer_name}::Importer".constantize
         if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
           puts 'Found existing source! Deleting...'
           Utils::Database.delete_source(importer_name)
         end
 
         puts 'Starting import!'
-        importer_instance = importer_class.new(args[:tsv_path])
+        importer_instance = importer_class.new(args[:file_path])
         importer_instance.import
 
         handle_group_params(args[:gene_group], args[:drug_group])
@@ -83,7 +83,7 @@ namespace :dgidb do
         gene_group: false,
         drug_group: false
       )
-      importer_class = 'Genome::Importers::TsvImporters::GuideToPharmacology::Importer'.constantize
+      importer_class = 'Genome::Importers::FileImporters::GuideToPharmacology::Importer'.constantize
       if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
         puts 'Found existing source! Deleting...'
         Utils::Database.delete_source('GuideToPharmacology')
@@ -102,7 +102,7 @@ namespace :dgidb do
       importer_name = importer_dir.camelize
       send(
         :desc,
-        "Import #{importer_name} from a provided tsv file. If the source already exists, it will be overwritten!"
+        "Import #{importer_name} from source API. If the source already exists, it will be overwritten!"
       )
       send(
         :task,
@@ -123,16 +123,5 @@ namespace :dgidb do
         handle_group_params(args[:gene_group], args[:drug_group])
       end
     end
-
-    # desc 'import Entrez gene pathway information from a TSV file'
-    # task :entrez_pathway, [:tsv_path] => :environment do |_t, args|
-    #   Genome::Importers::Entrez::EntrezGenePathwayImporter.new(args[:tsv_path])
-    #     .import!
-    # end
-
-    # desc 'import PubChem synonyms for drug claims'
-    # task :pubchem, [] => :environment do
-    #   Genome::Updaters::GetPubchem.run!
-    # end
   end
 end
