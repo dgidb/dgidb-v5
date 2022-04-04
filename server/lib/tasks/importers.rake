@@ -12,7 +12,6 @@ namespace :dgidb do
     # They should define an Imoprter class per the following namespace:
     # Genome::Importers::ApiImporters::<SourceName>::Importer
 
-    # File importers
     def handle_group_params(gene_group, drug_group)
       if gene_group == 'true'
         puts 'Running Gene Grouper - this takes awhile!'
@@ -37,6 +36,7 @@ namespace :dgidb do
       puts 'Done.'
     end
 
+    # File importers
     file_importer_glob = File.join(Rails.root, 'lib/genome/importers/file_importers/*')
     Dir.glob(file_importer_glob).reject { |path| path =~ /guide_to_pharmacology/ }.each do |importer_path|
       importer_filename = File.basename(importer_path, '.rb')
