@@ -1,8 +1,12 @@
 module Genome; module Importers; module ApiImporters; module Oncokb;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
-    def initialize(source_db_version = Date.today.strftime("%d-%B-%Y"))
-      @new_version = source_db_version
+
+
+    def initialize
+      @api_client = ApiClient.new
+      @new_version = @api_client.data_version
+      puts new_version
       @source_db_name = 'OncoKB'
     end
 
@@ -11,6 +15,7 @@ module Genome; module Importers; module ApiImporters; module Oncokb;
     end
 
     private
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -21,7 +26,7 @@ module Genome; module Importers; module ApiImporters; module Oncokb;
           citation: 'OncoKB: A Precision Oncology Knowledge Base. Chakravarty D, Gao J, Phillips S, et. al. JCO Precision Oncology 2017 :1, 1-16. PMID: 28890946',
           full_name: 'OncoKB: A Precision Oncology Knowledge Base',
           license: 'Restrictive, non-commercial',
-          license_link: 'https://www.oncokb.org/terms',
+          license_link: 'https://www.oncokb.org/terms'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -29,10 +34,9 @@ module Genome; module Importers; module ApiImporters; module Oncokb;
     end
 
     def create_interaction_claims
-      api_client = ApiClient.new
-      genes = get_genes(api_client)
-      drugs = get_drugs(api_client)
-      api_client.variants.each do |variant|
+      genes = retrieve_genes
+      drugs = retrieve_drugs
+      @api_client.variants.each do |variant|
         gene = genes[variant['gene']]
         gene_claim = create_gene_claim(gene['hugoSymbol'], 'OncoKB Gene Name')
         create_gene_claim_aliases(gene_claim, gene)
@@ -63,14 +67,14 @@ module Genome; module Importers; module ApiImporters; module Oncokb;
       end
     end
 
-    def get_genes(api_client)
-      api_client.genes.each_with_object({}) do |g, h|
+    def retrieve_genes
+      @api_client.genes.each_with_object({}) do |g, h|
         h[g['hugoSymbol']] = g
       end
     end
 
-    def get_drugs(api_client)
-      api_client.drugs.each_with_object({}) do |d, h|
+    def retrieve_drugs
+      @api_client.drugs.each_with_object({}) do |d, h|
         h[d['drugName']] = d
       end
     end
