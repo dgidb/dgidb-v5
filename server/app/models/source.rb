@@ -1,6 +1,6 @@
 class Source < ::ActiveRecord::Base
-  #include Genome::Extensions::UUIDPrimaryKey
-  #include Genome::Extensions::HasCacheableQuery
+  include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::HasCacheableQuery
 
   has_many :gene_claims, inverse_of: :source, dependent: :delete_all
   has_many :drug_claims, inverse_of: :source, dependent: :delete_all
@@ -14,22 +14,22 @@ class Source < ::ActiveRecord::Base
   has_and_belongs_to_many :source_types
   belongs_to :source_trust_level, inverse_of: :sources
 
-  #cache_query :source_names_with_interactions, :all_source_names_with_interactions
-  #cache_query :potentially_druggable_source_names, :potentially_druggable_source_names
-  #cache_query :source_names_with_gene_claims, :source_names_with_gene_claims
-  #cache_query :source_names_with_drug_claims, :source_names_with_drug_claims
-  #cache_query :source_names_with_category_information, :source_names_with_category_information
-  #cache_query :all_sources, :all_sources
+  cache_query :source_names_with_interactions, :all_source_names_with_interactions
+  cache_query :potentially_druggable_source_names, :potentially_druggable_source_names
+  cache_query :source_names_with_gene_claims, :source_names_with_gene_claims
+  cache_query :source_names_with_drug_claims, :source_names_with_drug_claims
+  cache_query :source_names_with_category_information, :source_names_with_category_information
+  cache_query :all_sources, :all_sources
 
   def self.all_sources
     all.sort_by { |s| s.full_name.upcase }
   end
 
   def self.potentially_druggable_source_names
-    DataModel::SourceType.find(DataModel::SourceType.POTENTIALLY_DRUGGABLE)
-      .sources
-      .pluck(:source_db_name)
-      .sort
+    SourceType.find(SourceType.POTENTIALLY_DRUGGABLE)
+              .sources
+              .pluck(:source_db_name)
+              .sort
   end
 
   def self.cancer_only_interaction_source_names
@@ -37,7 +37,7 @@ class Source < ::ActiveRecord::Base
   end
 
   def self.disease_agnostic_interaction_source_names
-    ["ChemblInteractions", "DrugBank", "DTC", "FDA", "GuideToPharmacology", "PharmGKB", "TdgClinicalTrial", "TEND", "TTD"]
+    %w[ChemblInteractions DrugBank DTC FDA GuideToPharmacology PharmGKB TdgClinicalTrial TEND TTD]
   end
 
   def self.cancer_only_category_source_names
@@ -45,14 +45,14 @@ class Source < ::ActiveRecord::Base
   end
 
   def self.disease_agnostic_category_source_names
-    ["BaderLabGenes", "dGene", "GO", "GuideToPharmacology", "HingoraniCasas", "HopkinsGroom", "HumanProteinAtlas", "IDG", "Pharos", "RussLampel"]
+    %w[BaderLabGenes dGene GO GuideToPharmacology HingoraniCasas HopkinsGroom HumanProteinAtlas IDG Pharos RussLampel]
   end
 
   def self.source_names_with_interactions
-    DataModel::SourceType.find(DataModel::SourceType.INTERACTION)
-      .sources
-      .pluck(:source_db_name)
-      .sort
+    SourceType.find(SourceType.INTERACTION)
+              .sources
+              .pluck(:source_db_name)
+              .sort
   end
 
   def self.source_names_with_category_information
@@ -79,5 +79,4 @@ class Source < ::ActiveRecord::Base
   def self.for_show
     eager_load(:source_types, :source_trust_level)
   end
-
 end

@@ -1,5 +1,5 @@
 class DrugClaimAlias < ::ActiveRecord::Base
-  # include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::UUIDPrimaryKey
   belongs_to :drug_claim, inverse_of: :drug_claim_aliases
 
   def self.for_search

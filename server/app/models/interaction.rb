@@ -1,5 +1,5 @@
 class Interaction < ActiveRecord::Base
-  #include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::UUIDPrimaryKey
 
   has_many :interaction_claims
   belongs_to :gene
