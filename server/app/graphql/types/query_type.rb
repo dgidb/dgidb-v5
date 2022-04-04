@@ -52,6 +52,15 @@ module Types
       Gene.find_by(name: name)
     end
 
+    field :genes, [Types::GeneType], null: false do
+      description "A gene"
+      argument :names, [String], required: true
+    end
+
+    def genes(names: )
+      Gene.where(names: names)
+    end
+
     field :gene_alias, Types::GeneAliasType, null: true do
       description "Alias for a gene"
       argument :id, String, required: true
