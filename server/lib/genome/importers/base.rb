@@ -94,10 +94,11 @@ module Genome
         claim_type = InteractionClaimType.find_by(
           type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
         )
-        if claim_type.nil?
+        if claim_type.nil?;
           raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."
-        else
-          interaction_claim.interaction_claim_types << claim_type unless interaction_claim.interaction_claim_types.include? claim_type
+        end
+        unless interaction_claim.interaction_claim_types.include? claim_type
+          interaction_claim.interaction_claim_types << claim_type
         end
       end
 
@@ -112,9 +113,7 @@ module Genome
         uri = URI.parse("https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?ids=#{pmcid}&format=json&tool=DGIdb&email=help@dgidb.org")
         response_body = PMID.make_get_request(uri)
         pmid = JSON.parse(response_body)['records'][0]['pmid']
-        if !pmid.nil?
-          create_interaction_claim_publication(interaction_claim, pmid)
-        end
+        create_interaction_claim_publication(interaction_claim, pmid) unless pmid.nil?
       end
 
       def backfill_publication_information
