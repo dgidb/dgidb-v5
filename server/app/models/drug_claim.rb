@@ -1,7 +1,7 @@
 class DrugClaim < ::ActiveRecord::Base
   include Genome::Extensions::UUIDPrimaryKey
 
-  belongs_to :drug
+  belongs_to :drug, optional: true
   has_many :drug_claim_aliases, inverse_of: :drug_claim, dependent: :delete_all
   has_many :interaction_claims, inverse_of: :drug_claim
   has_many :gene_claims, through: :interaction_claims
@@ -68,7 +68,7 @@ class DrugClaim < ::ActiveRecord::Base
       base_url
     when 'GuideToPharmacology'
       "https://www.guidetopharmacology.org/GRAC/LigandTextSearchForward?searchString=#{name}"
-    when 'ChemblDrugs'
+    when 'Chembl'
       "https://www.ebi.ac.uk/chembl/compound_report_card/#{name.gsub('chembl:', '')}"
     when 'JAX-CKB'
       'https://ckb.jax.org/'

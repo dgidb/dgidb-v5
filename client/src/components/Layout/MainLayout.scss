@@ -1,0 +1,48 @@
+@import 'utils/styles/variables';
+
+html, body {
+  background-color: white;
+  margin: 0;
+}
+
+.layout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+header nav {
+  background-color: $primary-bg;
+  color: white;
+  position: relative;
+  height: 80px;
+
+  ul {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0 60px;
+    padding: 12px 0;
+
+    li {
+      margin-left: 60px;
+      font-family: 'Work Sans';
+      font-size: 18px;
+    }
+  }
+}
+
+.home-footer {
+  background-color: #480a77;
+  position: fixed;
+  bottom: 0;
+  color: white;
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-size: 20px;
+  font-family: 'Work Sans';
+  font-weight: 300;
+}

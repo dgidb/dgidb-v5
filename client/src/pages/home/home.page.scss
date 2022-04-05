@@ -1,16 +1,15 @@
-@import '../../common/styles/variables.scss';
+@import 'utils/styles/variables.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
 
 .home-page-container {
 	font-family: 'Work Sans';
-	margin: 0 auto;
-	padding-left: 20px;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: 100%;
 	background-color: $primary-bg;
 	color: white;
 
@@ -58,17 +57,12 @@
 					position: absolute;
 					top: 1%;
 					right: .1%;
-					bottom: 40%;
-					// float: right;
-					// background-color: red;
+					bottom: 40%;;
 					z-index: 1;
 				}
 			}
 
 			.search-dropdown {
-				// position: absolute;
-				// top: 0;
-				// z-index: 1;
 
 				.ant-select-selector {
 					background-color: $primary-bg;
@@ -94,8 +88,9 @@
 
 	.home-footer {
 		background-color: #480a77;
-		position: absolute;
-		bottom: 0;
+		// position: absolute;
+		// bottom: 0;
+		margin-top: auto;
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -124,3 +119,13 @@
 // .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
 // 	height: 10px;
 // }
+
+@media screen and (max-width: $medium-screen) {
+	.home-footer {
+		font-size: 15px !important;
+	}
+}
+
+@media screen and (max-width: $small-screen) {
+
+}

@@ -13,18 +13,20 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "@types/react-router-dom": "^5.1.8",
+    "@types/react-router-dom": "^5.3.3",
     "@types/react-tag-autocomplete": "^6.1.1",
     "antd": "^4.16.13",
     "cors": "^2.8.5",
+    "create-react-app": "^5.0.0",
     "graphql": "^15.5.1",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
-    "react": "^17.0.2",
+    "js-yaml": "^4.1.0",
+    "react": "^18.0.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.14.1",
     "react-query": "^3.34.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.2.2",
     "react-scripts": "4.0.3",
     "react-tag-autocomplete": "^6.3.0",
     "sass": "^1.38.1",
@@ -34,14 +36,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "test": "jest",
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
+    "format": "yarn run prettier -- --write"
   },
   "browserslist": {
     "production": [
@@ -54,5 +53,37 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@ef-carbon/tspm": "^2.2.5",
+    "eslint-import-resolver-babel-module": "^5.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-cypress": "^2.11.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest-dom": "^3.9.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-testing-library": "^4.6.0",
+    "husky": "^6.0.0",
+    "prettier": "^2.3.0",
+    "tsconfig-paths": "^3.14.1",
+    "tsconfig-paths-webpack-plugin": "^3.5.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.+)": "<rootDir>/src/$1"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.stories.{js,jsx,ts,tsx}",
+      "!src/test/**/*.{js,jsx,ts,tsx}"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   }
 }

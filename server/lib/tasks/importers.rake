@@ -1,11 +1,11 @@
 namespace :dgidb do
   namespace :import do
-    # Rake tasks are automatically generated for TSV and API importers.
+    # Rake tasks are automatically generated for file and API importers.
 
-    # TSV importer files should be located in:
-    # lib/genome/importers/tsv_importers/<source>.rb
+    # File importer modules should be located in:
+    # lib/genome/importers/file_importers/<source>.rb
     # They should define an Importer class per the following namespace:
-    # Genome::Importers::TsvImporters::<SourceName>::Importer
+    # Genome::Importers::FileImporters::<SourceName>::Importer
 
     # API importer files should be located in:
     # lib/genome/importers/api_importers/<source_name>/importer.rb
@@ -36,16 +36,15 @@ namespace :dgidb do
       puts 'Done.'
     end
 
-    def tsv_importer_names
-      tsv_importer_glob = File.join(Rails.root, 'lib/genome/importers/tsv_importers/*')
-      Dir.glob(tsv_importer_glob).map { |path| File.basename(path, '.rb') }
+    def file_importer_names
+      file_importer_glob = File.join(Rails.root, 'lib/genome/importers/file_importers/*')
+      Dir.glob(file_importer_glob).map { |path| File.basename(path, '.rb') }
     end
 
-    def run_tsv_import(importer_filename, args)
+    def run_file_import(importer_filename, args)
       importer_name = importer_filename.camelize
-      args.with_defaults(tsv_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
-                         drug_group: 'false')
-      importer_class = "Genome::Importers::TsvImporters::#{importer_name}::Importer".constantize
+      args.with_defaults(file_path: nil, gene_group: 'false', drug_group: 'false')
+      importer_class = "Genome::Importers::FileImporters::#{importer_name}::Importer".constantize
       puts "Running #{importer_name} importer..."
       if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
         puts 'Found existing source! Deleting...'
@@ -53,7 +52,7 @@ namespace :dgidb do
       end
 
       puts 'Starting import!'
-      importer_instance = importer_class.new(args[:tsv_path])
+      importer_instance = importer_class.new(args[:file_path])
       importer_instance.import
 
       handle_group_params(args[:gene_group], args[:drug_group])
@@ -105,16 +104,5 @@ namespace :dgidb do
         run_api_import(importer_filename, args)
       end
     end
-
-    # desc 'import Entrez gene pathway information from a TSV file'
-    # task :entrez_pathway, [:tsv_path] => :environment do |_t, args|
-    #   Genome::Importers::Entrez::EntrezGenePathwayImporter.new(args[:tsv_path])
-    #     .import!
-    # end
-
-    # desc 'import PubChem synonyms for drug claims'
-    # task :pubchem, [] => :environment do
-    #   Genome::Updaters::GetPubchem.run!
-    # end
   end
 end

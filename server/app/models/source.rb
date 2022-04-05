@@ -12,7 +12,7 @@ class Source < ::ActiveRecord::Base
   has_and_belongs_to_many :gene_attributes
   has_and_belongs_to_many :interaction_attributes
   has_and_belongs_to_many :source_types
-  belongs_to :source_trust_level, inverse_of: :sources
+  belongs_to :source_trust_level, inverse_of: :sources, optional: true
 
   cache_query :source_names_with_interactions, :all_source_names_with_interactions
   cache_query :potentially_druggable_source_names, :potentially_druggable_source_names
