@@ -7,7 +7,7 @@ class InteractionClaim < ::ActiveRecord::Base
   belongs_to :drug_claim, inverse_of: :interaction_claims
   belongs_to :source, inverse_of: :interaction_claims, counter_cache: true
   has_and_belongs_to_many :interaction_claim_types, :join_table => 'interaction_claim_types_interaction_claims'
-  belongs_to :interaction
+  belongs_to :interaction, optional: true
   has_and_belongs_to_many :publications
 
   def self.for_show
