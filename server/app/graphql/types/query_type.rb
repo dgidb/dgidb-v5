@@ -54,11 +54,11 @@ module Types
 
     field :genes, [Types::GeneType], null: false do
       description "A gene"
-      argument :names, [String], required: true
+      argument :name, [String], required: true
     end
 
-    def genes(names: )
-      Gene.where(names: names)
+    def genes(name: )
+      Gene.where(name: name)
     end
 
     field :gene_alias, Types::GeneAliasType, null: true do
