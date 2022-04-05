@@ -1,7 +1,7 @@
 class GeneClaim < ::ActiveRecord::Base
   include Genome::Extensions::UUIDPrimaryKey
-  belongs_to :gene
-  has_and_belongs_to_many :gene_claim_categories, :join_table => 'gene_claim_categories_gene_claims'
+  belongs_to :gene, optional: true
+  has_and_belongs_to_many :gene_claim_categories, join_table: 'gene_claim_categories_gene_claims'
   has_many :gene_claim_aliases, inverse_of: :gene_claim, dependent: :delete_all
   has_many :gene_claim_attributes, inverse_of: :gene_claim, dependent: :delete_all
   belongs_to :source, inverse_of: :gene_claims, counter_cache: true
@@ -9,11 +9,22 @@ class GeneClaim < ::ActiveRecord::Base
   has_many :drug_claims, through: :interaction_claims
 
   def self.for_search
-    eager_load(gene: [gene_claims: {interaction_claims: { source: [], drug_claim: [:source], interaction_claim_types: [], gene_claim: [gene: [gene_claims: [:gene_claim_categories]]]}}])
+    eager_load(
+      gene: [
+        gene_claims: {
+          interaction_claims: {
+            source: [],
+            drug_claim: [:source],
+            interaction_claim_types: [],
+            gene_claim: [gene: [gene_claims: [:gene_claim_categories]]]
+          }
+        }
+      ]
+    )
   end
 
   def self.for_gene_categories
-    eager_load(gene: [gene_claims: [:source, :gene_claim_categories]])
+    eager_load(gene: [gene_claims: %i[source gene_claim_categories]])
   end
 
   def self.for_show
@@ -67,7 +78,7 @@ class GeneClaim < ::ActiveRecord::Base
       'https://www.ebi.ac.uk/chembl/g/#search_results/all/query=' + name
     when 'Pharos'
       'https://pharos.nih.gov/targets?q=' + name
-    when 'GuideToPharmacologyInteractions', 'GuideToPharmacologyGenes'
+    when 'GuideToPharmacology'
       'http://www.guidetopharmacology.org/GRAC/ObjectDisplayForward?objectId=' + name
     when 'MyCancerGenome', 'CancerCommons', 'ClearityFoundationBiomarkers', 'ClearityFoundationClinicalTrial',
       'MyCancerGenomeClinicalTrial', 'MskImpact', 'CarisMolecularIntelligence', 'CGI', 'FDA', 'NCI',
