@@ -213,7 +213,7 @@ interaction_claim_types.each do |claim_type|
     directionality: claim_type[:directionality],
     definition: claim_type[:definition],
     reference: claim_type[:reference]
-  ).first_or_create!
+  ).first_or_create
 end
 
 trust_levels = ['Expert curated', 'Non-curated']
