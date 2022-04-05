@@ -8,7 +8,6 @@ module Genome; module Importers; module FileImporters; module Cosmic
     end
 
     def create_claims
-      create_new_source
       create_interaction_claims
     end
 
