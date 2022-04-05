@@ -70,7 +70,7 @@ namespace :dgidb do
     gtop_name = 'guide_to_pharmacology'
     send(
       :desc,
-      'Import GuideToPharmacology from provided TSV files. If the source already exists, it will be overwritten!'
+      'Import GuideToPharmacology from provided CSV files. If the source already exists, it will be overwritten!'
     )
     send(
       :task,
@@ -83,7 +83,7 @@ namespace :dgidb do
         gene_group: false,
         drug_group: false
       )
-      importer_class = 'Genome::Importers::FileImporters::GuideToPharmacology::Importer'.constantize
+      importer_class = Genome::Importers::FileImporters::GuideToPharmacology::Importer
       if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
         puts 'Found existing source! Deleting...'
         Utils::Database.delete_source('GuideToPharmacology')
