@@ -4,7 +4,7 @@ module Genome; module Importers; module FileImporters; module MskImpact;
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'MskImpact'
     end
 
