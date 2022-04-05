@@ -103,8 +103,6 @@ module Genome
           'cytotoxic'
         when 'cleavage','degradation'
           'cleavage'
-        else
-          val
         end
       end
 

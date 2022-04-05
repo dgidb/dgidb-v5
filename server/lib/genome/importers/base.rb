@@ -46,9 +46,11 @@ module Genome
       end
 
       def create_gene_claim_category(gene_claim, category)
-        gene_category = GeneClaimCategory.find_by(name: category)
+        normalized_category = Genome::Normalizers::GeneClaimType.name_normalizer(type)
+        # gene_category = GeneClaimCategory.find_by(name: category)
         if gene_category.nil?
-          raise StandardError, "GeneClaimCategory with name #{category} does not exist. If this is a valid category, please create its database entry manually before running the importer."
+          gene_category = GeneClaimCategory.where(type: category).first_or_create
+          # raise StandardError, "GeneClaimCategory with name #{category} does not exist. If this is a valid category, please create its database entry manually before running the importer."
         else
           gene_claim.gene_claim_categories << gene_category unless gene_claim.gene_claim_categories.include? gene_category
         end
@@ -91,23 +93,17 @@ module Genome
       end
 
       def create_interaction_claim_type(interaction_claim, type)
-      #   unless InteractionClaimType.find_by(type: Genome::Normalizers::InteractionClaimType.name_normalizer(type))
-      #     # DO NOTHING STATEMENT
-      #   end
-      #   else
-      #     unless interaction_claim.interaction_claim_types.include? type
-      #       interaction_claim.interaction_claim_types << type
-      #     end
-      #   end
-      # end
-        claim_type = InteractionClaimType.find_by(
-          type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
-        )
-        if claim_type.nil?;
-          InteractionClaimType.where(type: type).first_or_create
-          claim_type = type
+
+        normalized_type = Genome::Normalizers::InteractionClaimType.name_normalizer(type)
+        # claim_type = InteractionClaimType.find_by(
+        #   type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
+        # )
+        if normalized_type.nil?;
+          # TODO: Log interaction claims with an invalid type
+          return nil
           # raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."
         end
+        # claim_type = InteractionClaimType.where(type: normalized_type).first_or_create
         unless interaction_claim.interaction_claim_types.include? claim_type
           interaction_claim.interaction_claim_types << claim_type
         end
