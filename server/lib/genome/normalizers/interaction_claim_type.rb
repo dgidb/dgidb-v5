@@ -69,13 +69,20 @@ module Genome
         val = val.downcase.strip
 
         case val
-        when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer', 'diffusing substance', 'vesciant', 'gene replacement'
+        when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer',
+          'diffusing substance', 'vesciant', 'gene replacement'
           'other/unknown'
-        when 'neutralizer', 'reducer', 'metabolizer', 'acetylation', 'chelator', 'cross-linking/alkylation', 'regulator'
+        when 'neutralizer', 'reducer', 'metabolizer', 'acetylation', 'chelator', 'cross-linking/alkylation',
+          'regulator'
           'modulator'
-        when 'positive allosteric modulator', 'regulator (upregulator)', 'enhancer', 'modulator (allosteric modulator)'
+        when 'positive allosteric modulator', 'regulator (upregulator)', 'enhancer',
+          'modulator (allosteric modulator)'
           'positive modulator'
-        when 'inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker', 'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor', 'aggregation inhibitor', 'inhibition of synthesis', "translocation inhibitor", 'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors', 'anti-angiogenic.', 'allosteric inhibitor'
+        when 'inhibitor', 'inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker',
+          'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor',
+          'aggregation inhibitor', 'inhibition of synthesis', 'translocation inhibitor',
+          'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors',
+          'anti-angiogenic.', 'allosteric inhibitor'
           'inhibitor'
         when 'channel blocker', 'blocker (channel blocker)', 'nucleotide exchange blocker'
           'blocker'
@@ -83,9 +90,12 @@ module Genome
           'antisense oligonucleotide'
         when 'binding', 'binder (minor groove binder)', 'breaker'
           'binder'
-        when 'incorporation into and destabilization', 'intercalation', 'desensitize the target', 'disrupter', 'intercalator', 'downregulator'
+        when 'incorporation into and destabilization', 'intercalation', 'desensitize the target',
+          'disrupter', 'intercalator', 'downregulator'
           'negative modulator'
-        when 'inhibitory immune response', 'car-t-cell-therapy(dual specific)', 'immunomodulator', 'immunomodulator (immunostimulant)', 'immune response agent', 'car-t-cell-therapy', 'immune response agent', 'immunostimulant', 'immunostimulator', 'Radioimmunotherapy'
+        when 'inhibitory immune response', 'car-t-cell-therapy(dual specific)', 'immunomodulator',
+          'immunomodulator (immunostimulant)', 'immune response agent', 'car-t-cell-therapy',
+          'immunostimulant', 'immunostimulator', 'Radioimmunotherapy'
           'immunotherapy'
         when 'component of'
           'product of'
