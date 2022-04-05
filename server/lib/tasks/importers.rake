@@ -54,13 +54,41 @@ namespace :dgidb do
       puts 'Starting import!'
       importer_instance = importer_class.new(args[:file_path])
       importer_instance.import
-
       handle_group_params(args[:gene_group], args[:drug_group])
     end
 
     def api_importer_names
       api_importer_glob = File.join(Rails.root, 'lib/genome/importers/api_importers/*/')
       Dir.glob(api_importer_glob).map { |path| File.basename(path) }
+    end
+
+    # Guide to Pharmacology is a special case because it needs two input files
+    gtop_name = 'guide_to_pharmacology'
+    send(
+      :desc,
+      'Import GuideToPharmacology from provided CSV files. If the source already exists, it will be overwritten!'
+    )
+    send(
+      :task,
+      gtop_name,
+      %i[interaction_file_path gene_file_path gene_group drug_group] => :environment
+    ) do |_, args|
+      args.with_defaults(
+        interaction_file_path: 'lib/data/guide_to_pharmacology/interactions.csv',
+        gene_file_path: 'lib/data/guide_to_pharmacology/targets_and_families.csv',
+        gene_group: false,
+        drug_group: false
+      )
+      importer_class = Genome::Importers::FileImporters::GuideToPharmacology::Importer
+      if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
+        puts 'Found existing source! Deleting...'
+        Utils::Database.delete_source('GuideToPharmacology')
+      end
+      puts 'Starting import!'
+      importer_instance = importer_class.new(args[:interaction_file_path], args[:gene_file_path])
+      importer_instance.import
+
+      handle_group_params(args[:gene_group], args[:drug_group])
     end
 
     def run_api_import(importer_filename, args)
@@ -82,18 +110,18 @@ namespace :dgidb do
 
     send(:desc, 'Run all importers')
     send(:task, 'all', %i[gene_group drug_group] => :environment) do |_, args|
-      tsv_importer_names.each do |name|
-        run_tsv_import(name, args.dup)
+      file_importer_names.each do |name|
+        run_file_import(name, args.dup)
       end
       api_importer_names.each do |name|
         run_api_import(name, args.dup)
       end
     end
 
-    tsv_importer_names.each do |importer_filename|
-      send(:desc, "Import #{importer_filename.camelize} from a provided tsv file. If the source already exists, it will be overwritten!")
-      send(:task, importer_filename, %i[tsv_path gene_group drug_group] => :environment) do |_, args|
-        run_tsv_import(importer_filename, args)
+    file_importer_names.each do |importer_filename|
+      send(:desc, "Import #{importer_filename.camelize} from a provided file. If the source already exists, it will be overwritten!")
+      send(:task, importer_filename, %i[file_path gene_group drug_group] => :environment) do |_, args|
+        run_file_import(importer_filename, args)
       end
     end
 
