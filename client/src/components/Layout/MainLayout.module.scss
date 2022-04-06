@@ -1,8 +1,9 @@
 @import 'utils/styles/variables';
 
 html, body {
-  background-color: white;
+  background-color: $primary-bg;
   margin: 0;
+  font-family: 'Lato';
 }
 
 .layout-container {
@@ -28,12 +29,13 @@ header nav {
       margin-left: 60px;
       font-family: 'Work Sans';
       font-size: 18px;
+      cursor: pointer;
     }
   }
 }
 
-.home-footer {
-  background-color: #480a77;
+footer {
+  background-color: $primary-purple;
   position: fixed;
   bottom: 0;
   color: white;

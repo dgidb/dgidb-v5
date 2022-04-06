@@ -1,20 +1,22 @@
 // hooks/dependencies
-import React, { useState, useEffect, Dispatch } from 'react';
-import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
+import React, { useState, useEffect, useContext, Dispatch } from 'react';
+import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ActionTypes } from 'stores/Global/reducers';
 
 // styles, icons
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
-import './SearchBar.component.scss';
+import './SearchBar.scss';
 import {FilterOutlined} from '@ant-design/icons'
 
 type SearchBarProps = {
-  queryParams: string[];
-  setQueryParams: Dispatch<string[]>
   handleSubmit: () => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handleSubmit}) => {
+const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
+
+  const {state, dispatch} = useContext(GlobalClientContext);
 
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
@@ -45,31 +47,25 @@ const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handl
   function onKeyDown (value: any) {
 
     let deleteTag = value.key === 'Backspace' && !inputValue.length
-    let saveTag = (value.key === 'Enter' || value.key === ' ') && inputValue.length
-    let search = value.key === 'Enter' && !inputValue.length && queryParams.length
+    let saveTag = (value.key === 'Enter' || value.key === ' ' || value.key === ',') && inputValue.length
+    let search = value.key === 'Enter' && !inputValue.length && state.searchTerms.length
 
     if (deleteTag) {
-      let queryParamsCopy = Array.from(queryParams);
-      setQueryParams(queryParamsCopy.slice(0, -1))
+      dispatch({type: ActionTypes.DeleteTerm})
     }
     
     else if (saveTag) {
-      setQueryParams([...queryParams, inputValue]);
+      dispatch({type: ActionTypes.AddTerm, payload: inputValue})
       setInputValue('')
     } 
-
+ 
     else if (search) {
       handleSubmit();
     }
 
     return;
   }
-
-// const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
-// 774e749f-4a89-47aa-8226-f12026812b04
-// 9c907a4f-e65d-447f-9f55-9cf760b8faf5 
-// 774e749f-4a89-47aa-8226-f12026812b04
-
+  
   return (
   <div className="search-container"> 
     <div className="search-subcontainer">
@@ -97,8 +93,8 @@ const SearchBar: React.FC<SearchBarProps> = ({queryParams, setQueryParams, handl
             tokenSeparators={[',', ' ']}
             options={options}
             onInputKeyDown={onKeyDown}
-            value={queryParams}
-            onChange={value => setQueryParams(value)}
+            value={state.searchTerms}
+            // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
           />
         </Form.Item>
