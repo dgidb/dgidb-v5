@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect, useContext, Dispatch } from 'react';
-import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -65,12 +65,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
 
     return;
   }
-
-// const { data: dataBatch, isLoading: isLoadingBatch, error: errorBatch } = useGetInteractionsByGenes('774e749f-4a89-47aa-8226-f12026812b04', '9c907a4f-e65d-447f-9f55-9cf760b8faf5', '774e749f-4a89-47aa-8226-f12026812b04')
-// 774e749f-4a89-47aa-8226-f12026812b04
-// 9c907a4f-e65d-447f-9f55-9cf760b8faf5 
-// 774e749f-4a89-47aa-8226-f12026812b04
-
+  
   return (
   <div className="search-container"> 
     <div className="search-subcontainer">

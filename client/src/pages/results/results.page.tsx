@@ -1,36 +1,88 @@
 // hooks/dependencies
-import React, { useState, useEffect } from 'react';
-import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
+import React, {useState, useEffect, useContext} from 'react';
+import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ColumnsType } from 'antd/es/table';
 // components/
 import SearchBar from '../../components/SearchBar/SearchBar';
 
 // styles
 import './results.page.scss';
-import { Skeleton } from 'antd';
+import { Skeleton, Table } from 'antd';
 
 export const Results: React.FC = () => {
 
-	const { data, error, isLoading, isError, isFetching } = useGetInteractionsByGene('5c60a645-e13e-4236-8aaf-5879bd44993e');
+  const {state} = useContext(GlobalClientContext);
 
-  if (error) {
-    return (
-      <div>
-        Error
-      </div>
-    )
+  const [tableData, setTableData] = useState<any>([]);
+
+	const { data, error, isError, isLoading, refetch} = useGetInteractionsByGenes(state.searchTerms);
+
+  useEffect(() => {
+    refetch();
+  }, [state.searchTerms])
+  
+  let genes = data?.genes;
+
+  useEffect(() => {
+    let interactionData: any = [];
+    genes.forEach((gene: any) => {
+      gene.interactions.forEach((int: any) => {
+        interactionData.push(int)
+      })
+    })
+    setTableData([...interactionData])
+  }, [genes])
+    
+
+  if (isLoading) {
+    return <div className="results-page-container">loading...</div>
   }
 
-	return (
-    <Skeleton loading={isLoading}>
-      {data?.gene.interactions.map((int: any) => {
-        let intClaims = int?.interactionClaims.map((intClaim: any) => {
-          let name = intClaim?.drugClaim?.drug?.name
-          return(
-            <div>{name}</div>
-          )
-        })
-        return intClaims;
-      })}
-    </Skeleton>
+  if (isError) {
+    return <div className="results-page-container">Error: Interaction not found!</div>
+  }
+
+
+  const columns: ColumnsType<any> = [
+    {
+      title: 'Gene',
+      dataIndex: ['gene', 'name'],
+      render: (text: any, record: any) => (
+        <span>{record?.gene?.name}</span>
+      )
+    },
+    {
+      title: 'Drug',
+      dataIndex: ['drug', 'name'],
+      render: (text: any, record: any) => (
+        <span>{record?.drug?.name}</span>
+      )
+    },
+    {
+      title: 'Approved',
+      dataIndex: ['drug', 'approved'],
+      render: (text: any, record: any) => (
+        <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
+      )
+    },
+    {
+      title: 'Interaction Score',
+      dataIndex: ['interactionScore'],
+      render: (text: any, record: any) => (
+        <span>{record?.interactionScore}</span>
+      )
+    },
+  ]
+  return (
+    <div className="results-page-container">
+      <Table 
+        dataSource={tableData}
+        columns={columns}
+        rowKey={(record) => record.id}
+        pagination={{ pageSize: 20}}
+      />
+    </div>
   )
+
 };

@@ -1,7 +1,7 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/SearchBar/SearchBar';
-import { useGetInteractionsByGene } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
@@ -14,17 +14,16 @@ export const Home: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
 
   const handleSubmit = async () => {
-    refetch();
     navigate('/results');
   }; 
 
   const navigate = useNavigate();
   
-  // TODO: batch query
-  const { refetch } = useGetInteractionsByGene(state.searchTerms[0] || '');
+  const { refetch } = useGetInteractionsByGenes(state.searchTerms);
 
-  // 774e749f-4a89-47aa-8226-f12026812b04
-  // 5c60a645-e13e-4236-8aaf-5879bd44993e
+  useEffect(() => {
+    refetch();
+  }, [state.searchTerms])
 
   return (
     <div className={styles["home-page-container"]} >
