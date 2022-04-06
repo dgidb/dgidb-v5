@@ -3,7 +3,7 @@ module Genome; module Importers; module FileImporters; module Dtc;
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'DTC'
     end
 
@@ -12,6 +12,10 @@ module Genome; module Importers; module FileImporters; module Dtc;
     end
 
     private
+
+    def default_filetype
+      'csv'
+    end
 
     def create_new_source
       @source ||= Source.create(

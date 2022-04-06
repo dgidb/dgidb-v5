@@ -9,6 +9,21 @@ module Genome
         create_claims
       end
 
+      def default_filetype
+        'tsv'
+      end
+
+      def default_filename
+        'claims'
+      end
+
+      def handle_file_location(file_path)
+        return file_path unless file_path.nil?
+
+        dir_name = self.class.name.split('::')[-2].underscore
+        "lib/data/#{dir_name}/#{default_filename}.#{default_filetype}"
+      end
+
       def remove_existing_source
         Utils::Database.delete_source(source_db_name)
       end
