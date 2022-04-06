@@ -55,7 +55,7 @@ namespace :dgidb do
     desc 'run the drug grouper'
     task drugs: :environment do
       Utils::Logging.without_sql do
-        # TODO: remove this -- for dev purposes only
+        # TODO: remove the delete call -- for dev purposes only
         delete_all
         Genome::Groupers::DrugGrouper.new.run
       end

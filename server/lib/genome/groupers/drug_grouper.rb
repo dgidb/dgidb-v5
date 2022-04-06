@@ -8,11 +8,11 @@ module Genome
         @normalizer_source = Source.where(
           source_db_name: 'VICCTherapyNormalizer',
           source_db_version: 'TBD', # TODO
-          base_url: 'https://normalize.cancervariants.org/therapy/',
+          base_url: 'https://normalize.cancervariants.org/therapy/normalize?q=',
           site_url: 'https://normalize.cancervariants.org/therapy/', # TODO
           citation: '', # TODO
           source_trust_level_id: SourceTrustLevel.NON_CURATED,
-          full_name: 'The VICC Therapy Normalizer',
+          full_name: 'VICC Therapy Normalizer',
           license: 'custom', # TODO
           license_link: 'TBD' # TODO
         ).first_or_create
