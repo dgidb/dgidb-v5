@@ -68,24 +68,10 @@ module Genome; module Importers; module FileImporters; module Chembl;
 
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
-          # Catching interaction claim types that don't have matching database entries, also yes this is a hot mess
-          if row[0] == 'BINDING AGENT'
-          elsif row[0] == 'RELEASING AGENT'
-          elsif row[0] == 'PROTEOLYTIC ENZYME'
-          elsif row[0] == 'NEGATIVE ALLOSTERIC MODULATOR'
-          elsif row[0] == 'HYDROLYTIC ENZYME'
-          elsif row[0] == 'ALLOSTERIC ANTAGONIST'
-          elsif row[0] == 'CROSS-LINKING AGENT'
-          elsif row[0] == 'STABILISER'
-          elsif row[0] == 'DEGRADER'
-          elsif row[0] == 'DISRUPTING AGENT'
-          elsif row[0] == 'ANTISENSE INHIBITOR'
-          elsif row[0] == 'VACCINE ANTIGEN'
-          else
-            create_interaction_claim_type(interaction_claim, row[0])
-            create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', row[4])
-            create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row[3])
-            create_interaction_claim_link(interaction_claim,'Source', File.join('data','chembl_30.db'))
+          create_interaction_claim_type(interaction_claim, row[0])
+          create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', row[4])
+          create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row[3])
+          create_interaction_claim_link(interaction_claim,'Source', File.join('data','chembl_30.db'))
 
           end
 
