@@ -1,0 +1,14 @@
+.interaction-table-container {
+  // color: white !important;
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    display: inline-block;
+    color: white !important;
+    font-size: 2rem;
+  }
+}
