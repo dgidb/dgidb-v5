@@ -1,5 +1,5 @@
 class GeneClaimAlias < ::ActiveRecord::Base
-  #include Genome::Extensions::UUIDPrimaryKey
+  include Genome::Extensions::UUIDPrimaryKey
   belongs_to :gene_claim
 
   def self.for_search

@@ -14,7 +14,7 @@ module Utils; module SnapshotHelpers
   end
 
   def push_changes
-    system_or_die("git push origin master --tags")
+    system_or_die('git push origin master --tags')
   end
 
   def commit_db_update(submodule_dir, file, commit_message)
@@ -22,7 +22,7 @@ module Utils; module SnapshotHelpers
     Dir.chdir(submodule_dir)
     system_or_die("git add #{File.basename(file)}")
     system_or_die("git commit -m '#{commit_message}'")
-    system_or_die("git push origin master")
+    system_or_die('git push origin master')
     Dir.chdir(cur_dir)
   end
 
@@ -56,6 +56,7 @@ module Utils; module SnapshotHelpers
   end
 
   private
+
   def system_or_die(syscall)
     puts syscall
     system(syscall) or raise "Failed trying to #{syscall} in #{Dir.pwd}"
@@ -81,8 +82,8 @@ module Utils; module SnapshotHelpers
 
   def parse_version_file(path)
     File.read(path)
-      .strip
-      .split("\t")
+        .strip
+        .split("\t")
   end
 
   def current_sha

@@ -1,7 +1,7 @@
 class GeneClaim < ::ActiveRecord::Base
-  # include Genome::Extensions::UUIDPrimaryKey
-  belongs_to :gene
-  has_and_belongs_to_many :gene_claim_categories, :join_table => 'gene_claim_categories_gene_claims'
+  include Genome::Extensions::UUIDPrimaryKey
+  belongs_to :gene, optional: true
+  has_and_belongs_to_many :gene_claim_categories, join_table: 'gene_claim_categories_gene_claims'
   has_many :gene_claim_aliases, inverse_of: :gene_claim, dependent: :delete_all
   has_many :gene_claim_attributes, inverse_of: :gene_claim, dependent: :delete_all
   belongs_to :source, inverse_of: :gene_claims, counter_cache: true
@@ -13,7 +13,7 @@ class GeneClaim < ::ActiveRecord::Base
   end
 
   def self.for_gene_categories
-    eager_load(gene: [gene_claims: [:source, :gene_claim_categories]])
+    eager_load(gene: [gene_claims: %i[source gene_claim_categories]])
   end
 
   def self.for_show
@@ -56,19 +56,19 @@ class GeneClaim < ::ActiveRecord::Base
     when 'GO'
       uniprot_alias = self.gene_claim_aliases.select{|a| a.nomenclature == 'UniProtKB ID'}.first
       if uniprot_alias.nil?
-        'http://amigo.geneontology.org/amigo/search/bioentity?q=' + name
+        "http://amigo.geneontology.org/amigo/search/bioentity?q=#{name}"
       else
         entrez_id = uniprot_alias.alias
         base_url + entrez_id
       end
     when 'OncoKB'
-      'http://oncokb.org/#/gene/' + name
+      "http://oncokb.org/#/gene/#{name}"
     when 'ChemblInteractions'
-      'https://www.ebi.ac.uk/chembl/g/#search_results/all/query=' + name
+      "https://www.ebi.ac.uk/chembl/g/#search_results/all/query=#{name}"
     when 'Pharos'
-      'https://pharos.nih.gov/targets?q=' + name
+      "https://pharos.nih.gov/targets?q=#{name}"
     when 'GuideToPharmacologyInteractions', 'GuideToPharmacologyGenes'
-      'http://www.guidetopharmacology.org/GRAC/ObjectDisplayForward?objectId=' + name
+      "http://www.guidetopharmacology.org/GRAC/ObjectDisplayForward?objectId=#{name}"
     when 'MyCancerGenome', 'CancerCommons', 'ClearityFoundationBiomarkers', 'ClearityFoundationClinicalTrial',
       'MyCancerGenomeClinicalTrial', 'MskImpact', 'CarisMolecularIntelligence', 'CGI', 'FDA', 'NCI',
       'HingoraniCasas', 'TALC', 'Tempus', 'FoundationOneGenes', 'DoCM', 'COSMIC', 'Oncomine'
