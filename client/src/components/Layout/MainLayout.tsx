@@ -7,6 +7,8 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 import styles from'./MainLayout.module.scss';
+import { Button } from 'antd';
+import {CloseCircleOutlined} from '@ant-design/icons';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -41,8 +43,12 @@ const Footer: React.FC = () => {
 
   return (
   <footer>
-    <button onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}>X</button>
+
     Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice. 
+    <CloseCircleOutlined 
+    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}} 
+    onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}
+    />
   </footer>
   )
 }

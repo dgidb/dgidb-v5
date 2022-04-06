@@ -3,6 +3,7 @@
 html, body {
   background-color: $primary-bg;
   margin: 0;
+  font-family: 'Lato';
 }
 
 .layout-container {
@@ -34,7 +35,7 @@ header nav {
 }
 
 footer {
-  background-color: #480a77;
+  background-color: $primary-purple;
   position: fixed;
   bottom: 0;
   color: white;
