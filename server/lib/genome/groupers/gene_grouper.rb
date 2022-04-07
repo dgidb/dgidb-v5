@@ -1,11 +1,13 @@
 module Genome
   module Groupers
     class GeneGrouper
+      attr_reader :term_to_match_dict
+
       def initialize
         @term_to_match_dict = {} # key: lowercase gene term, value: normalized response
         @normalizer_source = Source.where(
           source_db_name: 'VICCGeneNormalizer',
-          source_db_version: 'TBD', # TODO
+          source_db_version: retrieve_normalizer_version,
           base_url: 'https://normalize.cancervariants.org/gene/normalize?q=',
           site_url: 'https://normalize.cancervariants.org/gene/', # TODO
           citation: '', # TODO
@@ -19,6 +21,11 @@ module Genome
 
         @normalizer_source.source_types << gene_source_type
         @normalizer_source.save
+      end
+
+      def retrieve_normalizer_version
+        response = retrieve_normalizer_response('query')
+        response['service_meta_']['version']
       end
 
       def run(source_id: nil)
@@ -122,8 +129,6 @@ module Genome
         add_gene_types descriptor
       end
 
-      # TODO: add gene categories or whatever
-
       def add_attributes_to_gene(claim, gene)
         gene_attributes = gene.gene_attributes.pluck(:name, :value)
                               .map { |gene_attribute| gene_attribute.map(&:upcase) }
@@ -154,6 +159,19 @@ module Genome
         end
       end
 
+      def add_aliases_to_gene(claim, gene)
+        gene_aliases = gene.gene_aliases.pluck(:alias).map(&:upcase).to_set
+        claim.gene_claim_aliases.each do |gene_claim_alias|
+          # TODO working here
+          unless gene_aliases.member? gene_claim_alias.alias
+            gene_alias = geneAlias.create(alias: gene_claim_alias.alias, gene: gene)
+          end
+        end
+      end
+
+      def add_claim_to_gene(gene_claim)
+        puts 'wip'
+      end
 
 
       #########################################################
@@ -279,8 +297,6 @@ module Genome
           end
         end
       end
-
     end
   end
 end
-
