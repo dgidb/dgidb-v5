@@ -7,7 +7,7 @@ module Genome
         @term_to_match_dict = {} # key: lowercase drug term, value: normalized response
         @normalizer_source = Source.where(
           source_db_name: 'VICCTherapyNormalizer',
-          source_db_version: 'TBD', # TODO
+          source_db_version: retrieve_normalizer_version,
           base_url: 'https://normalize.cancervariants.org/therapy/normalize?q=',
           site_url: 'https://normalize.cancervariants.org/therapy/', # TODO
           citation: '', # TODO
@@ -17,10 +17,15 @@ module Genome
           license_link: 'TBD' # TODO
         ).first_or_create
         drug_source_type = SourceType.find_by(type: 'drug')
-        unless @normalizer_source.source_types.include? drug_source_type
-          @normalizer_source.source_types << drug_source_type
-          @normalizer_source.save
-        end
+        return if @normalizer_source.source_types.include? drug_source_type
+
+        @normalizer_source.source_types << drug_source_type
+        @normalizer_source.save
+      end
+
+      def retrieve_normalizer_version
+        response = retrieve_normalizer_response('query')
+        response['service_meta_']['version']
       end
 
       def run(source_id: nil)
@@ -119,7 +124,7 @@ module Genome
                               .to_set
         claim.drug_claim_attributes.each do |drug_claim_attribute|
           if drug_attributes.member? [drug_claim_attribute.name.upcase, drug_claim_attribute.value.upcase]
-            drug_attribute = DataModel::DrugAttribute.where(
+            drug_attribute = DrugAttribute.where(
               'upper(name) = ? and upper(value) = ?',
               drug_claim_attribute.name.upcase,
               drug_claim_attribute.value.upcase
