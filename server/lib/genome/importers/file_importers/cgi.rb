@@ -30,13 +30,19 @@ module Genome; module Importers; module FileImporters; module Cgi
       @source.save
     end
 
+    # at least 1 CGI entry includes a pesky nbsp character
+    def clean_drug_name(drug_name)
+      drug_name.gsub(/[[:space:]]/, '')
+    end
+
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         next if row['Drug'].nil? || row['Drug'] == '[]'
 
         if row['Drug'].include?(',') || row['Drug'].include?(';')
           combination_drug_name = row['Drug']
-          combination_drug_name.scan(/[a-zA-Z0-9]+/).map { |s| s.gsub(/[[:space:]]/, ' ') }.each do |individual_drug_name|
+          combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
+            individual_drug_name = clean_drug_name(individual_drug_name)
             drug_claim = create_drug_claim(individual_drug_name, individual_drug_name, 'CGI Drug Name')
             if row['Gene'].include?(';')
               row['Gene'].split(';').each do |indv_gene|
@@ -63,6 +69,7 @@ module Genome; module Importers; module FileImporters; module Cgi
           if row['Drug'].include?(';')
             combination_drug_name = row['Drug']
             combination_drug_name.split(';').each do |individual_drug_name|
+              individual_drug_name = clean_drug_name(individual_drug_name)
               drug_claim = create_drug_claim(individual_drug_name, individual_drug_name, 'CGI Drug Name')
               if row['Gene'].include?(';')
                 row['Gene'].split(';').each do |indv_gene|
@@ -86,7 +93,8 @@ module Genome; module Importers; module FileImporters; module Cgi
             end
           end
         else
-          drug_claim = create_drug_claim(row['Drug'], row['Drug'], 'CGI Drug Name')
+          drug_name = clean_drug_name(row['Drug'])
+          drug_claim = create_drug_claim(drug_name, drug_name, 'CGI Drug Name')
           if row['Gene'].include?(';')
             row['Gene'].split(';').each do |indv_gene|
               gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
