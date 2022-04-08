@@ -32,7 +32,7 @@ module Genome; module Importers; module FileImporters; module Cgi
 
     # at least 1 CGI entry includes a pesky nbsp character
     def clean_drug_name(drug_name)
-      drug_name.gsub(/[[:space:]]/, '')
+      drug_name.gsub(/[[:space:]]/, '').gsub(/\[(.*)\]/, '\1')
     end
 
     def create_interaction_claims
