@@ -3,7 +3,7 @@ module Genome; module Importers; module FileImporters; module Ttd;
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'TTD'
     end
 
@@ -12,6 +12,11 @@ module Genome; module Importers; module FileImporters; module Ttd;
     end
 
     private
+
+    def default_filetype
+      'csv'
+    end
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -53,7 +58,7 @@ module Genome; module Importers; module FileImporters; module Ttd;
           )
         end
 
-        # this is not a typo but the actual column header from the source TSV
+        # this is not a typo but the actual column header from the source file
         unless row['Referecnce'].nil?
           row['Referecnce'].split('; ').each do |ref|
             if ref.include? 'pubmed'

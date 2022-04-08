@@ -9,7 +9,18 @@ class GeneClaim < ::ActiveRecord::Base
   has_many :drug_claims, through: :interaction_claims
 
   def self.for_search
-    eager_load(gene: [gene_claims: {interaction_claims: { source: [], drug_claim: [:source], interaction_claim_types: [], gene_claim: [gene: [gene_claims: [:gene_claim_categories]]]}}])
+    eager_load(
+      gene: [
+        gene_claims: {
+          interaction_claims: {
+            source: [],
+            drug_claim: [:source],
+            interaction_claim_types: [],
+            gene_claim: [gene: [gene_claims: [:gene_claim_categories]]]
+          }
+        }
+      ]
+    )
   end
 
   def self.for_gene_categories
@@ -45,16 +56,16 @@ class GeneClaim < ::ActiveRecord::Base
     when 'CIViC'
       [base_url, 'links', 'entrez_name', name].join('/')
     when 'PharmGKB'
-      pharmgkb_id = self.gene_claim_aliases.find{|a| a.nomenclature == 'PharmGKB ID'}.alias
+      pharmgkb_id = self.gene_claim_aliases.find { |a| a.nomenclature == 'PharmGKB ID' }.alias
       [base_url, 'gene', pharmgkb_id].join('/')
     when 'TTD'
-      ttd_id = self.gene_claim_aliases.find{|a| a.nomenclature == 'TTD Target ID'}.alias
-      [base_url, 'data', 'target',  'details', ttd_id].join('/')
+      ttd_id = self.gene_claim_aliases.find { |a| a.nomenclature == 'TTD Target ID' }.alias
+      [base_url, 'data', 'target', 'details', ttd_id].join('/')
     when 'JAX-CKB'
-      entrez_id = self.gene_claim_aliases.select{|a| a.nomenclature == 'CKB Entrez Id'}.first.alias
+      entrez_id = self.gene_claim_aliases.select { |a| a.nomenclature == 'CKB Entrez Id' }.first.alias
       base_url + entrez_id
     when 'GO'
-      uniprot_alias = self.gene_claim_aliases.select{|a| a.nomenclature == 'UniProtKB ID'}.first
+      uniprot_alias = self.gene_claim_aliases.select { |a| a.nomenclature == 'UniProtKB ID' }.first
       if uniprot_alias.nil?
         "http://amigo.geneontology.org/amigo/search/bioentity?q=#{name}"
       else
@@ -67,7 +78,7 @@ class GeneClaim < ::ActiveRecord::Base
       "https://www.ebi.ac.uk/chembl/g/#search_results/all/query=#{name}"
     when 'Pharos'
       "https://pharos.nih.gov/targets?q=#{name}"
-    when 'GuideToPharmacologyInteractions', 'GuideToPharmacologyGenes'
+    when 'GuideToPharmacology'
       "http://www.guidetopharmacology.org/GRAC/ObjectDisplayForward?objectId=#{name}"
     when 'MyCancerGenome', 'CancerCommons', 'ClearityFoundationBiomarkers', 'ClearityFoundationClinicalTrial',
       'MyCancerGenomeClinicalTrial', 'MskImpact', 'CarisMolecularIntelligence', 'CGI', 'FDA', 'NCI',

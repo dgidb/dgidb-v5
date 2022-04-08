@@ -9,6 +9,21 @@ module Genome
         create_claims
       end
 
+      def default_filetype
+        'tsv'
+      end
+
+      def default_filename
+        'claims'
+      end
+
+      def handle_file_location(file_path)
+        return file_path unless file_path.nil?
+
+        dir_name = self.class.name.split('::')[-2].underscore
+        "lib/data/#{dir_name}/#{default_filename}.#{default_filetype}"
+      end
+
       def remove_existing_source
         Utils::Database.delete_source(source_db_name)
       end
@@ -94,9 +109,10 @@ module Genome
         claim_type = InteractionClaimType.find_by(
           type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
         )
-        if claim_type.nil?;
+        if claim_type.nil?
           raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."
         end
+
         unless interaction_claim.interaction_claim_types.include? claim_type
           interaction_claim.interaction_claim_types << claim_type
         end

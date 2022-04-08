@@ -4,7 +4,7 @@ module Genome; module Importers; module FileImporters; module Idg;
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'IDG'
     end
 
@@ -13,6 +13,10 @@ module Genome; module Importers; module FileImporters; module Idg;
     end
 
     private
+
+    def default_filetype
+      'json'
+    end
 
     def create_new_source
       @source ||= Source.create(
@@ -33,13 +37,18 @@ module Genome; module Importers; module FileImporters; module Idg;
     end
 
     def create_gene_claims
-      CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'IDG Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['Gene'], 'Gene Symbol')
-        if row['Category'] == 'GPCR'
+      file = File.read(file_path)
+      JSON.parse(file).each do |record|
+        gene_claim = create_gene_claim(record['Gene'], 'IDG Gene Symbol')
+        create_gene_claim_alias(gene_claim, record['Gene'], 'Gene Symbol')
+        family_type = record['IDGFamily']
+        case family_type
+        when 'GPCR'
           create_gene_claim_category(gene_claim, 'G PROTEIN COUPLED RECEPTOR')
+        when 'IonChannel'
+          create_gene_claim_category(gene_claim, 'ION CHANNEL')
         else
-          create_gene_claim_category(gene_claim, row['Category'].upcase)
+          create_gene_claim_category(gene_claim, family_type.upcase)
         end
       end
     end

@@ -3,7 +3,7 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'MyCancerGenomeClinicalTrial'
     end
 

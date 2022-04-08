@@ -36,8 +36,9 @@ namespace :dgidb do
       puts 'Done.'
     end
 
+    # File importers
     file_importer_glob = File.join(Rails.root, 'lib/genome/importers/file_importers/*')
-    Dir.glob(file_importer_glob).each do |importer_path|
+    Dir.glob(file_importer_glob).reject { |path| path =~ /guide_to_pharmacology/ }.each do |importer_path|
       importer_filename = File.basename(importer_path, '.rb')
       importer_name = importer_filename.camelize
       send(
@@ -49,7 +50,7 @@ namespace :dgidb do
         importer_filename,
         %i[file_path gene_group drug_group] => :environment
       ) do |_, args|
-        args.with_defaults(file_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
+        args.with_defaults(file_path: nil, gene_group: 'false',
                            drug_group: 'false')
         importer_class = "Genome::Importers::FileImporters::#{importer_name}::Importer".constantize
         if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
@@ -65,6 +66,36 @@ namespace :dgidb do
       end
     end
 
+    # Guide to Pharmacology is a special case because it needs two input files
+    gtop_name = 'guide_to_pharmacology'
+    send(
+      :desc,
+      'Import GuideToPharmacology from provided CSV files. If the source already exists, it will be overwritten!'
+    )
+    send(
+      :task,
+      gtop_name,
+      %i[interaction_file_path gene_file_path gene_group drug_group] => :environment
+    ) do |_, args|
+      args.with_defaults(
+        interaction_file_path: 'lib/data/guide_to_pharmacology/interactions.csv',
+        gene_file_path: 'lib/data/guide_to_pharmacology/targets_and_families.csv',
+        gene_group: false,
+        drug_group: false
+      )
+      importer_class = Genome::Importers::FileImporters::GuideToPharmacology::Importer
+      if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
+        puts 'Found existing source! Deleting...'
+        Utils::Database.delete_source('GuideToPharmacology')
+      end
+      puts 'Starting import!'
+      importer_instance = importer_class.new(args[:interaction_file_path], args[:gene_file_path])
+      importer_instance.import
+
+      handle_group_params(args[:gene_group], args[:drug_group])
+    end
+
+    # API importers
     api_importer_glob = File.join(Rails.root, 'lib/genome/importers/api_importers/*/')
     Dir.glob(api_importer_glob).each do |importer_path|
       importer_dir = File.basename(importer_path)
@@ -92,16 +123,5 @@ namespace :dgidb do
         handle_group_params(args[:gene_group], args[:drug_group])
       end
     end
-
-    # desc 'import Entrez gene pathway information from a TSV file'
-    # task :entrez_pathway, [:tsv_path] => :environment do |_t, args|
-    #   Genome::Importers::Entrez::EntrezGenePathwayImporter.new(args[:tsv_path])
-    #     .import!
-    # end
-
-    # desc 'import PubChem synonyms for drug claims'
-    # task :pubchem, [] => :environment do
-    #   Genome::Updaters::GetPubchem.run!
-    # end
   end
 end
