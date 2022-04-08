@@ -43,7 +43,7 @@ module Genome
         @normalizer_source.save
       end
 
-      def add_gene_types(descriptor)
+      def add_grouper_types(descriptor)
         type_names = [
           ['hgnc_locus_type', 'HGNC Locus Type'],
           ['ncbi_gene_type', 'NCBI Gene Type'],
@@ -82,11 +82,11 @@ module Genome
           gene_alias.sources << @normalizer_source unless gene_alias.sources.member? @normalizer_source
         end
 
-        # add attributes
         add_gene_types descriptor
+        add_gene_aliases descriptor
       end
 
-      def add_attributes_to_gene(claim, gene)
+      def add_claim_attributes(claim, gene)
         gene_attributes = gene.gene_attributes.pluck(:name, :value)
                               .map { |gene_attribute| gene_attribute.map(&:upcase) }
                               .to_set
@@ -116,7 +116,7 @@ module Genome
         end
       end
 
-      def add_aliases_to_gene(claim, gene)
+      def add_claim_aliases(claim, gene)
         gene_aliases = gene.gene_aliases.pluck(:alias).map(&:upcase).to_set
         claim.gene_claim_aliases.each do |gene_claim_alias|
           if gene_aliases.member? gene_claim_alias
@@ -143,6 +143,7 @@ module Genome
 
       def add_claim_to_gene(claim, gene_concept_id)
         gene = Gene.find_by(concept_id: gene_concept_id)
+        claim.gene_id = gene.id
         add_attributes_to_drug(claim, gene)
         add_aliases_to_drug(claim, gene)
       end

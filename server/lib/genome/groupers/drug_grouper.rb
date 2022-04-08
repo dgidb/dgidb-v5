@@ -43,7 +43,7 @@ module Genome
         @normalizer_source.save
       end
 
-      def add_drug_regulatory_approval(descriptor, drug)
+      def add_grouper_regulatory_approval(descriptor, drug)
         regulatory_approval = retrieve_extension(descriptor, 'regulatory_approval')
         return if regulatory_approval.blank?
 
@@ -58,7 +58,7 @@ module Genome
         end
       end
 
-      def add_drug_aliases(descriptor, drug)
+      def add_grouper_aliases(descriptor, drug)
         alias_values = []
         xrefs = descriptor.fetch('xrefs')
         # TODO: extract and store drugs@fda refs separately
@@ -78,13 +78,13 @@ module Genome
                else
                  descriptor['label']
                end
-        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name).first_or_create
+        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name.upcase).first_or_create
 
-        add_drug_aliases(descriptor, drug)
-        add_drug_regulatory_approval(descriptor, drug)
+        add_grouper_aliases(descriptor, drug)
+        add_grouper_regulatory_approval(descriptor, drug)
       end
 
-      def add_attributes_to_drug(claim, drug)
+      def add_claim_attributes(claim, drug)
         drug_attributes = drug.drug_attributes.pluck(:name, :value)
                               .map { |drug_attribute| drug_attribute.map(&:upcase) }
                               .to_set
@@ -102,19 +102,21 @@ module Genome
                 drug_claim_attribute.value.downcase
               ).first
             end
-            drug_attribute.sources << claim.source unless drug_attribute.sources.member? claim.source
           else
             drug_attribute = DrugAttribute.create(
               name: drug_claim_attribute.name,
               value: drug_claim_attribute.value,
               drug: drug
             )
+          end
+          unless drug_attribute.sources.member? claim.source
             drug_attribute.sources << claim.source
+            drug_attribute.save
           end
         end
       end
 
-      def add_aliases_to_drug(claim, drug)
+      def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
         claim.drug_claim_aliases.pluck(:alias).to_set.each do |claim_alias|
           DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
@@ -123,8 +125,10 @@ module Genome
 
       def add_claim_to_drug(claim, drug_concept_id)
         drug = Drug.find_by(concept_id: drug_concept_id)
-        add_attributes_to_drug(claim, drug)
-        add_aliases_to_drug(claim, drug)
+        claim.drug_id = drug.id
+        add_claim_attributes(claim, drug)
+        add_claim_aliases(claim, drug)
+        claim.save
       end
     end
   end

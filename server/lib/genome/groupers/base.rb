@@ -24,7 +24,9 @@ module Genome
       def normalize_claim(primary_term, secondary_term, claim_aliases)
         response = retrieve_normalizer_response(primary_term)
         if response['match_type'].zero?
-          response = retrieve_normalizer_response(secondary_term) unless secondary_term.nil?
+          unless secondary_term.nil? || primary_term == secondary_term
+            response = retrieve_normalizer_response(secondary_term)
+          end
           if response['match_type'].zero?
             best_match = nil
             best_match_type = 0
