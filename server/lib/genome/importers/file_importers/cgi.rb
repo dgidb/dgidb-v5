@@ -36,7 +36,7 @@ module Genome; module Importers; module FileImporters; module Cgi
 
         if row['Drug'].include?(',') || row['Drug'].include?(';')
           combination_drug_name = row['Drug']
-          combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
+          combination_drug_name.scan(/[a-zA-Z0-9]+/).map { |s| s.gsub(/[[:space:]]/, ' ') }.each do |individual_drug_name|
             drug_claim = create_drug_claim(individual_drug_name, individual_drug_name, 'CGI Drug Name')
             if row['Gene'].include?(';')
               row['Gene'].split(';').each do |indv_gene|

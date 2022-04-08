@@ -14,6 +14,7 @@ module Genome
           url = URI("#{@normalizer_url_root}normalize?q=#{term}")
         rescue URI::InvalidURIError
           url = URI.parse(URI.escape("#{@normalizer_url_root}normalize?q=#{term}"))
+        end
         response = Net::HTTP.get_response(url)
         return JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
 
