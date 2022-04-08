@@ -14,28 +14,40 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     def create_claims
-      import_claims
+      import_gene_claims
+      import_interaction_claims
     end
 
     private
 
-    def import_claims
+    def create_new_source
+      @source ||= Source.create(
+        base_url: 'http://www.guidetopharmacology.org/DATA/',
+        citation: 'Armstrong,J.F., Faccenda,E., Harding,S.D., Pawson,A.J., Southan,C., Sharman,J.L., Campo,B., Cavanagh,D.R., Alexander,S.P.H., Davenport,A.P., et al. (2020) The IUPHAR/BPS Guide to PHARMACOLOGY in 2020: extending immunopharmacology content and introducing the IUPHAR/MMV Guide to MALARIA PHARMACOLOGY. Nucleic Acids Res., 48, D1006–D1021. PMID: 31691834',
+        site_url: 'http://www.guidetopharmacology.org/',
+        source_db_name: source_db_name,
+        source_db_version: '2022.1',
+        source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+        full_name: 'Guide to Pharmacology',
+        license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
+        license_link: 'https://www.guidetopharmacology.org/about.jsp'
+      )
+      @source.source_db_version = set_current_date_version
+      @source.source_types << SourceType.find_by(type: 'interaction')
+      @source.source_types << SourceType.find_by(type: 'potentially_druggable')
+      @source.save
+    end
+
+    def import_gene_claims
       CSV.foreach(gene_file_path, headers: true) do |line|
         gene_name = line['Human Entrez Gene']
         next if blank?(gene_name)
 
         gene_claim = create_gene_claim(gene_name, 'Entrez Gene ID')
         target_to_entrez[line['Target id']] = gene_name
-
-        unless blank?(line['HGNC id'])
-          create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene ID')
-        end
-        unless blank?(line['HGNC symbol'])
-          create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene Symbol')
-        end
-        unless blank?(line['HGNC name'])
-          create_gene_claim_alias(gene_claim, line['HGNC name'], 'HUGO Gene Name')
-        end
+        create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene ID') unless blank?(line['HGNC id'])
+        create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene Symbol') unless blank?(line['HGNC symbol'])
+        create_gene_claim_alias(gene_claim, line['HGNC name'], 'HUGO Gene Name') unless blank?(line['HGNC name'])
         create_gene_claim_alias(gene_claim, line['Target id'], 'GuideToPharmacology ID')
         create_gene_claim_alias(gene_claim, line['Target name'], 'GuideToPharmacology Name')
         unless blank?(line['Human nucleotide RefSeq'])
@@ -62,10 +74,11 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
           'transporter' => 'TRANSPORTER',
           'vgic' => 'ION CHANNEL'
         }
-        if category_lookup.has_key? line['Type']
-          create_gene_claim_category(gene_claim, category_lookup[line['Type']])
-        end
+        create_gene_claim_category(gene_claim, category_lookup[line['Type']]) if category_lookup.key? line['Type']
       end
+    end
+
+    def import_interaction_claims
       CSV.foreach(interaction_file_path, headers: true) do |line|
         next unless valid_line?(line)
 
@@ -74,7 +87,9 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
 
         drug_claim = create_drug_claim(line['ligand_pubchem_sid'], strip_tags(line['ligand']).upcase, 'PubChem Drug SID')
         create_drug_claim_aliases(drug_claim, line)
-        create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species']) unless blank?(line['ligand_species'])
+        unless blank?(line['ligand_species'])
+          create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species'])
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         type = line['type'].downcase
@@ -107,7 +122,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         end
       end
       unless blank?(line['target_uniprot'])
-       line['target_uniprot'].split('|').each do |uniprot_id|
+        line['target_uniprot'].split('|').each do |uniprot_id|
           create_gene_claim_alias(gene_claim, uniprot_id, 'UniProtKB ID')
         end
       end
@@ -142,25 +157,10 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       }
       attributes.each do |name, value|
         next if blank?(value)
+
         parsed_value = boolean_parser[value] || value
         create_interaction_claim_attribute(interaction_claim, name, parsed_value)
       end
-    end
-
-    def create_new_source
-      @source = Source.where(
-        base_url: 'http://www.guidetopharmacology.org/DATA/',
-        site_url: 'http://www.guidetopharmacology.org/',
-        citation: 'Armstrong,J.F., Faccenda,E., Harding,S.D., Pawson,A.J., Southan,C., Sharman,J.L., Campo,B., Cavanagh,D.R., Alexander,S.P.H., Davenport,A.P., et al. (2020) The IUPHAR/BPS Guide to PHARMACOLOGY in 2020: extending immunopharmacology content and introducing the IUPHAR/MMV Guide to MALARIA PHARMACOLOGY. Nucleic Acids Res., 48, D1006–D1021. PMID: 31691834',
-        source_db_name: source_db_name,
-        full_name: 'Guide to Pharmacology',
-        license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
-        license_link: 'https://www.guidetopharmacology.org/about.jsp'
-      ).first_or_initialize
-      source.source_db_version = set_current_date_version
-      source.source_types << SourceType.find_by(type: 'interaction')
-      source.source_types << SourceType.find_by(type: 'potentially_druggable')
-      source.save
     end
   end
 end; end; end; end;

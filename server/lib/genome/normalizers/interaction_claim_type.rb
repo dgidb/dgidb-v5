@@ -12,8 +12,8 @@ module Genome
       end
 
       def self.normalize_existing_types
-        DataModel::InteractionClaimType.all.each do |ict|
-          normalized_ict = DataModel::InteractionClaimType.where(type: name_normalizer(ict.type)).first_or_create
+        InteractionClaimType.all.each do |ict|
+          normalized_ict = InteractionClaimType.where(type: name_normalizer(ict.type)).first_or_create
           next if ict == normalized_ict
 
           ict.interaction_claims.each do |ic|
@@ -48,11 +48,11 @@ module Genome
       end
 
       def self.default_type
-        DataModel::InteractionClaimType.find_by(type: 'n/a')
+        InteractionClaimType.find_by(type: 'n/a')
       end
 
       def self.other_type
-        DataModel::InteractionClaimType.find_by(type: 'other/unknown')
+        InteractionClaimType.find_by(type: 'other/unknown')
       end
 
       def self.add_unless_exists(type, interaction_claim)
@@ -69,6 +69,8 @@ module Genome
         val = val.downcase.strip
 
         case val
+        when 'na', 'n/a'
+          'na'
         when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer', 'diffusing substance', 'vesciant', 'gene replacement','opener','releasing agent','substrate','vaccine antigen'
           'other/unknown'
         when 'moduator','cross-linking agent','neutralizer', 'reducer', 'metabolizer', 'acetylation', 'chelator', 'cross-linking/alkylation', 'regulator','stabiliser'
@@ -109,18 +111,18 @@ module Genome
       end
 
       def self.claim_type_attributes
-        DataModel::InteractionClaimAttribute.where('lower(name) = ?', 'interaction type')
-        .includes(interaction_claim: [:interaction_claim_types])
+        InteractionClaimAttribute.where('lower(name) = ?', 'interaction type')
+                                 .includes(interaction_claim: [:interaction_claim_types])
       end
 
       def self.all_interaction_claim_types
-        DataModel::InteractionClaimType.all.each_with_object({}) do |i, h|
+        InteractionClaimType.all.each_with_object({}) do |i, h|
           h[i.type] = i
         end
       end
 
       def self.remove_empty_types
-        DataModel::InteractionClaimType.includes(:interaction_claims).where(interaction_claims: { id: nil }).destroy_all
+        InteractionClaimType.includes(:interaction_claims).where(interaction_claims: {id: nil}).destroy_all
       end
     end
   end
