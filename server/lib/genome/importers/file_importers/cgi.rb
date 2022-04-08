@@ -30,9 +30,10 @@ module Genome; module Importers; module FileImporters; module Cgi
       @source.save
     end
 
-    # at least 1 CGI entry includes a pesky nbsp character
+    # at least 1 CGI entry includes a pesky nbsp character,
+    # and some names are surrounded with brackets
     def clean_drug_name(drug_name)
-      drug_name.gsub(/[[:space:]]/, '')
+      drug_name.gsub(/[[:space:]]/, '').gsub(/\[(.*)\]/, '\1')
     end
 
     def create_interaction_claims
