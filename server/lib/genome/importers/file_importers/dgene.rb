@@ -1,10 +1,10 @@
 module Genome; module Importers; module FileImporters; module Dgene
-  # pretty sure: https://doi.org/10.1371/journal.pone.0067980.s002
+  # https://doi.org/10.1371/journal.pone.0067980.s002
   class Importer < Genome::Importers::Base
     attr_reader :file_path
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'dGene'
     end
 

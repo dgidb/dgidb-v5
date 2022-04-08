@@ -50,7 +50,7 @@ namespace :dgidb do
         importer_filename,
         %i[file_path gene_group drug_group] => :environment
       ) do |_, args|
-        args.with_defaults(file_path: "lib/data/#{importer_filename}/claims.tsv", gene_group: 'false',
+        args.with_defaults(file_path: nil, gene_group: 'false',
                            drug_group: 'false')
         importer_class = "Genome::Importers::FileImporters::#{importer_name}::Importer".constantize
         if Source.where('lower(sources.source_db_name) = ?', importer_name.downcase).any?
