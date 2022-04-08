@@ -1,3 +1,5 @@
+require 'csv'
+
 module Genome
   module Importers
     class Base
@@ -38,7 +40,7 @@ module Genome
 
       def create_gene_claim(gene_name, nomenclature)
         GeneClaim.where(
-          name: gene_name.strip,
+          name: gene_name.strip.upcase,
           nomenclature: nomenclature.strip,
           source_id: @source.id
         ).first_or_create
@@ -46,7 +48,7 @@ module Genome
 
       def create_gene_claim_alias(gene_claim, synonym, nomenclature)
         GeneClaimAlias.where(
-          alias: synonym.to_s.strip,
+          alias: synonym.to_s.strip.upcase,
           nomenclature: nomenclature.strip,
           gene_claim_id: gene_claim.id
         ).first_or_create
@@ -83,7 +85,7 @@ module Genome
         return nil unless DrugAliasBlacklist.find_by(alias: cleaned).nil?
 
         DrugClaimAlias.where(
-          alias: synonym.strip,
+          alias: synonym.strip.upcase,
           nomenclature: nomenclature.strip,
           drug_claim_id: drug_claim.id
         ).first_or_create

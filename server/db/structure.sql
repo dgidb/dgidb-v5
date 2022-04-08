@@ -331,7 +331,7 @@ CREATE TABLE public.genes (
     id text NOT NULL,
     name text,
     long_name character varying(255),
-    entrez_id integer
+    concept_id integer
 );
 
 
@@ -1175,10 +1175,10 @@ CREATE UNIQUE INDEX index_gene_claims_on_name_and_nomenclature_and_source_id ON 
 
 
 --
--- Name: index_genes_on_entrez_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_genes_on_concept_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_genes_on_entrez_id ON public.genes USING btree (entrez_id);
+CREATE INDEX index_genes_on_concept_id ON public.genes USING btree (concept_id);
 
 
 --
@@ -1783,6 +1783,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200811160413'),
 ('20200901140610'),
 ('20200904144705'),
-('20220317193102');
+('20220317193102'),
+('20220408032834');
 
 

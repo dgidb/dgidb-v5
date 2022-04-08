@@ -1,10 +1,30 @@
 module Genome
   module Groupers
-    class DrugGrouper
+    class DrugGrouper < Genome::Groupers::Base
       attr_reader :term_to_match_dict
 
       def initialize
+        url_base = ENV['THERAPY_URL_BASE'] || 'http://localhost:8000'
+        @normalizer_url_root = "#{url_base}/therapy/"
+
         @term_to_match_dict = {} # key: lowercase drug term, value: normalized response
+      end
+
+      def run(source_id: nil)
+        create_source
+        claims = DrugClaim.eager_load(:drug_claim_aliases, :drug_claim_attributes).where(drug_id: nil)
+        claims = claims.where(source_id: source_id) unless source_id.nil?
+        claims.each do |drug_claim|
+          normalized_drug = normalize_claim(drug_claim.primary_name, drug_claim.name, drug_claim.drug_claim_aliases)
+          next if normalized_drug.nil?
+
+          normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
+          create_new_drug normalized_drug['therapy_descriptor'] if Drug.find_by(concept_id: normalized_id).nil?
+          add_claim_to_drug(drug_claim, normalized_id)
+        end
+      end
+
+      def create_source
         @normalizer_source = Source.where(
           source_db_name: 'VICCTherapyNormalizer',
           source_db_version: retrieve_normalizer_version,
@@ -23,87 +43,7 @@ module Genome
         @normalizer_source.save
       end
 
-      def retrieve_normalizer_version
-        response = retrieve_normalizer_response('query')
-        response['service_meta_']['version']
-      end
-
-      def run(source_id: nil)
-        claims = DrugClaim.eager_load(:drug_claim_aliases, :drug_claim_attributes).where(drug_id: nil)
-        claims = claims.where(source_id: source_id) unless source_id.nil?
-        claims.each do |drug_claim|
-          normalized_drug = normalize_claim(drug_claim)
-          next if normalized_drug.nil?
-
-          normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
-          create_new_drug normalized_drug['therapy_descriptor'] if Drug.find_by(concept_id: normalized_id).nil?
-          add_claim_to_drug(drug_claim, normalized_id)
-        end
-      end
-
-      def default_therapy_url_base
-        'http://localhost:8000/'
-      end
-
-      def retrieve_normalizer_response(term)
-        @term_to_match_dict.key? term
-        therapy_url_base = ENV['THERAPY_URL_BASE'] || default_therapy_url_base
-        url = URI("#{therapy_url_base}therapy/normalize?q=#{term.upcase}")
-        response = Net::HTTP.get_response(url)
-        return JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
-
-        raise Exception, "HTTP request to normalize drug term #{term} failed"
-      end
-
-      def normalize_claim(drug_claim)
-        response = retrieve_normalizer_response(drug_claim.primary_name)
-        if response['match_type'].zero?
-          response = retrieve_normalizer_response(drug_claim.name)
-          if response['match_type'].zero?
-            best_match = nil
-            best_match_type = 0
-            drug_claim.drug_claim_aliases.each do |claim_alias|
-              response = retrieve_normalizer_response(claim_alias.alias)
-              if response['match_type'] > best_match_type
-                best_match = response
-                best_match_type = response['match_type']
-              end
-            end
-            response = best_match
-          end
-        end
-        response
-      end
-
-      def retrieve_extension(descriptor, type)
-        unless descriptor.fetch('extensions').blank?
-          descriptor['extensions'].each do |extension|
-            return extension['value'] if extension['name'] == type
-          end
-        end
-        []
-      end
-
-      def create_new_drug(descriptor)
-        name = if descriptor.fetch('label').blank?
-                 descriptor['therapy_id']
-               else
-                 descriptor['label']
-               end
-        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name).first_or_create
-
-        alias_values = []
-        xrefs = descriptor.fetch('xrefs')
-        # skip Drugs@FDA refs for now
-        alias_values += xrefs.reject { |xref| xref =~ /drugsatfda.\.*/ } unless xrefs.blank?
-        alt_labels = descriptor.fetch('alternate_labels')
-        alias_values += alt_labels unless alt_labels.blank?
-        trade_names = retrieve_extension(descriptor, 'trade_names')
-        alias_values += trade_names unless trade_names.blank?
-        alias_values.map(&:upcase).to_set.each do |drug_alias|
-          DrugAlias.where(alias: drug_alias, drug_id: drug.id).first_or_create
-        end
-
+      def add_drug_regulatory_approval(descriptor, drug)
         regulatory_approval = retrieve_extension(descriptor, 'regulatory_approval')
         return if regulatory_approval.blank?
 
@@ -116,6 +56,32 @@ module Genome
         regulatory_approval.fetch('has_indication', []).map { |ind| ind['label'] }.to_set.each do |indication|
           DrugAttribute.create(name: 'Drug Indications', value: indication, drug: drug)
         end
+      end
+
+      def add_drug_aliases(descriptor, drug)
+        alias_values = []
+        xrefs = descriptor.fetch('xrefs')
+        # TODO: extract and store drugs@fda refs separately
+        alias_values += xrefs.reject { |xref| xref =~ /drugsatfda.\.*/ } unless xrefs.blank?
+        alt_labels = descriptor.fetch('alternate_labels')
+        alias_values += alt_labels unless alt_labels.blank?
+        trade_names = retrieve_extension(descriptor, 'trade_names')
+        alias_values += trade_names unless trade_names.blank?
+        alias_values.map(&:upcase).to_set.each do |drug_alias|
+          DrugAlias.where(alias: drug_alias, drug_id: drug.id).first_or_create
+        end
+      end
+
+      def create_new_drug(descriptor)
+        name = if descriptor.fetch('label').blank?
+                 descriptor['therapy_id']
+               else
+                 descriptor['label']
+               end
+        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name).first_or_create
+
+        add_drug_aliases(descriptor, drug)
+        add_drug_regulatory_approval(descriptor, drug)
       end
 
       def add_attributes_to_drug(claim, drug)
@@ -136,22 +102,22 @@ module Genome
                 drug_claim_attribute.value.downcase
               ).first
             end
-            drug_attribute.sources << drug_claim.source unless drug_attribute.sources.member? drug_claim.source
+            drug_attribute.sources << claim.source unless drug_attribute.sources.member? claim.source
           else
             drug_attribute = DrugAttribute.create(
               name: drug_claim_attribute.name,
               value: drug_claim_attribute.value,
               drug: drug
             )
-            drug_attribute.sources << drug_claim.source
+            drug_attribute.sources << claim.source
           end
         end
       end
 
       def add_aliases_to_drug(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
-        claim.drug_claim_aliases.each do |drug_claim_alias|
-          DrugAlias.create(alias: drug_claim_alias.alias, drug: drug) unless drug_aliases.member? drug_claim_alias.alias
+        claim.drug_claim_aliases.pluck(:alias).to_set.each do |claim_alias|
+          DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
         end
       end
 
