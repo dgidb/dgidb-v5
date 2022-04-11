@@ -16,15 +16,23 @@ module Genome
           url = URI.parse(URI.escape("#{@normalizer_url_root}normalize?q=#{term}"))
         end
         response = Net::HTTP.get_response(url)
+        # TODO: store result in term to match dict here
+        # [concept_id, match_score]
         return JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
 
-        raise Exception, "HTTP request to normalize term #{term} failed: #{url}"
+        raise StandardError, "HTTP request to normalize term #{term} failed: #{url}"
       end
 
       def normalize_claim(primary_term, secondary_term, claim_aliases)
+        primary_term_upcase = primary_term.upcase
+        return @term_to_match_dict[primary_term_upcase][0] if @term_to_match_dict.key? primary_term_upcase
+
         response = retrieve_normalizer_response(primary_term)
         if response['match_type'].zero?
           unless secondary_term.nil? || primary_term == secondary_term
+            secondary_term_upcase = secondary_term.upcase
+            return @term_to_match_dict[secondary_term_upcase][1] if @term_to_match_dict.key? secondary_term_upcase
+
             response = retrieve_normalizer_response(secondary_term)
           end
           if response['match_type'].zero?

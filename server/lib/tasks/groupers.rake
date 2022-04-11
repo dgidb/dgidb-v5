@@ -9,8 +9,6 @@ namespace :dgidb do
     desc 'run the gene grouper'
     task genes: :environment do
       Utils::Logging.without_sql do
-        Utils::Database.delete_interactions
-        Utils::Database.delete_genes
         Genome::Groupers::GeneGrouper.new.run
       end
     end
@@ -18,8 +16,6 @@ namespace :dgidb do
     desc 'run the drug grouper'
     task drugs: :environment do
       Utils::Logging.without_sql do
-        Utils::Database.delete_interactions
-        Utils::Database.delete_drugs
         Genome::Groupers::DrugGrouper.new.run
       end
     end
