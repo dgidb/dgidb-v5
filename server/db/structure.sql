@@ -331,7 +331,7 @@ CREATE TABLE public.genes (
     id text NOT NULL,
     name text,
     long_name character varying(255),
-    concept_id integer
+    concept_id character varying NOT NULL
 );
 
 
@@ -1784,6 +1784,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200901140610'),
 ('20200904144705'),
 ('20220317193102'),
-('20220408032834');
+('20220408032834'),
+('20220408181519'),
+('20220408182256');
 
 
