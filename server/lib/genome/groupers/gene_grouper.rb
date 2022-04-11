@@ -157,6 +157,7 @@ module Genome
         add_claim_aliases(claim, gene)
         add_claim_attributes(claim, gene)
         add_claim_categories(claim, gene)
+        claim.save
       end
     end
   end

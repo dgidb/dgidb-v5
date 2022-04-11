@@ -55,7 +55,7 @@ module Genome
       def self.add_member(interaction_claim)
         drug = interaction_claim.drug_claim.drug
         gene = interaction_claim.gene_claim.gene
-        interaction = DataModel::Interaction.where(drug_id: drug.id, gene_id: gene.id).first_or_create
+        interaction = Interaction.where(drug_id: drug.id, gene_id: gene.id).first_or_create
         interaction_claim.interaction = interaction
 
         # roll types up to interaction level
@@ -68,7 +68,7 @@ module Genome
 
         # roll attributes up to interaction level
         interaction_claim.interaction_claim_attributes.each do |ica|
-          interaction_attribute = DataModel::InteractionAttribute.where(
+          interaction_attribute = InteractionAttribute.where(
             interaction_id: interaction.id,
             name: ica.name,
             value: ica.value
