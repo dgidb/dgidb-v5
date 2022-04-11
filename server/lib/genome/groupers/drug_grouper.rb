@@ -64,10 +64,10 @@ module Genome
         # TODO: extract and store drugs@fda refs separately
         alias_values += xrefs.reject { |xref| xref =~ /drugsatfda.\.*/ } unless xrefs.blank?
         alt_labels = descriptor.fetch('alternate_labels')
-        alias_values += alt_labels unless alt_labels.blank?
+        alias_values += alt_labels.map(&:upcase) unless alt_labels.blank?
         trade_names = retrieve_extension(descriptor, 'trade_names')
-        alias_values += trade_names unless trade_names.blank?
-        alias_values.map(&:upcase).to_set.each do |drug_alias|
+        alias_values += trade_names.map(&:upcase) unless trade_names.blank?
+        alias_values.to_set.each do |drug_alias|
           DrugAlias.where(alias: drug_alias, drug_id: drug.id).first_or_create
         end
       end
@@ -84,24 +84,29 @@ module Genome
         add_grouper_regulatory_approval(descriptor, drug)
       end
 
+      def find_drug_attribute(drug_claim_attribute)
+        drug_attribute = DrugAttribute.where(
+          'upper(name) = ? and upper(value) = ?',
+          drug_claim_attribute.name.upcase,
+          drug_claim_attribute.value.upcase
+        ).first
+        if drug_attribute.nil?
+          drug_attribute = DrugAttribute.where(
+            'lower(name) = ? and lower(value) = ?',
+            drug_claim_attribute.name.downcase,
+            drug_claim_attribute.value.downcase
+          ).first
+        end
+        drug_attribute
+      end
+
       def add_claim_attributes(claim, drug)
         drug_attributes = drug.drug_attributes.pluck(:name, :value)
                               .map { |drug_attribute| drug_attribute.map(&:upcase) }
                               .to_set
         claim.drug_claim_attributes.each do |drug_claim_attribute|
           if drug_attributes.member? [drug_claim_attribute.name.upcase, drug_claim_attribute.value.upcase]
-            drug_attribute = DrugAttribute.where(
-              'upper(name) = ? and upper(value) = ?',
-              drug_claim_attribute.name.upcase,
-              drug_claim_attribute.value.upcase
-            ).first
-            if drug_attribute.nil? # this can occur when a character (e.g. α) is treated differently by upper and upcase
-              drug_attribute = DrugAttribute.where(
-                'lower(name) = ? and lower(value) = ?',
-                drug_claim_attribute.name.downcase,
-                drug_claim_attribute.value.downcase
-              ).first
-            end
+            drug_attribute = find_drug_attribute(drug_claim_attribute)
           else
             drug_attribute = DrugAttribute.create(
               name: drug_claim_attribute.name,

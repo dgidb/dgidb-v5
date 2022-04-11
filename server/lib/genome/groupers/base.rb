@@ -43,7 +43,7 @@ module Genome
         response
       end
 
-      def retrieve_extension(descriptor, type, default: nil)
+      def retrieve_extension(descriptor, type, default = nil)
         unless descriptor.fetch('extensions').blank?
           descriptor['extensions'].each do |extension|
             return extension['value'] if extension['name'] == type
