@@ -63,9 +63,15 @@ module Genome
       def create_gene_claim_category(gene_claim, category)
         gene_category = GeneClaimCategory.find_by(name: category)
         if gene_category.nil?
-          raise StandardError, "GeneClaimCategory with name #{category} does not exist. If this is a valid category, please create its database entry manually before running the importer."
+          msg = "Unrecognized GeneClaimCategory #{category} from #{gene_claim.inspect}."
+          raise StandardError, msg unless Rails.env == 'development'
+
+          puts msg
+          Rails.logger.debug msg
         else
-          gene_claim.gene_claim_categories << gene_category unless gene_claim.gene_claim_categories.include? gene_category
+          unless gene_claim.gene_claim_categories.include? gene_category
+            gene_claim.gene_claim_categories << gene_category
+          end
         end
       end
 
@@ -110,11 +116,15 @@ module Genome
           type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
         )
         if claim_type.nil?
-          raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."
-        end
+          msg = "Unrecognized InteractionClaimType #{type} from #{interaction_claim.inspect}"
+          raise StandardError, msg unless Rails.env == 'development'
 
-        unless interaction_claim.interaction_claim_types.include? claim_type
-          interaction_claim.interaction_claim_types << claim_type
+          puts msg
+          Rails.logger.debug msg
+        else
+          unless interaction_claim.interaction_claim_types.include? claim_type
+            interaction_claim.interaction_claim_types << claim_type
+          end
         end
       end
 
