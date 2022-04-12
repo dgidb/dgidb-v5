@@ -14,15 +14,15 @@
 			position: relative;
 
 			.ant-select-selector {
-				background-color: $primary-bg;
-				color: white;
+				background-color: var(--background);
+				color: var(--text-primary);
 			}
 
 			.ant-select-selector:focus {
-				border-color: white;
+				border-color: var(--text-primary);
 			}
 			.ant-select-selector:hover {
-				border-color: white;
+				border-color: var(--text-primary);
 			}
 
 			.ant-select-selection-item {
@@ -47,12 +47,12 @@
 		.search-dropdown {
 
 			.ant-select-selector {
-				background-color: $primary-bg;
-				color: white;
+				background-color: var(--background);
+				color: var(--text-primary);
 			}
 
 			.ant-select-arrow {
-				color: white;
+				color: var(--text-primary);
 			}
 		}
 	}

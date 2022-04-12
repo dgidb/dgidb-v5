@@ -1,20 +1,20 @@
-@import 'utils/styles/variables';
-
 html, body {
-  background-color: $primary-bg;
+  background-color: var(--background);
   margin: 0;
   font-family: 'Lato';
 }
 
 .layout-container {
+  background-color: var(--background);
+  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 header nav {
-  background-color: $primary-bg;
-  color: white;
+  background-color: var(--background);
+  // color: white;
   position: relative;
   height: 80px;
 
@@ -35,7 +35,7 @@ header nav {
 }
 
 footer {
-  background-color: $primary-purple;
+  background-color: var(--theme-primary);
   position: fixed;
   bottom: 0;
   color: white;

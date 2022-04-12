@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ActionTypes } from 'stores/Global/reducers';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
-import styles from'./MainLayout.module.scss';
-import { Button } from 'antd';
+import './MainLayout.scss';
 import {CloseCircleOutlined} from '@ant-design/icons';
 
 type MainLayoutProps = {
@@ -17,7 +16,6 @@ type MainLayoutProps = {
 const Header: React.FC = () => {
 
   const navigate = useNavigate();
-
   return (
     <header>
       <nav>
@@ -57,8 +55,10 @@ export const MainLayout = ({children }: MainLayoutProps) => {
 
   const {state} = useContext(GlobalClientContext);
 
+  const theme = state.themeSettings.darkModeEnabled ? 'dark' : 'light';
+
   return(
-    <div className={styles["layout-container"]}>
+    <div className={"layout-container"} data-theme={theme}>
       <Header />
       {children}
       {state.themeSettings.showDisclaimer && <Footer />}

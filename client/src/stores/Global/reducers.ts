@@ -14,7 +14,9 @@ export enum ActionTypes {
   DeleteTerm = "DELETE_TERMS",
   DeleteAllTerms = "DELETE_ALL_TERMS",
   HideDisclaimer = "HIDE_DISCLAIMER",
-  ShowDisclaimer = "SHOW_DISCLAIMER"
+  ShowDisclaimer = "SHOW_DISCLAIMER",
+  EnableDarkMode = "ENABLE_DARK_MODE",
+  DisableDarkMode = "DISABLE_DARK_MODE",
 }
 
 // search terms
@@ -50,13 +52,16 @@ export const searchTermsReducer = (
 
 // theme settings
 
-export type themeSettingsType = {
-  showDisclaimer: boolean
+export interface themeSettingsType {
+  showDisclaimer: boolean;
+  darkModeEnabled: boolean;
 }
 
 type ThemeSettingsPayload = {
-  [ActionTypes.HideDisclaimer]: undefined;
-  [ActionTypes.ShowDisclaimer]: undefined;
+  [ActionTypes.HideDisclaimer]: undefined,
+  [ActionTypes.ShowDisclaimer]: undefined,
+  [ActionTypes.EnableDarkMode]: undefined,
+  [ActionTypes.DisableDarkMode]: undefined
 }
 
 export type ThemeSettingsActions = ActionMap<
@@ -68,11 +73,16 @@ export const themeSettingsReducer = (
   state: themeSettingsType,
   action: SearchTermsActions | ThemeSettingsActions
 ) => {
+  let stateCopy = Object.assign({}, state)
   switch (action.type) {
     case ActionTypes.HideDisclaimer:
-      return {showDisclaimer: false};
+      return {...stateCopy, showDisclaimer: false};
     case ActionTypes.ShowDisclaimer:
-      return {showDisclaimer: true};
+      return {...stateCopy, showDisclaimer: true};
+    case ActionTypes.EnableDarkMode:
+      return {...stateCopy, darkModeEnabled: true};
+    case ActionTypes.DisableDarkMode:
+      return {...stateCopy, darkModeEnabled: false};
     default:
       return state;
   }
