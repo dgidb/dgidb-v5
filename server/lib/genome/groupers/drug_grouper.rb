@@ -18,10 +18,18 @@ module Genome
           normalized_drug = normalize_claim(drug_claim.primary_name, drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
-          normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
-          create_new_drug normalized_drug['therapy_descriptor'] if Drug.find_by(concept_id: normalized_id).nil?
+          if normalized_drug.is_a? String
+            normalized_id = normalized_drug
+          else
+            normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
+            create_new_drug normalized_drug['therapy_descriptor'] if Drug.find_by(concept_id: normalized_id).nil?
+          end
           add_claim_to_drug(drug_claim, normalized_id)
         end
+      end
+
+      def get_concept_id(response)
+        response['therapy_descriptor']['therapy_id'] unless response['match_type'].zero?
       end
 
       def create_source
@@ -67,7 +75,7 @@ module Genome
         alias_values += alt_labels.map(&:upcase) unless alt_labels.blank?
         trade_names = retrieve_extension(descriptor, 'trade_names')
         alias_values += trade_names.map(&:upcase) unless trade_names.blank?
-        alias_values.to_set.each do |drug_alias|
+        alias_values.map(&:upcase).to_set.each do |drug_alias|
           DrugAlias.where(alias: drug_alias, drug_id: drug.id).first_or_create
         end
       end
@@ -123,7 +131,7 @@ module Genome
 
       def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
-        claim.drug_claim_aliases.pluck(:alias).to_set.each do |claim_alias|
+        claim.drug_claim_aliases.pluck(:alias).map(&:upcase).to_set.each do |claim_alias|
           DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
         end
       end

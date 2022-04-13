@@ -9,7 +9,7 @@ module Genome
         url_base = ENV['GENE_URL_BASE'] || 'http://localhost:8000'
         @normalizer_url_root = "#{url_base}/gene/"
 
-        @term_to_match_dict = {} # key: lowercase gene term, value: normalized response
+        @term_to_match_dict = {}
       end
 
       def run(source_id: nil)
@@ -20,10 +20,18 @@ module Genome
           normalized_gene = normalize_claim(gene_claim.name, nil, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?
 
-          normalized_id = normalized_gene['gene_descriptor']['gene_id']
-          create_new_gene(normalized_gene['gene_descriptor']) if Gene.find_by(concept_id: normalized_id).nil?
+          if normalized_gene.is_a? String
+            normalized_id = normalized_gene
+          else
+            normalized_id = normalized_gene['gene_descriptor']['gene_id']
+            create_new_gene normalized_gene['gene_descriptor'] if Gene.find_by(concept_id: normalized_id).nil?
+          end
           add_claim_to_gene(gene_claim, normalized_id)
         end
+      end
+
+      def get_concept_id(response)
+        response['gene_descriptor']['gene_id'] unless response['match_type'].zero?
       end
 
       def create_source
@@ -124,16 +132,15 @@ module Genome
       end
 
       def add_claim_aliases(claim, gene)
-        existing_gene_aliases = gene.gene_aliases.pluck(:alias).map(&:upcase).to_set
+        existing_gene_aliases = gene.gene_aliases.pluck(:alias).to_set
         claim.gene_claim_aliases.each do |claim_alias|
-          upcase_claim_alias = claim_alias.alias.upcase
-          unless existing_gene_aliases.member? upcase_claim_alias
-            gene_alias = GeneAlias.create(alias:claim_alias.alias)
+          if !existing_gene_aliases.member?(claim_alias)
+            gene_alias = GeneAlias.create(alias: claim_alias.alias)
           else
             gene_alias = GeneAlias.where(
-              'upper(alias) = ?',
-              claim_alias.alias.upcase
-            )
+              'alias = ?',
+              claim_alias.alias
+            ).first
           end
           gene_alias.sources << claim.source
           gene_alias.save
