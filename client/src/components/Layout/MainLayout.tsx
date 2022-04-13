@@ -16,8 +16,12 @@ type MainLayoutProps = {
 const Header: React.FC = () => {
 
   const navigate = useNavigate();
+
   return (
     <header>
+      <div className="header-logo" onClick={() => navigate('/')}>
+        DGIdb
+      </div>
       <nav>
         <ul>
           <li onClick={() => navigate('/browse')}>

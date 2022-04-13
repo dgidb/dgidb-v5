@@ -75,7 +75,7 @@ export const InteractionTable: React.FC = () => {
     <div className="interaction-table-container">
       <span>
       <h3>Interaction Results</h3>
-      <span>{tableData.length} total interactions</span>
+      {data ? <span id="interaction-count">{tableData.length} total interactions</span> : null}
       </span>
       <Skeleton loading={!tableData.length}>
         <Table 

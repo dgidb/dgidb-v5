@@ -50,12 +50,12 @@ export const Home: React.FC = () => {
   return (
     <div className="home-page-container" >
 
-      <div className="logo">
+      {/* <div className="logo">
         DGIdb
       </div>
       <div className="tagline">
         THE DRUG GENE INTERACTION DATABASE
-      </div>
+      </div> */}
 
       <SearchBar handleSubmit={handleSubmit} />
 
