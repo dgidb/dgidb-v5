@@ -12,10 +12,11 @@ type InitialStateType = {
   themeSettings: themeSettingsType;
 };
 
-const initialState = {
+const initialState: InitialStateType = {
   searchTerms: [],
   themeSettings: {
-    showDisclaimer: true
+    showDisclaimer: true,
+    darkModeEnabled: true,
   }
 }
 

@@ -4,14 +4,17 @@ import SearchBar from 'components/SearchBar/SearchBar';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ActionTypes } from 'stores/Global/reducers';
 
 // styles
-import { Button } from 'antd';
-import styles from'./Home.module.scss';
+import { Button, Switch } from 'antd';
+import SunIcon from 'components/SVG/SunIcon';
+import MoonIcon from 'components/SVG/MoonIcon';
+import './Home.scss';
 
 export const Home: React.FC = () => {
 
-  const {state} = useContext(GlobalClientContext);
+  const {state, dispatch} = useContext(GlobalClientContext);
 
   const handleSubmit = async () => {
     navigate('/results');
@@ -21,39 +24,68 @@ export const Home: React.FC = () => {
   
   const { refetch } = useGetInteractionsByGenes(state.searchTerms);
 
+  const [isToggling, setIsToggling] = useState<boolean>(false);
+
+  // refetch query as terms are added
   useEffect(() => {
     refetch();
   }, [state.searchTerms])
 
-  return (
-    <div className={styles["home-page-container"]} >
 
-      <div className={styles["logo"]}>
+  useEffect(() => {
+    if (isToggling) {
+      if(state.themeSettings.darkModeEnabled) {
+        dispatch({type: ActionTypes.DisableDarkMode})
+      } else {
+        dispatch({type: ActionTypes.EnableDarkMode})
+      }
+    }
+  }, [isToggling])
+
+  // allow for toggling again once dark mode setting is updated
+  useEffect(() => {
+    setIsToggling(false);
+  }, [state.themeSettings.darkModeEnabled])
+
+  return (
+    <div className="home-page-container" >
+
+      {/* <div className="logo">
         DGIdb
       </div>
-      <div className={styles["tagline"]}>
+      <div className="tagline">
         THE DRUG GENE INTERACTION DATABASE
-      </div>
+      </div> */}
 
       <SearchBar handleSubmit={handleSubmit} />
 
-      <div className={styles["home-buttons"]}>
-        <Button onClick={() => handleSubmit()} style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
-        <Button style={{margin: 20, backgroundColor: '#3B2F41', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
+      <div className="home-buttons">
+        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-primary)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
+        <Button style={{margin: 20, color: 'var(--text-primary)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
       </div>
-      <div className={styles["home-blurb"]}>
+      <div className="home-blurb">
         An open-source search engine for drug-gene interactions and the druggable genome.
       </div>
-      <div className={styles["home-links"]}>
-        <span style={{color: 'white', padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
+      <div className="home-links">
+        <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
           API
         </span>
-        <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
+        <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           Downloads
         </span>
-        <span style={{color: 'white',  padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
+        <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           Github
         </span>
+      </div>
+
+      <div className="darkmode-toggle">
+        <Switch 
+          loading={isToggling} 
+          defaultChecked 
+          checkedChildren={<SunIcon />}
+          unCheckedChildren={<MoonIcon />}
+          onChange={() => setIsToggling(true)} 
+        />
       </div>
     </div>
     )

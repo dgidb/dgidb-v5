@@ -1,5 +1,5 @@
 .gene-summary-container {
-  // color: white !important;
+  color: var(--text-primary);
   padding: 20px;
   width: 100%;
   display: flex;
@@ -7,7 +7,7 @@
   justify-content: center;
 
   h3 {
-    color: white !important;
+    color: var(--text-primary);
     font-size: 2rem;
   }
 }
