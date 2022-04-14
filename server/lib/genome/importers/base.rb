@@ -4,9 +4,30 @@ module Genome
       attr_reader :source, :source_db_name
 
       def import
+        @invalid_terms = {
+          gene_claim_categories: {},
+          interaction_claim_types: {}
+        }
         remove_existing_source
         create_new_source
         create_claims
+
+        print_invalid_terms
+      end
+
+      def print_invalid_terms
+        unless @invalid_terms[:gene_claim_categories].empty?
+          puts 'Skipped unrecognized gene claim categories:'
+          @invalid_terms[:gene_claim_categories].each do |key, value|
+            puts "#{key}: #{value.inspect}"
+          end
+        end
+        unless @invalid_terms[:interaction_claim_types].empty?
+          puts 'Skipped unrecognized interaction claim types:'
+          @invalid_terms[:interaction_claim_types].each do |key, value|
+            puts "#{key}: #{value.inspect}"
+          end
+        end
       end
 
       def default_filetype
@@ -66,7 +87,12 @@ module Genome
           msg = "Unrecognized GeneClaimCategory #{category} from #{gene_claim.inspect}."
           raise StandardError, msg unless Rails.env == 'development'
 
-          puts msg
+          if @invalid_terms[:gene_claim_categories].key? category
+            @invalid_terms[:gene_claim_categories][category] << gene_claim.id
+          else
+            @invalid_terms[:gene_claim_categories][category] = [gene_claim.id]
+          end
+
           Rails.logger.debug msg
         else
           unless gene_claim.gene_claim_categories.include? gene_category
@@ -119,7 +145,11 @@ module Genome
           msg = "Unrecognized InteractionClaimType #{type} from #{interaction_claim.inspect}"
           raise StandardError, msg unless Rails.env == 'development'
 
-          puts msg
+          if @invalid_terms[:interaction_claim_types].key? type
+            @invalid_terms[:interaction_claim_types][type] << interaction_claim.id
+          else
+            @invalid_terms[:interaction_claim_types][type] = [interaction_claim.id]
+          end
           Rails.logger.debug msg
         else
           unless interaction_claim.interaction_claim_types.include? claim_type
