@@ -7,13 +7,25 @@ module Genome
         url_base = ENV['THERAPY_URL_BASE'] || 'http://localhost:8000'
         @normalizer_url_root = "#{url_base}/therapy/"
 
-        @term_to_match_dict = {} # key: lowercase drug term, value: normalized response
+        @term_to_match_dict = {}
       end
 
-      def run(source_id: nil)
+      def run(source_id = nil)
         create_source
         claims = DrugClaim.eager_load(:drug_claim_aliases, :drug_claim_attributes).where(drug_id: nil)
         claims = claims.where(source_id: source_id) unless source_id.nil?
+        if source_id.nil?
+          puts "Grouping #{claims.length} ungrouped drug claims"
+        else
+          begin
+            source = Source.find(source_id)
+          rescue ActiveRecord::RecordNotFound
+            puts 'Unrecognized source ID provided'
+            return
+          end
+          source_name = source.source_db_name
+          puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
+        end
         claims.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.primary_name, drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
@@ -33,16 +45,18 @@ module Genome
       end
 
       def create_source
+        puts 'Initializing group data sources...'
+        # TODO: break into source sources @ issue 91
         @normalizer_source = Source.where(
           source_db_name: 'VICCTherapyNormalizer',
           source_db_version: retrieve_normalizer_version,
           base_url: 'https://normalize.cancervariants.org/therapy/normalize?q=',
-          site_url: 'https://normalize.cancervariants.org/therapy/', # TODO
-          citation: '', # TODO
+          site_url: 'https://normalize.cancervariants.org/therapy/',
+          citation: 'wip',
           source_trust_level_id: SourceTrustLevel.NON_CURATED,
           full_name: 'VICC Therapy Normalizer',
-          license: 'custom', # TODO
-          license_link: 'TBD' # TODO
+          license: 'wip',
+          license_link: 'wip'
         ).first_or_create
         drug_source_type = SourceType.find_by(type: 'drug')
         return if @normalizer_source.source_types.include? drug_source_type

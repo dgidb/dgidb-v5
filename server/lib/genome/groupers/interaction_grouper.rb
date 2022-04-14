@@ -4,13 +4,13 @@ module Genome
       def self.run(group_from_scratch=false)
         if group_from_scratch
           ActiveRecord::Base.transaction do
-            puts 'reset members'
+            puts 'Resetting interacting groupings...'
             reset_members
-            puts 'add members'
+            puts 'Adding interaction groups...'
             add_members(group_from_scratch)
           end
         else
-          puts 'add members'
+          puts 'Adding interaction groups...'
           add_members(group_from_scratch)
         end
         Utils::Database.destroy_empty_groups

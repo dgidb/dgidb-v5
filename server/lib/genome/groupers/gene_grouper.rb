@@ -1,7 +1,5 @@
 module Genome
   module Groupers
-    # TODO:
-    # * figure out where guys like this 'α' are and how to handle them
     class GeneGrouper < Genome::Groupers::Base
       attr_reader :term_to_match_dict
 
@@ -12,10 +10,22 @@ module Genome
         @term_to_match_dict = {}
       end
 
-      def run(source_id: nil)
+      def run(source_id = nil)
         create_source
         claims = GeneClaim.eager_load(:gene_claim_aliases, :gene_claim_attributes).where(gene_id: nil)
         claims = claims.where(source_id: source_id) unless source_id.nil?
+        if source_id.nil?
+          puts "Grouping #{claims.length} ungrouped gene claims"
+        else
+          begin
+            source = Source.find(source_id)
+          rescue ActiveRecord::RecordNotFound
+            puts 'Unrecognized source ID provided'
+            return
+          end
+          source_name = source.source_db_name
+          puts "Grouping #{claims.length} ungrouped gene claims from #{source_name}"
+        end
         claims.each do |gene_claim|
           normalized_gene = normalize_claim(gene_claim.name, nil, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?

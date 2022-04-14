@@ -14,23 +14,24 @@ namespace :dgidb do
 
     def handle_group_params(gene_group, drug_group)
       if gene_group == 'true'
-        puts 'Running Gene Grouper - this takes awhile!'
+        puts 'Running Gene Grouper...'
         Genome::Groupers::GeneGrouper.run
       end
       if drug_group == 'true'
-        puts 'Running Drug Grouper - this takes awhile!'
+        puts 'Running Drug Grouper...'
         Genome::Groupers::DrugGrouper.run
       end
-      if gene_group == 'true' || drug_group == 'true'
-        puts 'Populating source counters.'
-        Genome::Normalizers::PopulateCounters.populate_source_counters
-        puts 'Attempting to normalize drug types.'
-        Genome::Normalizers::DrugTypeNormalizers.normalize_types
-        puts 'Filling in source trust levels'
-        Genome::Normalizers::SourceTrustLevel.populate_trust_levels
-        puts 'Attempting to normalize interaction types'
-        Genome::Normalizers::InteractionClaimType.normalize_types
-      end
+      # TODO @ issue #90
+      # if gene_group == 'true' || drug_group == 'true'
+      #   puts 'Populating source counters.'
+      #   Genome::Normalizers::PopulateCounters.populate_source_counters
+      #   puts 'Attempting to normalize drug types.'
+      #   Genome::Normalizers::DrugTypeNormalizers.normalize_types
+      #   puts 'Filling in source trust levels'
+      #   Genome::Normalizers::SourceTrustLevel.populate_trust_levels
+      #   puts 'Attempting to normalize interaction types'
+      #   Genome::Normalizers::InteractionClaimType.normalize_types
+      # end
       puts 'Clearing cache'
       Rails.cache.clear
       puts 'Done.'
