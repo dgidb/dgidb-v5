@@ -23,13 +23,20 @@ export const Home: React.FC = () => {
 
   const navigate = useNavigate();
   
-  const { refetch } = useGetInteractionsByGenes(state.searchTerms);
+  const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
+  const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
 
   const [isToggling, setIsToggling] = useState<boolean>(false);
 
   // refetch query as terms are added
   useEffect(() => {
-    refetch();
+    if(state.searchTerms.length) {
+      if (state.interactionMode === 'gene'){
+        refetchGenes();
+      } else {
+        refetchDrugs();
+      }
+    }
   }, [state.searchTerms])
 
 
@@ -57,6 +64,7 @@ export const Home: React.FC = () => {
       <div className="tagline">
         THE DRUG GENE INTERACTION DATABASE
       </div> */}
+
 
       <SearchBar handleSubmit={handleSubmit} />
 

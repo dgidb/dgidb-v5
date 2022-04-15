@@ -71,9 +71,16 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
     <div className="search-subcontainer">
       <div className="search-dropdown">
         <Select 
-          defaultValue="gene" 
+          value={state.interactionMode}
           style={{ width: 200 }} 
           size="large"
+          onChange={(value) => {
+            if(value === 'gene'){
+              dispatch({type: ActionTypes.SetByGene})
+            } else if (value === 'drug'){
+              dispatch({type: ActionTypes.SetByDrug})
+            }
+          }}
           dropdownRender={(menu: any) => (
             <div>
               {menu}

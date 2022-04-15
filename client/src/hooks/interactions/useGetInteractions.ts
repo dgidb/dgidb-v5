@@ -20,7 +20,6 @@ const getInteractionsByDrugsQuery = gql`
   query drugs($names: [String!]!) {
     drugs(name: $names) {
       interactions {
-        drug{name, approved}
         gene{name}
         interactionScore
       }
