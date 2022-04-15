@@ -2,6 +2,7 @@
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/SearchBar/SearchBar';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
