@@ -28,8 +28,9 @@
   --logo-gradient-2: #180a20; 
 }
 
+
 [data-theme='dark'] {
   --background: #180a20;
   --theme-primary: #480a77;
-  --text-primary: white;
+  --text-primary: #e8eaed;
 }

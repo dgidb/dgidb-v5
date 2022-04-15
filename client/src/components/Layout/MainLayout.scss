@@ -2,6 +2,11 @@ html, body {
   background-color: var(--background);
   margin: 0;
   font-family: 'Lato';
+  color: var(--text-primary);
+
+  h1, h2, h3, h4, h5 {
+    color: var(--text-primary);
+  }
 }
 
 .layout-container {
@@ -17,7 +22,7 @@ header {
 
   .header-logo {
     font-family: 'Fira Sans', sans-serif;
-    font-size: 3.6rem;
+    font-size: 3.2rem;
     font-weight: 700;
     line-height: 80px;
     margin: 3px 0 0 20px;

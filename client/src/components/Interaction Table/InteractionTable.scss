@@ -26,9 +26,7 @@
   }
 }
 
-
-
-.ant-table-thead tr th, .ant-table-tbody>tr.ant-table-row:hover>td {
+.ant-table-thead tr th, .ant-table-tbody tr.ant-table-row:hover td {
   background-color: var(--background-light);
   color: var(--text-primary);
 }

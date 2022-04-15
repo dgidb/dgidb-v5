@@ -10,4 +10,27 @@
     color: var(--text-primary);
     font-size: 2rem;
   }
+
+  h4 {
+    color: var(--text-primary);
+    font-size: 1.4rem;
+  }
+
+  .gene-summary-content {
+    display: flex;
+
+    .interaction-count-container {
+      border: 1px var(--text-primary) solid;
+      margin-right: 7px;
+      padding: 10px;
+      min-height: 400px;
+      flex-grow: 1;
+    }
+
+    .summary-infographic-container {
+      border: 1px var(--text-primary) solid;
+      padding: 10px;
+      flex-grow: 4;
+    }
+  }
 }
