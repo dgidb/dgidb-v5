@@ -24,7 +24,6 @@
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",
     "react": "^18.0.0",
-    "react-css-theme-switcher": "^0.3.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.14.1",
     "react-query": "^3.34.0",
@@ -37,13 +36,17 @@
     "webpack": "^5.71.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd -f ./.env.local react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
-    "format": "yarn run prettier -- --write"
+    "format": "yarn run prettier -- --write",
+    "start:prod": "env-cmd -f ./.env.production react-scripts start",
+    "start:staging": "env-cmd -f ./.env.staging react-scripts start",
+    "build:prod": "env-cmd -f ./.env.prod react-scripts build",
+    "build:staging": "env-cmd -f ./.env.staging react-scripts build"
   },
   "browserslist": {
     "production": [
