@@ -19,9 +19,9 @@ const getInteractionsByGenesQuery = gql`
 const getInteractionsByDrugsQuery = gql`
   query drugs($names: [String!]!) {
     drugs(name: $names) {
+      name
       interactions {
         gene{name}
-        interactionScore
       }
     }
   }

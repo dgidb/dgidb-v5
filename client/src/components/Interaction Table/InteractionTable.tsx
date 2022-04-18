@@ -14,11 +14,7 @@ export const InteractionTable: React.FC = () => {
 
   const [tableData, setTableData] = useState<any>([]);
 
-  const { data, error, isError, isLoading, refetch} = useGetInteractionsByGenes(state.searchTerms);
-
-  useEffect(() => {
-    refetch();
-  }, [state.searchTerms])
+  const { data, error, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
   
   let genes = data?.genes;
 

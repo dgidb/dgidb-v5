@@ -1,11 +1,12 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/SearchBar/SearchBar';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
-import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
+
+import { queryClient } from 'providers/app';
 
 // styles
 import { Button, Switch } from 'antd';
@@ -30,6 +31,7 @@ export const Home: React.FC = () => {
 
   // refetch query as terms are added
   useEffect(() => {
+    queryClient.clear();
     if(state.searchTerms.length) {
       if (state.interactionMode === 'gene'){
         refetchGenes();
@@ -54,6 +56,10 @@ export const Home: React.FC = () => {
   useEffect(() => {
     setIsToggling(false);
   }, [state.themeSettings.darkModeEnabled])
+
+  useEffect(() => {
+    dispatch({type: ActionTypes.DeleteAllTerms})
+  }, [state.interactionMode])
 
   return (
     <div className="home-page-container" >

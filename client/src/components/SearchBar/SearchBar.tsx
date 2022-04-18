@@ -1,6 +1,5 @@
 // hooks/dependencies
 import React, { useState, useEffect, useContext, Dispatch } from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
