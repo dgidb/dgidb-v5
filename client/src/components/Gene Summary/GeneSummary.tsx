@@ -28,14 +28,16 @@ export const GeneSummary: React.FC = () => {
 
   const { data, error, isError, isLoading, refetch} = useGetInteractionsByGenes(state.searchTerms);
 
-  if (isError) {
-    return <div className="gene-summary-container">Error: Interaction not found!</div>
-  }
+  if (isError || isLoading) {
+    return (
+      <div className="gene-summary-container">
 
-  if (isLoading) {
-    return <div className="gene-summary-container">Loading</div>
-  }
+      {isError && <div>Error: Interactions not found!</div>}
 
+      {isLoading && <div>Loading...</div>}
+      </div>
+    )
+  }
   return (
     <div className="gene-summary-container">
       <h3>Gene Summary</h3>

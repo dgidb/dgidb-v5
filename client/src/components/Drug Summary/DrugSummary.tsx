@@ -20,31 +20,34 @@ export const DrugSummary: React.FC = () => {
     setDrugData(drugs)
   }, [drugs])
 
-  if (isError) {
-    return <div className="drug-summary-container">Error: Interactions not found!</div>
-  }
+  if (isError || isLoading) {
+    return (
+      <div className="drug-summary-container">
 
-  if (isLoading) {
-    return <div className="drug-summary-container">Loading</div>
+      {isError && <div>Error: Interactions not found!</div>}
+
+      {isLoading && <div>Loading...</div>}
+      </div>
+    )
   }
 
   return (
     <div className="drug-summary-container">
-      <h3>Drug Summary</h3>
-      <div className="drug-summary-content">
-        {drugData?.map((drug: any) => {
-          return (
-            <div>
-              <b>{drug?.name}</b>
-              {drug?.interactions.map((int: any) => {
-                return (
-                  <div>{int?.gene?.name}</div>
-                )
-              })}             
-            </div>
-          )
-        })}
-      </div>
+        <h3>Drug Summary</h3>
+        <div className="drug-summary-content">
+          {drugData?.map((drug: any) => {
+            return (
+              <div>
+                <b>{drug?.name}</b>
+                {drug?.interactions.map((int: any) => {
+                  return (
+                    <div>{int?.gene?.name}</div>
+                  )
+                })}             
+              </div>
+            )
+          })}
+        </div>
     </div>
   )
 };
