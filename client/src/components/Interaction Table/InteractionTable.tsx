@@ -11,7 +11,7 @@ import { Skeleton, Table } from 'antd';
 export const InteractionTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
-  const [tableData, setTableData] = useState<any>([]);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
   
@@ -19,13 +19,14 @@ export const InteractionTable: React.FC = () => {
 
   useEffect(() => {
     let interactionData: any = [];
-    genes.forEach((gene: any) => {
+    genes?.forEach((gene: any) => {
       gene.interactions.forEach((int: any) => {
         interactionData.push(int)
       })
     })
-    setTableData(interactionData)
+    setInteractionResults(interactionData)
   }, [genes])
+
 
   const columns: ColumnsType<any> = [
     {
@@ -58,24 +59,24 @@ export const InteractionTable: React.FC = () => {
     },
   ]
 
-  if (isError || isLoading) {
-    return (
-      <div className="interaction-table--container">
-        {isError && <div>Error: Interactions not found!</div>}
-        {isLoading && <div>Loading...</div>}
-      </div>
-    )
-  }
+  // if (isError || isLoading) {
+  //   return (
+  //     <div className="interaction-table--container">
+  //       {isError && <div>Error: Interactions not found!</div>}
+  //       {isLoading && <div>Loading...</div>}
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="interaction-table-container">
       <span>
         <h3>Interaction Results</h3>
-        {data ? <span id="interaction-count">{tableData.length} total interactions</span> : null}
+        {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
       </span>
-      <Skeleton loading={!tableData.length}>
+      <Skeleton loading={!interactionResults.length}>
         <Table 
-          dataSource={tableData}
+          dataSource={interactionResults}
           columns={columns}
           rowKey={(record, index) => `${index}`}
           pagination={{ pageSize: 20}}

@@ -24,7 +24,20 @@
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
-      flex-grow: 1;
+      flex-grow: .5;
+
+      .interaction-count-row {
+        display: flex;
+        justify-content: space-between;
+
+        .interaction-count-gene {
+
+        }
+
+        .interaction-count {
+
+        }
+      }
     }
 
     .summary-infographic-container {

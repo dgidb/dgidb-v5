@@ -1,6 +1,7 @@
 // hooks/dependencies
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { useNavigate } from 'react-router-dom';
 
 // components
 import { InteractionTable } from 'components/Interaction Table';
@@ -31,6 +32,13 @@ const DrugResults: React.FC = () => {
 
 export const Results: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(!state.searchTerms.length) {
+      navigate('/home');
+    }
+  }, [])
 
   return (
       <div className="results-page-container">

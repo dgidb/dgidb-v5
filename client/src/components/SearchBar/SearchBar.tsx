@@ -52,16 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
     if (deleteTag) {
       dispatch({type: ActionTypes.DeleteTerm})
     }
-    
     else if (saveTag) {
       dispatch({type: ActionTypes.AddTerm, payload: inputValue})
       setInputValue('')
     } 
- 
     else if (search) {
       handleSubmit();
     }
-
     return;
   }
   

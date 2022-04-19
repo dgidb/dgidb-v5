@@ -4,3 +4,4 @@ server/data
 server/lib/data
 docs/build
 *.DS_Store
+client/yarn.lock

@@ -6,6 +6,7 @@ import { graphQLClient } from 'config';
 const getInteractionsByGenesQuery = gql`
   query genes($names: [String!]!) {
     genes(name: $names) {
+      name
       interactions {
         drug{name, approved}
         gene{name}
