@@ -11,6 +11,9 @@ const getInteractionsByGenesQuery = gql`
         drug{name, approved}
         gene{name}
         interactionScore
+        interactionTypes {
+          type
+        }
       }
     }
   }

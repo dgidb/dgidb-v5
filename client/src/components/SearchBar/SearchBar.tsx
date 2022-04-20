@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect, useContext, Dispatch } from 'react';
+import React, { useState, useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 

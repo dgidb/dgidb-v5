@@ -11,7 +11,6 @@ import { GeneSummary } from 'components/Gene Summary';
 import './results.page.scss';
 import { DrugSummary } from '../../components/Drug Summary/DrugSummary';
 
-
 const GeneResults: React.FC = () => {
   return (
     <>
@@ -19,7 +18,6 @@ const GeneResults: React.FC = () => {
       <InteractionTable />
     </>
   )
-
 }
 
 const DrugResults: React.FC = () => {
@@ -41,9 +39,9 @@ export const Results: React.FC = () => {
   }, [])
 
   return (
-      <div className="results-page-container">
-        {state.interactionMode === 'gene' && <GeneResults />}
-        {state.interactionMode === 'drug' && <DrugResults />}
-      </div>
+    <div className="results-page-container">
+      {state.interactionMode === 'gene' && <GeneResults />}
+      {state.interactionMode === 'drug' && <DrugResults />}
+    </div>
   )
 };
