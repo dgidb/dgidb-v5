@@ -3,6 +3,7 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :file_path
     attr_reader :all_genes
     attr_reader :nci_db
+    attr_reader :all_drug_interactions
 
     def initialize(file_path)
       @file_path = file_path
@@ -11,6 +12,24 @@ module Genome; module Importers; module FileImporters; module Nci;
 
     def create_claims
       create_interaction_claims
+    end
+
+    def open_db
+      @nci_db = File.open(file_path) { |f| Nokogiri::XML(f) }
+    end
+
+    def get_gene_entries
+      genes = nci_db.xpath("GeneEntryCollection/GeneEntry")
+      @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
+    end
+
+    def get_drug_interactions_for_genes
+      @all_drug_interactions = []
+      @all_genes.each do |gene|
+        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+        interaction = entry.map { |n| n.text }
+        @all_drug_interactions.append(interaction)
+      end
     end
 
     private
@@ -30,19 +49,6 @@ module Genome; module Importers; module FileImporters; module Nci;
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
-    end
-
-    def open_db
-      @nci_db = File.open(file_path) { |f| Nokogiri::XML(f) }
-    end
-
-    def get_gene_entries
-      genes = nci_db.xpath("GeneEntryCollection/GeneEntry")
-      @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
-    end
-
-    def get_drug_interactions
-      # code to get matching drug interactions goes here
     end
 
 
