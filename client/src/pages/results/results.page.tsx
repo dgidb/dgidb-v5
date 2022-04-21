@@ -4,12 +4,12 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useNavigate } from 'react-router-dom';
 
 // components
-import { InteractionTable } from 'components/Interaction Table';
-import { GeneSummary } from 'components/Gene Summary';
+import { InteractionTable } from 'components/Results Table/Gene';
+import { GeneSummary } from 'components/Results Summary/Gene';
 
 // styles
 import './results.page.scss';
-import { DrugSummary } from '../../components/Drug Summary/DrugSummary';
+import { DrugSummary } from '../../components/Results Summary/Drug/DrugSummary';
 
 const GeneResults: React.FC = () => {
   return (

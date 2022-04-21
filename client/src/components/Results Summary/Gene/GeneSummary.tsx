@@ -13,10 +13,10 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import { InteractionType } from 'components/Charts';
-import { InteractionDirectionality } from 'components/Charts';
-import { InteractionScore } from 'components/Charts';
-import { RegulatoryApproval } from 'components/Charts';
+import { InteractionType } from 'components/Results Summary/Charts/Gene';
+import { InteractionDirectionality } from 'components/Results Summary/Charts/Gene';
+import { InteractionScore } from 'components/Results Summary/Charts/Gene';
+import { RegulatoryApproval } from 'components/Results Summary/Charts/Gene';
 
 
 // styles
@@ -59,24 +59,22 @@ const InteractionCount: React.FC = () => {
 
 const SummaryInfo: React.FC = () => {
 
-  const [chartType, setChartType] = useState('types')
-  
-
+  const [chartType, setChartType] = useState('score')
 
   return (
     <div className="summary-infographic-container">
       <h4>Summary Infographics</h4>
 
       <div className="chart-container">
-        {chartType === 'score' && <InteractionType />}
-        {chartType === 'types' && <InteractionDirectionality />}
-        {chartType === 'directionality' && <InteractionScore />}
+        {chartType === 'score' && <InteractionScore />}
+        {chartType === 'type' && <InteractionType />}
+        {chartType === 'directionality' && <InteractionDirectionality />}
         {chartType === 'approval' && <RegulatoryApproval />}
       </div>
 
       <div className="chart-selector">
         <div onClick={() => setChartType('score')}>Interaction Score</div>
-        <div onClick={() => setChartType('types')}>Interaction Types</div>
+        <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
         <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
       </div>
