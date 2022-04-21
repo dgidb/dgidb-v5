@@ -1,6 +1,8 @@
 module Genome; module Importers; module FileImporters; module Nci;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
+    attr_reader :all_genes
+    attr_reader :nci_db
 
     def initialize(file_path)
       @file_path = file_path
@@ -29,6 +31,20 @@ module Genome; module Importers; module FileImporters; module Nci;
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
     end
+
+    def open_db
+      @nci_db = File.open(file_path) { |f| Nokogiri::XML(f) }
+    end
+
+    def get_gene_entries
+      genes = nci_db.xpath("GeneEntryCollection/GeneEntry")
+      @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
+    end
+
+    def get_drug_interactions
+      # code to get matching drug interactions goes here
+    end
+
 
     def create_interaction_claims
       CSV.foreach(file_path, encoding:'iso-8859-1:utf-8', headers: true, col_sep: "\t") do |row|
