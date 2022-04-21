@@ -44,6 +44,23 @@
       border: 1px var(--text-primary) solid;
       padding: 10px;
       flex-grow: 4;
+      // width: 500px;
+
+      .chart-container {
+        // width: 500px;
+        // canvas {
+        //   height: 300px;
+        //   width: 300px;
+        // }
+      }
+
+      .chart-selector {
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;
+      }
+
+
     }
   }
 }

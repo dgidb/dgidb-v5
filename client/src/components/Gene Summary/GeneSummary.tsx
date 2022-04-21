@@ -13,6 +13,12 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+import { InteractionType } from 'components/Charts';
+import { InteractionDirectionality } from 'components/Charts';
+import { InteractionScore } from 'components/Charts';
+import { RegulatoryApproval } from 'components/Charts';
+
+
 // styles
 import './GeneSummary.scss';
 
@@ -24,7 +30,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
 
 const InteractionCount: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
@@ -53,86 +58,28 @@ const InteractionCount: React.FC = () => {
 
 
 const SummaryInfo: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
 
-  const [chartData, setChartData] = useState<any>({
-    labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [0, 0, 0, 0],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
-    ]
-  });
+  const [chartType, setChartType] = useState('types')
+  
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Interaction Type (PDGFRA)',
-      },
-    },
-  };
-
-  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
-
-
-  useEffect(() => {
-    if (data?.genes?.length) {
-      data.genes.forEach((gene: any) => {
-        let myArray = [0, 0, 0, 0]
-
-        gene.interactions.forEach((int: any) => {
-
-
-          if(int.interactionTypes.length){
-            switch(int.interactionTypes[0].type){
-              case 'inhibitor':
-                myArray[0]++;
-                break;
-              case 'antagonist':
-                myArray[1]++;
-                break;
-              case 'antibody':
-                myArray[2]++;
-                break;
-              case 'agonist':
-                myArray[3]++;
-                break;
-              default:
-                return;
-            }
-          }
-        })
-
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: 'Dataset 1',
-              data: myArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            }
-          ]
-        });
-      })
-    }
-  }, [data])
 
   return (
     <div className="summary-infographic-container">
       <h4>Summary Infographics</h4>
 
-      <Bar
-        options={options}
-        data={chartData}
-      />
+      <div className="chart-container">
+        {chartType === 'score' && <InteractionType />}
+        {chartType === 'types' && <InteractionDirectionality />}
+        {chartType === 'directionality' && <InteractionScore />}
+        {chartType === 'approval' && <RegulatoryApproval />}
+      </div>
+
+      <div className="chart-selector">
+        <div onClick={() => setChartType('score')}>Interaction Score</div>
+        <div onClick={() => setChartType('types')}>Interaction Types</div>
+        <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
+        <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
+      </div>
     </div>
   )
 }
