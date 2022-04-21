@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
 import { MainLayout } from 'components/Layout';
-
+import { About } from 'pages/About';
 
 const App = () => {
   return (
@@ -29,6 +29,7 @@ export const publicRoutes = [
     element: <App />,
     children: [
       { path: '/results', element: <Results /> },
+      { path: '/about', element: <About /> },
       { path: '/', element: <Home /> },
       { path: '*', element: <Navigate to="." /> },
     ],

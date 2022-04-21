@@ -2,22 +2,53 @@ import { useQuery } from 'react-query';
 import { gql } from 'graphql-request';
 import { graphQLClient } from 'config';
 
-
-const getInteractionsByGeneQuery = gql`
-  query gene($id: String!) {
-    gene(id: $id) {
-      interactions{interactionClaims{drugClaim{drug{name}}}}
+// by genes
+const getInteractionsByGenesQuery = gql`
+  query genes($names: [String!]!) {
+    genes(name: $names) {
+      name
+      interactions {
+        drug{name, approved}
+        gene{name}
+        interactionScore
+        interactionTypes {
+          type
+        }
+      }
     }
   }
- `
- 
- export function useGetInteractionsByGene(id: string) {
+`
+
+// by drugs
+const getInteractionsByDrugsQuery = gql`
+  query drugs($names: [String!]!) {
+    drugs(name: $names) {
+      name
+      interactions {
+        gene{name}
+      }
+    }
+  }
+`
+
+export function useGetInteractionsByGenes(names: string[]) {
   return useQuery('interactions', async () => {
     const res = await graphQLClient.request(
-      getInteractionsByGeneQuery,
-      { id }
+      getInteractionsByGenesQuery,
+      { names }
     );
     return res;
   }, 
-  {enabled: id !== ''});
+  {enabled: names !== []});
+}
+
+export function useGetInteractionsByDrugs(names: string[]) {
+  return useQuery('interactions', async () => {
+    const res = await graphQLClient.request(
+      getInteractionsByDrugsQuery,
+      { names }
+    );
+    return res;
+  }, 
+  {enabled: names !== []});
 }
