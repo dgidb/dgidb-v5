@@ -3,7 +3,10 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :file_path
     attr_reader :all_genes
     attr_reader :nci_db
-    attr_reader :all_drug_interactions
+    attr_reader :drug_interactions
+    attr_reader :drug_pmids
+    attr_reader :drug_alias
+    attr_reader :linked_records
 
     def initialize(file_path)
       @file_path = file_path
@@ -23,12 +26,30 @@ module Genome; module Importers; module FileImporters; module Nci;
       @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
     end
 
+    def get_drug_alias_by_genes
+      @drug_alias = {}
+      @all_genes.each do |gene|
+        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/NCIDrugConceptCode[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+        record = entry.map { |n| n.text }#.uniq
+        @drug_alias[gene] = record
+      end
+    end
+
+    def get_drug_pmids_by_genes
+      @drug_pmids = {}
+      @all_genes.each do |gene|
+        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/PubMedID[../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+        pmid = entry.map { |n| n.text }#.uniq
+        @drug_pmids[gene] = pmid
+      end
+    end
+
     def get_drug_interactions_for_genes
-      @all_drug_interactions = []
+      @drug_interactions = {}
       @all_genes.each do |gene|
         entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-        interaction = entry.map { |n| n.text }.uniq
-        @all_drug_interactions.append(interaction)
+        interaction = entry.map { |n| n.text }#.uniq
+        @drug_interactions[gene] = interaction
       end
     end
 
@@ -50,9 +71,24 @@ module Genome; module Importers; module FileImporters; module Nci;
       time = Benchmark.measure {
       p 'Grabbing Drug Interactions'
       get_drug_interactions_for_genes
-      p 'Interactions found'
+      p 'Interactions recorded'
     }
       p time
+
+      time = Benchmark.measure {
+      p 'Grabbing Drug Aliases'
+      get_drug_alias_by_genes
+      p 'Aliases recorded'
+    }
+      p time
+
+      time = Benchmark.measure {
+      p 'Grabbing Drug PMIDs'
+      get_drug_pmids_by_genes
+      p 'PMIDs recorded'
+    }
+      p time
+
     end
 
     private
@@ -73,7 +109,6 @@ module Genome; module Importers; module FileImporters; module Nci;
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
     end
-
 
     def create_interaction_claims
       CSV.foreach(file_path, encoding:'iso-8859-1:utf-8', headers: true, col_sep: "\t") do |row|
