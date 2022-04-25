@@ -17,6 +17,8 @@ export enum ActionTypes {
   ShowDisclaimer = "SHOW_DISCLAIMER",
   EnableDarkMode = "ENABLE_DARK_MODE",
   DisableDarkMode = "DISABLE_DARK_MODE",
+  SetByDrug = "SET_INTERACTIONS_BY_DRUG",
+  SetByGene = "SET_INTERACTIONS_BY_GENE"
 }
 
 // search terms
@@ -34,7 +36,7 @@ export type SearchTermsActions = ActionMap<
 
 export const searchTermsReducer = (
   state: string[],
-  action: SearchTermsActions | ThemeSettingsActions
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
   let stateCopy = Array.from(state);
   switch (action.type) {
@@ -44,6 +46,31 @@ export const searchTermsReducer = (
       return stateCopy.slice(0, -1);
     case ActionTypes.DeleteAllTerms:
       return [];
+    default:
+      return state;
+  }
+};
+
+// interaction mode
+type InteractionModePayload = {
+  [ActionTypes.SetByDrug]: undefined;
+  [ActionTypes.SetByGene]: undefined;
+};
+
+export type InteractionModeActions = ActionMap<
+InteractionModePayload
+>[keyof ActionMap<InteractionModePayload>];
+
+
+export const interactionModeReducer = (
+  state: string,
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
+) => {
+  switch (action.type) {
+    case ActionTypes.SetByDrug:
+      return 'drug';
+    case ActionTypes.SetByGene:
+      return 'gene';
     default:
       return state;
   }
@@ -71,7 +98,7 @@ export type ThemeSettingsActions = ActionMap<
 
 export const themeSettingsReducer = (
   state: themeSettingsType,
-  action: SearchTermsActions | ThemeSettingsActions
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
   let stateCopy = Object.assign({}, state)
   switch (action.type) {

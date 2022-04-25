@@ -4,15 +4,19 @@ import {
   SearchTermsActions,
   themeSettingsType,
   themeSettingsReducer,
-  ThemeSettingsActions
+  ThemeSettingsActions,
+  interactionModeReducer,
+  InteractionModeActions,
 } from "./reducers";
 
 type InitialStateType = {
+  interactionMode: string;
   searchTerms: string[];
   themeSettings: themeSettingsType;
 };
 
 const initialState: InitialStateType = {
+  interactionMode: 'gene',
   searchTerms: [],
   themeSettings: {
     showDisclaimer: true,
@@ -22,18 +26,19 @@ const initialState: InitialStateType = {
 
 const GlobalClientContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<SearchTermsActions | ThemeSettingsActions>;
+  dispatch: Dispatch<InteractionModeActions | SearchTermsActions | ThemeSettingsActions>;
 }>({
   state: initialState,
   dispatch: () => null
 });
 
 const mainReducer = (
-  { searchTerms, themeSettings }: InitialStateType,
-  action: SearchTermsActions | ThemeSettingsActions
+  { searchTerms, themeSettings, interactionMode }: InitialStateType,
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => ({
   searchTerms: searchTermsReducer(searchTerms, action),
   themeSettings: themeSettingsReducer(themeSettings, action),
+  interactionMode: interactionModeReducer(interactionMode, action)
 });
 
 const GlobalClient: React.FC = ({ children }) => {
