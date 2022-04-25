@@ -68,34 +68,35 @@ module Genome; module Importers; module FileImporters; module Nci;
     end
 
     def run_all_test
-      time = Benchmark.measure {
+      time_open = Benchmark.measure {
       p 'Opening file'
       open_db
       p 'Successfully opened'
     }
-      p time
+      p time_open
 
-      time = Benchmark.measure {
+      time_genes = Benchmark.measure {
       p 'Grabbing Gene Entries'
       get_gene_entries
       p 'Genes Grabbed'
     }
-      p time
+      p time_genes
 
-      time_s = Benchmark.measure {
+      time_records = Benchmark.measure {
       p 'Grabbing Drug Interaction Records'
       grab_records
       p 'Records grabbed'
     }
-      p time_s
 
-      time = Benchmark.measure {
+      time_creation = Benchmark.measure {
         p 'Creating Gene/Drug/Interaction Claims'
         test_loop
         p 'Claims created'
       }
-        p time_s
-        p time
+        p time_open
+        p time_genes
+        p time_records
+        p time_creation
 
     end
 
