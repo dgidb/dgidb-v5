@@ -6,7 +6,7 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :drug_interactions
     attr_reader :drug_pmids
     attr_reader :drug_alias
-    attr_reader :linked_records
+    attr_reader :drug_records
 
     def initialize(file_path)
       @file_path = file_path
@@ -26,31 +26,45 @@ module Genome; module Importers; module FileImporters; module Nci;
       @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
     end
 
-    def get_drug_alias_by_genes
-      @drug_alias = {}
-      @all_genes.each do |gene|
-        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/NCIDrugConceptCode[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-        record = entry.map { |n| n.text }#.uniq
-        @drug_alias[gene] = record
+    def grab_records
+    @drug_records = {}
+    @all_genes.each do |gene|
+      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+      interaction = entry.map { |n| n.text }#.uniq
+
+      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/PubMedID[../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+      pmid = entry.map { |n| n.text }#.uniq
+
+      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/NCIDrugConceptCode[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
+      aliase = entry.map { |n| n.text }#.uniq
+
+      @drug_records[gene] = [interaction,pmid,aliase]
       end
     end
 
-    def get_drug_pmids_by_genes
-      @drug_pmids = {}
+    def test_loop
       @all_genes.each do |gene|
-        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/PubMedID[../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-        pmid = entry.map { |n| n.text }#.uniq
-        @drug_pmids[gene] = pmid
-      end
-    end
 
-    def get_drug_interactions_for_genes
-      @drug_interactions = {}
-      @all_genes.each do |gene|
-        entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-        interaction = entry.map { |n| n.text }#.uniq
-        @drug_interactions[gene] = interaction
-      end
+        record = @drug_records[gene] # [0] = drug, [1] = pmid, [2] = nci id
+
+        p gene
+
+        max = record[0].count
+
+        i = 0
+
+        while i < max
+
+          p 'NCI Drug Name: ' + record[0][i]
+          p 'NCI Drug Code: ' + record[2][i]
+          p 'Interaction Claim PMID: ' + record[1][i]
+
+          i += 1
+
+          end
+          p i.to_s
+          p 'Max: ' + max.to_s
+        end
     end
 
     def run_all_test
@@ -68,26 +82,20 @@ module Genome; module Importers; module FileImporters; module Nci;
     }
       p time
 
-      time = Benchmark.measure {
-      p 'Grabbing Drug Interactions'
-      get_drug_interactions_for_genes
-      p 'Interactions recorded'
+      time_s = Benchmark.measure {
+      p 'Grabbing Drug Interaction Records'
+      grab_records
+      p 'Records grabbed'
     }
-      p time
+      p time_s
 
       time = Benchmark.measure {
-      p 'Grabbing Drug Aliases'
-      get_drug_alias_by_genes
-      p 'Aliases recorded'
-    }
-      p time
-
-      time = Benchmark.measure {
-      p 'Grabbing Drug PMIDs'
-      get_drug_pmids_by_genes
-      p 'PMIDs recorded'
-    }
-      p time
+        p 'Creating Gene/Drug/Interaction Claims'
+        test_loop
+        p 'Claims created'
+      }
+        p time_s
+        p time
 
     end
 
@@ -111,16 +119,27 @@ module Genome; module Importers; module FileImporters; module Nci;
     end
 
     def create_interaction_claims
-      CSV.foreach(file_path, encoding:'iso-8859-1:utf-8', headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
-        drug = row['Drug'].upcase
-        drug_claim = create_drug_claim(drug, drug, 'NCI Drug Name')
-        create_drug_claim_alias(drug_claim, row['NCI drug code'], 'NCI drug code')
+    @all_genes.each do |gene|
+
+      record = @drug_records[gene] # [0] = drug, [1] = pmid, [2] = nci id
+
+      gene_claim = create_gene_claim(gene,'CGI Gene Name')
+
+      max = record[0].count
+      i = 0
+
+      while i < max
+        drug_claim = create_drug_claim(record[0][i],record[0][i],'NCI Drug Name')
+        create_drug_claim_alias(drug_claim, record[2][i], 'NCI Drug Code')
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_publication(interaction_claim, row['PMID'])
-        create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents')
+        create_interaction_claim_publication(interaction_claim, record[1][i])
+        create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents' )
+        i += 1
+        end
       end
-      backfill_publication_information
+    backfill_publication_information
     end
+
+
   end
 end; end; end; end;
