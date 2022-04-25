@@ -27,9 +27,32 @@ module Genome; module Importers; module FileImporters; module Nci;
       @all_drug_interactions = []
       @all_genes.each do |gene|
         entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-        interaction = entry.map { |n| n.text }
+        interaction = entry.map { |n| n.text }.uniq
         @all_drug_interactions.append(interaction)
       end
+    end
+
+    def run_all_test
+      time = Benchmark.measure {
+      p 'Opening file'
+      open_db
+      p 'Successfully opened'
+    }
+      p time
+
+      time = Benchmark.measure {
+      p 'Grabbing Gene Entries'
+      get_gene_entries
+      p 'Genes Grabbed'
+    }
+      p time
+
+      time = Benchmark.measure {
+      p 'Grabbing Drug Interactions'
+      get_drug_interactions_for_genes
+      p 'Interactions found'
+    }
+      p time
     end
 
     private
