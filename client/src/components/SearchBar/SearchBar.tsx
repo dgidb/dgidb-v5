@@ -1,6 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect, useContext, Dispatch } from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import React, { useState, useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -53,16 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
     if (deleteTag) {
       dispatch({type: ActionTypes.DeleteTerm})
     }
-    
     else if (saveTag) {
       dispatch({type: ActionTypes.AddTerm, payload: inputValue})
       setInputValue('')
     } 
- 
     else if (search) {
       handleSubmit();
     }
-
     return;
   }
   
@@ -71,9 +67,16 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
     <div className="search-subcontainer">
       <div className="search-dropdown">
         <Select 
-          defaultValue="gene" 
+          value={state.interactionMode}
           style={{ width: 200 }} 
           size="large"
+          onChange={(value) => {
+            if(value === 'gene'){
+              dispatch({type: ActionTypes.SetByGene})
+            } else if (value === 'drug'){
+              dispatch({type: ActionTypes.SetByDrug})
+            }
+          }}
           dropdownRender={(menu: any) => (
             <div>
               {menu}

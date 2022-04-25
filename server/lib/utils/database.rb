@@ -111,7 +111,7 @@ module Utils
     def self.destroy_empty_groups
       Interaction.includes(:interaction_claims).where(interaction_claims: {id: nil}).destroy_all
       # Empty genes are expected
-      # empty_genes = DataModel::Gene.includes(:gene_claims).where(gene_claims: {id: nil}).destroy_all
+      # empty_genes = Gene.includes(:gene_claims).where(gene_claims: {id: nil}).destroy_all
       # Empty drugs are okay to delete
       Drug.includes(:drug_claims).where(drug_claims: {id: nil}).destroy_all
     end
@@ -124,19 +124,17 @@ module Utils
 
     def self.destroy_unsourced_aliases
       GeneAlias.includes(:sources).where(sources: {id: nil}).destroy_all
-      #Drug aliases are currently imported directly from the therapy
-      #normalizer but not attributed to ChEMBL or Wikidata (outstanding issue #485)
-      #Therefore, none of the drug aliases currently have a source
-      #DrugAlias.includes(:sources).where(sources: {id: nil}).destroy_all
+      # Drug aliases are currently imported directly from the therapy
+      # normalizer but not attributed to ChEMBL or Wikidata (outstanding issue #485)
+      # Therefore, none of the drug aliases currently have a source
+      # DrugAlias.includes(:sources).where(sources: {id: nil}).destroy_all
     end
 
     def self.destroy_unsourced_gene_categories
       Gene.joins(:gene_categories).includes(:gene_categories, gene_claims: [:gene_claim_categories]).each do |g|
-        gene_claim_categories = g.gene_claims.flat_map{|c| c.gene_claim_categories}
+        gene_claim_categories = g.gene_claims.flat_map { |c| c.gene_claim_categories }
         g.gene_categories.each do |c|
-          unless gene_claim_categories.include? c
-            g.gene_categories.delete(c)
-          end
+          g.gene_categories.delete(c) unless gene_claim_categories.include? c
         end
       end
     end
