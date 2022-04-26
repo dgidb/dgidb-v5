@@ -6,11 +6,11 @@ default: &default
 development:
   <<: *default
   encoding: unicode
-  database: dgidb_v5
+  database: dgidb
   host: localhost
 
 test:
   <<: *default
   encoding: unicode
-  database: dgidb_v5_test
+  database: dgidb_test
   host: localhost
