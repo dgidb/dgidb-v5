@@ -39,7 +39,7 @@ module Genome; module Importers; module FileImporters; module Nci;
       aliase = entry.map { |n| n.text }#.uniq
 
       @drug_records[gene] = [interaction,pmid,aliase]
-      end
+    end
     end
 
     def test_loop
@@ -141,6 +141,82 @@ module Genome; module Importers; module FileImporters; module Nci;
     backfill_publication_information
     end
 
+  end # end of class
+
+  class DrugFilter < Nokogiri::XML::SAX::Document
+    attr_reader :HUGO_flag
+    attr_reader :DrugTerm_flag
+    attr_reader :NCIDrugConceptCode_flag
+    attr_reader :PubMedID_flag
+    attr_reader :current_gene
+    attr_reader :current_drug
+    attr_reader :current_NCIDrugConceptCode
+    attr_reader :current_PubMedID
+    attr_reader :record
+    attr_reader :all_records
+
+    def start_document
+        @record = []
+        @all_records = []
+    end
+
+    def start_element(name, attrs = [])
+        case name
+        when 'HUGOGeneSymbol'
+            @HUGO_flag = true
+        when 'DrugTerm'
+            @DrugTerm_flag = true
+        when 'NCIDrugConceptCode'
+            @NCIDrugConceptCode_flag = true
+        when 'PubMedID'
+            @PubMedID_flag = true
+        end
+    end
+
+    def characters(string)
+
+        if @HUGO_flag
+            @current_gene = string
+            @HUGO_flag = false
+        end
+
+        if @DrugTerm_flag
+            @current_drug = string
+            @DrugTerm_flag = false
+            @record.append(@current_gene)
+            @record.append(@current_drug)
+        end
+
+        if @NCIDrugConceptCode_flag
+            @current_NCIDrugConceptCode = string
+            @NCIDrugConceptCode_flag = false
+            @record.append(@current_NCIDrugConceptCode)
+        end
+
+        if @PubMedID_flag
+            @current_PubMedID = string
+            @PubMedID_flag = false
+            @record.append(@current_PubMedID)
+        end
+    end
+
+    def end_element(name)
+        case name
+        when 'Sentence'
+            @all_records.append(@record)
+            @record = []
+        end
+    end
+
+    def end_document
+        p @all_records
+    end
 
   end
-end; end; end; end;
+
+
+
+
+
+
+end;end; end; end # end of module
