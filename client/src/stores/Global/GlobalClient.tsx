@@ -2,40 +2,53 @@ import React, { createContext, useReducer, Dispatch } from "react";
 import {
   searchTermsReducer,
   SearchTermsActions,
+  themeSettingsType,
+  themeSettingsReducer,
+  ThemeSettingsActions,
+  interactionModeReducer,
+  InteractionModeActions,
 } from "./reducers";
 
-
 type InitialStateType = {
-  searchTerms: string[]
+  interactionMode: string;
+  searchTerms: string[];
+  themeSettings: themeSettingsType;
 };
 
-const initialState = {
+const initialState: InitialStateType = {
+  interactionMode: 'gene',
   searchTerms: [],
+  themeSettings: {
+    showDisclaimer: true,
+    darkModeEnabled: true,
+  }
 }
 
-const GlobalContext = createContext<{
+const GlobalClientContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<SearchTermsActions>;
+  dispatch: Dispatch<InteractionModeActions | SearchTermsActions | ThemeSettingsActions>;
 }>({
   state: initialState,
   dispatch: () => null
 });
 
 const mainReducer = (
-  { searchTerms }: InitialStateType,
-  action: SearchTermsActions 
+  { searchTerms, themeSettings, interactionMode }: InitialStateType,
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => ({
-  searchTerms: searchTermsReducer(searchTerms, action)
+  searchTerms: searchTermsReducer(searchTerms, action),
+  themeSettings: themeSettingsReducer(themeSettings, action),
+  interactionMode: interactionModeReducer(interactionMode, action)
 });
 
-const GlobalProvider: React.FC = ({ children }) => {
+const GlobalClient: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   return (
-    <GlobalContext.Provider value={{ state, dispatch }}>
+    <GlobalClientContext.Provider value={{ state, dispatch }}>
       {children}
-    </GlobalContext.Provider>
+    </GlobalClientContext.Provider>
   );
 };
 
-export { GlobalProvider, GlobalContext };
+export { GlobalClient, GlobalClientContext };

@@ -4,8 +4,16 @@ module Genome; module Importers; module FileImporters; module Chembl
     attr_accessor :chembl_data
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = "ChEMBL"
+    end
+
+    def default_filetype
+      'db'
+    end
+
+    def default_filename
+      'chembl'
     end
 
     def create_claims

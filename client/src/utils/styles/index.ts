@@ -1,1 +1,1 @@
-import './layout.scss'
+import './base.scss'

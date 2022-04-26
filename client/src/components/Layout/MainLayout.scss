@@ -1,39 +1,70 @@
-@import 'utils/styles/variables';
-
 html, body {
-  background-color: white;
+  background-color: var(--background);
   margin: 0;
+  font-family: 'Lato';
+  color: var(--text-primary);
+
+  h1, h2, h3, h4, h5 {
+    color: var(--text-primary);
+  }
 }
 
 .layout-container {
+  background-color: var(--background);
+  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
-header nav {
-  background-color: $primary-bg;
-  color: white;
-  position: relative;
-  height: 80px;
+header {
+  display: flex;
 
-  ul {
+  .header-logo {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 80px;
+    margin: 3px 0 0 20px;
+    background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+  }
+
+  nav {
+    background-color: var(--background);
+    flex-grow: 1;
     display: flex;
+    align-self: flex-end;
     justify-content: flex-end;
-    list-style: none;
-    margin: 0 60px;
-    padding: 12px 0;
+    align-items: center;
+    position: relative;
+    height: 80px;
 
-    li {
-      margin-left: 60px;
-      font-family: 'Work Sans';
-      font-size: 18px;
+
+    ul {
+      display: flex;
+      justify-content: flex-end;
+      list-style: none;
+      margin: 0 60px;
+      padding: 12px 0;
+
+      li {
+        margin-left: 60px;
+        font-family: 'Work Sans';
+        font-size: 18px;
+        cursor: pointer;
+      }
     }
   }
+
 }
 
-.home-footer {
-  background-color: #480a77;
+
+
+footer {
+  background-color: var(--theme-primary);
   position: fixed;
   bottom: 0;
   color: white;

@@ -1,8 +1,7 @@
-@import 'utils/styles/variables.scss';
-
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
 
 .home-page-container {
+	background-color: var(--background);
 	font-family: 'Work Sans';
 	flex: 1;
 	display: flex;
@@ -10,8 +9,6 @@
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	background-color: $primary-bg;
-	color: white;
 
 	.home-blurb {
 		margin-top: 160px;
@@ -39,12 +36,12 @@
 				position: relative;
 
 				.ant-select-selector {
-					background-color: $primary-bg;
-					color: white;
+					// background-color: $primary-bg;
+					// color: white;
 				}
 
 				.ant-select-selection-item {
-					color: $primary-purple;
+					color: var(--theme-primary);
 				}
 
 				.ant-select-dropdown {
@@ -65,12 +62,12 @@
 			.search-dropdown {
 
 				.ant-select-selector {
-					background-color: $primary-bg;
-					color: white;
+					// background-color: $primary-bg;
+					// color: white;
 				}
 
 				.ant-select-arrow {
-					color: white;
+					// color: white;
 				}
 			}
 		}
@@ -85,9 +82,8 @@
 		font-size: 20px;
 		margin-top: 10px;
 	}
-
 	.home-footer {
-		background-color: #480a77;
+		background-color: var(--theme-primary);
 		// position: absolute;
 		// bottom: 0;
 		margin-top: auto;
@@ -99,7 +95,28 @@
 		font-family: 'Work Sans';
 		font-weight: 300;
 	}
+
+	.darkmode-toggle {
+		align-self: flex-end;
+		position: absolute;
+		bottom: 15%;
+		margin-right: 5%;
+
+		.ant-switch {
+			background-color: var(--theme-primary) !important;
+			color: var(--text-primary);
+			// border-color: white !important;
+			// outline: white !important;
+		}
+
+	}
 }
+
+.ant-switch-inner .ionicon {
+	margin-top: 3.5px;
+	height: 15px;
+}
+
 
 .logo {
 	font-family: 'Fira Sans', sans-serif;
@@ -107,7 +124,7 @@
 	font-weight: 800;
 	line-height: 80px;
 	margin-bottom: 6px;
-	background: -webkit-linear-gradient(#f7f7f8, #ada7bd);
+	background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
@@ -120,12 +137,12 @@
 // 	height: 10px;
 // }
 
-@media screen and (max-width: $medium-screen) {
+@media screen and (max-width: var(--medium-screen)) {
 	.home-footer {
 		font-size: 15px !important;
 	}
 }
 
-@media screen and (max-width: $small-screen) {
+@media screen and (max-width: var(--small-screen)) {
 
 }
