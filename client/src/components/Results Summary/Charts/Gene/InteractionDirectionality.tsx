@@ -23,6 +23,10 @@ export const InteractionDirectionality: React.FC = () => {
     ]
   });
 
+  const options = {
+    responsive: true,
+  }
+
   const labels = ['Activating', 'Inhibiting', 'N/A'];
 
   // useEffect(() => {
@@ -87,7 +91,7 @@ export const InteractionDirectionality: React.FC = () => {
   };
 
 
-  return <Pie data={chartData} />
+  return <Pie options={options} data={chartData} />
 }
 
 

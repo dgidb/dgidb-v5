@@ -45,14 +45,31 @@
       padding: 10px;
       flex-grow: 4;
       // width: 500px;
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+      height: 500px;
 
-      .chart-container {
-        // width: 500px;
-        // canvas {
-        //   height: 300px;
-        //   width: 300px;
-        // }
+      .chart-section {
+        .score-container {
+          width: 600px;
+          margin: 0 auto;
+        }
+        .type-container {
+          width: 600px;
+          margin: 0 auto;
+        }
+        .directionality-container {
+          width: 300px;
+          margin: 0 auto;
+        }
+        .regulatory-container {
+          width: 600px;
+          margin: 0 auto;
+        }
       }
+
+
 
       .chart-selector {
         display: flex;

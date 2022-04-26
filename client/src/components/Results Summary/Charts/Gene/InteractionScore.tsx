@@ -31,7 +31,6 @@ export const InteractionScore: React.FC = () => {
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
-        label: 'Dataset 1',
         data: [0, 0, 0, 0],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       }
