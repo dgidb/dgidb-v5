@@ -2,5 +2,6 @@ client/package-lock.json
 client/yarn.lock
 server/data
 server/lib/data
+
 docs/build
 *.DS_Store
