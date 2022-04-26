@@ -7,6 +7,8 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :drug_pmids
     attr_reader :drug_alias
     attr_reader :drug_records
+    attr_reader :sax_result
+
 
     def initialize(file_path)
       @file_path = file_path
@@ -97,6 +99,21 @@ module Genome; module Importers; module FileImporters; module Nci;
         p time_genes
         p time_records
         p time_creation
+    end
+
+    def sax_processing
+
+      time_sax_large = Benchmark.measure {
+        p 'Creating Gene/Drug/Interaction Claims'
+        parser = Nokogiri::XML::SAX::Parser.new(DrugFilter.new)
+        parser.parse(File.open('db/NCI_CancerIndex_allphases_compound.xml'))
+        p 'Claims created'
+    }
+    end
+
+    def make_claims(record)
+
+
 
     end
 
@@ -209,14 +226,26 @@ module Genome; module Importers; module FileImporters; module Nci;
     end
 
     def end_document
-        p @all_records
+          @all_records.each do |record|
+            # Create claim logic will have to go here in this end document bubble
+            gene_claim = create_gene_claim(record[0],'CGI Gene Name')
+            p 'GENE CLAIM: ' + record[0]
+
+            drug_claim = create_drug_claim(record[1],record[1],'NCI Drug Name')
+            p 'DRUG CLAIM: ' + record[1]
+
+            create_drug_claim_alias(drug_claim, record[2], 'NCI Drug Code')
+            p 'NCI Drug Code: ' + record[2]
+
+            interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+
+            create_interaction_claim_publication(interaction_claim, record[3])
+            p 'Interaction PMID: ' + record[3]
+
+            create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents' )
+          end
+        Genome::Importers::Base.backfill_publication_information
     end
-
   end
-
-
-
-
-
 
 end;end; end; end # end of module
