@@ -12,33 +12,17 @@ module Genome; module Importers; module FileImporters; module Nci;
 
     def run_parser
       @drug_filter = DrugFilter.new
-
-      # Create parser
       parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
-
-      # Send XML to parser
       parser.parse(File.open(file_path))
-
-      @drug_filter.all_records
     end
 
     def create_claims
       @drug_filter.all_records.each do |record|
-
         gene_claim = create_gene_claim(record[0],'CGI Gene Name')
-        p 'GENE CLAIM: ' + record[0]
-
         drug_claim = create_drug_claim(record[1],record[1],'NCI Drug Name')
-        p 'DRUG CLAIM: ' + record[1]
-
         create_drug_claim_alias(drug_claim, record[2], 'NCI Drug Code')
-        p 'NCI Drug Code: ' + record[2]
-
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-
         create_interaction_claim_publication(interaction_claim, record[3])
-        p 'Interaction PMID: ' + record[3]
-
         create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents' )
         end
       backfill_publication_information
@@ -60,10 +44,7 @@ module Genome; module Importers; module FileImporters; module Nci;
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
     end
-  end # end of class
-
-  private
-
+  end
 
   class DrugFilter < Nokogiri::XML::SAX::Document
     attr_reader :HUGO_flag
@@ -133,6 +114,6 @@ module Genome; module Importers; module FileImporters; module Nci;
     def end_document
     end
 
-  end # end of class
+  end
 
-end;end; end; end # end of module
+end;end; end; end
