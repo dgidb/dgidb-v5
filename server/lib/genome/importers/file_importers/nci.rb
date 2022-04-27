@@ -1,120 +1,12 @@
 module Genome; module Importers; module FileImporters; module Nci;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
-    attr_reader :all_genes
-    attr_reader :nci_db
-    attr_reader :drug_interactions
-    attr_reader :drug_pmids
-    attr_reader :drug_alias
-    attr_reader :drug_records
-    attr_reader :sax_result
-
+    attr_reader :source_db_name
+    attr_reader :source
 
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'NCI'
-    end
-
-    def create_claims
-      create_interaction_claims
-    end
-
-    def open_db
-      @nci_db = File.open(file_path) { |f| Nokogiri::XML(f) }
-    end
-
-    def get_gene_entries
-      genes = nci_db.xpath("GeneEntryCollection/GeneEntry")
-      @all_genes = genes.children.map { |n| n.text if n.name.include?"HUGOGeneSymbol"}.compact!.uniq
-    end
-
-    def grab_records
-    @drug_records = {}
-    @all_genes.each do |gene|
-      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/DrugTerm[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-      interaction = entry.map { |n| n.text }#.uniq
-
-      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/PubMedID[../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-      pmid = entry.map { |n| n.text }#.uniq
-
-      entry = @nci_db.xpath("GeneEntryCollection/GeneEntry/Sentence/DrugData/NCIDrugConceptCode[../../.././HUGOGeneSymbol[contains(text(), '" + gene + "')]]")
-      aliase = entry.map { |n| n.text }#.uniq
-
-      @drug_records[gene] = [interaction,pmid,aliase]
-    end
-    end
-
-    def test_loop
-      @all_genes.each do |gene|
-
-        record = @drug_records[gene] # [0] = drug, [1] = pmid, [2] = nci id
-
-        p gene
-
-        max = record[0].count
-
-        i = 0
-
-        while i < max
-
-          p 'NCI Drug Name: ' + record[0][i]
-          p 'NCI Drug Code: ' + record[2][i]
-          p 'Interaction Claim PMID: ' + record[1][i]
-
-          i += 1
-
-          end
-          p i.to_s
-          p 'Max: ' + max.to_s
-        end
-    end
-
-    def run_all_test
-      time_open = Benchmark.measure {
-      p 'Opening file'
-      open_db
-      p 'Successfully opened'
-    }
-      p time_open
-
-      time_genes = Benchmark.measure {
-      p 'Grabbing Gene Entries'
-      get_gene_entries
-      p 'Genes Grabbed'
-    }
-      p time_genes
-
-      time_records = Benchmark.measure {
-      p 'Grabbing Drug Interaction Records'
-      grab_records
-      p 'Records grabbed'
-    }
-
-      time_creation = Benchmark.measure {
-        p 'Creating Gene/Drug/Interaction Claims'
-        test_loop
-        p 'Claims created'
-      }
-        p time_open
-        p time_genes
-        p time_records
-        p time_creation
-    end
-
-    def sax_processing
-
-      time_sax_large = Benchmark.measure {
-        p 'Creating Gene/Drug/Interaction Claims'
-        parser = Nokogiri::XML::SAX::Parser.new(DrugFilter.new)
-        parser.parse(File.open('db/NCI_CancerIndex_allphases_compound.xml'))
-        p 'Claims created'
-    }
-    end
-
-    def make_claims(record)
-
-
-
     end
 
     private
@@ -135,30 +27,7 @@ module Genome; module Importers; module FileImporters; module Nci;
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
     end
-
-    def create_interaction_claims
-    @all_genes.each do |gene|
-
-      record = @drug_records[gene] # [0] = drug, [1] = pmid, [2] = nci id
-
-      gene_claim = create_gene_claim(gene,'CGI Gene Name')
-
-      max = record[0].count
-      i = 0
-
-      while i < max
-        drug_claim = create_drug_claim(record[0][i],record[0][i],'NCI Drug Name')
-        create_drug_claim_alias(drug_claim, record[2][i], 'NCI Drug Code')
-        interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_publication(interaction_claim, record[1][i])
-        create_interaction_claim_link(interaction_claim, 'The Cancer Gene Index Gene-Disease and Gene-Compound XML Documents', 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents' )
-        i += 1
-        end
-      end
-    backfill_publication_information
-    end
-
-  end # end of class
+  end # end of Importer class
 
   class DrugFilter < Nokogiri::XML::SAX::Document
     attr_reader :HUGO_flag
