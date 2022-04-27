@@ -48,25 +48,71 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     attr_reader :record
     attr_reader :all_records
 
+    # Flags for retrieving data points
+    attr_reader :drugbank_id_flag
+    attr_reader :name_flag
+
+    # Flags for excluding data points that share namespace
+    attr_reader :is_primary_drug
+    attr_reader :is_not_salts
+
+
     def start_document
         @record = []
         @all_records = []
     end
 
     def start_element(name, attrs = [])
-        case
+        attrs = attrs.to_h
+
+        case name
         when 'drugbank-id'
-            p name
-            p attrs
+            if attrs['primary']
+                @drugbank_id_flag = true
+                @is_primary_drug = true
+            end
+
+        when 'name'
+            if @is_primary_drug
+              @name_flag = true
+            end
+
+        when 'salts'
+            @is_not_salts = false
+
+
         end
     end
 
     def characters(string)
+
+
+        if @drugbank_id_flag
+            @drugbank_id_flag = false
+            if is_not_salts
+                p string
+            end
+        end
+
+        if @name_flag
+            if is_not_salts
+                @name_flag = false
+                @is_primary_drug = false
+                p string unless string.include?"\n"
+            end
+        end
+
+
+
     end
 
     def end_element(name)
         case name
-        when ''
+
+        when 'salts'
+            @is_not_salts = true
+
+        when 'hello'
             @all_records.append(@record)
             @record = []
         end
