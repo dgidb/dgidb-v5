@@ -1,4 +1,4 @@
-module Genome; module Importers; module FileImporters; module Nci;
+module Genome; module Importers; module FileImporters; module Drugbank;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
     attr_reader :source_db_name
@@ -21,14 +21,14 @@ module Genome; module Importers; module FileImporters; module Nci;
         {
             base_url: 'https://go.drugbank.com/',
             site_url: 'https://go.drugbank.com/',
-            citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136"
+            citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
             source_db_version: get_version,
             source_type_id: DataModel::SourceType.INTERACTION,
             source_db_name: 'DrugBank',
             full_name: 'DrugBank - Open Data Drug & Drug Target Database',
             source_trust_level_id: DataModel::SourceTrustLevel.EXPERT_CURATED,
             license: '',
-            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816', # license link double check?
+            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816' # license link double check?
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -54,6 +54,11 @@ module Genome; module Importers; module FileImporters; module Nci;
     end
 
     def start_element(name, attrs = [])
+        case
+        when 'drugbank-id'
+            p name
+            p attrs
+        end
     end
 
     def characters(string)
