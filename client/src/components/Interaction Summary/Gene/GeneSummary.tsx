@@ -13,10 +13,10 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import { InteractionType } from 'components/Results Summary/Charts/Gene';
-import { InteractionDirectionality } from 'components/Results Summary/Charts/Gene';
-import { InteractionScore } from 'components/Results Summary/Charts/Gene';
-import { RegulatoryApproval } from 'components/Results Summary/Charts/Gene';
+import { InteractionType } from 'components/Interaction Charts/Gene';
+import { InteractionDirectionality } from 'components/Interaction Charts/Gene';
+import { InteractionScore } from 'components/Interaction Charts/Gene';
+import { RegulatoryApproval } from 'components/Interaction Charts/Gene';
 
 
 // styles

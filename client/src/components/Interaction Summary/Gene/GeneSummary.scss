@@ -24,7 +24,7 @@
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
-      flex-grow: .5;
+      // flex-grow: .5;
 
       .interaction-count-row {
         display: flex;
@@ -52,19 +52,17 @@
 
       .chart-section {
         .score-container {
-          width: 600px;
+          // width: 100%;
           margin: 0 auto;
         }
         .type-container {
-          width: 600px;
           margin: 0 auto;
         }
         .directionality-container {
           width: 300px;
           margin: 0 auto;
         }
-        .regulatory-container {
-          width: 600px;
+        .approval-container {
           margin: 0 auto;
         }
       }
