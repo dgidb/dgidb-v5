@@ -51,15 +51,32 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     # Flags for retrieving data points
     attr_reader :drugbank_id_flag
     attr_reader :name_flag
+    attr_reader :target_name_flag
+    attr_reader :target_action_flag
+    attr_reader :target_pubmed_flag
+    attr_reader :target_gene_identifier_flag
+    attr_reader :target_gene_id_resource_flag
 
     # Flags for excluding data points that share namespace
     attr_reader :is_primary_drug
     attr_reader :is_not_salts
+    attr_reader :is_target
+    attr_reader :is_gene_identifier
 
+    # Variables for individual data points
+    attr_reader :current_drug_id
+    attr_reader :current_drug_name
+    attr_reader :current_target_name
+    attr_reader :current_target_action
+    attr_reader :current_target_pmid
+    attr_reader :current_target_gene_identifiers
+    attr_reader :current_target_gene_id_resources
 
     def start_document
         @record = []
         @all_records = []
+        @is_not_salts = true
+        @is_gene_identifier = false
     end
 
     def start_element(name, attrs = [])
@@ -77,20 +94,55 @@ module Genome; module Importers; module FileImporters; module Drugbank;
               @name_flag = true
             end
 
+        when 'gene-name'
+            if @is_target
+              @target_name_flag = true
+            end
+
         when 'salts'
             @is_not_salts = false
 
+        when 'target'
+            @is_target = true
+            @current_target_pmid = []
+            @current_target_name = 'n/a'
+            @current_target_action = 'n/a'
 
+
+        when 'action'
+            @target_action_flag = true
+
+        when 'pubmed-id'
+            @target_pubmed_flag = true
+
+        when 'external-identifiers'
+            @is_gene_identifier = true
+            @current_target_gene_identifiers = []
+            @current_target_gene_id_resources = []
+
+
+        when 'identifier'
+            if @is_gene_identifier
+                @target_gene_identifier_flag = true
+            end
+
+        when 'resource'
+            if @is_gene_identifier
+                @target_gene_id_resource_flag = true
+            end
         end
+
+
+
     end
 
     def characters(string)
 
-
         if @drugbank_id_flag
             @drugbank_id_flag = false
             if is_not_salts
-                p string
+                p 'DRUGBANK ID: ' + string
+                @current_drug_id = string
             end
         end
 
@@ -98,11 +150,48 @@ module Genome; module Importers; module FileImporters; module Drugbank;
             if is_not_salts
                 @name_flag = false
                 @is_primary_drug = false
-                p string unless string.include?"\n"
+                p 'DRUG NAME: ' + string unless string.include?"\n"
+                @current_drug_name = string
             end
         end
 
+        if @target_name_flag
+            if @is_target
+                @target_name_flag = false
+                p 'TARGET NAME: ' + string unless string.include?"\n"
+                @current_target_name = string
+            end
+        end
 
+        if target_action_flag
+            if is_target
+                @target_action_flag = false
+                p 'ACTION TYPE: ' + string unless string.include?"\n"
+                @current_target_action = string
+            end
+        end
+
+        if target_pubmed_flag
+            if is_target
+                @target_pubmed_flag = false
+                p 'PUBMED ID: ' + string unless string.include?"\n"
+                @current_target_pmid.append(string) unless string.include?"\n"
+            end
+        end
+
+        if target_gene_identifier_flag
+            if is_gene_identifier
+                @target_gene_identifier_flag = false
+                @current_target_gene_identifiers.append(string) unless string.include?"\n"
+            end
+        end
+
+        if target_gene_id_resource_flag
+            if is_gene_identifier
+                @target_gene_id_resource_flag = false
+                @current_target_gene_id_resources.append(string) unless string.include?"\n"
+            end
+        end
 
     end
 
@@ -112,13 +201,23 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         when 'salts'
             @is_not_salts = true
 
-        when 'hello'
+        when 'external-identifiers'
+            @is_gene_identifier = false
+
+        when 'target'
+            @is_target = false
+            @record.append(current_drug_id,@current_drug_name,@current_target_name,@current_target_action,@current_target_pmid,@current_target_gene_identifiers,@current_target_gene_id_resources)
             @all_records.append(@record)
             @record = []
+            #append all sections to a record
+
+        when 'targets'
         end
+
     end
 
     def end_document
+        p @all_records
     end
 
   end
