@@ -16,6 +16,20 @@ module Genome; module Importers; module FileImporters; module Drugbank;
       parser.parse(File.open(file_path))
     end
 
+    def time_parser
+
+        time_sax = Benchmark.measure {
+        p 'Running DrugBank Parser'
+        @drug_filter = DrugFilter.new
+        parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
+        parser.parse(File.open(file_path))
+        p 'Parsing Time:'
+      }
+        p time_sax
+
+    end
+
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -141,7 +155,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if @drugbank_id_flag
             @drugbank_id_flag = false
             if is_not_salts
-                p 'DRUGBANK ID: ' + string
+                # p 'DRUGBANK ID: ' + string
                 @current_drug_id = string
             end
         end
@@ -150,7 +164,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
             if is_not_salts
                 @name_flag = false
                 @is_primary_drug = false
-                p 'DRUG NAME: ' + string unless string.include?"\n"
+                # p 'DRUG NAME: ' + string unless string.include?"\n"
                 @current_drug_name = string
             end
         end
@@ -158,7 +172,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if @target_name_flag
             if @is_target
                 @target_name_flag = false
-                p 'TARGET NAME: ' + string unless string.include?"\n"
+                # p 'TARGET NAME: ' + string unless string.include?"\n"
                 @current_target_name = string
             end
         end
@@ -166,7 +180,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if target_action_flag
             if is_target
                 @target_action_flag = false
-                p 'ACTION TYPE: ' + string unless string.include?"\n"
+                # p 'ACTION TYPE: ' + string unless string.include?"\n"
                 @current_target_action = string
             end
         end
@@ -174,7 +188,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if target_pubmed_flag
             if is_target
                 @target_pubmed_flag = false
-                p 'PUBMED ID: ' + string unless string.include?"\n"
+                # p 'PUBMED ID: ' + string unless string.include?"\n"
                 @current_target_pmid.append(string) unless string.include?"\n"
             end
         end
@@ -217,7 +231,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     end
 
     def end_document
-        p @all_records
+        p 'Finished parsing'
     end
 
   end
