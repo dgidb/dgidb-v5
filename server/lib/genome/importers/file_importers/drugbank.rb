@@ -16,32 +16,17 @@ module Genome; module Importers; module FileImporters; module Drugbank;
       parser.parse(File.open(file_path))
     end
 
-    def time_parser
-
-        time_sax = Benchmark.measure {
-        p 'Running DrugBank Parser'
-        @drug_filter = DrugFilter.new
-        parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
-        parser.parse(File.open(file_path))
-        p 'Parsing Time:'
-      }
-        p time_sax
-    end
-
-
     def create_new_source
       @source ||= Source.create(
         {
             base_url: 'https://go.drugbank.com/',
             site_url: 'https://go.drugbank.com/',
             citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
-            source_db_version: get_version,
-            source_type_id: DataModel::SourceType.INTERACTION,
+            source_db_version: '5.1.9',
             source_db_name: 'DrugBank',
             full_name: 'DrugBank - Open Data Drug & Drug Target Database',
-            source_trust_level_id: DataModel::SourceTrustLevel.EXPERT_CURATED,
             license: '',
-            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816' # license link double check?
+            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -49,8 +34,8 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     end
 
     def create_claims
+        @i_failure = 0
         @drug_filter.all_records.each do |record|
-
 
             if record[2].exclude?"n/a"
                 gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
@@ -65,7 +50,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
 
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
-                create_interaction_claim_type(interaction_claim, record[3])
+                create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', record[3])
 
                 record[4].each do |pmid|
                     create_interaction_claim_publication(interaction_claim, pmid)
@@ -74,6 +59,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
             end
 
         end
+        backfill_publication_information
     end
 
 
