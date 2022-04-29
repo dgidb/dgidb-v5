@@ -26,7 +26,6 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         p 'Parsing Time:'
       }
         p time_sax
-
     end
 
 
@@ -51,7 +50,29 @@ module Genome; module Importers; module FileImporters; module Drugbank;
 
     def create_claims
         @drug_filter.all_records.each do |record|
-            # Create claims
+
+
+            if record[2].exclude?"n/a"
+                gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
+
+                Hash[record[6].zip(record[5])].each do |nomen,syn|
+                  create_gene_claim_alias(gene_claim, syn, nomen)
+                end
+
+                drug_claim = create_drug_claim(record[1], record[1], 'DrugBank Drug Name')
+
+                create_drug_claim_alias(drug_claim, record[0], 'DrugBank Identifier')
+
+                interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+
+                create_interaction_claim_type(interaction_claim, record[3])
+
+                record[4].each do |pmid|
+                    create_interaction_claim_publication(interaction_claim, pmid)
+                end
+
+            end
+
         end
     end
 
