@@ -39,8 +39,8 @@ const InteractionCount: React.FC = () => {
 
   return (
     <div className="interaction-count-container">
-      <h4>Gene Interactions</h4>
-      <div className="interaction-count-row">
+      {/* <h4>Gene Interactions</h4> */}
+      <div className="interaction-count-header">
         <div className="interaction-count-gene"><b>Gene</b></div>
         <div className="interaction-count"><b>Interactions</b></div>
       </div>
@@ -64,6 +64,7 @@ const SummaryInfo: React.FC = () => {
   return (
     <div className="summary-infographic-container">
       <h4>Summary Infographics</h4>
+
 
       <div className="chart-section">
         <div className="score-container">
