@@ -8,8 +8,17 @@ const getInteractionsByGenesQuery = gql`
     genes(name: $names) {
       name
       interactions {
-        drug{name, approved}
-        gene{name}
+        drug {
+          name
+          approved
+          drugAttributes {
+            name
+            value
+          }
+        }
+        gene {
+          name
+        }
         interactionScore
         interactionTypes {
           type
@@ -26,7 +35,9 @@ const getInteractionsByDrugsQuery = gql`
     drugs(name: $names) {
       name
       interactions {
-        gene{name}
+        gene {
+          name
+        }
       }
     }
   }
