@@ -2,11 +2,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { ColumnsType } from 'antd/es/table';
+
+// methods
+import { truncateDecimals } from 'utils/format';
 
 // styles
 import './InteractionTable.scss';
 import { Skeleton, Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 
 export const InteractionTable: React.FC = () => {
 
@@ -26,7 +29,6 @@ export const InteractionTable: React.FC = () => {
     })
     setInteractionResults(interactionData)
   }, [genes])
-
 
   const columns: ColumnsType<any> = [
     {
@@ -54,7 +56,7 @@ export const InteractionTable: React.FC = () => {
       title: 'Interaction Score',
       dataIndex: ['interactionScore'],
       render: (text: any, record: any) => (
-        <span>{record?.interactionScore}</span>
+        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
       )
     },
   ]
