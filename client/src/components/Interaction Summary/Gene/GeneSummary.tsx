@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, SetStateAction} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
@@ -31,22 +31,37 @@ ChartJS.register(
   Legend
 );
 
-const InteractionCount: React.FC = () => {
+interface CountProps {
+  setChartData: React.Dispatch<SetStateAction<any[]>>
+}
+
+const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
   const {state} = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const [filterBy, setFilterBy]= useState<string>('')
   
   let genes = data?.genes;
 
+  const toggleFilter = (geneName: string) => {
+    if (filterBy === geneName){
+      setChartData(genes)
+      setFilterBy('')
+    } else {
+      let gene = genes.find((gene: any) => gene.name === geneName);
+      setChartData([gene]);
+      setFilterBy(geneName)
+    }
+  }
+
   return (
     <div className="interaction-count-container">
-      {/* <h4>Gene Interactions</h4> */}
       <div className="interaction-count-header">
         <div className="interaction-count-gene"><b>Gene</b></div>
         <div className="interaction-count"><b>Interactions</b></div>
       </div>
       {genes?.map((gene: any) => {
         return (
-          <div className="interaction-count-row">
+          <div className={`interaction-count-row ${filterBy === gene.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(gene.name)}>
             <div className="interaction-count-gene">{gene.name}</div>
             <div className="interaction-count">{gene.interactions.length}</div>
           </div>
@@ -56,8 +71,11 @@ const InteractionCount: React.FC = () => {
   )
 }
 
+interface InfoProps {
+  chartData: any
+}
 
-const SummaryInfo: React.FC = () => {
+const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
 
   const [chartType, setChartType] = useState('score')
 
@@ -65,12 +83,11 @@ const SummaryInfo: React.FC = () => {
     <div className="summary-infographic-container">
       <h4>Summary Infographics</h4>
 
-
       <div className="chart-section">
-        {chartType === 'score' && <InteractionScore />}
-        {chartType === 'type' && <InteractionType />}
+        {chartType === 'score' && <InteractionType data={chartData} />}
+        {chartType === 'type' && <InteractionType data={chartData} />}
         {chartType === 'directionality' && <InteractionDirectionality />}
-        {chartType === 'approval' && <RegulatoryApproval />}
+        {chartType === 'approval' && <InteractionType data={chartData} />}
       </div>
 
       <div className="chart-selector">
@@ -87,6 +104,11 @@ export const GeneSummary: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const { data, error, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
+  const [chartData, setChartData] = useState<any>([]);
+
+  useEffect(() => {
+    setChartData(data?.genes)
+  }, [data])
 
   if (isError || isLoading) {
     return (
@@ -100,8 +122,8 @@ export const GeneSummary: React.FC = () => {
     <div className="gene-summary-container">
       <h3>Gene Summary</h3>
       <div className="gene-summary-content">
-        <InteractionCount/>
-        <SummaryInfo />
+        <InteractionCount setChartData={setChartData}/>
+        <SummaryInfo chartData={chartData} />
       </div>
     </div>
   )
