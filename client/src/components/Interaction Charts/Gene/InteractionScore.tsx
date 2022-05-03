@@ -19,7 +19,6 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
 );
 
 
@@ -31,8 +30,9 @@ export const InteractionScore: React.FC = () => {
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
+        label: '',
         data: [0, 0, 0, 0],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
       }
     ]
   });
@@ -42,7 +42,7 @@ export const InteractionScore: React.FC = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        display: false
       },
       title: {
         display: true,
@@ -82,9 +82,9 @@ export const InteractionScore: React.FC = () => {
           labels,
           datasets: [
             {
-              label: 'Dataset 1',
+              label: '',
               data: dataArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
             }
           ]
         });
