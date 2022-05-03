@@ -1,16 +1,20 @@
 default: &default
   adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
+production:
+  <<: *default
+  database: dgidb_v5_prod
+  host: <%= ENV.fetch("DB_HOST") { "localhost" }%>
+
 development:
   <<: *default
-  encoding: unicode
-  database: dgidb_v5
-  host: localhost
+  database: dgidb_v5_dev
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
 
 test:
   <<: *default
-  encoding: unicode
   database: dgidb_v5_test
-  host: localhost
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
