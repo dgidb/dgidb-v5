@@ -92,5 +92,9 @@ export const InteractionType: React.FC = () => {
     }
   }, [data])
 
-  return <Bar options={options} data={chartData}/>
+  return (
+    <div className="type-container">
+      <Bar options={options} data={chartData}/>
+    </div>
+  )
 }

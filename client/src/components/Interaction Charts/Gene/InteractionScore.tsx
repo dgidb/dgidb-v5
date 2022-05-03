@@ -92,5 +92,9 @@ export const InteractionScore: React.FC = () => {
     }
   }, [data])
 
-  return <Bar options={options} data={chartData}/>
+  return (
+    <div className="score-container">
+      <Bar options={options} data={chartData}/>
+    </div>
+  )
 }

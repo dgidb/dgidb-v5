@@ -67,18 +67,10 @@ const SummaryInfo: React.FC = () => {
 
 
       <div className="chart-section">
-        <div className="score-container">
-          {chartType === 'score' && <InteractionScore />}
-        </div>
-        <div className="type-container">
-          {chartType === 'type' && <InteractionType />}
-        </div>
-        <div className="directionality-container">
-         {chartType === 'directionality' && <InteractionDirectionality />}
-        </div>
-        <div className="approval-container">
-         {chartType === 'approval' && <RegulatoryApproval />}
-        </div>
+        {chartType === 'score' && <InteractionScore />}
+        {chartType === 'type' && <InteractionType />}
+        {chartType === 'directionality' && <InteractionDirectionality />}
+        {chartType === 'approval' && <RegulatoryApproval />}
       </div>
 
       <div className="chart-selector">

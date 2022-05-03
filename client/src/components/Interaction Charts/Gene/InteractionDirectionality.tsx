@@ -91,7 +91,11 @@ export const InteractionDirectionality: React.FC = () => {
   };
 
 
-  return <Pie options={options} data={chartData} />
+  return (
+    <div className="directionality-container">
+      <Pie options={options} data={chartData} />
+    </div>
+  )
 }
 
 

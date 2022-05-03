@@ -21,7 +21,6 @@ ChartJS.register(
   Tooltip,
 );
 
-
 export const RegulatoryApproval: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
@@ -92,5 +91,9 @@ export const RegulatoryApproval: React.FC = () => {
     }
   }, [data])
 
-  return <Bar options={options} data={chartData}/>
+  return (
+    <div className="approval-container">
+      <Bar options={options} data={chartData}/>
+    </div>
+  )
 }
