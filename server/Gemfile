@@ -23,7 +23,9 @@ gem 'rufo'
 
 gem 'graphql', '~> 1.12.15'
 gem 'graphql-batch', '~> 0.4.3'
+gem 'graphiql-rails', '~> 1.7.0'
 gem 'search_object_graphql', '0.3.1'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -44,11 +46,6 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'graphiql-rails', '~> 1.7.0'
-end
-
-group :production do
-  gem 'sass-rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

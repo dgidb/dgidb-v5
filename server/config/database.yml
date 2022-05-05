@@ -6,12 +6,12 @@ default: &default
 
 production:
   <<: *default
-  database: dgidb_v5_prod
+  database: dgidb_v5
   host: <%= ENV.fetch("DB_HOST") { "localhost" }%>
 
 development:
   <<: *default
-  database: dgidb_v5_dev
+  database: dgidb_v5
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
 
 test:
