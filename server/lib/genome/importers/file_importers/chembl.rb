@@ -69,7 +69,7 @@ module Genome; module Importers; module FileImporters; module Chembl
         primary_name = row[2].strip.upcase
         drug_claim = create_drug_claim(primary_name, primary_name, "Primary Drug Name")
         create_drug_claim_attribute(drug_claim, "ChEMBL Max Phase", row[5])
-        create_drug_claim_alias(drug_claim, row[1], "ChEMBL ID")
+        create_drug_claim_alias(drug_claim, "chembl:#{row[1]}", 'CURIE')
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 

@@ -49,9 +49,9 @@ module Genome; module Importers; module ApiImporters; module Go;
       unless gene['synonym'].nil?
         gene['synonym'].each do |synonym|
           if synonym.include? 'UniProtKB:'
-            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', ''), 'UniProtKB ID')
+            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', 'uniprot'), 'CURIE')
           else
-            create_gene_claim_alias(gene_claim, synonym, 'GO Gene Synonym')
+            create_gene_claim_alias(gene_claim, synonym, 'Gene Alias')
           end
         end
       end

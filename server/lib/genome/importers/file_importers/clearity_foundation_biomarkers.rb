@@ -34,7 +34,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['gene_name'].upcase, 'Gene Target Symbol')
-        create_gene_claim_alias(gene_claim, row['entrez_gene_id'], 'Entrez Gene ID')
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_gene_id']}", 'CURIE')
         create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['reported_gene_name'])
 
         drug_claim = create_drug_claim(row['drug_name'].upcase, row['drug_name'].upcase, 'Primary Drug Name')

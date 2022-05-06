@@ -64,8 +64,8 @@ module Genome
           end
 
           def create_gene_claim_aliases(gc, variant)
-            create_gene_claim_alias(gc, variant['entrez_id'].to_s, 'Entrez Gene ID')
-            create_gene_claim_alias(gc, variant['gene_id'].to_s, 'CIViC Gene ID')
+            create_gene_claim_alias(gc, "ncbigene:#{variant['entrez_id']}", 'CURIE')
+            create_gene_claim_alias(gc, "civic.gid:#{variant['gene_id']}", 'CURIE')
           end
 
           def create_new_source
