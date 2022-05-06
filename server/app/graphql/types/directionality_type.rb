@@ -1,7 +1,7 @@
 module Types
   class DirectionalityType < Types::BaseEnum
-    value :activating
-    value :inhibitory
-    value :directionality_unclear
+    value :ACTIVATING, value: 'activating'
+    value :INHIBITORY, value: 'inhibitory'
+    value :DIRECTIONALITY_UNCLEAR, value: 'directionality unclear'
   end
 end
