@@ -8,6 +8,28 @@ module Genome
         response['service_meta_']['version']
       end
 
+      def fetch_json_response(url)
+        begin
+          uri = URI(url)
+        rescue URI::InvalidURIError
+          Rails.logger.debug "Invalid URL: #{url}"
+          return
+        end
+
+        response = Net::HTTP.get_response(uri)
+        unless response.is_a?(Net::HTTPSuccess)
+          raise StandardError, "Received failing HTTP response: #{response} for request #{url}"
+        end
+
+        JSON.parse(response.body)
+      end
+
+      def fetch_source_meta
+        url = URI("#{@normalizer_url_root}search?q=")
+        body = fetch_json_response(url)
+        body['source_matches'].reduce({}) { |map, source| map.update(source['source'] => source['source_meta_']) }
+      end
+
       # Normalize claim terms. `secondary_term` can be nil.
       def normalize_claim(primary_term, secondary_term, claim_aliases)
         primary_term_upcase = primary_term.upcase
@@ -46,27 +68,20 @@ module Genome
         default
       end
 
-
       def retrieve_normalizer_response(term)
-        begin
-          url = URI("#{@normalizer_url_root}normalize?q=#{term}")
-        rescue URI::InvalidURIError
-          return # TODO: pending resolution of non ASCII character lookups
-        end
-        response = Net::HTTP.get_response(url)
-
-        unless response.is_a?(Net::HTTPSuccess)
-          raise StandardError, "HTTP request to normalize term #{term} failed: #{url}"
-        end
-
-        body = JSON.parse(response.body)
-        @term_to_match_dict[term.upcase] = get_concept_id(body) unless term == ''
+        body = fetch_json_response("#{@normalizer_url_root}normalize?q=#{term}")
+        @term_to_match_dict[term.upcase] = get_concept_id(body) unless term == '' || body.nil?
 
         body
       end
 
       def key_non_nil_match(term)
         return true if @term_to_match_dict.key?(term) && !@term_to_match_dict[term].nil?
+      end
+
+      def retrieve_normalizer_data(term)
+        body = fetch_json_response("#{@normalizer_url_root}normalize_unmerged?q=#{term}")
+        body['source_matches']
       end
     end
   end
