@@ -68,10 +68,12 @@ class DrugClaim < ::ActiveRecord::Base
       base_url
     when 'GuideToPharmacology'
       "https://www.guidetopharmacology.org/GRAC/LigandTextSearchForward?searchString=#{name}"
-    when 'Chembl'
+    when 'ChEMBL'
       "https://www.ebi.ac.uk/chembl/compound_report_card/#{name.gsub('chembl:', '')}"
     when 'JAX-CKB'
       'https://ckb.jax.org/'
+    when 'Dtc'
+      ''  # TODO
     else
       base_url + name
     end

@@ -74,7 +74,7 @@ class GeneClaim < ::ActiveRecord::Base
       end
     when 'OncoKB'
       "http://oncokb.org/#/gene/#{name}"
-    when 'ChemblInteractions'
+    when 'ChEMBL'
       "https://www.ebi.ac.uk/chembl/g/#search_results/all/query=#{name}"
     when 'Pharos'
       "https://pharos.nih.gov/targets?q=#{name}"
@@ -84,6 +84,8 @@ class GeneClaim < ::ActiveRecord::Base
       'MyCancerGenomeClinicalTrial', 'MskImpact', 'CarisMolecularIntelligence', 'CGI', 'FDA', 'NCI',
       'HingoraniCasas', 'TALC', 'Tempus', 'FoundationOneGenes', 'DoCM', 'COSMIC', 'Oncomine'
       base_url
+    when 'HopkinsGroom', 'TdgClinicalTrial', 'RussLampel', 'HGNC', 'BaderLab', 'HumanProteinAtlas', 'TEND', 'dGene', 'Ensembl', 'IDG', 'CIViC', 'DTC', 'PharmGKB'
+      '' # TODO
     else
       base_url + name
     end
