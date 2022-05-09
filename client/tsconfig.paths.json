@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "http://testingtoseewhatsinopt-env.eba-c4g9a2xt.us-east-2.elasticbeanstalk.com/",
     "paths": {
       "@/*": ["src/*"]
     }
