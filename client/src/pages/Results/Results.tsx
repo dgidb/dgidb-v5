@@ -8,7 +8,7 @@ import { InteractionTable } from 'components/Interaction Table/Gene';
 import { GeneSummary } from 'components/Interaction Summary/Gene';
 
 // styles
-import './results.page.scss';
+import './Results.scss';
 import { DrugSummary } from '../../components/Interaction Summary/Drug/DrugSummary';
 
 const GeneResults: React.FC = () => {
