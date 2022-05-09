@@ -2,11 +2,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { ColumnsType } from 'antd/es/table';
+
+// methods
+import { truncateDecimals } from 'utils/format';
 
 // styles
 import './InteractionTable.scss';
 import { Skeleton, Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 
 export const InteractionTable: React.FC = () => {
 
@@ -27,7 +30,6 @@ export const InteractionTable: React.FC = () => {
     setInteractionResults(interactionData)
   }, [genes])
 
-
   const columns: ColumnsType<any> = [
     {
       title: 'Gene',
@@ -44,17 +46,40 @@ export const InteractionTable: React.FC = () => {
       )
     },
     {
-      title: 'Approved',
+      title: 'Approval Status',
       dataIndex: ['drug', 'approved'],
       render: (text: any, record: any) => (
         <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
       )
     },
     {
+      title: 'Indication',
+      dataIndex: ['drug', 'drugAttributes'],
+      render: (text: any, record: any) => {
+        let drugAttributes = record?.drug?.drugAttributes;
+
+        let indicationAttributes = drugAttributes.filter((attribute: any) => {
+          return attribute.name === 'Drug Indications'
+        })
+
+        return indicationAttributes.map((attribute: any) => {
+          return <span>{attribute.value}</span>
+        })
+
+      }
+    },
+    {
       title: 'Interaction Score',
       dataIndex: ['interactionScore'],
       render: (text: any, record: any) => (
-        <span>{record?.interactionScore}</span>
+        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
+      )
+    },
+    {
+      title: 'Query Score',
+      dataIndex: ['queryScore'],
+      render: (text: any, record: any) => (
+        <span></span>
       )
     },
   ]

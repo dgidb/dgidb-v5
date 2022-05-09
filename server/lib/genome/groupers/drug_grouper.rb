@@ -8,10 +8,11 @@ module Genome
         @normalizer_url_root = "#{url_base}/therapy/"
 
         @term_to_match_dict = {}
+
+        @sources = {}
       end
 
       def run(source_id = nil)
-        create_source
         claims = DrugClaim.eager_load(:drug_claim_aliases, :drug_claim_attributes).where(drug_id: nil)
         claims = claims.where(source_id: source_id) unless source_id.nil?
         if source_id.nil?
@@ -26,6 +27,9 @@ module Genome
           source_name = source.source_db_name
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
+
+        create_sources
+
         claims.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.primary_name, drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
@@ -34,63 +38,173 @@ module Genome
             normalized_id = normalized_drug
           else
             normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
-            create_new_drug normalized_drug['therapy_descriptor'] if Drug.find_by(concept_id: normalized_id).nil?
+            create_new_drug(normalized_drug['therapy_descriptor']) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
         end
+      end
+
+      def create_sources
+        drug_source_type = SourceType.find_by(type: 'drug')
+
+        source_meta = fetch_source_meta
+
+        rxnorm = Source.where(
+          source_db_name: 'RxNorm',
+          source_db_version: source_meta['RxNorm']['version'],
+          base_url: 'https://rxnav.nlm.nih.gov/REST/rxcui/rxcui/allrelated.xml',
+          site_url: 'https://www.nlm.nih.gov/research/umls/rxnorm/overview.html',
+          citation: 'Nelson SJ, Zeng K, Kilbourne J, Powell T, Moore R. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4)441-8. doi: 10.1136/amiajnl-2011-000116. Epub 2011 Apr 21. PubMed PMID: 21515544; PubMed Central PMCID: PMC3128404.',
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          full_name: 'RxNorm',
+          license: 'Custom; UMLS Metathesaurus',
+          license_link: source_meta['RxNorm']['data_license_url']
+        ).first_or_create
+        ncit = Source.where(
+          source_db_name: 'NCIt',
+          source_db_version: source_meta['NCIt']['version'],
+          base_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=',
+          site_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/pages/home.jsf',
+          citation: 'Nicholas Sioutos, Sherri de Coronado, Margaret W. Haber, Frank W. Hartel, Wen-Ling Shaiu, and Lawrence W. Wright. 2007. NCI Thesaurus: A semantic model integrating cancer-related clinical and molecular information. J. of Biomedical Informatics 40, 1 (February, 2007), 30–43. https://doi.org/10.1016/j.jbi.2006.02.013',
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          full_name: 'National Cancer Institute Thesaurus',
+          license: source_meta['NCIt']['data_license'],
+          license_link: source_meta['NCIt']['data_license_url']
+        ).first_or_create
+        hemonc = Source.where(
+          source_db_name: 'HemOnc',
+          source_db_version: source_meta['HemOnc']['version'],
+          base_url: 'https://hemonc.org',
+          site_url: 'https://hemonc.org',
+          citation: 'Warner JL, Dymshyts D, Reich CG, Gurley MJ, Hochheiser H, Moldwin ZH, Belenkaya R, Williams AE, Yang PC. HemOnc: A new standard vocabulary for chemotherapy regimen representation in the OMOP common data model. J Biomed Inform. 2019 Aug;96:103239. doi: 10.1016/j.jbi.2019.103239. Epub 2019 Jun 22. PMID: 31238109; PMCID: PMC6697579.',
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          full_name: 'HemOnc.org - A Free Hematology/Oncology Reference',
+          license: source_meta['HemOnc']['data_license'],
+          license_link: source_meta['HemOnc']['data_license_url']
+        ).first_or_create
+        drugsatfda = Source.where(
+          source_db_name: 'Drugs@FDA',
+          source_db_version: source_meta['DrugsAtFDA']['version'],
+          base_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
+          site_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
+          citation: 'Center for Drug Evaluation and Research (U.S.). 2004. Drugs@FDA. Washington D.C.: U.S. Food and Drug Administration, Center for Drug and Evaluation Research. http://www.accessdata.fda.gov/scripts/cder/drugsatfda/.',
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          full_name: 'Drugs@FDA',
+          license: source_meta['DrugsAtFDA']['data_license'],
+          license_link: source_meta['DrugsAtFDA']['data_license_url']
+        ).first_or_create
+        chemidplus = Source.where(
+          source_db_name: 'ChemIDplus',
+          source_db_version: source_meta['ChemIDplus']['version'],
+          base_url: 'https://chem.nlm.nih.gov/chemidplus/rn/',
+          site_url: 'https://chem.nlm.nih.gov/chemidplus/',
+          citation: 'Tomasulo, Patricia. "ChemIDplus-super source for chemical and drug information." Medical reference services quarterly 21, no. 1 (2002): 53-59.',
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          full_name: 'ChemIDplus',
+          license: 'Custom',
+          license_link: 'https://www.nlm.nih.gov/databases/download/terms_and_conditions.html'
+        ).first_or_create
+        wikidata = Source.where(
+          source_db_name: 'Wikidata',
+          source_db_version: source_meta['Wikidata']['version'],
+          base_url: 'https://www.wikidata.org/wiki/',
+          site_url: 'https://www.wikidata.org/',
+          citation: 'Denny Vrandečić and Markus Krötzsch. 2014. Wikidata: a free collaborative knowledgebase. Commun. ACM 57, 10 (October 2014), 78–85. https://doi.org/10.1145/2629489',
+          source_trust_level_id: SourceTrustLevel.NON_CURATED,
+          full_name: 'Wikidata',
+          license: source_meta['Wikidata']['data_license'],
+          license_link: source_meta['Wikidata']['data_license_url']
+        ).first_or_create
+
+        [rxnorm, ncit, hemonc, drugsatfda, chemidplus, wikidata].each do |source|
+          unless source.source_types.include? drug_source_type
+            source.source_types << drug_source_type
+            source.save
+          end
+        end
+
+        @sources = {
+          RxNorm: rxnorm,
+          NCIt: ncit,
+          HemOnc: hemonc,
+          DrugsAtFDA: drugsatfda,
+          ChemIDplus: chemidplus,
+          Wikidata: wikidata
+        }
       end
 
       def get_concept_id(response)
         response['therapy_descriptor']['therapy_id'] unless response['match_type'].zero?
       end
 
-      def create_source
-        puts 'Initializing group data sources...'
-        # TODO: break into source sources @ issue 91
-        @normalizer_source = Source.where(
-          source_db_name: 'VICCTherapyNormalizer',
-          source_db_version: retrieve_normalizer_version,
-          base_url: 'https://normalize.cancervariants.org/therapy/normalize?q=',
-          site_url: 'https://normalize.cancervariants.org/therapy/',
-          citation: 'wip',
-          source_trust_level_id: SourceTrustLevel.NON_CURATED,
-          full_name: 'VICC Therapy Normalizer',
-          license: 'wip',
-          license_link: 'wip'
+      def create_drug_claim(record, source)
+        primary_name = record['label'] ? record['label'] : record['concept_id']
+        DrugClaim.where(
+          name: record['concept_id'],
+          primary_name: primary_name.strip,
+          nomenclature: 'concept ID',
+          source_id: source.id
         ).first_or_create
-        drug_source_type = SourceType.find_by(type: 'drug')
-        return if @normalizer_source.source_types.include? drug_source_type
-
-        @normalizer_source.source_types << drug_source_type
-        @normalizer_source.save
       end
 
-      def add_grouper_regulatory_approval(descriptor, drug)
-        regulatory_approval = retrieve_extension(descriptor, 'regulatory_approval')
-        return if regulatory_approval.blank?
+      def add_grouper_claim_attributes(claim, record)
+        approval_ratings = record.fetch('approval_ratings', [])
+        unless approval_ratings.nil?
+          approval_ratings.to_set.each do |rating|
+            DrugClaimAttribute.where(name: 'Approval Rating', value: rating, drug_claim_id: claim.id).first_or_create
+          end
+        end
 
-        regulatory_approval.fetch('approval_year', []).each do |year|
-          DrugAttribute.create(name: 'Year of Approval', value: year, drug: drug)
+        record.fetch('approval_year', []).to_set.each do |year|
+          DrugClaimAttribute.create(name: 'Year of Approval', value: year, drug_claim_id: claim.id)
         end
-        regulatory_approval.fetch('approval_ratings', []).each do |rating|
-          DrugAttribute.create(name: 'Approval Rating', value: rating, drug: drug)
-        end
-        regulatory_approval.fetch('has_indication', []).map { |ind| ind['label'] }.to_set.each do |indication|
-          DrugAttribute.create(name: 'Drug Indications', value: indication, drug: drug)
+
+        indications = record.fetch('has_indication')
+        unless indications.nil?
+          indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
+            DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
+          end
         end
       end
 
-      def add_grouper_aliases(descriptor, drug)
-        alias_values = []
-        xrefs = descriptor.fetch('xrefs')
-        # TODO: extract and store drugs@fda refs separately
-        alias_values += xrefs.reject { |xref| xref =~ /drugsatfda.\.*/ } unless xrefs.blank?
-        alt_labels = descriptor.fetch('alternate_labels')
-        alias_values += alt_labels.map(&:upcase) unless alt_labels.blank?
-        trade_names = retrieve_extension(descriptor, 'trade_names')
-        alias_values += trade_names.map(&:upcase) unless trade_names.blank?
-        alias_values.map(&:upcase).to_set.each do |drug_alias|
-          DrugAlias.where(alias: drug_alias, drug_id: drug.id).first_or_create
+      def add_grouper_claim_alias(value, concept_id, label, claim_id, nomenclature)
+        unless value == concept_id || value == label
+          DrugClaimAlias.where(alias: value, drug_claim_id: claim_id, nomenclature: nomenclature)
+        end
+      end
+
+      def add_grouper_claim_aliases(claim, record)
+        concept_id = record['concept_id'].upcase
+        label = record.fetch('label')&.upcase
+
+        record.fetch('aliases', []).map(&:upcase).to_set.each do |value|
+          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Alias')
+        end
+
+        record.fetch('trade_names', []).map(&:upcase).to_set.each do |value|
+          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Trade Name')
+        end
+
+        xrefs = record.fetch('xrefs', []) + record.fetch('associated_with', [])
+        xrefs.map(&:upcase).to_set.each do |value|
+          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Xref')
+        end
+      end
+
+      def add_grouper_data(drug, descriptor)
+        drug_data = retrieve_normalizer_data(descriptor['therapy_id'])
+
+        drug_data.each do |source_name, source_data|
+          next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
+
+          source = @sources[source_name.to_sym]
+          source_data['records'].each do |record|
+            claim = create_drug_claim(record, source)
+            add_grouper_claim_aliases(claim, record)
+            add_grouper_claim_attributes(claim, record)
+
+            add_claim_to_drug(claim, drug.concept_id)
+          end
         end
       end
 
@@ -102,8 +216,7 @@ module Genome
                end
         drug = Drug.where(concept_id: descriptor['therapy_id'], name: name.upcase).first_or_create
 
-        add_grouper_aliases(descriptor, drug)
-        add_grouper_regulatory_approval(descriptor, drug)
+        add_grouper_data(drug, descriptor)
       end
 
       def find_drug_attribute(drug_claim_attribute)
@@ -152,6 +265,8 @@ module Genome
 
       def add_claim_to_drug(claim, drug_concept_id)
         drug = Drug.find_by(concept_id: drug_concept_id)
+        return if drug.nil?
+
         claim.drug_id = drug.id
         add_claim_attributes(claim, drug)
         add_claim_aliases(claim, drug)

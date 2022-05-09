@@ -23,7 +23,7 @@ ChartJS.register(
 );
 
 
-export const InteractionDirectionality: React.FC = () => {
+export const Interaction: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
 
