@@ -19,11 +19,10 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
 );
 
 
-export const InteractionType: React.FC = () => {
+export const InteractionScore: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
 
@@ -31,9 +30,9 @@ export const InteractionType: React.FC = () => {
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
-        label: 'Dataset 1',
+        label: '',
         data: [0, 0, 0, 0],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
       }
     ]
   });
@@ -43,7 +42,7 @@ export const InteractionType: React.FC = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        display: false
       },
       title: {
         display: true,
@@ -83,9 +82,9 @@ export const InteractionType: React.FC = () => {
           labels,
           datasets: [
             {
-              label: 'Dataset 1',
+              label: '',
               data: dataArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
             }
           ]
         });
@@ -93,5 +92,9 @@ export const InteractionType: React.FC = () => {
     }
   }, [data])
 
-  return <Bar options={options} data={chartData}/>
+  return (
+    <div className="score-container">
+      <Bar options={options} data={chartData}/>
+    </div>
+  )
 }
