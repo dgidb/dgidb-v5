@@ -30,7 +30,6 @@ module Genome; module Importers; module FileImporters; module Nci;
       p @test_records.count
     end
 
-
     def create_claims
       @drug_filter.all_records.each do |record|
         gene_claim = create_gene_claim(record[0],'CGI Gene Name')
@@ -71,6 +70,7 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :NCIDrugConceptCode_flag
     attr_reader :PubMedID_flag
     attr_reader :Organism_flag
+    attr_reader :evidenceCode_flag
 
     # Variables for individual data points
     attr_reader :current_organism
@@ -78,6 +78,7 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :current_drug
     attr_reader :current_NCIDrugConceptCode
     attr_reader :current_PubMedID
+    attr_reader :current_evidence_code
 
 
     def start_document
@@ -97,6 +98,8 @@ module Genome; module Importers; module FileImporters; module Nci;
             @PubMedID_flag = true
         when 'Organism'
             @Organism_flag = true
+        when 'EvidenceCode'
+            @evidenceCode_flag = true
         end
     end
 
@@ -130,6 +133,12 @@ module Genome; module Importers; module FileImporters; module Nci;
             @Organism_flag = false
             @current_organism = string
             @record.append(@current_organism)
+        end
+
+        if @evidenceCode_flag
+          @evidenceCode_flag = false
+          @current_evidence_code = string
+          @record.append(@current_evidence_code)
         end
 
     end
