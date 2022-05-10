@@ -5,6 +5,9 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :source
     attr_reader :drug_filter
 
+    # Testing variables, remove when issue complete
+    attr_reader :test_records
+
     def initialize(file_path)
       @file_path = file_path
       @source_db_name = 'NCI'
@@ -15,6 +18,18 @@ module Genome; module Importers; module FileImporters; module Nci;
       parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
       parser.parse(File.open(file_path))
     end
+
+    def test_enumerate_species
+      @test_records = []
+      p @drug_filter.all_records.count
+      @drug_filter.all_records.each do |record|
+        if record[4] == "Human"
+          @test_records.append(record)
+        end
+      end
+      p @test_records.count
+    end
+
 
     def create_claims
       @drug_filter.all_records.each do |record|
