@@ -47,16 +47,23 @@ module Genome; module Importers; module FileImporters; module Nci;
   end
 
   class DrugFilter < Nokogiri::XML::SAX::Document
+    attr_reader :record
+    attr_reader :all_records
+
+    # Flags for retrieving data points
     attr_reader :HUGO_flag
     attr_reader :DrugTerm_flag
     attr_reader :NCIDrugConceptCode_flag
     attr_reader :PubMedID_flag
+    attr_reader :Organism_flag
+
+    # Variables for individual data points
+    attr_reader :current_organism
     attr_reader :current_gene
     attr_reader :current_drug
     attr_reader :current_NCIDrugConceptCode
     attr_reader :current_PubMedID
-    attr_reader :record
-    attr_reader :all_records
+
 
     def start_document
         @record = []
@@ -73,6 +80,8 @@ module Genome; module Importers; module FileImporters; module Nci;
             @NCIDrugConceptCode_flag = true
         when 'PubMedID'
             @PubMedID_flag = true
+        when 'Organism'
+            @Organism_flag = true
         end
     end
 
@@ -101,6 +110,13 @@ module Genome; module Importers; module FileImporters; module Nci;
             @PubMedID_flag = false
             @record.append(@current_PubMedID)
         end
+
+        if @Organism_flag
+            @Organism_flag = false
+            @current_organism = string
+            @record.append(@current_organism)
+        end
+
     end
 
     def end_element(name)
