@@ -24,7 +24,10 @@ module Genome; module Importers; module FileImporters; module Nci;
       p @drug_filter.all_records.count
       @drug_filter.all_records.each do |record|
         if record[4] == "Human"
-          @test_records.append(record)
+          if record[5].nil?
+          elsif record[5].include? "EV-EXP"
+            @test_records.append(record)
+          end
         end
       end
       p @test_records.count
