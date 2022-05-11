@@ -42,42 +42,51 @@ module Genome; module Importers; module FileImporters; module Chembl
     def query_chembl_db
       db = SQLite3::Database.open file_path
       db.results_as_hash = false
-      @chembl_data = db.execute("SELECT drug_mechanism.action_type,
-                                    molecule_dictionary.chembl_id,
-                                    molecule_dictionary.pref_name,
-                                    drug_mechanism.mechanism_of_action,
-                                    cast(drug_mechanism.direct_interaction as text),
-                                    cast(molecule_dictionary.max_phase as text),
-                                    target_dictionary.chembl_id,
-                                    target_components.targcomp_id,
-                                    component_sequences.accession,
-                                    component_sequences.description,
-                                    component_synonyms.component_synonym
-                            FROM drug_mechanism
-                            JOIN molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
-                            JOIN target_dictionary on target_dictionary.tid = drug_mechanism.tid
-                            JOIN target_components on target_components.tid = target_dictionary.tid
-                            JOIN component_sequences on target_components.component_id = component_sequences.component_id
-                            JOIN component_synonyms on component_sequences.component_id = component_synonyms.component_id AND component_synonyms.syn_type = 'GENE_SYMBOL'")
+      @chembl_data = db.execute(
+        "SELECT
+          drug_mechanism.action_type,
+          molecule_dictionary.chembl_id,
+          molecule_dictionary.pref_name,
+          molecule_dictionary.withdrawn_flag,
+          drug_mechanism.mechanism_of_action,
+          cast(molecule_dictionary.max_phase as text),
+          cast(drug_mechanism.direct_interaction as text),
+          target_dictionary.chembl_id,
+          target_components.targcomp_id,
+          component_sequences.accession,
+          component_sequences.description,
+          component_synonyms.component_synonym
+        FROM drug_mechanism
+        JOIN molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
+        LEFT JOIN target_dictionary on target_dictionary.tid = drug_mechanism.tid
+        LEFT JOIN target_components on target_components.tid = target_dictionary.tid
+        LEFT JOIN component_sequences on target_components.component_id = component_sequences.component_id
+        LEFT JOIN component_synonyms on component_sequences.component_id = component_synonyms.component_id AND component_synonyms.syn_type = 'GENE_SYMBOL'"
+      )
     end
 
     def create_interaction_claims
       @chembl_data.each do |row|
-        gene_claim = create_gene_claim(row[9].upcase, "Gene Target Symbol")
-        create_gene_claim_attribute(gene_claim, "UniProt accession", row[8])
-
-        primary_name = row[2].strip.upcase
-        drug_claim = create_drug_claim(primary_name, primary_name, "Primary Drug Name")
-        create_drug_claim_attribute(drug_claim, "ChEMBL Max Phase", row[5])
+        primary_drug_name = row[2].strip.upcase
+        drug_claim = create_drug_claim(primary_drug_name, primary_drug_name, "Primary Drug Name")
         create_drug_claim_alias(drug_claim, row[1], "ChEMBL ID")
+        create_drug_claim_attribute(drug_claim, "Approval Rating", "chembl_phase_#{row[5]}") unless row[5].nil?
+        create_drug_claim_attribute(drug_claim, 'Approval Rating', 'chembl_withdrawn') unless row[3] != 1
+
+        next if row[0].nil? || row[11].nil?
+
+        gene_claim = create_gene_claim(row[11].upcase, "Target Gene Symbol")
+        create_gene_claim_alias(gene_claim, row[7], "ChEMBL ID")
+        create_gene_claim_alias(gene_claim, row[10], "Target Description")
+        create_gene_claim_attribute(gene_claim, "UniProt accession", row[9])
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
-        create_interaction_claim_type(interaction_claim, row[0])
-        direct_interaction = row[9] == "1" ? "true" : "false"
+        create_interaction_claim_type(interaction_claim, row[4])
+        direct_interaction = row[6] == "1" ? "true" : "false"
         create_interaction_claim_attribute(interaction_claim, "Direct Interaction", direct_interaction)
-        create_interaction_claim_attribute(interaction_claim, "Mechanism of Action", row[3])
         create_interaction_claim_link(interaction_claim, "Source", File.join("data", "chembl_30.db"))
+        create_interaction_claim_attribute(interaction_claim, "Mechanism of Action", row[5])
       end
     end
   end
