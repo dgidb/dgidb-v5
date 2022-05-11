@@ -13,6 +13,7 @@ module Genome
           puts 'Adding interaction groups...'
           add_members(group_from_scratch)
         end
+        cache_interaction_scores
         Utils::Database.destroy_empty_groups
         Utils::Database.destroy_unsourced_attributes
         Utils::Database.destroy_unsourced_aliases
@@ -85,6 +86,13 @@ module Genome
 
         interaction_claim.save
         interaction.save
+      end
+
+      def self.cache_interaction_scores
+        Interaction.find_each do |interaction|
+          interaction.score = interaction.calculate_interaction_score
+          interaction.save!
+        end
       end
     end
   end
