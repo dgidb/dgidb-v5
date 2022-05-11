@@ -85,6 +85,7 @@ module Genome; module Importers; module FileImporters; module Chembl
         create_interaction_claim_type(interaction_claim, row[4])
         direct_interaction = row[6] == "1" ? "true" : "false"
         create_interaction_claim_attribute(interaction_claim, "Direct Interaction", direct_interaction)
+        create_interaction_claim_link(interaction_claim, "Source", File.join("data", "chembl_30.db"))
         create_interaction_claim_attribute(interaction_claim, "Mechanism of Action", row[5])
       end
     end
