@@ -1,19 +1,24 @@
 module Genome; module Importers; module FileImporters; module Drugbank;
   class Importer < Genome::Importers::Base
+    # TODO check whether redundant drug claims or gene claims are getting created
     attr_reader :file_path
     attr_reader :source_db_name
     attr_reader :source
     attr_reader :drug_filter
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'DrugBank'
+    end
+
+    def default_filetype
+      'xml'
     end
 
     def run_parser
       @drug_filter = DrugFilter.new
       parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
-      parser.parse(File.open(file_path))
+      parser.parse(File.open(@file_path))
     end
 
     def create_new_source
@@ -34,6 +39,8 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     end
 
     def create_claims
+        run_parser
+
         @drug_filter.all_records.each do |record|
 
             if record[2].exclude?"n/a"

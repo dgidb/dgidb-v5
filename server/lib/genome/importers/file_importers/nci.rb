@@ -6,17 +6,23 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :drug_filter
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
       @source_db_name = 'NCI'
+    end
+
+    def default_filetype
+      'xml'
     end
 
     def run_parser
       @drug_filter = DrugFilter.new
       parser = Nokogiri::XML::SAX::Parser.new(drug_filter)
-      parser.parse(File.open(file_path))
+      parser.parse(File.open(@file_path))
     end
 
     def create_claims
+      run_parser
+
       @drug_filter.all_records.each do |record|
         gene_claim = create_gene_claim(record[0],'CGI Gene Name')
         drug_claim = create_drug_claim(record[1],record[1],'NCI Drug Name')
