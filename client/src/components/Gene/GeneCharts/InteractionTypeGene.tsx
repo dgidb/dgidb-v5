@@ -19,21 +19,24 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
 );
 
+interface Props {
+  data: any;
+}
 
-export const Interaction: React.FC = () => {
+
+export const InteractionTypeGene: React.FC<Props> = ({data}) => {
   const {state} = useContext(GlobalClientContext);
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
+  // const { data } = useGetInteractionsByGenes(state.searchTerms);
 
   const [chartData, setChartData] = useState<any>({
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
-        label: 'Dataset 1',
+        label: '',
         data: [0, 0, 0, 0],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
       }
     ]
   });
@@ -43,11 +46,11 @@ export const Interaction: React.FC = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        display: false
       },
       title: {
         display: true,
-        text: 'Interaction Type (PDGFRA)',
+        text: 'Interaction Type',
       },
     },
   };
@@ -55,9 +58,9 @@ export const Interaction: React.FC = () => {
   const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
-    if (data?.genes?.length) {
-      data.genes.forEach((gene: any) => {
-        let dataArray = [0, 0, 0, 0]
+    if (data?.length) {
+      let dataArray = [0, 0, 0, 0]
+      data.forEach((gene: any) => {
         gene.interactions.forEach((int: any) => {
           if(int.interactionTypes.length){
             switch(int.interactionTypes[0].type){
@@ -79,19 +82,23 @@ export const Interaction: React.FC = () => {
           }
         })
 
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: 'Dataset 1',
-              data: dataArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            }
-          ]
-        });
       })
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: '',
+            data: dataArray,
+            backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
+          }
+        ]
+      });
     }
   }, [data])
 
-  return <Bar options={options} data={chartData}/>
+  return (
+    <div className="type-container">
+      <Bar options={options} data={chartData}/>
+    </div>
+  )
 }

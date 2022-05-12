@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext, SetStateAction} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
   Chart as ChartJS,
@@ -13,14 +13,14 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import { InteractionType } from 'components/InteractionCharts/Gene';
-import { InteractionDirectionality } from 'components/InteractionCharts/Gene';
-import { InteractionScore } from 'components/InteractionCharts/Gene';
-import { RegulatoryApproval } from 'components/InteractionCharts/Gene';
+import { InteractionTypeDrug } from 'components/Drug/DrugCharts'
+import { DirectionalityDrug } from 'components/Drug/DrugCharts';
+import { InteractionScoreDrug } from 'components/Drug/DrugCharts';
+import { RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
 
 
 // styles
-import './GeneSummary.scss';
+import './DrugSummary.scss';
 
 ChartJS.register(
   CategoryScale,
@@ -35,35 +35,35 @@ interface CountProps {
   setChartData: React.Dispatch<SetStateAction<any[]>>
 }
 
-const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
+const DrugInteractionCount: React.FC<CountProps> = ({setChartData}) => {
   const {state} = useContext(GlobalClientContext);
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data, isError, isLoading } = useGetInteractionsByDrugs(state.searchTerms);
   const [filterBy, setFilterBy]= useState<string>('')
-  
-  let genes = data?.genes;
 
-  const toggleFilter = (geneName: string) => {
-    if (filterBy === geneName){
-      setChartData(genes)
+  let drugs = data?.drugs;
+
+  const toggleFilter = (drugName: string) => {
+    if (filterBy === drugName){
+      setChartData(drugs)
       setFilterBy('')
     } else {
-      let gene = genes.find((gene: any) => gene.name === geneName);
-      setChartData([gene]);
-      setFilterBy(geneName)
+      let drug = drugs.find((drug: any) => drug.name === drugName);
+      setChartData([drug]);
+      setFilterBy(drugName)
     }
   }
 
   return (
     <div className="interaction-count-container">
       <div className="interaction-count-header">
-        <div className="interaction-count-gene"><b>Gene</b></div>
+        <div className="interaction-count-drug"><b>drug</b></div>
         <div className="interaction-count"><b>Interactions</b></div>
       </div>
-      {genes?.map((gene: any) => {
+      {drugs?.map((drug: any) => {
         return (
-          <div className={`interaction-count-row ${filterBy === gene.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(gene.name)}>
-            <div className="interaction-count-gene">{gene.name}</div>
-            <div className="interaction-count">{gene.interactions.length}</div>
+          <div className={`interaction-count-row ${filterBy === drug.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.name)}>
+            <div className="interaction-count-drug">{drug.name}</div>
+            <div className="interaction-count">{drug.interactions.length}</div>
           </div>
           )
       })}
@@ -84,10 +84,10 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
       <h4>Summary Infographics</h4>
 
       <div className="chart-section">
-        {chartType === 'score' && <InteractionType data={chartData} />}
-        {chartType === 'type' && <InteractionType data={chartData} />}
-        {chartType === 'directionality' && <InteractionDirectionality />}
-        {chartType === 'approval' && <InteractionType data={chartData} />}
+        {chartType === 'score' && <InteractionTypeDrug data={chartData} />}
+        {chartType === 'type' && <InteractionTypeDrug data={chartData} />}
+        {chartType === 'directionality' && <DirectionalityDrug />}
+        {chartType === 'approval' && <InteractionTypeDrug data={chartData} />}
       </div>
 
       <div className="chart-selector">
@@ -100,29 +100,29 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
   )
 }
 
-export const GeneSummary: React.FC = () => {
+export const DrugSummary: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
-  const { data, error, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
+  const { data, error, isError, isLoading} = useGetInteractionsByDrugs(state.searchTerms);
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.genes)
+    setChartData(data?.drugs)
   }, [data])
 
   if (isError || isLoading) {
     return (
-      <div className="gene-summary-container">
+      <div className="drug-summary-container">
         {isError && <div>Error: Interactions not found!</div>}
         {isLoading && <div>Loading...</div>}
       </div>
     )
   }
   return (
-    <div className="gene-summary-container">
-      <h3>Gene Summary</h3>
-      <div className="gene-summary-content">
-        <InteractionCount setChartData={setChartData}/>
+    <div className="drug-summary-container">
+      <h3>drug Summary</h3>
+      <div className="drug-summary-content">
+        <DrugInteractionCount setChartData={setChartData}/>
         <SummaryInfo chartData={chartData} />
       </div>
     </div>

@@ -8,7 +8,7 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const InteractionDirectionality: React.FC = () => {
+export const DirectionalityGene: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
 

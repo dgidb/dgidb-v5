@@ -4,10 +4,10 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useNavigate } from 'react-router-dom';
 
 // components
-import { GeneSummary } from 'components/InteractionSummary/Gene';
-import { GeneTable } from 'components/InteractionTable/Gene';
-import { DrugSummary } from 'components/InteractionSummary/Drug/DrugSummary';
-import { DrugTable } from 'components/InteractionTable/Drug/DrugTable';
+import { GeneSummary } from 'components/Gene/GeneSummary';
+import { GeneTable } from 'components/Gene/GeneTable';
+import { DrugSummary } from 'components/Drug/DrugSummary';
+import { DrugTable } from 'components/Drug/DrugTable';
 
 // styles
 import './Results.scss';

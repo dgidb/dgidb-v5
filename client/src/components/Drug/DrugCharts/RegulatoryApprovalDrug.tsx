@@ -21,8 +21,7 @@ ChartJS.register(
   Tooltip,
 );
 
-
-export const InteractionScore: React.FC = () => {
+export const RegulatoryApprovalDrug: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
 
@@ -93,7 +92,7 @@ export const InteractionScore: React.FC = () => {
   }, [data])
 
   return (
-    <div className="score-container">
+    <div className="approval-container">
       <Bar options={options} data={chartData}/>
     </div>
   )
