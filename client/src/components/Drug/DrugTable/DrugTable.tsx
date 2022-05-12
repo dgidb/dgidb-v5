@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // methods
@@ -16,57 +16,34 @@ export const DrugTable: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByDrugs(state.searchTerms);
   
-  let genes = data?.genes;
+  let drugs = data?.drugs;
 
   useEffect(() => {
     let interactionData: any = [];
-    genes?.forEach((gene: any) => {
-      gene.interactions.forEach((int: any) => {
+    drugs?.forEach((drug: any) => {
+      drug.interactions.forEach((int: any) => {
         interactionData.push(int)
       })
     })
     setInteractionResults(interactionData)
-  }, [genes])
+  }, [drugs])
 
   const columns: ColumnsType<any> = [
+    {
+      title: 'Drug',
+      dataIndex: ['name'],
+      render: (text: any, record: any) => (
+        <span>{record?.drug?.name}</span>
+      )
+    },
     {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
         <span>{record?.gene?.name}</span>
       )
-    },
-    {
-      title: 'Drug',
-      dataIndex: ['drug', 'name'],
-      render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
-      )
-    },
-    {
-      title: 'Approval Status',
-      dataIndex: ['drug', 'approved'],
-      render: (text: any, record: any) => (
-        <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
-      )
-    },
-    {
-      title: 'Indication',
-      dataIndex: ['drug', 'drugAttributes'],
-      render: (text: any, record: any) => {
-        let drugAttributes = record?.drug?.drugAttributes;
-
-        let indicationAttributes = drugAttributes.filter((attribute: any) => {
-          return attribute.name === 'Drug Indications'
-        })
-
-        return indicationAttributes.map((attribute: any) => {
-          return <span>{attribute.value}</span>
-        })
-
-      }
     },
     {
       title: 'Interaction Score',
