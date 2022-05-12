@@ -35,9 +35,9 @@ interface CountProps {
   setChartData: React.Dispatch<SetStateAction<any[]>>
 }
 
-const DrugInteractionCount: React.FC<CountProps> = ({setChartData}) => {
-  const {state} = useContext(GlobalClientContext);
-  const { data, isError, isLoading } = useGetInteractionsByDrugs(state.searchTerms);
+const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
+  const { state } = useContext(GlobalClientContext);
+  const { data } = useGetInteractionsByDrugs(state.searchTerms);
   const [filterBy, setFilterBy]= useState<string>('')
 
   let drugs = data?.drugs;
@@ -56,10 +56,11 @@ const DrugInteractionCount: React.FC<CountProps> = ({setChartData}) => {
   return (
     <div className="interaction-count-container">
       <div className="interaction-count-header">
-        <div className="interaction-count-drug"><b>drug</b></div>
+        <div className="interaction-count-drug"><b>Drug</b></div>
         <div className="interaction-count"><b>Interactions</b></div>
       </div>
       {drugs?.map((drug: any) => {
+        console.log('drug', drug)
         return (
           <div className={`interaction-count-row ${filterBy === drug.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.name)}>
             <div className="interaction-count-drug">{drug.name}</div>
@@ -75,7 +76,7 @@ interface InfoProps {
   chartData: any
 }
 
-const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
+const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
 
   const [chartType, setChartType] = useState('score')
 
@@ -120,10 +121,10 @@ export const DrugSummary: React.FC = () => {
   }
   return (
     <div className="drug-summary-container">
-      <h3>drug Summary</h3>
+      <h3>Drug Summary</h3>
       <div className="drug-summary-content">
-        <DrugInteractionCount setChartData={setChartData}/>
-        <SummaryInfo chartData={chartData} />
+        <InteractionCountDrug setChartData={setChartData}/>
+        <SummaryInfoDrug chartData={chartData} />
       </div>
     </div>
   )

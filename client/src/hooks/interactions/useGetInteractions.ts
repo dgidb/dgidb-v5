@@ -38,6 +38,14 @@ const getInteractionsByDrugsQuery = gql`
         gene {
           name
         }
+        drug {
+          name
+        }
+        interactionScore
+        interactionTypes {
+          type
+          directionality
+        }
       }
     }
   }
