@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
+
+.home-page-container {
+	background-color: var(--background);
+	font-family: 'Work Sans';
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+
+	.home-blurb {
+		margin-top: 160px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+		width: 560px;
+		display: flex;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.search-container {
+		min-height: 40px;
+		right: 340px;
+		margin-top: 20px;
+
+		.search-subcontainer {
+			// position: relative;
+			display: flex;
+
+			.search-input {
+				max-height: 240px;
+				overflow: scroll !important;
+				position: relative;
+
+				.ant-select-selector {
+					// background-color: $primary-bg;
+					// color: white;
+				}
+
+				.ant-select-selection-item {
+					color: var(--theme-primary);
+				}
+
+				.ant-select-dropdown {
+					width: 50px;
+				}
+
+				.search-filters {
+					padding: 8px 6px 0 5px;
+					cursor: pointer;
+					position: absolute;
+					top: 1%;
+					right: .1%;
+					bottom: 40%;;
+					z-index: 1;
+				}
+			}
+
+			.search-dropdown {
+
+				.ant-select-selector {
+					// background-color: $primary-bg;
+					// color: white;
+				}
+
+				.ant-select-arrow {
+					// color: white;
+				}
+			}
+		}
+	}
+
+	.home-buttons {
+		margin-top: 10px;
+	}
+
+	.home-links {
+		font-family: 'Work Sans';
+		font-size: 20px;
+		margin-top: 10px;
+	}
+	.home-footer {
+		background-color: var(--theme-primary);
+		// position: absolute;
+		// bottom: 0;
+		margin-top: auto;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 20px;
+		font-size: 20px;
+		font-family: 'Work Sans';
+		font-weight: 300;
+	}
+
+	.darkmode-toggle {
+		align-self: flex-end;
+		position: absolute;
+		bottom: 15%;
+		margin-right: 5%;
+
+		.ant-switch {
+			background-color: var(--theme-primary) !important;
+			color: var(--text-primary);
+			// border-color: white !important;
+			// outline: white !important;
+		}
+
+	}
+}
+
+.ant-switch-inner .ionicon {
+	margin-top: 3.5px;
+	height: 15px;
+}
+
+
+.logo {
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 100px;
+	font-weight: 800;
+	line-height: 80px;
+	margin-bottom: 6px;
+	background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.ant-btn .ant-btn-link {
+	text-decoration: underline !important;
+}
+
+// .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+// 	height: 10px;
+// }
+
+@media screen and (max-width: var(--medium-screen)) {
+	.home-footer {
+		font-size: 15px !important;
+	}
+}
+
+@media screen and (max-width: var(--small-screen)) {
+
+}
