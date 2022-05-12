@@ -27,8 +27,8 @@ module Genome; module Importers; module ApiImporters; module Pharos;
 
     def params(category, start, count)
       {
-        'query' => "{search(term: \"#{category}\", facets: \"Family\"){\n    targetResult {count, targets(skip: #{start}, top:#{count}) { uniprot, name, sym } }\n  }\n}"
+        'query' => "{search(term:\"#{category}\",facets:\"Family\"){targetResult{targets(skip:#{start},top:#{count}){uniprot,name,sym}}}}"
       }
-    end
+        end
   end
 end; end; end; end
