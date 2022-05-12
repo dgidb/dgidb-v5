@@ -7,11 +7,11 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { truncateDecimals } from 'utils/format';
 
 // styles
-import './InteractionTable.scss';
+import './GeneTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-export const InteractionTable: React.FC = () => {
+export const GeneTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);

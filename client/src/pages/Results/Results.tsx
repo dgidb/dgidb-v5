@@ -4,18 +4,19 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useNavigate } from 'react-router-dom';
 
 // components
-import { InteractionTable } from 'components/Interaction Table/Gene';
-import { GeneSummary } from 'components/Interaction Summary/Gene';
+import { GeneSummary } from 'components/InteractionSummary/Gene';
+import { GeneTable } from 'components/InteractionTable/Gene';
+import { DrugSummary } from 'components/InteractionSummary/Drug/DrugSummary';
+import { DrugTable } from 'components/InteractionTable/Drug/DrugTable';
 
 // styles
 import './Results.scss';
-import { DrugSummary } from '../../components/Interaction Summary/Drug/DrugSummary';
 
 const GeneResults: React.FC = () => {
   return (
     <>
       <GeneSummary />
-      <InteractionTable />
+      <GeneTable />
     </>
   )
 }
@@ -24,6 +25,7 @@ const DrugResults: React.FC = () => {
   return (
     <>
       <DrugSummary />
+      <DrugTable />
     </>
   )
 }
