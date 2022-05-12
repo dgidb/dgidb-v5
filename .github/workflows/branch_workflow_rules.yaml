@@ -1,4 +1,4 @@
-name: branch-workflow-rules
+name: Branch workflow rules
 on:
   pull_request:
     types: [opened, reopened, edited]
