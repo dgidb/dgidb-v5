@@ -74,6 +74,7 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :PubMedID_flag
     attr_reader :Organism_flag
     attr_reader :evidenceCode_flag
+    attr_reader :PrimaryNCIRoleCode_flag
 
     # Variables for individual data points
     attr_reader :current_organism
@@ -82,7 +83,10 @@ module Genome; module Importers; module FileImporters; module Nci;
     attr_reader :current_NCIDrugConceptCode
     attr_reader :current_PubMedID
     attr_reader :current_evidence_code
+    attr_reader :current_PrimaryNCIRoleCode
 
+    # Variables for records that may not always exist
+    attr_reader :expecting_evidence_code
 
     def start_document
         @record = []
@@ -103,6 +107,9 @@ module Genome; module Importers; module FileImporters; module Nci;
             @Organism_flag = true
         when 'EvidenceCode'
             @evidenceCode_flag = true
+
+        when 'PrimaryNCIRoleCode'
+            @PrimaryNCIRoleCode_flag = true
         end
     end
 
@@ -136,21 +143,44 @@ module Genome; module Importers; module FileImporters; module Nci;
             @Organism_flag = false
             @current_organism = string
             @record.append(@current_organism)
+
+            @expecting_evidence_code = true
+            @expecting_NCIrole_code = true
+
         end
 
         if @evidenceCode_flag
           @evidenceCode_flag = false
+          @expecting_evidence_code = false
           @current_evidence_code = string
-          @record.append(@current_evidence_code)
         end
 
+        if @PrimaryNCIRoleCode_flag
+          @PrimaryNCIRoleCode_flag = false
+          @expecting_NCIrole_code = false
+          @current_PrimaryNCIRoleCode = string
+        end
     end
 
     def end_element(name)
         case name
         when 'Sentence'
-            @all_records.append(@record)
-            @record = []
+
+          if @expecting_evidence_code
+            @record.append('NaN')
+          else
+            @record.append(@current_evidence_code)
+          end
+
+          if @expecting_NCIrole_code
+            @record.append('NaN')
+          else
+            @record.append(@current_PrimaryNCIRoleCode)
+          end
+
+          @all_records.append(@record)
+          @record = []
+
         end
     end
 
