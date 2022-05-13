@@ -1,6 +1,7 @@
 module Genome; module Importers; module FileImporters; module Nci;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
+    attr_reader :worksheet
 
     def initialize(file_path)
       @file_path = file_path
@@ -12,12 +13,13 @@ module Genome; module Importers; module FileImporters; module Nci;
     end
 
     def import
-      #remove_existing_source
+      remove_existing_source
       create_new_source
       create_interaction_claims
     end
 
     private
+
     def remove_existing_source
       Utils::Database.delete_source('NCI')
     end
