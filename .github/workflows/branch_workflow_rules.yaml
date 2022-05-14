@@ -1,0 +1,11 @@
+name: Branch workflow rules
+on:
+  pull_request:
+    types: [opened, reopened, edited]
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check_branch_names
+        if: ${{ (github.base_ref == 'main' && github.head_ref != 'staging') || (github.base_ref == 'staging' && github.head_ref != 'dev' )}}
+        run: exit 1
