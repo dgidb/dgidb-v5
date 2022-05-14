@@ -49,7 +49,7 @@ module PMID
     end
 
     def citation
-      if result.has_key? 'authors'
+      if !result.nil? && result.key?('authors')
         [first_author, year, article_title, journal].compact.join(', ')
       else
         ""
