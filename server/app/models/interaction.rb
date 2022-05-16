@@ -42,6 +42,16 @@ class Interaction < ActiveRecord::Base
   end
 
   def interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
+    if known_drug_partners_per_gene.present? || known_gene_partners_per_drug.present?
+      calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
+    elsif self.score.nil?
+      calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
+    else
+      self.score
+    end
+  end
+
+  def calculate_interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
     known_drug_partners_per_gene = Interaction.group(:gene_id).count if known_drug_partners_per_gene.nil?
     average_known_drug_partners_per_gene = known_drug_partners_per_gene.values.sum / known_drug_partners_per_gene.values.size.to_f
     known_gene_partners_per_drug = Interaction.group(:drug_id).count if known_gene_partners_per_drug.nil?
@@ -51,4 +61,5 @@ class Interaction < ActiveRecord::Base
 
     (self.publications.count + self.sources.count) * average_known_gene_partners_per_drug/known_gene_partners_for_interaction_drug * average_known_drug_partners_per_gene/known_drug_partners_for_interaction_gene
   end
+
 end
