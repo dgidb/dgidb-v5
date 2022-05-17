@@ -444,7 +444,8 @@ CREATE TABLE public.interaction_types_interactions (
 CREATE TABLE public.interactions (
     id text NOT NULL,
     drug_id text NOT NULL,
-    gene_id text NOT NULL
+    gene_id text NOT NULL,
+    score numeric
 );
 
 
@@ -1785,6 +1786,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904144705'),
 ('20220317193102'),
 ('20220408032834'),
-('20220408182256');
+('20220408182256'),
+('20220511151940');
 
 
