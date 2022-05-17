@@ -6,20 +6,11 @@ module Genome; module Importers; module FileImporters; module Nci;
       @file_path = handle_file_location file_path
     end
 
-    def get_version
-      source_db_version = Date.today.strftime('%d-%B-%Y')
-      @new_version = source_db_version
-    end
-
     def create_claims
       create_interaction_claims
     end
 
     private
-
-    def remove_existing_source
-      Utils::Database.delete_source('NCI')
-    end
 
     def create_new_source
       @source ||= Source.create(
