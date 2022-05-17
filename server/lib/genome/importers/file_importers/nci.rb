@@ -1,10 +1,9 @@
 module Genome; module Importers; module FileImporters; module Nci;
   class Importer < Genome::Importers::Base
     attr_reader :file_path
-    attr_reader :worksheet
 
     def initialize(file_path)
-      @file_path = file_path
+      @file_path = handle_file_location file_path
     end
 
     def get_version
@@ -12,9 +11,7 @@ module Genome; module Importers; module FileImporters; module Nci;
       @new_version = source_db_version
     end
 
-    def import
-      remove_existing_source
-      create_new_source
+    def create_claims
       create_interaction_claims
     end
 
@@ -30,7 +27,7 @@ module Genome; module Importers; module FileImporters; module Nci;
               base_url: 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents',
               site_url: 'https://wiki.nci.nih.gov/display/cageneindex',
               citation: 'https://wiki.nci.nih.gov/display/cageneindex',
-              source_db_version:  get_version,
+              source_db_version:  '14-September-2017',
               source_db_name: 'NCI',
               full_name: 'NCI Cancer Gene Index',
               license: 'Public domain',
