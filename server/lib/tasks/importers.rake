@@ -133,8 +133,6 @@ namespace :dgidb do
     # run all imports
     send(:desc, 'Run all importers')
     send(:task, 'all', %i[gene_group drug_group] => :environment) do |_, args|
-      # TODO: remove WIP importers
-      adj_file_importer_names = file_importer_names.reject { |name| name == 'nci' }
       adj_file_importer_names.each do |name|
         run_file_import(name, args.dup)
       end
