@@ -2,6 +2,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -13,8 +14,11 @@ import { ColumnsType } from 'antd/es/table';
 
 export const GeneTable: React.FC = () => {
 
+
+
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
   
@@ -30,12 +34,16 @@ export const GeneTable: React.FC = () => {
     setInteractionResults(interactionData)
   }, [genes])
 
+  const navToRecord = (gene: string) => {
+    navigate(`/genes/${gene}`);
+  }
+
   const columns: ColumnsType<any> = [
     {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.gene?.name}</span>
+        <span onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
       )
     },
     {
