@@ -1,11 +1,11 @@
 import { useRoutes } from 'react-router-dom';
 
-import { publicRoutes } from './public';
+import { Routes } from './public';
 
 export const AppRoutes = () => {
 
-  const element = useRoutes(publicRoutes);
+  // const element = useRoutes(publicRoutes);
 
-  return <>{element}</>;
+  return <Routes/>;
 
 };
