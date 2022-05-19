@@ -6,8 +6,15 @@ default: &default
 
 production:
   <<: *default
-  # database: <%= ENV.fetch ("RDS_DB_NAME") { "dgidb_v5" } %>
-  database: dgidb_v5
+  database: dgidb
+  host: <%= ENV.fetch("RDS_HOSTNAME") { "localhost" } %>
+  port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
+  username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
+  password: <%= ENV.fetch("RDS_PASSWORD") { "" } %>
+
+staging:
+  <<: *default
+  database: dgidb
   host: <%= ENV.fetch("RDS_HOSTNAME") { "localhost" } %>
   port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
   username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
@@ -15,10 +22,10 @@ production:
 
 development:
   <<: *default
-  database: dgidb_v5
+  database: dgidb
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
 
 test:
   <<: *default
-  database: dgidb_v5_test
+  database: dgidb_test
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
