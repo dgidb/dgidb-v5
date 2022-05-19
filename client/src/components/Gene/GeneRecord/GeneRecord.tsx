@@ -22,7 +22,6 @@ const GeneRecordTable: React.FC = () => {
 
   const geneSymbol = 'FLT1'
 
-
   const { data, isError, isLoading } = useGetInteractionsByGenes(["FLT1"]);
 
   useEffect(() => {
