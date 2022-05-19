@@ -45,7 +45,6 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     def create_gene_claims
       api_client = ApiClient.new
       categories.each do |category|
-        puts category
         start = 0
 
         loop do
