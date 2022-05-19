@@ -14,8 +14,6 @@ import { ColumnsType } from 'antd/es/table';
 
 export const GeneTable: React.FC = () => {
 
-
-
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const navigate = useNavigate();
