@@ -9,9 +9,6 @@ jobs:
   test_build:
     name: test client build
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     environment: [dev, local, staging, production]
     defaults:
       run:
         working-directory: ./client
@@ -23,4 +20,3 @@ jobs:
         run: |
           CI=false
           yarn build
-          # yarn build:${{ matrix.environment }}
