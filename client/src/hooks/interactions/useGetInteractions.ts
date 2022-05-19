@@ -7,7 +7,6 @@ const getInteractionsByGenesQuery = gql`
   query genes($names: [String!]!) {
     genes(name: $names) {
       name
-
       interactions {
         drug {
           name
@@ -24,6 +23,13 @@ const getInteractionsByGenesQuery = gql`
         interactionTypes {
           type
           directionality
+        }
+        publications {
+          pmid
+        }
+        sources {
+          id
+          fullName
         }
       }
     }
@@ -49,25 +55,8 @@ query gene($name: String!) {
         citation
       }
     }
-    interactions {
-      gene {
-        name
-      }
-      drug {
-        name
-      }
-      interactionScore
-      interactionTypes {
-        type
-        directionality
-      }
-      publications {
-        pmid
-      }
-      sources {
-        id
-        fullName
-      }
+    geneCategories {
+      name
     }
   }
 }
