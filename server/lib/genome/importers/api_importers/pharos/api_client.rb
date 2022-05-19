@@ -14,30 +14,6 @@ module Genome; module Importers; module ApiImporters; module Pharos;
       JSON.parse(body)['data']['search']['targetResult']['targets']
     end
 
-    def test(category, start, count, url)
-    uri = URI.parse(url).tap do |u|
-      u.query = URI.encode_www_form(params(category, start, count))
-    end
-
-    c = Net::HTTP.new(uri)
-    c.read_timeout = 120
-    res = c.get(uri)
-    raise StandardError, 'Request Failed!' unless res.code =='200'
-    res.body
-
-    # c.start do |http|
-    #   request = Net::HTTP::Get.new uri
-    #   response = http.request request
-    # end
-
-    # look into Net::HTTP.start ?
-
-    # res = c.request_get(url)
-    # res = c.get_response(uri)
-    # res = c.get(uri)
-
-    end
-
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
       raise StandardError, 'Request Failed!' unless res.code == '200'
@@ -52,6 +28,6 @@ module Genome; module Importers; module ApiImporters; module Pharos;
       {
         'query' => "{search(term:\"#{category}\",facets:\"Family\"){targetResult{targets(skip:#{start},top:#{count}){uniprot,name,sym}}}}"
       }
-        end
+    end
   end
 end; end; end; end
