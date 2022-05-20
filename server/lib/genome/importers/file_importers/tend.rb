@@ -42,7 +42,7 @@ module Genome; module Importers; module FileImporters; module Tend;
         end
         create_gene_claim_attribute(gene_claim, 'Transmembrane Helix Count', row['Number of transmembrane helices'])
 
-        drug_claim = create_drug_claim(row['Drug name'], row['Drug name'], 'TEND')
+        drug_claim = create_drug_claim(row['Drug name'], 'TEND')
         create_drug_claim_alias(drug_claim, row['Drug name'], 'Primary Drug Name')
         row['Indication(s)'].split('; ').each do |indication|
           create_drug_claim_attribute(drug_claim, 'Drug Class', indication)

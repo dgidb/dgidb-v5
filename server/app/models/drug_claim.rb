@@ -41,7 +41,7 @@ class DrugClaim < ::ActiveRecord::Base
   end
 
   def names
-    @names ||= (self.drug_claim_aliases.pluck(:alias) + [self.name, self.primary_name]).compact.map(&:upcase).to_set
+    @names ||= (self.drug_claim_aliases.pluck(:alias) + [self.name]).compact.map(&:upcase).to_set
   end
 
   def cleaned_names

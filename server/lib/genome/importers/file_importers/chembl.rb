@@ -68,7 +68,7 @@ module Genome; module Importers; module FileImporters; module Chembl
     def create_interaction_claims
       @chembl_data.each do |row|
         primary_drug_name = row[2].strip.upcase
-        drug_claim = create_drug_claim(primary_drug_name, primary_drug_name, "Primary Drug Name")
+        drug_claim = create_drug_claim(primary_drug_name, "Primary Drug Name")
         create_drug_claim_alias(drug_claim, row[1], "ChEMBL ID")
         create_drug_claim_attribute(drug_claim, "Approval Rating", "chembl_phase_#{row[5]}") unless row[5].nil?
         create_drug_claim_attribute(drug_claim, 'Approval Rating', 'chembl_withdrawn') unless row[3] != 1
