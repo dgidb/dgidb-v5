@@ -284,7 +284,6 @@ module Genome
 
       def add_application(claim, drug)
         DrugApplication.create(app_no: claim.name, drug: drug)
-        # TODO ?
       end
 
       def add_claim_to_drug(claim, drug_concept_id)
