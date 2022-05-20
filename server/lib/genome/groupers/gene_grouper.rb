@@ -36,7 +36,7 @@ module Genome
         create_sources
 
         claims.each do |gene_claim|
-          normalized_gene = normalize_claim(gene_claim.name, nil, gene_claim.gene_claim_aliases)
+          normalized_gene = normalize_claim(gene_claim.name, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?
 
           if normalized_gene.is_a? String

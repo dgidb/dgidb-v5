@@ -1,3 +1,6 @@
+# TODO
+#  - check for redundancy between drug_claim name and alias
+#  - check for redundancy between drug name/concept ID and alias
 module Genome
   module Groupers
     class DrugGrouper < Genome::Groupers::Base
@@ -31,7 +34,7 @@ module Genome
         create_sources
 
         claims.each do |drug_claim|
-          normalized_drug = normalize_claim(drug_claim.primary_name, drug_claim.name, drug_claim.drug_claim_aliases)
+          normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
           if normalized_drug.is_a? String
@@ -138,13 +141,19 @@ module Genome
       end
 
       def create_drug_claim(record, source)
-        primary_name = record['label'] ? record['label'] : record['concept_id']
-        DrugClaim.where(
-          name: record['concept_id'],
-          primary_name: primary_name.strip,
-          nomenclature: 'concept ID',
-          source_id: source.id
-        ).first_or_create
+        if record['label'].nil?
+          DrugClaim.where(
+            name: record['concept_id'],
+            nomenclature: 'Concept ID',
+            source_id: source.id
+          ).first_or_create
+        else
+          DrugClaim.where(
+            name: record['label'],
+            nomenclature: 'Primary Drug Name',
+            source_id: source.id
+          ).first_or_create
+        end
       end
 
       def add_grouper_claim_attributes(claim, record)
@@ -167,28 +176,38 @@ module Genome
         end
       end
 
-      def add_grouper_claim_alias(value, concept_id, label, claim_id, nomenclature)
-        unless value == concept_id || value == label
-          DrugClaimAlias.where(alias: value, drug_claim_id: claim_id, nomenclature: nomenclature)
-        end
+      def add_grouper_claim_alias(value, label, claim_id, nomenclature)
+        return if value == label
+
+        return nil unless DrugAliasBlacklist.find_by(alias: value).nil?
+
+        DrugClaimAlias.where(alias: value, drug_claim_id: claim_id, nomenclature: nomenclature)
+      end
+
+      def prune_alias_list(alias_list)
+        alias_list.map { |a| a.upcase.gsub(/[^\w_]+/, '') }.to_set
       end
 
       def add_grouper_claim_aliases(claim, record)
-        concept_id = record['concept_id'].upcase
-        label = record.fetch('label')&.upcase
+        claim_name = claim.name
 
-        record.fetch('aliases', []).map(&:upcase).to_set.each do |value|
-          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Alias')
+        unless record['concept_id'] == claim_name
+          add_grouper_claim_alias(record['concept_id'], claim_name, claim.id, 'Concept ID')
         end
 
-        record.fetch('trade_names', []).map(&:upcase).to_set.each do |value|
-          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Trade Name')
+        prune_alias_list(record.fetch('aliases', [])).each do |value|
+          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
         end
 
-        xrefs = record.fetch('xrefs', []) + record.fetch('associated_with', [])
-        xrefs.map(&:upcase).to_set.each do |value|
-          add_grouper_claim_alias(value, concept_id, label, claim.id, 'Xref')
+        prune_alias_list(record.fetch('trade_names', [])).each do |value|
+          add_grouper_claim_alias(value, claim_name, claim.id, 'Trade Name')
         end
+
+        prune_alias_list(record.fetch('xrefs', [])).each do |value|
+          add_grouper_claim_alias(value, claim_name, claim.id, 'Xref')
+        end
+
+        # TODO: consider adding associated_with ?
       end
 
       def add_grouper_data(drug, descriptor)
@@ -258,7 +277,9 @@ module Genome
 
       def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
-        claim.drug_claim_aliases.pluck(:alias).map(&:upcase).to_set.each do |claim_alias|
+        drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
+        drug_claim_aliases.append(claim.name) unless claim.name == drug.name || claim.name == drug.concept_id
+        drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
           DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
         end
       end

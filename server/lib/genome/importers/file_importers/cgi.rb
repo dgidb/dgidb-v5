@@ -44,7 +44,7 @@ module Genome; module Importers; module FileImporters; module Cgi
           combination_drug_name = row['Drug']
           combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
             individual_drug_name = clean_drug_name(individual_drug_name)
-            drug_claim = create_drug_claim(individual_drug_name, individual_drug_name, 'CGI Drug Name')
+            drug_claim = create_drug_claim(individual_drug_name, 'CGI Drug Name')
             if row['Gene'].include?(';')
               row['Gene'].split(';').each do |indv_gene|
                 gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
@@ -71,7 +71,7 @@ module Genome; module Importers; module FileImporters; module Cgi
             combination_drug_name = row['Drug']
             combination_drug_name.split(';').each do |individual_drug_name|
               individual_drug_name = clean_drug_name(individual_drug_name)
-              drug_claim = create_drug_claim(individual_drug_name, individual_drug_name, 'CGI Drug Name')
+              drug_claim = create_drug_claim(individual_drug_name, 'CGI Drug Name')
               if row['Gene'].include?(';')
                 row['Gene'].split(';').each do |indv_gene|
                   gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
@@ -95,7 +95,7 @@ module Genome; module Importers; module FileImporters; module Cgi
           end
         else
           drug_name = clean_drug_name(row['Drug'])
-          drug_claim = create_drug_claim(drug_name, drug_name, 'CGI Drug Name')
+          drug_claim = create_drug_claim(drug_name, 'CGI Drug Name')
           if row['Gene'].include?(';')
             row['Gene'].split(';').each do |indv_gene|
               gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')

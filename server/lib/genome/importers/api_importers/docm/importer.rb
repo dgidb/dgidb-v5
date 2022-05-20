@@ -20,7 +20,6 @@ module Genome; module Importers; module ApiImporters; module Docm
         interaction_information.each do |interaction_info|
           gc = create_gene_claim(variant['gene'], 'DoCM Entrez Gene Symbol')
           dc = create_drug_claim(interaction_info['Therapeutic Context'].upcase,
-                                 interaction_info['Therapeutic Context'].upcase,
                                  'DoCM Drug Name')
           ic = create_interaction_claim(gc, dc)
           create_interaction_claim_attributes(ic, interaction_info)

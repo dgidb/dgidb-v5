@@ -391,10 +391,9 @@ module Utils
         a.value = a.value.strip
         a.save!
       end
-      DrugClaim.where("name LIKE ' %' or name LIKE '% ' or primary_name LIKE ' %' or primary_name LIKE '% '").all.each do |c|
+      DrugClaim.where("name LIKE ' %' or name LIKE '% '").all.each do |c|
         clean_name = c.name.strip
-        clean_primary_name = c.primary_name.strip
-        clean_claim = DrugClaim.where(name: clean_name, primary_name: clean_primary_name, nomenclature: c.nomenclature, source_id: c.source_id).first_or_create
+        clean_claim = DrugClaim.where(name: clean_name, nomenclature: c.nomenclature, source_id: c.source_id).first_or_create
         c.drug_claim_aliases.each do |synonym|
           DrugClaimAlias.where(alias: synonym.alias, nomenclature: synonym.nomenclature, drug_claim_id: clean_claim.id).first_or_create
           synonym.delete
