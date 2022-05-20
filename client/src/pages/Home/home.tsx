@@ -12,7 +12,7 @@ import { queryClient } from 'providers/app';
 import { Button, Switch } from 'antd';
 import SunIcon from 'components/Shared/SVG/SunIcon';
 import MoonIcon from 'components/Shared/SVG/MoonIcon';
-import './Home.scss';
+import './home.scss';
 
 export const Home: React.FC = () => {
 
@@ -20,10 +20,10 @@ export const Home: React.FC = () => {
 
   const handleSubmit = async () => {
     navigate('/results');
-  }; 
+  };
 
   const navigate = useNavigate();
-  
+
   const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
   const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
 
@@ -94,14 +94,15 @@ export const Home: React.FC = () => {
       </div>
 
       <div className="darkmode-toggle">
-        <Switch 
-          loading={isToggling} 
-          defaultChecked 
+        <Switch
+          loading={isToggling}
+          defaultChecked
           checkedChildren={<SunIcon />}
           unCheckedChildren={<MoonIcon />}
-          onChange={() => setIsToggling(true)} 
+          onChange={() => setIsToggling(true)}
         />
       </div>
     </div>
     )
 }
+
