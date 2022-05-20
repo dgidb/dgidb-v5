@@ -33,7 +33,7 @@ const DrugResults: React.FC = () => {
 export const Results: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if(!state.searchTerms.length) {
       navigate('/home');
@@ -47,3 +47,4 @@ export const Results: React.FC = () => {
     </div>
   )
 };
+

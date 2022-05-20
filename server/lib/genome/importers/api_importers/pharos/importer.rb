@@ -30,31 +30,45 @@ module Genome; module Importers; module ApiImporters; module Pharos;
       @source.save
     end
 
+    # Pharos likes to time out -- trying smaller and smaller requests seems to work more reliably
+    def perform_safe_lookup(api_client, category, start, count)
+      raise Net::ReadTimeout if count < 10  # arbitrary threshold - could revise if needed
+
+      begin
+        genes = api_client.genes_for_category(category, start, count)
+      rescue Net::ReadTimeout
+        return perform_safe_lookup(api_client, category, start, count / 2)
+      end
+      [genes, count]
+    end
+
     def create_gene_claims
       api_client = ApiClient.new
       categories.each do |category|
         start = 0
-        count = 100
-        genes = api_client.genes_for_category(category, start, count)
-        while genes.size.positive?
+
+        loop do
+          lookup_result = perform_safe_lookup(api_client, category, start, 100)
+          genes = lookup_result[0]
+          break unless genes.size.positive?
+
           genes.each do |gene|
-            unless gene['sym'].nil?
-              gene_claim = create_gene_claim(gene['sym'], 'Gene Symbol')
-              create_gene_claim_alias(gene_claim, gene['name'], 'Gene Name')
-              create_gene_claim_alias(gene_claim, gene['uniprot'], 'UniProt ID')
-              normalized_category = case category
-                                    when 'GPCR'
-                                      'G PROTEIN COUPLED RECEPTOR'
-                                    when 'Nuclear Receptor'
-                                      'NUCLEAR HORMONE RECEPTOR'
-                                    else
-                                      category.upcase
-                                    end
-              create_gene_claim_category(gene_claim, normalized_category)
-            end
+            next if gene['sym'].nil?
+
+            gene_claim = create_gene_claim(gene['sym'], 'Gene Symbol')
+            create_gene_claim_alias(gene_claim, gene['name'], 'Gene Name')
+            create_gene_claim_alias(gene_claim, gene['uniprot'], 'UniProt ID')
+            normalized_category = case category
+                                  when 'GPCR'
+                                    'G PROTEIN COUPLED RECEPTOR'
+                                  when 'Nuclear Receptor'
+                                    'NUCLEAR HORMONE RECEPTOR'
+                                  else
+                                    category.upcase
+                                  end
+            create_gene_claim_category(gene_claim, normalized_category)
           end
-          start += count
-          genes = api_client.genes_for_category(category, start, count)
+          start += lookup_result[1]
         end
       end
     end

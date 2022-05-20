@@ -30,31 +30,23 @@ module Genome
         body['source_matches'].reduce({}) { |map, source| map.update(source['source'] => source['source_meta_']) }
       end
 
-      # Normalize claim terms. `secondary_term` can be nil.
-      def normalize_claim(primary_term, secondary_term, claim_aliases)
+      # Normalize claim terms.
+      def normalize_claim(primary_term, claim_aliases)
         primary_term_upcase = primary_term.upcase
         return @term_to_match_dict[primary_term_upcase] if key_non_nil_match(primary_term_upcase)
 
         response = retrieve_normalizer_response(primary_term)
         if response.nil? || response['match_type'].zero?
-          unless secondary_term.nil? || primary_term == secondary_term
-            secondary_term_upcase = secondary_term.upcase
-            return @term_to_match_dict[secondary_term_upcase] if key_non_nil_match(secondary_term_upcase)
-
-            response = retrieve_normalizer_response(secondary_term)
-          end
-          if response.nil? || response['match_type'].zero?
-            best_match = nil
-            best_match_type = 0
-            claim_aliases.each do |claim_alias|
-              response = retrieve_normalizer_response(claim_alias.alias)
-              if !response.nil? && response['match_type'] > best_match_type
-                best_match = response
-                best_match_type = response['match_type']
-              end
+          best_match = nil
+          best_match_type = 0
+          claim_aliases.each do |claim_alias|
+            response = retrieve_normalizer_response(claim_alias.alias)
+            if !response.nil? && response['match_type'] > best_match_type
+              best_match = response
+              best_match_type = response['match_type']
             end
-            response = best_match
           end
+          response = best_match
         end
         response
       end

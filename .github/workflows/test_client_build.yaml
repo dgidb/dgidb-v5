@@ -1,0 +1,22 @@
+name: Test build client
+on:
+  push:
+    branches-ignore:
+      - main
+      - dev
+      - staging
+jobs:
+  test_build:
+    name: test client build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v2
+      - name: install dependencies
+        run: yarn install
+      - name: build
+        run: |
+          CI=false
+          yarn build

@@ -85,7 +85,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         gene_claim = create_gene_claim(target_to_entrez[line['target_id']], 'Entrez Gene ID')
         create_gene_claim_aliases(gene_claim, line)
 
-        drug_claim = create_drug_claim(line['ligand_pubchem_sid'], strip_tags(line['ligand']).upcase, 'PubChem Drug SID')
+        drug_claim = create_drug_claim("pubchem.substance:#{line['ligand_pubchem_sid']}", 'Concept ID')
         create_drug_claim_aliases(drug_claim, line)
         unless blank?(line['ligand_species'])
           create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species'])
@@ -129,12 +129,12 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     def create_drug_claim_aliases(drug_claim, line)
-      unless blank?(line['ligand_gene_symbol'])
-        line['ligand_gene_symbol'].split('|').each do |gene_symbol|
-          create_drug_claim_alias(drug_claim, gene_symbol, 'Gene Symbol (for Endogenous Peptides)')
-        end
-      end
       create_drug_claim_alias(drug_claim, strip_tags(line['ligand']).upcase, 'GuideToPharmacology Ligand Name')
+      return if blank?(line['ligand_gene_symbol'])
+
+      line['ligand_gene_symbol'].split('|').each do |gene_symbol|
+        create_drug_claim_alias(drug_claim, gene_symbol, 'Gene Symbol (for Endogenous Peptides)')
+      end
     end
 
     def blank?(value)
