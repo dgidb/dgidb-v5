@@ -2,5 +2,9 @@ client/package-lock.json
 client/yarn.lock
 server/data
 server/lib/data
+server/config/master.key
+
 docs/build
 *.DS_Store
+*.lock
+client/yarn.lock

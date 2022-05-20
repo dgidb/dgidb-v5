@@ -17,7 +17,6 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
       raise StandardError, 'Request Failed!' unless res.code == '200'
-
       res.body
     end
 
@@ -27,7 +26,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
 
     def params(category, start, count)
       {
-        'query' => "{search(term: \"#{category}\", facets: \"Family\"){\n    targetResult {count, targets(skip: #{start}, top:#{count}) { uniprot, name, sym } }\n  }\n}"
+        'query' => "{search(term:\"#{category}\",facets:\"Family\"){targetResult{targets(skip:#{start},top:#{count}){uniprot,name,sym}}}}"
       }
     end
   end

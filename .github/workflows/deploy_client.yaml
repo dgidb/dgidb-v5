@@ -1,0 +1,54 @@
+# requires manual setup of GitHub build environments: prod, staging, dev
+name: Deploy client
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - dev
+  workflow_dispatch:
+jobs:
+  get_environment:
+    name: get deployment environment
+    runs-on: ubuntu-latest
+    steps:
+      - id: branch_check
+        run: |
+          echo "running on branch ${{ github.ref }}"
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "::set-output name=env_name::prod"
+          elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
+            echo "::set-output name=env_name::staging"
+          elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+            echo "::set-output name=env_name::dev"
+          else
+            exit 1  # shouldn't be possible
+          fi
+    outputs:
+      env_name: ${{ steps.branch_check.outputs.env_name }}
+  deploy:
+    name: deploy client
+    runs-on: ubuntu-latest
+    needs: [get_environment]
+    environment:
+      name: ${{ needs.get_environment.outputs.env_name }}
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v2
+      - name: set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: install dependencies
+        run: yarn install
+      - name: build client
+        run: |
+          CI=false  # prevent CI checks from stopping build
+          yarn build:${{ needs.get_environment.outputs.env_name }}
+      - name: deploy static client files to S3 bucket
+        run: aws s3 sync ./build/ s3://dgidb-client-${{ needs.get_environment.outputs.env_name }} --delete
+

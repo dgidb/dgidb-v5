@@ -36,7 +36,7 @@ module Genome; module Importers; module FileImporters; module Talc;
         create_gene_claim_alias(gene_claim, row['gene_target'], 'Gene Symbol')
         create_gene_claim_alias(gene_claim, row['entrez_id'], 'Entrez ID')
 
-        drug_claim = create_drug_claim(row['drug_name'].upcase, row['drug_name'].upcase, 'TALC')
+        drug_claim = create_drug_claim(row['drug_name'].upcase, 'TALC')
         create_drug_claim_alias(drug_claim, row['drug_name'], 'Primary Drug Name')
         unless row['drug_generic_name'] == 'NA'
           create_drug_claim_alias(drug_claim, row['drug_generic_name'], 'Drug Generic Name')

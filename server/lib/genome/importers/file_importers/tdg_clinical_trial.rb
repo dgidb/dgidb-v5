@@ -44,7 +44,7 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
           end
         end
 
-        drug_claim = create_drug_claim(row['Drug Name'].upcase, row['Drug Name'].upcase, 'Drug Name')
+        drug_claim = create_drug_claim(row['Drug Name'].upcase, 'Drug Name')
         row['Indication(s)'].gsub('"', '').split(',').each do |indication|
           create_drug_claim_attribute(drug_claim, 'Drug Indications', indication)
         end

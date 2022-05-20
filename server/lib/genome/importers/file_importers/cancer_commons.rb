@@ -37,8 +37,7 @@ module Genome; module Importers; module FileImporters; module CancerCommons;
         create_gene_claim_alias(gene_claim, row['entrez_gene_id'], 'Entrez Gene ID')
         create_gene_claim_attribute(gene_claim, 'CancerCommons Reported Gene Name', row['reported_gene_name'])
 
-        primary_name = row['primary_drug_name'].strip.upcase
-        drug_claim = create_drug_claim(primary_name, primary_name, 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['primary_drug_name'].strip.upcase, 'Primary Drug Name')
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
         create_drug_claim_attribute(drug_claim, 'Source Reported Drug Name(s)', row['source_reported_drug_name'])
         create_drug_claim_attribute(drug_claim, 'Pharmaceutical Developer', row['pharmaceutical_developer'])

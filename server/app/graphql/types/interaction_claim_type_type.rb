@@ -2,7 +2,7 @@ module Types
   class InteractionClaimTypeType < Types::BaseObject
     field :id, ID, null: false
     field :type, String, null: true
-    field :directionality, Int, null: true
+    field :directionality, Types::DirectionalityType, null: true
     field :definition, String, null: true
     field :reference, String, null: true
     field :interaction_claims, [Types::InteractionClaimType], null: false

@@ -1,16 +1,18 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/SearchBar/SearchBar';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
+import { queryClient } from 'providers/app';
+
 // styles
 import { Button, Switch } from 'antd';
-import SunIcon from 'components/SVG/SunIcon';
-import MoonIcon from 'components/SVG/MoonIcon';
-import './Home.scss';
+import SunIcon from 'components/Shared/SVG/SunIcon';
+import MoonIcon from 'components/Shared/SVG/MoonIcon';
+import './home.scss';
 
 export const Home: React.FC = () => {
 
@@ -18,17 +20,25 @@ export const Home: React.FC = () => {
 
   const handleSubmit = async () => {
     navigate('/results');
-  }; 
+  };
 
   const navigate = useNavigate();
-  
-  const { refetch } = useGetInteractionsByGenes(state.searchTerms);
+
+  const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
+  const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
 
   const [isToggling, setIsToggling] = useState<boolean>(false);
 
   // refetch query as terms are added
   useEffect(() => {
-    refetch();
+    queryClient.clear();
+    if(state.searchTerms.length) {
+      if (state.interactionMode === 'gene'){
+        refetchGenes();
+      } else {
+        refetchDrugs();
+      }
+    }
   }, [state.searchTerms])
 
 
@@ -47,6 +57,10 @@ export const Home: React.FC = () => {
     setIsToggling(false);
   }, [state.themeSettings.darkModeEnabled])
 
+  useEffect(() => {
+    dispatch({type: ActionTypes.DeleteAllTerms})
+  }, [state.interactionMode])
+
   return (
     <div className="home-page-container" >
 
@@ -56,6 +70,7 @@ export const Home: React.FC = () => {
       <div className="tagline">
         THE DRUG GENE INTERACTION DATABASE
       </div> */}
+
 
       <SearchBar handleSubmit={handleSubmit} />
 
@@ -79,14 +94,15 @@ export const Home: React.FC = () => {
       </div>
 
       <div className="darkmode-toggle">
-        <Switch 
-          loading={isToggling} 
-          defaultChecked 
+        <Switch
+          loading={isToggling}
+          defaultChecked
           checkedChildren={<SunIcon />}
           unCheckedChildren={<MoonIcon />}
-          onChange={() => setIsToggling(true)} 
+          onChange={() => setIsToggling(true)}
         />
       </div>
     </div>
     )
 }
+

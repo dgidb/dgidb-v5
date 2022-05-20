@@ -1,16 +1,31 @@
 default: &default
   adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
+production:
+  <<: *default
+  database: dgidb
+  host: <%= ENV.fetch("RDS_HOSTNAME") { "localhost" } %>
+  port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
+  username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
+  password: <%= ENV.fetch("RDS_PASSWORD") { "" } %>
+
+staging:
+  <<: *default
+  database: dgidb
+  host: <%= ENV.fetch("RDS_HOSTNAME") { "localhost" } %>
+  port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
+  username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
+  password: <%= ENV.fetch("RDS_PASSWORD") { "" } %>
+
 development:
   <<: *default
-  encoding: unicode
-  database: dgidb_v5
-  host: localhost
+  database: dgidb
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
 
 test:
   <<: *default
-  encoding: unicode
-  database: dgidb_v5_test
-  host: localhost
+  database: dgidb_test
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>

@@ -4,9 +4,8 @@ class Interaction < ActiveRecord::Base
   has_many :interaction_claims
   belongs_to :gene
   belongs_to :drug
-  has_and_belongs_to_many :interaction_types,
-    :join_table => "interaction_types_interactions",
-    :class_name => "InteractionClaimType"
+  has_and_belongs_to_many :interaction_types, join_table: 'interaction_types_interactions',
+                                              class_name: 'InteractionClaimType'
   has_many :interaction_attributes
   has_and_belongs_to_many :publications
   has_and_belongs_to_many :sources
@@ -26,9 +25,9 @@ class Interaction < ActiveRecord::Base
   def directionality
     if self.interaction_types.loaded?
       self.interaction_types
-        .reject { |it| it.directionality.nil? }
-        .map { |it| it.directionality }
-        .uniq
+          .reject { |it| it.directionality.nil? }
+          .map { |it| it.directionality }
+          .uniq
     else
       self.interaction_types.where.not(directionality: nil).distinct.pluck(:directionality)
     end
@@ -43,17 +42,24 @@ class Interaction < ActiveRecord::Base
   end
 
   def interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
-    if known_drug_partners_per_gene.nil?
-      known_drug_partners_per_gene = Interaction.group(:gene_id).count
+    if known_drug_partners_per_gene.present? || known_gene_partners_per_drug.present?
+      calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
+    elsif self.score.nil?
+      calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
+    else
+      self.score
     end
+  end
+
+  def calculate_interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
+    known_drug_partners_per_gene = Interaction.group(:gene_id).count if known_drug_partners_per_gene.nil?
     average_known_drug_partners_per_gene = known_drug_partners_per_gene.values.sum / known_drug_partners_per_gene.values.size.to_f
-    if known_gene_partners_per_drug.nil?
-      known_gene_partners_per_drug = Interaction.group(:drug_id).count
-    end
+    known_gene_partners_per_drug = Interaction.group(:drug_id).count if known_gene_partners_per_drug.nil?
     average_known_gene_partners_per_drug = known_gene_partners_per_drug.values.sum / known_gene_partners_per_drug.values.size.to_f
     known_drug_partners_for_interaction_gene = known_drug_partners_per_gene[self.gene_id]
     known_gene_partners_for_interaction_drug = known_gene_partners_per_drug[self.drug_id]
 
     (self.publications.count + self.sources.count) * average_known_gene_partners_per_drug/known_gene_partners_for_interaction_drug * average_known_drug_partners_per_gene/known_drug_partners_for_interaction_gene
   end
+
 end

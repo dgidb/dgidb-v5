@@ -3,9 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { GlobalClient } from 'stores/Global/GlobalClient';
 
-import { ThemeSwitcherProvider } from 'react-css-theme-switcher';
-
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 type AppProviderProps = {
   children: React.ReactNode;

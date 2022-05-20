@@ -38,7 +38,7 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
         create_gene_claim_alias(gene_claim, row['Gene ID'], 'Entrez Gene ID') unless row['Gene ID'] == 'N/A'
         create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['genes']) unless row['genes'] == 'N/A'
 
-        drug_claim = create_drug_claim(row['pubchem drug name'].upcase, row['pubchem drug name'].upcase, 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['pubchem drug name'].upcase, 'Primary Drug Name')
         create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name') unless row['Drug name'] == 'N/A'
         create_drug_claim_alias(drug_claim, row['pubchem drug id'], 'PubChem Drug ID') unless row['pubchem drug id'] == 'N/A'
         create_drug_claim_alias(drug_claim, row['Other drug names'], 'Other Drug Name') unless row['Other drug names'] == 'N/A'

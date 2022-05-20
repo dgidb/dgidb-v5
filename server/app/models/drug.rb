@@ -6,6 +6,7 @@ class Drug < ::ActiveRecord::Base
   has_many :interactions
   has_many :drug_aliases
   has_many :drug_attributes
+  has_many :drug_applications
 
   before_create :populate_flags
 

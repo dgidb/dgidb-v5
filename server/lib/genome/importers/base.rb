@@ -1,12 +1,35 @@
+require 'csv'
+
 module Genome
   module Importers
     class Base
       attr_reader :source, :source_db_name
 
       def import
+        @invalid_terms = {
+          gene_claim_categories: {},
+          interaction_claim_types: {}
+        }
         remove_existing_source
         create_new_source
         create_claims
+
+        print_invalid_terms
+      end
+
+      def print_invalid_terms
+        unless @invalid_terms[:gene_claim_categories].empty?
+          puts 'Skipped unrecognized gene claim categories:'
+          @invalid_terms[:gene_claim_categories].each do |key, value|
+            puts "#{key}: #{value.inspect}"
+          end
+        end
+        unless @invalid_terms[:interaction_claim_types].empty?
+          puts 'Skipped unrecognized interaction claim types:'
+          @invalid_terms[:interaction_claim_types].each do |key, value|
+            puts "#{key}: #{value.inspect}"
+          end
+        end
       end
 
       def default_filetype
@@ -38,7 +61,7 @@ module Genome
 
       def create_gene_claim(gene_name, nomenclature)
         GeneClaim.where(
-          name: gene_name.strip,
+          name: gene_name.strip.upcase,
           nomenclature: nomenclature.strip,
           source_id: @source.id
         ).first_or_create
@@ -46,7 +69,7 @@ module Genome
 
       def create_gene_claim_alias(gene_claim, synonym, nomenclature)
         GeneClaimAlias.where(
-          alias: synonym.to_s.strip,
+          alias: synonym.to_s.strip.upcase,
           nomenclature: nomenclature.strip,
           gene_claim_id: gene_claim.id
         ).first_or_create
@@ -63,16 +86,26 @@ module Genome
       def create_gene_claim_category(gene_claim, category)
         gene_category = GeneClaimCategory.find_by(name: category)
         if gene_category.nil?
-          raise StandardError, "GeneClaimCategory with name #{category} does not exist. If this is a valid category, please create its database entry manually before running the importer."
+          msg = "Unrecognized GeneClaimCategory #{category} from #{gene_claim.inspect}."
+          raise StandardError, msg unless Rails.env == 'development'
+
+          if @invalid_terms[:gene_claim_categories].key? category
+            @invalid_terms[:gene_claim_categories][category] << gene_claim.id
+          else
+            @invalid_terms[:gene_claim_categories][category] = [gene_claim.id]
+          end
+
+          Rails.logger.debug msg
         else
-          gene_claim.gene_claim_categories << gene_category unless gene_claim.gene_claim_categories.include? gene_category
+          unless gene_claim.gene_claim_categories.include? gene_category
+            gene_claim.gene_claim_categories << gene_category
+          end
         end
       end
 
-      def create_drug_claim(name, primary_name, nomenclature, source=@source)
+      def create_drug_claim(name, nomenclature, source=@source)
         DrugClaim.where(
           name: name.strip,
-          primary_name: primary_name.strip,
           nomenclature: nomenclature.strip,
           source_id: source.id
         ).first_or_create
@@ -83,7 +116,7 @@ module Genome
         return nil unless DrugAliasBlacklist.find_by(alias: cleaned).nil?
 
         DrugClaimAlias.where(
-          alias: synonym.strip,
+          alias: synonym.strip.upcase,
           nomenclature: nomenclature.strip,
           drug_claim_id: drug_claim.id
         ).first_or_create
@@ -110,11 +143,19 @@ module Genome
           type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
         )
         if claim_type.nil?
-          raise StandardError, "InteractionClaimType with type #{type} does not exist. If this is a valid type, please create its database entry manually before running the importer."
-        end
+          msg = "Unrecognized InteractionClaimType #{type} from #{interaction_claim.inspect}"
+          raise StandardError, msg unless Rails.env == 'development'
 
-        unless interaction_claim.interaction_claim_types.include? claim_type
-          interaction_claim.interaction_claim_types << claim_type
+          if @invalid_terms[:interaction_claim_types].key? type
+            @invalid_terms[:interaction_claim_types][type] << interaction_claim.id
+          else
+            @invalid_terms[:interaction_claim_types][type] = [interaction_claim.id]
+          end
+          Rails.logger.debug msg
+        else
+          unless interaction_claim.interaction_claim_types.include? claim_type
+            interaction_claim.interaction_claim_types << claim_type
+          end
         end
       end
 
