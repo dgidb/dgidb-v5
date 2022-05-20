@@ -138,7 +138,8 @@ module Genome
       end
 
       def create_drug_claim(record, source)
-        if record['label'].nil?
+        # Drugs@FDA records don't have unique labels
+        if record['label'].nil? || source.source_db_name == 'Drugs@FDA'
           DrugClaim.where(
             name: record['concept_id'],
             nomenclature: 'Concept ID',
@@ -173,8 +174,8 @@ module Genome
         end
       end
 
-      def add_grouper_claim_alias(value, label, claim_id, nomenclature)
-        return if value == label
+      def add_grouper_claim_alias(value, claim_name, claim_id, nomenclature)
+        return if value == claim_name
 
         return nil unless DrugAliasBlacklist.find_by(alias: value).nil?
 
@@ -192,8 +193,8 @@ module Genome
           add_grouper_claim_alias(record['concept_id'], claim_name, claim.id, 'Concept ID')
         end
 
-        prune_alias_list(record.fetch('aliases', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
+        unless record['label'].nil? || record['label'] == claim_name
+          add_grouper_claim_alias(record['label'], claim_name, claim.id, 'Primary Drug Name')
         end
 
         prune_alias_list(record.fetch('trade_names', [])).each do |value|
@@ -273,10 +274,16 @@ module Genome
       def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
         drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
-        drug_claim_aliases.append(claim.name) unless claim.name == drug.name || claim.name == drug.concept_id
+        unless claim.name == drug.name || claim.name == drug.concept_id || claim.source.source_db_name == 'Drugs@FDA'
+          drug_claim_aliases.append(claim.name)
+        end
         drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
           DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
         end
+      end
+
+      def add_application(claim, drug)
+        DrugApplication.create(app_no: claim.name, drug: drug)
       end
 
       def add_claim_to_drug(claim, drug_concept_id)
@@ -284,9 +291,10 @@ module Genome
         return if drug.nil?
 
         claim.drug_id = drug.id
+        claim.save
         add_claim_attributes(claim, drug)
         add_claim_aliases(claim, drug)
-        claim.save
+        add_application(claim, drug) if claim.source.source_db_name == 'Drugs@FDA'
       end
     end
   end
