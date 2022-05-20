@@ -13,10 +13,10 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import { InteractionType } from 'components/Interaction Charts/Gene';
-import { InteractionDirectionality } from 'components/Interaction Charts/Gene';
-import { InteractionScore } from 'components/Interaction Charts/Gene';
-import { RegulatoryApproval } from 'components/Interaction Charts/Gene';
+import { InteractionTypeGene } from 'components/Gene/GeneCharts';
+import { DirectionalityGene } from 'components/Gene/GeneCharts';
+import { InteractionScoreGene } from 'components/Gene/GeneCharts';
+import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 
 
 // styles
@@ -84,10 +84,10 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
       <h4>Summary Infographics</h4>
 
       <div className="chart-section">
-        {chartType === 'score' && <InteractionType data={chartData} />}
-        {chartType === 'type' && <InteractionType data={chartData} />}
-        {chartType === 'directionality' && <InteractionDirectionality />}
-        {chartType === 'approval' && <InteractionType data={chartData} />}
+        {chartType === 'score' && <InteractionTypeGene data={chartData} />}
+        {chartType === 'type' && <InteractionTypeGene data={chartData} />}
+        {chartType === 'directionality' && <DirectionalityGene />}
+        {chartType === 'approval' && <InteractionTypeGene data={chartData} />}
       </div>
 
       <div className="chart-selector">

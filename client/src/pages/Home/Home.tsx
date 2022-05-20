@@ -12,7 +12,7 @@ import { queryClient } from 'providers/app';
 import { Button, Switch } from 'antd';
 import SunIcon from 'components/Shared/SVG/SunIcon';
 import MoonIcon from 'components/Shared/SVG/MoonIcon';
-import './home.scss';
+import './Home.scss';
 
 export const Home: React.FC = () => {
 
