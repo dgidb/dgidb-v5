@@ -194,7 +194,6 @@ CREATE TABLE public.drug_claims (
     name text NOT NULL,
     nomenclature text NOT NULL,
     source_id text,
-    primary_name character varying(255),
     drug_id text
 );
 
@@ -1787,6 +1786,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220317193102'),
 ('20220408032834'),
 ('20220408182256'),
-('20220511151940');
+('20220511151940'),
+('20220520001558');
 
 
