@@ -50,7 +50,8 @@
     "start:prod": "env-cmd -f ./.env.production react-scripts start",
     "start:staging": "env-cmd -f ./.env.staging react-scripts start",
     "build:prod": "env-cmd -f ./.env.prod react-scripts build",
-    "build:staging": "env-cmd -f ./.env.staging react-scripts build"
+    "build:staging": "env-cmd -f ./.env.staging react-scripts build",
+    "build:dev": "env-cmd -f ./.env.dev react-scripts build"
   },
   "browserslist": {
     "production": [
