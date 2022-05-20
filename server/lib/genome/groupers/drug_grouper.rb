@@ -1,6 +1,3 @@
-# TODO
-#  - check for redundancy between drug_claim name and alias
-#  - check for redundancy between drug name/concept ID and alias
 module Genome
   module Groupers
     class DrugGrouper < Genome::Groupers::Base
@@ -206,8 +203,6 @@ module Genome
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
           add_grouper_claim_alias(value, claim_name, claim.id, 'Xref')
         end
-
-        # TODO: consider adding associated_with ?
       end
 
       def add_grouper_data(drug, descriptor)
