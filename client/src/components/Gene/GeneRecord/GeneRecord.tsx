@@ -11,9 +11,8 @@ import { truncateDecimals } from 'utils/format';
 
 // styles
 import './GeneRecord.scss';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-
 
 const GeneRecordTable: React.FC = () => {
 
@@ -27,7 +26,6 @@ const GeneRecordTable: React.FC = () => {
   useEffect(() => {
     console.log('intdainteractionResultsta', interactionResults);
   }, [interactionResults])
-
 
   let genes = data?.genes;
 
@@ -94,7 +92,7 @@ const GeneRecordTable: React.FC = () => {
 
 export const GeneRecord: React.FC = () => {
 
-  const geneSymbol = 'FLT1'
+  const geneSymbol = useParams().gene;
 
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
 

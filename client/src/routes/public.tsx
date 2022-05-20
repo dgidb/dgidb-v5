@@ -26,33 +26,6 @@ const App = () => {
   );
 };
 
-// export const Routes = () => {
-//   const publicRoutes = [
-//     {
-//       path: '/',
-//       element: <App />,
-//       children: [
-//         {
-//           path: '/genes/:id',
-//           element: <GeneRecord />
-//         },
-//         { path: '/results', element: <Results /> },
-//         { path: '/about', element: <About /> },
-//         { path: '/', element: <Home /> },
-//         { path: '*', element: <Navigate to="." /> },
-//       ],
-//     }
-//   ];
-
-//   const element = useRoutes(publicRoutes);
-
-//   return (
-//     <>
-//     {element}
-//     </>
-//   );
-// };
-
 export const Routes = () => {
   const publicRoutes = [
     {
