@@ -284,14 +284,19 @@ module Genome
         end
       end
 
+      def add_application(claim, drug)
+        # TODO
+      end
+
       def add_claim_to_drug(claim, drug_concept_id)
         drug = Drug.find_by(concept_id: drug_concept_id)
         return if drug.nil?
 
         claim.drug_id = drug.id
+        claim.save
         add_claim_attributes(claim, drug)
         add_claim_aliases(claim, drug)
-        claim.save
+        add_application(claim, drug) if claim.source.source_db_name == 'Drugs@FDA'
       end
     end
   end
