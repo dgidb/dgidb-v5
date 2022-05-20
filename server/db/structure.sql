@@ -120,6 +120,17 @@ CREATE TABLE public.drug_aliases (
 
 
 --
+-- Name: drug_applications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_applications (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    app_no character varying,
+    drug_id text
+);
+
+
+--
 -- Name: drug_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -194,7 +205,6 @@ CREATE TABLE public.drug_claims (
     name text NOT NULL,
     nomenclature text NOT NULL,
     source_id text,
-    primary_name character varying(255),
     drug_id text
 );
 
@@ -444,7 +454,8 @@ CREATE TABLE public.interaction_types_interactions (
 CREATE TABLE public.interactions (
     id text NOT NULL,
     drug_id text NOT NULL,
-    gene_id text NOT NULL
+    gene_id text NOT NULL,
+    score numeric
 );
 
 
@@ -590,6 +601,14 @@ ALTER TABLE ONLY public.drug_alias_blacklists
 
 ALTER TABLE ONLY public.drug_aliases
     ADD CONSTRAINT drug_aliases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: drug_applications drug_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_applications
+    ADD CONSTRAINT drug_applications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1081,6 +1100,13 @@ CREATE UNIQUE INDEX index_drug_alias_blacklists_on_alias ON public.drug_alias_bl
 --
 
 CREATE INDEX index_drug_aliases_on_drug_id ON public.drug_aliases USING btree (drug_id);
+
+
+--
+-- Name: index_drug_applications_on_drug_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_applications_on_drug_id ON public.drug_applications USING btree (drug_id);
 
 
 --
@@ -1609,6 +1635,14 @@ ALTER TABLE ONLY public.interaction_attributes
 
 
 --
+-- Name: drug_applications fk_rails_33d3846e26; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_applications
+    ADD CONSTRAINT fk_rails_33d3846e26 FOREIGN KEY (drug_id) REFERENCES public.drugs(id);
+
+
+--
 -- Name: drug_aliases fk_rails_4d255ac147; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1786,6 +1820,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220317193102'),
 ('20220408032834'),
 ('20220408181519'),
-('20220408182256');
+('20220408182256'),
+('20220511151940'),
+('20220520001558'),
+('20220520141004');
 
 
