@@ -50,7 +50,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
                   create_gene_claim_alias(gene_claim, syn, nomen)
                 end
 
-                drug_claim = create_drug_claim(record[1], record[1], 'DrugBank Drug Name')
+                drug_claim = create_drug_claim(record[1], 'DrugBank Drug Name')
 
                 create_drug_claim_alias(drug_claim, record[0], 'DrugBank Identifier')
 

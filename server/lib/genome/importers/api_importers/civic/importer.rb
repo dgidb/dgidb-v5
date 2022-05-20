@@ -47,7 +47,7 @@ module Genome
               if ei['evidence_level'] == 'A'
                 create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE')
               end
-              dc = create_drug_claim(drug['name'].upcase, drug['name'].upcase, 'CIViC Drug Name')
+              dc = create_drug_claim(drug['name'].upcase, 'CIViC Drug Name')
               ic = create_interaction_claim(gc, dc)
               if ei['source']['citation_id'].present? and ei['source']['source_type'] == 'PubMed'
                 create_interaction_claim_publication(ic, ei['source']['citation_id'])
