@@ -197,8 +197,8 @@ module Genome
           add_grouper_claim_alias(record['label'], claim_name, claim.id, 'Primary Drug Name')
         end
 
-        prune_alias_list(record.fetch('aliases', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
+        prune_alias_list(record.fetch('trade_names', [])).each do |value|
+          add_grouper_claim_alias(value, claim_name, claim.id, 'Trade Name')
         end
 
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
