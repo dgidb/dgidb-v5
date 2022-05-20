@@ -48,7 +48,7 @@ jobs:
       - name: build client
         run: |
           CI=false
-          yarn build
+          yarn build:${{ needs.get_environment.outputs.env_name }}
       - name: deploy static client files to S3 bucket
         run: aws s3 sync ./build/ s3://dgidb-client-${{ needs.get_environment.outputs.env_name }} --delete
 
