@@ -278,14 +278,17 @@ module Genome
       def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
         drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
-        drug_claim_aliases.append(claim.name) unless claim.name == drug.name || claim.name == drug.concept_id
+        unless claim.name == drug.name || claim.name == drug.concept_id || claim.source.source_db_name == 'Drugs@FDA'
+          drug_claim_aliases.append(claim.name)
+        end
         drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
           DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
         end
       end
 
       def add_application(claim, drug)
-        # TODO
+        DrugApplication.create(app_no: claim.name, drug: drug)
+        # TODO ?
       end
 
       def add_claim_to_drug(claim, drug_concept_id)
