@@ -37,7 +37,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
         create_gene_claim_alias(gene_claim, row['Enterez Gene Id'], 'Entrez Gene ID')
         create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['Molecular Target'])
 
-        drug_claim = create_drug_claim(row['Pubchem name'].upcase, row['Pubchem name'].upcase, 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['Pubchem name'].upcase, 'Primary Drug Name')
         create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name')
         create_drug_claim_alias(drug_claim, row['CID'], 'PubChem Drug ID') unless row['CID'] == 'N/A'
         create_drug_claim_alias(drug_claim, row['SID'], 'PubChem Drug SID') unless row['SID'] == 'N/A'
