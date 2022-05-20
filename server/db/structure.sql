@@ -124,29 +124,10 @@ CREATE TABLE public.drug_aliases (
 --
 
 CREATE TABLE public.drug_applications (
-    id bigint NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     app_no character varying,
     drug_id text
 );
-
-
---
--- Name: drug_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.drug_applications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: drug_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.drug_applications_id_seq OWNED BY public.drug_applications.id;
 
 
 --
@@ -588,13 +569,6 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 --
 
 ALTER TABLE ONLY public.drug_alias_blacklists ALTER COLUMN id SET DEFAULT nextval('public.drug_alias_blacklists_id_seq'::regclass);
-
-
---
--- Name: drug_applications id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_applications ALTER COLUMN id SET DEFAULT nextval('public.drug_applications_id_seq'::regclass);
 
 
 --

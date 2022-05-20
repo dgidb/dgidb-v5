@@ -1,6 +1,6 @@
 class AddDrugApplicationTable < ActiveRecord::Migration[6.1]
   def up
-    create_table :drug_applications do |t|
+    create_table :drug_applications, id: :uuid do |t|
       t.string :app_no
     end
 
