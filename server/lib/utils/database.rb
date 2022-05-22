@@ -41,6 +41,8 @@ module Utils
         delete from drug_aliases;
         delete from drug_attributes_sources;
         delete from drug_attributes;
+        delete from drug_applications;
+        delete from drug_approval_ratings;
         delete from drugs;
       SQL
 
@@ -68,6 +70,7 @@ module Utils
           delete from drug_claim_attributes where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
           delete from drug_claim_aliases where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
           delete from drug_claim_types_drug_claims where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
+          delete from drug_claim_approval_ratings where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
           update drug_claims set drug_id = NULL where source_id = '#{source_id}';
           delete from drug_claims where source_id = '#{source_id}';
 

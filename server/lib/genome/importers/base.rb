@@ -125,7 +125,14 @@ module Genome
       def create_drug_claim_attribute(drug_claim, name, value)
         DrugClaimAttribute.where(
           name: name.strip,
-          value: value.strip,
+          value: value.strip.titleize,
+          drug_claim_id: drug_claim.id
+        ).first_or_create
+      end
+
+      def create_drug_claim_approval_rating(drug_claim, rating)
+        DrugClaimApprovalRating.where(
+          rating: rating,
           drug_claim_id: drug_claim.id
         ).first_or_create
       end

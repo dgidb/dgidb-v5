@@ -31,6 +31,22 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
       @source.save
     end
 
+    def add_approval_data(drug_claim, approval_value)
+      return if [
+        'mineral', 'not approved', 'not approved by the FDA', 'not disclosed'
+      ].include? approval_value
+
+      if [
+        'approved, withdrawn', 'withdrawn', 'not approved (orphan status)', 'Approved before 1982', 'approved'
+      ].include? approval_value
+        create_drug_claim_approval_rating(drug_claim, approval_value)
+      else
+        # add inferred approval if only given year
+        create_drug_claim_approval_rating(drug_claim, 'approved')
+        create_drug_claim_attribute(drug_claim, 'Year of Approval', approval_value)
+      end
+    end
+
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t", encoding: 'iso-8859-1:utf-8') do |row|
         gene_claim = create_gene_claim(row['Uniprot Accession number'], 'Uniprot Accession')
@@ -48,8 +64,9 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
         row['Indication(s)'].gsub('"', '').split(',').each do |indication|
           create_drug_claim_attribute(drug_claim, 'Drug Indications', indication)
         end
+
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['Drug Class'])
-        create_drug_claim_attribute(drug_claim, 'FDA Approval', row['Year of Approval (FDA)'])
+        add_approval_data(drug_claim, row['Year of Approval (FDA)'])
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_attribute(interaction_claim, 'Trial Name', row['Trial name'])
