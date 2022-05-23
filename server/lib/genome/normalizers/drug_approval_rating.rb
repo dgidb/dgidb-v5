@@ -19,7 +19,7 @@ module Genome
       private_class_method def self.approved_values
         [
           'Approved, Withdrawn', 'Prescription', 'Approved', 'Max Phase 4',
-          'Over-the-Counter', 'Approved before 1982', 'Prescribable'
+          'Over-the-Counter', 'Approved Before 1982', 'Prescribable'
         ]
       end
     end
