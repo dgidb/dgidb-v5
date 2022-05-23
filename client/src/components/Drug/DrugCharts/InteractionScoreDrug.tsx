@@ -21,14 +21,10 @@ ChartJS.register(
   Tooltip,
 );
 
-interface Props {
-  data: any;
-}
 
-
-export const InteractionType: React.FC<Props> = ({data}) => {
+export const InteractionScoreDrug: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
-  // const { data } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByGenes(state.searchTerms);
 
   const [chartData, setChartData] = useState<any>({
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
@@ -50,7 +46,7 @@ export const InteractionType: React.FC<Props> = ({data}) => {
       },
       title: {
         display: true,
-        text: 'Interaction Type',
+        text: 'Interaction Type (PDGFRA)',
       },
     },
   };
@@ -58,9 +54,9 @@ export const InteractionType: React.FC<Props> = ({data}) => {
   const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
-    if (data?.length) {
-      let dataArray = [0, 0, 0, 0]
-      data.forEach((gene: any) => {
+    if (data?.genes?.length) {
+      data.genes.forEach((gene: any) => {
+        let dataArray = [0, 0, 0, 0]
         gene.interactions.forEach((int: any) => {
           if(int.interactionTypes.length){
             switch(int.interactionTypes[0].type){
@@ -82,22 +78,22 @@ export const InteractionType: React.FC<Props> = ({data}) => {
           }
         })
 
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: '',
+              data: dataArray,
+              backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
+            }
+          ]
+        });
       })
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: '',
-            data: dataArray,
-            backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
-          }
-        ]
-      });
     }
   }, [data])
 
   return (
-    <div className="type-container">
+    <div className="score-container">
       <Bar options={options} data={chartData}/>
     </div>
   )
