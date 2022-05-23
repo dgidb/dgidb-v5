@@ -75,6 +75,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
               dispatch({type: ActionTypes.SetByGene})
             } else if (value === 'drug'){
               dispatch({type: ActionTypes.SetByDrug})
+            } else if (value === 'categories'){
+              dispatch({type: ActionTypes.SetGeneCategories})
             }
           }}
           dropdownRender={(menu: any) => (
