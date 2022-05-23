@@ -3,6 +3,7 @@ import { Navigate, Outlet, useParams, useRoutes} from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
+import { CategoryResults } from 'components/Categories/CategoryResults';
 import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 
 import { MainLayout } from 'components/Layout';
@@ -43,6 +44,7 @@ export const Routes = () => {
           ]
         },
         { path: '/results', element: <Results /> },
+        { path: '/categories', element: <CategoryResults /> },
         { path: '/about', element: <About /> },
         { path: '/', element: <Home /> },
         { path: '*', element: <Navigate to="." /> },
