@@ -32,17 +32,14 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
     end
 
     def add_approval_data(drug_claim, approval_value)
-      return if [
-        'mineral', 'not approved', 'not approved by the FDA', 'not disclosed'
-      ].include? approval_value
-
       if [
-        'approved, withdrawn', 'withdrawn', 'not approved (orphan status)', 'Approved before 1982', 'approved'
+        'mineral', 'not approved', 'not approved by the FDA', 'not disclosed', 'approved, withdrawn',
+        'withdrawn', 'not approved (orphan status)', 'Approved before 1982', 'approved'
       ].include? approval_value
         create_drug_claim_approval_rating(drug_claim, approval_value)
       else
         # add inferred approval if only given year
-        create_drug_claim_approval_rating(drug_claim, 'approved')
+        create_drug_claim_approval_rating(drug_claim, 'Approved')
         create_drug_claim_attribute(drug_claim, 'Year of Approval', approval_value)
       end
     end
