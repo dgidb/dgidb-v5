@@ -85,6 +85,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
         >
           <Option className="hi4" value="gene">Interactions by Gene</Option>
           <Option value="drug">Interactions by Drug</Option>
+          <Option value="categories">Gene Categories</Option>
         </Select>
       </div>
       <div className="search-input">
