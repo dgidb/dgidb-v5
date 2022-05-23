@@ -13,7 +13,7 @@ class DrugClaimAlias < ::ActiveRecord::Base
               interaction_claim_types: [],
               drug_claim: [
                 drug: [
-                  drug_claims: [:drug_claim_types]
+                  drug_claims: []
                 ]
               ]
             }
