@@ -131,6 +131,18 @@ CREATE TABLE public.drug_applications (
 
 
 --
+-- Name: drug_approval_ratings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_approval_ratings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    rating character varying NOT NULL,
+    drug_id text,
+    source_id text
+);
+
+
+--
 -- Name: drug_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -161,6 +173,17 @@ CREATE TABLE public.drug_claim_aliases (
     drug_claim_id text NOT NULL,
     alias text NOT NULL,
     nomenclature text NOT NULL
+);
+
+
+--
+-- Name: drug_claim_approval_ratings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_claim_approval_ratings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    rating character varying NOT NULL,
+    drug_claim_id text
 );
 
 
@@ -612,6 +635,14 @@ ALTER TABLE ONLY public.drug_applications
 
 
 --
+-- Name: drug_approval_ratings drug_approval_ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT drug_approval_ratings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: drug_attributes drug_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -633,6 +664,14 @@ ALTER TABLE ONLY public.drug_attributes_sources
 
 ALTER TABLE ONLY public.drug_claim_aliases
     ADD CONSTRAINT drug_claim_aliases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: drug_claim_approval_ratings drug_claim_approval_ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_claim_approval_ratings
+    ADD CONSTRAINT drug_claim_approval_ratings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1110,10 +1149,31 @@ CREATE INDEX index_drug_applications_on_drug_id ON public.drug_applications USIN
 
 
 --
+-- Name: index_drug_approval_ratings_on_drug_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_approval_ratings_on_drug_id ON public.drug_approval_ratings USING btree (drug_id);
+
+
+--
+-- Name: index_drug_approval_ratings_on_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_approval_ratings_on_source_id ON public.drug_approval_ratings USING btree (source_id);
+
+
+--
 -- Name: index_drug_attributes_on_drug_id_and_name_and_value; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_drug_attributes_on_drug_id_and_name_and_value ON public.drug_attributes USING btree (drug_id, name, value);
+
+
+--
+-- Name: index_drug_claim_approval_ratings_on_drug_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_claim_approval_ratings_on_drug_claim_id ON public.drug_claim_approval_ratings USING btree (drug_claim_id);
 
 
 --
@@ -1651,11 +1711,35 @@ ALTER TABLE ONLY public.drug_aliases
 
 
 --
+-- Name: drug_approval_ratings fk_rails_5bd60d85d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT fk_rails_5bd60d85d8 FOREIGN KEY (source_id) REFERENCES public.sources(id);
+
+
+--
 -- Name: interaction_claim_links fk_rails_af235a7f08; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.interaction_claim_links
     ADD CONSTRAINT fk_rails_af235a7f08 FOREIGN KEY (interaction_claim_id) REFERENCES public.interaction_claims(id);
+
+
+--
+-- Name: drug_claim_approval_ratings fk_rails_db4dd24d4e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_claim_approval_ratings
+    ADD CONSTRAINT fk_rails_db4dd24d4e FOREIGN KEY (drug_claim_id) REFERENCES public.drug_claims(id);
+
+
+--
+-- Name: drug_approval_ratings fk_rails_e9572ff2dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT fk_rails_e9572ff2dd FOREIGN KEY (drug_id) REFERENCES public.drugs(id);
 
 
 --
@@ -1821,6 +1905,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220408032834'),
 ('20220408182256'),
 ('20220511151940'),
+('20220520001558'),
+('20220520141004'),
+('20220520193230');
 ('20220520001558');
-
-

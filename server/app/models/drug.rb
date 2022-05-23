@@ -7,6 +7,7 @@ class Drug < ::ActiveRecord::Base
   has_many :drug_aliases
   has_many :drug_attributes
   has_many :drug_applications
+  has_many :drug_approval_ratings
 
   before_create :populate_flags
 
@@ -18,7 +19,10 @@ class Drug < ::ActiveRecord::Base
   end
 
   def self.for_show
-    eager_load(drug_claims: [:drug_claim_aliases, :drug_claim_attributes, :drug, source: [:source_types]])
+    eager_load(drug_claims: [
+      :drug_claim_aliases, :drug_claim_attributes, :drug_claim_approval_ratings, :drug,
+      source: [:source_types]
+    ])
   end
 
   def self.all_drug_names

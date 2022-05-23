@@ -7,6 +7,7 @@ class DrugClaim < ::ActiveRecord::Base
   has_many :gene_claims, through: :interaction_claims
   belongs_to :source, inverse_of: :drug_claims, counter_cache: true
   has_many :drug_claim_attributes, inverse_of: :drug_claim, dependent: :delete_all
+  has_many :drug_claim_approval_ratings, inverse_of: :drug_claim, dependent: :delete_all
 
   def self.for_search
     eager_load(
@@ -24,7 +25,7 @@ class DrugClaim < ::ActiveRecord::Base
   end
 
   def self.for_show
-    eager_load(:source, :drug_claim_aliases, :drug_claim_attributes)
+    eager_load(:source, :drug_claim_aliases, :drug_claim_attributes, :drug_claim_approval_ratings)
   end
 
   def self.for_tsv

@@ -9,5 +9,10 @@ namespace :dgidb do
     task populate_source_counters: :environment do
       Genome::Normalizers::PopulateCounters.populate_source_counters
     end
+
+    desc 'normalize drug approval rating values'
+    task drug_approval_ratings: :environment do
+      Genome::Normalizers::DrugApprovalRatingNormalizer.normalize_approval_ratings
+    end
   end
 end

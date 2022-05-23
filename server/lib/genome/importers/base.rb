@@ -130,6 +130,13 @@ module Genome
         ).first_or_create
       end
 
+      def create_drug_claim_approval_rating(drug_claim, rating)
+        DrugClaimApprovalRating.where(
+          rating: rating.strip.titleize,
+          drug_claim_id: drug_claim.id
+        ).first_or_create
+      end
+
       def create_interaction_claim(gene_claim, drug_claim)
         InteractionClaim.where(
           gene_claim_id: gene_claim.id,

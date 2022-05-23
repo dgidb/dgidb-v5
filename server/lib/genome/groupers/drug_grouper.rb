@@ -154,11 +154,33 @@ module Genome
         end
       end
 
+      def add_grouper_claim_approval_rating(claim, value)
+        # store as human-readable for displaying in client
+        case claim.source.source_db_name
+        when 'HemOnc'
+          rating = 'Approved'
+        when 'RxNorm'
+          rating = 'Prescribable'
+        when 'Drugs@FDA'
+          lookup = {
+            'fda_discontinued' => 'Discontinued',
+            'fda_prescription' => 'Prescription',
+            'fda_otc' => 'Over-the-Counter',
+            'fda_tentative' => 'Tentative'
+          }
+          rating = lookup[value]
+        end
+        DrugClaimApprovalRating.where(
+          rating: rating,
+          drug_claim_id: claim.id
+        ).first_or_create unless rating.nil?
+      end
+
       def add_grouper_claim_attributes(claim, record)
         approval_ratings = record.fetch('approval_ratings', [])
         unless approval_ratings.nil?
           approval_ratings.to_set.each do |rating|
-            DrugClaimAttribute.where(name: 'Approval Rating', value: rating, drug_claim_id: claim.id).first_or_create
+            add_grouper_claim_approval_rating(claim, rating)
           end
         end
 
@@ -167,10 +189,10 @@ module Genome
         end
 
         indications = record.fetch('has_indication')
-        unless indications.nil?
-          indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
-            DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
-          end
+        return unless indications.nil?
+
+        indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
+          DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
         end
       end
 
@@ -275,6 +297,16 @@ module Genome
         end
       end
 
+      def add_claim_approval_ratings(claim, drug)
+        claim.drug_claim_approval_ratings.each do |rating|
+          DrugApprovalRating.where(
+            rating: rating.rating,
+            drug_id: drug.id,
+            source_id: claim.source_id
+          ).first_or_create
+        end
+      end
+
       def add_claim_aliases(claim, drug)
         drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
         drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
@@ -298,6 +330,7 @@ module Genome
         claim.save
         add_claim_attributes(claim, drug)
         add_claim_aliases(claim, drug)
+        add_claim_approval_ratings(claim, drug)
         add_application(claim, drug) if claim.source.source_db_name == 'Drugs@FDA'
       end
     end
