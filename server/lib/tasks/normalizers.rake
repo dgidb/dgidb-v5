@@ -1,6 +1,6 @@
 namespace :dgidb do
   namespace :normalize do
-    desc 'normalize drug claim types up into table from hangoff properties'
+    desc 'normalize drug types up into table from hangoff properties'
     task drug_types: :environment do
       Genome::Normalizers::DrugTypeNormalizer.normalize_types
     end
