@@ -64,7 +64,9 @@ export const MainLayout = ({children }: MainLayoutProps) => {
   return(
     <div className={"layout-container"} data-theme={theme}>
       <Header />
-      {children}
+      <div className="content-container">
+        {children}
+      </div>
       {state.themeSettings.showDisclaimer && <Footer />}
     </div>
   )

@@ -13,10 +13,15 @@ html, body {
   background-color: var(--background);
   color: var(--text-primary);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 10rem;
+  }
 }
+
 header {
   display: flex;
 
