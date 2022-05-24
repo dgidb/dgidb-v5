@@ -1,7 +1,7 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetGeneRecord, useGetInteractionsByGenes} from 'hooks/interactions/useGetInteractions';
+import { useGetCategories} from 'hooks/categories/useGetCategories';
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
@@ -11,9 +11,10 @@ import './CategoryResults.scss';
 
 export const CategoryResults: React.FC = () => {
 
-  const geneSymbol = useParams().gene;
+  const {state } = useContext(GlobalClientContext);
 
-  const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
+  // TODO: Update useGetCategories query to accept array of strings, also to return sources associated with gene categories
+  const { data } = useGetCategories(state.searchTerms);
 
   return (
     <div className="category-results-container">

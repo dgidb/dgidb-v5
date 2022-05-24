@@ -19,7 +19,11 @@ export const Home: React.FC = () => {
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const handleSubmit = async () => {
-    navigate('/results');
+    if (state.interactionMode === 'categories') {
+      navigate('/categories');
+    } else {
+      navigate('/results');
+    }
   };
 
   const navigate = useNavigate();
@@ -40,7 +44,6 @@ export const Home: React.FC = () => {
       }
     }
   }, [state.searchTerms])
-
 
   useEffect(() => {
     if (isToggling) {
