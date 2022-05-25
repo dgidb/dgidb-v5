@@ -5,11 +5,44 @@ import { graphQLClient } from 'config';
 
 const getDrugRecordQuery = gql`
   query genes($names: [String!]!) {
-    genes(name: $names) {
-      geneCategories {
+    drugAliases {
+      alias
+    }
+    drugAttributes {
+      id
+      name
+      value
+    }
+    approved
+
+    interactions {
+
+      gene {
         name
       }
+
+      interactionTypes {
+        type
+        directionality
+      }
+
+      interactionAttributes{
+        name
+        value
+        sources {
+          id
+        }
+      }
+
+      publications{
+        id
+        pmid
+        citation
+      }
+
+      interactionScore
     }
+  }
   }
 `
 
