@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { truncateDecimals } from 'utils/format';
 
 // styles
-import './GeneTable.scss';
+import './GeneIntTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-export const GeneTable: React.FC = () => {
+export const GeneIntTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
