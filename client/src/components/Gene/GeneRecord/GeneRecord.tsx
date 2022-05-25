@@ -84,7 +84,7 @@ const GeneRecordTable: React.FC = () => {
         dataSource={interactionResults}
         columns={columns}
         rowKey={(record, index) => `${index}`}
-        pagination={{ pageSize: 20}}
+        pagination={{ pageSize: 15}}
       />
     </div>
   )
