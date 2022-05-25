@@ -7,6 +7,7 @@ import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 import { BrowseSources } from 'components/Browse/Sources';
 import { BrowseCategories } from 'components/Browse/Categories';
 import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
+import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout } from 'components/Layout';
 import { About } from 'pages/About';
@@ -42,6 +43,16 @@ export const Routes = () => {
             {
               path: ':gene',
               element: <GeneRecord />,
+            }
+          ]
+        },
+        {
+          path: 'drugs',
+          element: <DrugRecord />,
+          children: [
+            {
+              path: ':drug',
+              element: <DrugRecord />,
             }
           ]
         },
