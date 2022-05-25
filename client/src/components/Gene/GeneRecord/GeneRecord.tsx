@@ -1,7 +1,9 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetGeneRecord, useGetInteractionsByGenes} from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
+import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
+
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';

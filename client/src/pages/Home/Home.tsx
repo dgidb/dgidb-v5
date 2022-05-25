@@ -1,7 +1,7 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
-import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';

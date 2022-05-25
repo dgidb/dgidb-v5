@@ -1,7 +1,7 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetCategories} from 'hooks/categories/useGetCategories';
+import { useGetCategories} from 'hooks/queries/useGetCategories';
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
