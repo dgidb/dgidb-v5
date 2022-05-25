@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { ActionTypes } from 'stores/Global/reducers';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
+// style
 import './MainLayout.scss';
 import {CloseCircleOutlined} from '@ant-design/icons';
+import { Menu } from 'antd';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -24,9 +26,19 @@ const Header: React.FC = () => {
       </div>
       <nav>
         <ul>
-          <li onClick={() => navigate('/browse')}>
+          <Menu mode="horizontal"  theme="dark">
+            <Menu.SubMenu key="SubMenu" title="Browse" >
+              <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
+                Categories
+              </Menu.Item>
+              <Menu.Item key="sources" onClick={() => navigate('/browse/sources')}>
+                Sources
+              </Menu.Item>
+            </Menu.SubMenu>
+          </Menu>
+          {/* <li onClick={() => navigate('/browse')}>
             Browse
-          </li>
+          </li> */}
           <li onClick={() => navigate('/about')}>
             About
           </li>
