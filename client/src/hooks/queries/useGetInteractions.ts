@@ -36,31 +36,7 @@ const getInteractionsByGenesQuery = gql`
   }
 `
 
-const getGeneRecordQuery = gql`
-query gene($name: String!) {
-  gene(name: $name) {
-    geneAttributes {
-      geneId
-      gene {
-        longName
-      }
-      name
-      value
-    }
-    geneAliases {
-      alias
-    }
-    geneClaims {
-      source {
-        citation
-      }
-    }
-    geneCategories {
-      name
-    }
-  }
-}
-`
+
 
 // by drugs
 const getInteractionsByDrugsQuery = gql`
@@ -105,16 +81,5 @@ export function useGetInteractionsByDrugs(names: string[]) {
   {enabled: names !== []});
 }
 
-
-export function useGetGeneRecord(name: string) {
-  return useQuery('gene-record', async () => {
-    const res = await graphQLClient.request(
-      getGeneRecordQuery,
-      { name }
-    );
-    return res;
-  },
-  {enabled: name !== ''});
-}
 
 

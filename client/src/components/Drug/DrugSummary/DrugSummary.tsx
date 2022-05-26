@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext, SetStateAction} from 'react';
-import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
   Chart as ChartJS,

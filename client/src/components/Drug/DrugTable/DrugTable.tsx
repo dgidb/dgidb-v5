@@ -1,7 +1,8 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByDrugs } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -15,6 +16,7 @@ export const DrugTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
   
@@ -35,7 +37,7 @@ export const DrugTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <span onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</span>
       )
     },
     {

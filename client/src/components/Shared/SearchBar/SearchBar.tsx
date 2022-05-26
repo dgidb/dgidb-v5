@@ -75,6 +75,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
               dispatch({type: ActionTypes.SetByGene})
             } else if (value === 'drug'){
               dispatch({type: ActionTypes.SetByDrug})
+            } else if (value === 'categories'){
+              dispatch({type: ActionTypes.SetGeneCategories})
             }
           }}
           dropdownRender={(menu: any) => (
@@ -85,6 +87,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
         >
           <Option className="hi4" value="gene">Interactions by Gene</Option>
           <Option value="drug">Interactions by Drug</Option>
+          <Option value="categories">Gene Categories</Option>
         </Select>
       </div>
       <div className="search-input">

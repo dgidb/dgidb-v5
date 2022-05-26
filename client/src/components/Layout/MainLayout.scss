@@ -13,10 +13,15 @@ html, body {
   background-color: var(--background);
   color: var(--text-primary);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 10rem;
+  }
 }
+
 header {
   display: flex;
 
@@ -52,6 +57,7 @@ header {
 
       li {
         margin-left: 60px;
+        line-height: 46px;
         font-family: 'Work Sans';
         font-size: 18px;
         cursor: pointer;

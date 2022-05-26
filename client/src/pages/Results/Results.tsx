@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 // components
 import { GeneSummary } from 'components/Gene/GeneSummary';
-import { GeneTable } from 'components/Gene/GeneTable';
+import { GeneIntTable } from 'components/Gene/GeneIntTable';
 import { DrugSummary } from 'components/Drug/DrugSummary';
 import { DrugTable } from 'components/Drug/DrugTable';
+import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 
 // styles
 import './Results.scss';
@@ -16,7 +17,7 @@ const GeneResults: React.FC = () => {
   return (
     <>
       <GeneSummary />
-      <GeneTable />
+      <GeneIntTable />
     </>
   )
 }
@@ -44,7 +45,7 @@ export const Results: React.FC = () => {
     <div className="results-page-container">
       {state.interactionMode === 'gene' && <GeneResults />}
       {state.interactionMode === 'drug' && <DrugResults />}
+      {state.interactionMode === 'categories' && <CategoryResults />}
     </div>
   )
 };
-

@@ -1,7 +1,9 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetGeneRecord, useGetInteractionsByGenes} from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
+import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
+
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
@@ -21,7 +23,7 @@ const GeneRecordTable: React.FC = () => {
 
   const geneSymbol = 'FLT1'
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(["FLT1"]);
+  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
 
   useEffect(() => {
     console.log('intdainteractionResultsta', interactionResults);
@@ -84,7 +86,7 @@ const GeneRecordTable: React.FC = () => {
         dataSource={interactionResults}
         columns={columns}
         rowKey={(record, index) => `${index}`}
-        pagination={{ pageSize: 20}}
+        pagination={{ pageSize: 15}}
       />
     </div>
   )
@@ -97,41 +99,59 @@ export const GeneRecord: React.FC = () => {
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
 
   return (
-    <div className="gene-record-container">
+    <div className="content gene-record-container">
       <div className="gene-record-header">{geneSymbol}</div>
-      <div className="gene-record-layout">
-        <div className="box gene-record-info">
-          <table>
-            <tbody>
-            {data?.gene?.geneAttributes?.map((attribute: any) => {
-              return (
-                <tr>
-                  <td>{attribute.name}:</td>
-                  <td>{attribute.value}</td>
-                </tr>
-              )
+      <div className="gene-record-upper">
+        <div className="data-box gene-record-info">
+          <div className="box-title">Gene Info</div>
+          <div className="box-content">
+            <table>
+              <tbody>
+              {data?.gene?.geneAttributes?.map((attribute: any) => {
+                return (
+                  <tr>
+                    <td>{attribute.name}:</td>
+                    <td>{attribute.value}</td>
+                  </tr>
+                )
+              })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="data-box gene-record-categories">
+          <div className="box-title">Categories</div>
+          <div className="box-content">
+            {data?.gene?.geneCategories?.map((category: any) => {
+              return <div>{category?.name}</div>
             })}
-            </tbody>
-          </table>
-        </div>
-        <div className="box gene-record-aliases">
-          {data?.gene?.geneAliases?.map((alias: any) => {
-            return <div>{alias?.alias}</div>
-          })}
-        </div>
-        <div className="box gene-record-publications">
-          {data?.gene?.geneClaims?.map((claim: any) => {
-            return <div>{claim?.source?.citation}</div>
-          })}
-        </div>
-        <div className="box gene-record-categories">
-          {data?.gene?.geneCategories?.map((category: any) => {
-            return <div>{category?.name}</div>
-          })}
+          </div>
         </div>
       </div>
-
-        <GeneRecordTable />
+      <div className="gene-record-lower">
+        <div className="data-box gene-record-aliases">
+          <div className="box-title">Aliases</div>
+          <div className="box-content">
+            {data?.gene?.geneAliases?.map((alias: any) => {
+              return <div>{alias?.alias}</div>
+            })}
+          </div>
+        </div>
+        <div className="data-box gene-record-publications">
+          <div className="box-title">Publications</div>
+          <div className="box-content">
+            {data?.gene?.geneClaims?.map((claim: any) => {
+              return <div>{claim?.source?.citation}</div>
+            })}
+          </div>
+        </div>
+        <div className="data-box gene-record-table">
+          <div className="box-title">Interactions</div>
+          <div className="box-content">
+            <GeneRecordTable />
+          </div>
+        </div>
+      </div>
     </div>
   )
 };

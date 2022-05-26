@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/interactions/useGetInteractions';
+import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { truncateDecimals } from 'utils/format';
 
 // styles
-import './GeneTable.scss';
+import './GeneIntTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-export const GeneTable: React.FC = () => {
+export const GeneIntTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
