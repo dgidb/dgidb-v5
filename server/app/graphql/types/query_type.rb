@@ -151,15 +151,6 @@ module Types
       DrugClaimAttribute.find_by(id: id)
     end
 
-    field :drug_claim_type, Types::DrugClaimTypeType, null: true do
-      description "Types of drug claims"
-      argument :id, ID, required: true
-    end
-
-    def drug_claim_type(id:)
-      ::DrugClaimType.find_by(id: id)
-    end
-
     field :drug_claim, Types::DrugClaimType, null: true do
       description "A claim for a drug"
       argument :id, ID, required: true
