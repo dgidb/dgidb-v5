@@ -1,4 +1,14 @@
 .about-page-container {
-  // color: white;
+  // background-color: white;
+  display: flex;
+  color: white !important;
   font-size: 50px;
+
+  .ant-anchor-link-title {
+    color: var(--text-primary) !important;
+  }
+
+  span {
+    color: red !important;
+  }
 }

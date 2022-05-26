@@ -14,7 +14,7 @@ export const BrowseCategories: React.FC = () => {
 
   const geneSymbol = useParams().gene;
 
-  const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
+  // const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
 
   return (
     <div className="browse-categories-container">
