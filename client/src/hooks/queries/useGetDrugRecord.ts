@@ -3,8 +3,19 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from 'config';
 
 
+// const getDrugRecordQuery = gql`
+//   query drugs($name: String!) {
+//     drugs(name: $name) {
+//       drugAliases {
+//         alias
+//       }
+//     }
+//   }
+// `
+
 const getDrugRecordQuery = gql`
-  query genes($names: [String!]!) {
+query drugs($name: [String!]!) {
+  drugs(name: $name) {
     drugAliases {
       alias
     }
@@ -13,46 +24,46 @@ const getDrugRecordQuery = gql`
       name
       value
     }
-    approved
-
-    interactions {
-
-      gene {
-        name
-      }
-
-      interactionTypes {
-        type
-        directionality
-      }
-
-      interactionAttributes{
-        name
-        value
-        sources {
-          id
-        }
-      }
-
-      publications{
-        id
-        pmid
-        citation
-      }
-
-      interactionScore
-    }
   }
-  }
+}
 `
 
-export function useGetDrugRecord(names: string[]) {
-  return useQuery('interactions', async () => {
+// interactions {
+
+//   gene {
+//     name
+//   }
+
+//   interactionTypes {
+//     type
+//     directionality
+//   }
+
+//   interactionAttributes{
+//     name
+//     value
+//     sources {
+//       id
+//     }
+//   }
+
+//   publications{
+//     id
+//     pmid
+//     citation
+//   }
+
+//   interactionScore
+// }
+
+
+export function useGetDrugRecord(name: string[]) {
+  return useQuery('drug-record', async () => {
     const res = await graphQLClient.request(
       getDrugRecordQuery,
-      { names }
+      { name }
     );
     return res;
-  }, 
-  {enabled: names !== []});
+  },
+  {enabled: name !== []});
 }

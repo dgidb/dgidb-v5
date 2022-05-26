@@ -52,6 +52,15 @@ module Types
       Gene.find_by(name: name)
     end
 
+    field :drug, Types::DrugType, null: true do
+      description "A drug"
+      argument :name, String, required: true
+    end
+
+    def drug(name: )
+      Drug.find_by(name: name)
+    end
+
     field :genes, [Types::GeneType], null: false do
       description "A gene"
       argument :name, [String], required: true
