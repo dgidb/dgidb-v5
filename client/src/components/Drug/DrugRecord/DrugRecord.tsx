@@ -136,7 +136,7 @@ export const DrugRecord: React.FC = () => {
           </div>
         </div>
         <div className="data-box drug-record-active">
-          <div className="box-title">Aliases</div>
+          <div className="box-title">Active</div>
           <div className="box-content">
             {data?.drug?.drugAliases?.map((alias: any) => {
               return <div>{alias?.name}</div>
