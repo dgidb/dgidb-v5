@@ -25,5 +25,10 @@ namespace :dgidb do
     task publications: :environment do
       Genome::Normalizers::Publications.populate_interaction_claims
     end
+
+    desc 'normalize drug approval rating values'
+    task drug_approval_ratings: :environment do
+      Genome::Normalizers::DrugApprovalRatingNormalizer.normalize_approval_ratings
+    end
   end
 end
