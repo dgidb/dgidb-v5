@@ -6,6 +6,7 @@ module Types
 
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
+    field :sources, resolver: Resolvers::Sources
 
     field :source, Types::SourceType, null: true do
       description "A source"
