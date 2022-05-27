@@ -17,3 +17,14 @@ query sources($sourceType: String!) {
   }
 }
 `
+
+export function useGetDruggableSources(sourceType: string) {
+  return useQuery('druggable-sources', async () => {
+    const res = await graphQLClient.request(
+      getDruggableSourcesQuery,
+      { sourceType }
+    );
+    return res;
+  },
+  {enabled: sourceType !==''});
+}
