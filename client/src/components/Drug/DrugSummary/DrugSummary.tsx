@@ -11,13 +11,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts'
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
-import { InteractionScoreDrug } from 'components/Drug/DrugCharts';
-import { RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
-
 
 // styles
 import './DrugSummary.scss';

@@ -11,13 +11,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 
 import { InteractionTypeGene } from 'components/Gene/GeneCharts';
 import { DirectionalityGene } from 'components/Gene/GeneCharts';
-import { InteractionScoreGene } from 'components/Gene/GeneCharts';
-import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
-
 
 // styles
 import './GeneSummary.scss';
@@ -37,7 +33,7 @@ interface CountProps {
 
 const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
   const {state} = useContext(GlobalClientContext);
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByGenes(state.searchTerms);
   const [filterBy, setFilterBy]= useState<string>('')
   
   let genes = data?.genes;
@@ -103,7 +99,7 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
 export const GeneSummary: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
-  const { data, error, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
+  const { data, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {

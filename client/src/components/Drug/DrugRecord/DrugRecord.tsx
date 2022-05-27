@@ -22,10 +22,9 @@ const DrugRecordTable: React.FC = () => {
 
   const drugName = useParams().drug
 
-  const { data, isError, isLoading } = useGetInteractionsByDrugs([drugName!]);
+  const { data } = useGetInteractionsByDrugs([drugName!]);
 
   let drugs = data?.drugs[0]?.interactions;
-
 
   useEffect(() => {
     setInteractionResults(drugs)
@@ -94,9 +93,7 @@ export const DrugRecord: React.FC = () => {
 
   const drug = useParams().drug;
 
-  const { data, isError, isLoading } = useGetDrugRecord(['DABRAFENIB']);
-
-  // console.log('drug down hereeeeeeee', data)
+  const { data} = useGetDrugRecord(['DABRAFENIB']);
 
   let drugData = data?.drugs[0];
 

@@ -40,7 +40,6 @@ export const About = () => {
         <h3 id="news">News</h3>
         <h3 id="contact">Contact</h3>
       </div>
-
     </div>
   )
 }
