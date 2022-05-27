@@ -3,6 +3,7 @@ import { Navigate, Outlet, useParams, useRoutes} from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
+import { Browse } from 'pages/Browse';
 import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 import { BrowseSources } from 'components/Browse/Sources';
 import { BrowseCategories } from 'components/Browse/Categories';
@@ -58,8 +59,8 @@ export const Routes = () => {
         },
         { path: '/results', element: <Results /> },
         { path: '/categories', element: <CategoryResults /> },
-        { path: '/browse/categories', element: <CategoryResults /> },
-        { path: '/browse/sources', element: <BrowseSources /> },
+        { path: '/browse/categories', element: <Browse /> },
+        { path: '/browse/sources', element: <Browse /> },
         { path: '/about', element: <About /> },
         { path: '/', element: <Home /> },
         { path: '*', element: <Navigate to="." /> },
