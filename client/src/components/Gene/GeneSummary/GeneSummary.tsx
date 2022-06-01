@@ -17,6 +17,7 @@ import { DirectionalityGene } from 'components/Gene/GeneCharts';
 
 // styles
 import './GeneSummary.scss';
+import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 
 ChartJS.register(
   CategoryScale,
@@ -83,7 +84,7 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
         {chartType === 'score' && <InteractionTypeGene data={chartData} />}
         {chartType === 'type' && <InteractionTypeGene data={chartData} />}
         {chartType === 'directionality' && <DirectionalityGene />}
-        {chartType === 'approval' && <InteractionTypeGene data={chartData} />}
+        {chartType === 'approval' && <RegulatoryApprovalGene />}
       </div>
 
       <div className="chart-selector">
