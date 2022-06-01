@@ -72,7 +72,7 @@ module Genome
         when 'na', 'n/a'
           'na'
         when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer',
-            'diffusing substance', 'vesciant', 'gene replacement', 'opener', 'releasing agent', 'substrate',
+            'diffusing substance', 'vesciant', 'gene replacement', 'releasing agent', 'substrate',
             'vaccine antigen'
           'other/unknown'
         when 'moduator', 'cross-linking agent', 'neutralizer', 'reducer', 'metabolizer', 'acetylation',
@@ -103,7 +103,7 @@ module Genome
           'immunotherapy'
         when 'component of'
           'product of'
-        when 'opener'  # TODO: duplicate w/ 'other/unknown' -- how to resolve?
+        when 'opener'
           'potentiator'
         when 'stablizer', 'stabilization', 'stabilizer'
           'chaperone'
