@@ -12,7 +12,6 @@ module Types
     field :source, Types::SourceType, null: true
     field :drug_claim_attributes, [Types::DrugClaimAttributeType], null: false
     field :drug_claim_approval_ratings, [Types::DrugClaimApprovalRatingType], null: false
-    field :drug_claim_types, [Types::DrugClaimTypeType], null: false
 
     def drug
       Loaders::RecordLoader.for(Drug).load(object.drug_id)
@@ -40,10 +39,6 @@ module Types
 
     def drug_claim_approval_ratings
       Loaders::AssociationLoader.for(DrugClaim, :drug_claim_approval_ratings).load(object)
-    end
-
-    def drug_claim_types
-      Loaders::AssociationLoader.for(DrugClaim, :drug_claim_types).load(object)
     end
   end
 end

@@ -1,7 +1,6 @@
 module Genome
   module Normalizers
     class DrugTypeNormalizer
-
       def self.normalize_types
         drugs = antineoplastic_drugs
         puts "Found #{drugs.size} total antineoplastic drugs"
@@ -17,58 +16,73 @@ module Genome
         end
       end
 
-      private
-      def self.antineoplastic_drugs
-        drugs_with_attributes = DataModel::Drug.includes(:drug_attributes).where('drug_attributes.value' => antineoplastic_type_names)
-        drugs_from_sources = DataModel::Drug.includes(drug_claims: [:source]).where('sources.source_db_name' => antineoplastic_source_names)
+      private_class_method def self.antineoplastic_drugs
+        drugs_with_attributes = Drug.includes(:drug_attributes).where(
+          'drug_attributes.value' => antineoplastic_type_names
+        )
+        drugs_from_sources = Drug.includes(drug_claims: [:source]).where(
+          'sources.source_db_name' => antineoplastic_source_names
+        )
 
-        (drugs_from_sources + drugs_with_attributes).uniq { |d| d.id }
+        (drugs_from_sources + drugs_with_attributes).uniq(&:id)
       end
 
-      def self.immunotherapy_drugs
-        DataModel::Drug.includes(:drug_attributes).where('drug_attributes.value' => immunotherapy_type_names)
+      private_class_method def self.immunotherapy_drugs
+        Drug.includes(:drug_attributes).where('drug_attributes.value' => immunotherapy_type_names)
       end
 
-      def self.immunotherapy_type_names
+      private_class_method def self.immunotherapy_type_names
         [
-            "immunosuppressive agents",
-            "immunosuppressant",
-            "immunomodulatory agents",
-            "immunomodulatory agent",
-            "immunostimulant",
-            "immunosuppressive agent"
+          'Antibody',
+          'Antibody-Drug Conjugate',
+          'Bovine Polyclonal Antibody',
+          'Chimeric antibody',
+          'Dna Based Immuno Therapy',
+          'Immunomodulatory Agent',
+          'Immunomodulatory Agents',
+          'Immunostimulant',
+          'Immunosuppressant',
+          'Immunosuppressive Agent',
+          'Immunosuppressive Agents',
+          'Immunosupressive agents',
+          'Immunotherapies',
+          'Monoclonal Antibody',
+          'Monoclonal Antibody',
+          'Therapeutic Antibodies',
+          'antiinflammatory agent,immunosuppressant'
         ]
       end
 
-      def self.antineoplastic_type_names
+      private_class_method def self.antineoplastic_type_names
         [
-          'antineoplastic agents',
-          'antineoplastic agents, protein kinase inhibitors',
-          'antineoplastic adjuncts',
-          'antineoplastic agents, hormonal',
-          'antineoplastic agents, homeopathic agents',
-          'antineoplastic agent',
-          'antineoplastic agents',
-          'antineoplastic agent',
-          'antineoplastic agents, phytogenic',
-          'anticancer agents',
-          'antineoplastic',
-          'anticarcinogenic agents',
-          'antineoplastics'
+          'Anticancer Agents',
+          'Anticarcinogenic Agents',
+          'Antineoplastic Adjuncts',
+          'Antineoplastic Agent',
+          'Antineoplastic Agents',
+          'Antineoplastic Agents',
+          'Antineoplastic Agents, Homeopathic Agents',
+          'Antineoplastic Agents, Hormonal',
+          'Antineoplastic Agents, Phytogenic',
+          'Antineoplastic Agents, Protein Kinase Inhibitors',
+          'Antineoplastic',
+          'Antineoplastics'
         ]
       end
 
-      def self.antineoplastic_source_names
+      private_class_method def self.antineoplastic_source_names
         [
-          'TALC',
-          'MyCancerGenome',
-          'MyCancerGenomeClinicalTrial',
+          'CGI',
+          'CKB',
           'CancerCommons',
+          'CIViC',
           'ClearityFoundationBiomarkers',
           'ClearityFoundationClinicalTrial',
-          'CKB',
+          'DoCM',
+          'MyCancerGenome',
+          'MyCancerGenomeClinicalTrial',
           'OncoKB',
-          'CGI'
+          'TALC'
         ]
       end
     end

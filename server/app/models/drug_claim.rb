@@ -8,7 +8,6 @@ class DrugClaim < ::ActiveRecord::Base
   belongs_to :source, inverse_of: :drug_claims, counter_cache: true
   has_many :drug_claim_attributes, inverse_of: :drug_claim, dependent: :delete_all
   has_many :drug_claim_approval_ratings, inverse_of: :drug_claim, dependent: :delete_all
-  has_and_belongs_to_many :drug_claim_types, join_table: 'drug_claim_types_drug_claims'
 
   def self.for_search
     eager_load(
@@ -18,11 +17,7 @@ class DrugClaim < ::ActiveRecord::Base
             source: [],
             gene_claim: %i[source gene_claim_categories],
             interaction_claim_types: [],
-            drug_claim: [
-              drug: [
-                drug_claims: [:drug_claim_types]
-              ]
-            ]
+            drug_claim: [drug: [:drug_claims]]
           }
         }
       ]

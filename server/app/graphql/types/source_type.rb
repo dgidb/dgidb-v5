@@ -14,14 +14,12 @@ module Types
     field :gene_claims_in_groups_count, Int, null: true
     field :drug_claims_in_groups_count, Int, null: true
     field :source_trust_level_id, String, null: true
-    field :gene_gene_interaction_claims_count, Int, null: true
     field :license, String, null: true
     field :license_link, String, null: true
 
     field :gene_claims, [Types::GeneClaimType], null: false
     field :drug_claims, [Types::DrugClaimType], null: false
     field :interaction_claims, [Types::InteractionClaimType], null: false
-    field :gene_gene_interaction_claims, [Types::GeneGeneInteractionClaimType], null: false
     field :drug_aliases, [Types::DrugAliasType], null: false
     field :drug_attributes, [Types::DrugAttributeType], null: false
     field :drug_approval_ratings, [Types::DrugApprovalRatingType], null: false
@@ -41,10 +39,6 @@ module Types
 
     def interaction_claims
       Loaders::AssociationLoader.for(Source, :interaction_claims).load(object)
-    end
-
-    def gene_gene_interaction_claims
-      Loaders::AssociationLoader.for(Source, :gene_gene_interaction_claims).load(object)
     end
 
     def drug_aliases

@@ -1,8 +1,3 @@
-drug_claim_types = %w[antineoplastic other]
-drug_claim_types.each do |name|
-  DrugClaimType.where(type: name).first_or_create
-end
-
 gene_category_names = [
   'TRANSCRIPTION FACTOR COMPLEX', 'TRANSPORTER', 'PROTEIN PHOSPHATASE', 'CELL SURFACE', 'TUMOR SUPPRESSOR',
   'DNA REPAIR', 'KINASE', 'ION CHANNEL', 'SERINE THREONINE KINASE', 'TYROSINE KINASE', 'GROWTH FACTOR',
