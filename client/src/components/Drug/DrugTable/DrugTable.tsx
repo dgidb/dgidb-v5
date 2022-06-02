@@ -37,7 +37,7 @@ export const DrugTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['name'],
       render: (text: any, record: any) => (
-        <span onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</span>
+        <span className="cursor-pointer" onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</span>
       )
     },
     {
