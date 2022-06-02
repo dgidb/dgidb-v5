@@ -81,14 +81,14 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
       <h4>Summary Infographics</h4>
 
       <div className="chart-section">
-        {chartType === 'score' && <InteractionTypeGene data={chartData} />}
+        {/* {chartType === 'score' && <InteractionTypeGene data={chartData} />} */}
         {chartType === 'type' && <InteractionTypeGene data={chartData} />}
         {chartType === 'directionality' && <DirectionalityGene />}
         {chartType === 'approval' && <RegulatoryApprovalGene />}
       </div>
 
       <div className="chart-selector">
-        <div onClick={() => setChartType('score')}>Interaction Score</div>
+        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
         <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
         <div onClick={() => setChartType('approval')}>Regulatory Approval</div>

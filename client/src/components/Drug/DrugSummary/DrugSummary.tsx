@@ -88,7 +88,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
       </div>
 
       <div className="chart-selector">
-        <div onClick={() => setChartType('score')}>Interaction Score</div>
+        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
         <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
         <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
