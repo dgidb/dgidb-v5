@@ -1,6 +1,9 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 
+// components
+import { Overview } from './SubSections/Overview';
+
 // styles
 import './About.scss';
 import { Anchor } from 'antd';
@@ -27,7 +30,11 @@ export const About = () => {
         <Link href="#contact" title="Contact" />
       </Anchor>
       <div className="about-content-container">
-        <h3 id="about">About</h3>
+        <div className="doc-section">
+         <h3 id="about">About</h3>
+          <Overview />
+        </div>
+
         <h3 id="publications">Publications</h3>
         <h3 id="interactions">Interactions</h3>
         <h3 id="types">Types</h3>

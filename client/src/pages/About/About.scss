@@ -1,8 +1,15 @@
 .about-page-container {
   // background-color: white;
   display: flex;
-  color: white !important;
+  color: var(--text-content);
   font-size: 50px;
+
+  font-weight: 300;
+
+  .about-content-container {
+    padding: 0 40px;
+    background-color: var(--soft-background);
+  }
 
   .ant-anchor-link-title {
     color: var(--text-primary) !important;
@@ -10,5 +17,9 @@
 
   span {
     color: red !important;
+  }
+
+  .doc-section {
+    font-size: .89rem;
   }
 }
