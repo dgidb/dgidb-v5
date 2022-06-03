@@ -8,8 +8,8 @@ class Resolvers::Categories < GraphQL::Schema::Resolver
 
   scope { GeneClaimCategory.all }
 
-  option(:source, type: String, description: 'Filtering on source.') do |scope, value|
-    scope.where("name ILIKE ?", "%#{value}%")
+  option(:source_db_name, type: String, description: 'Filtering on source.') do |scope, value|
+    scope.joins(gene_claims: [:source]).where('sources.source_db_name = ?', value).distinct
   end
 
 end
