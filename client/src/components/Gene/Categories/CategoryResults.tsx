@@ -11,7 +11,7 @@ import './CategoryResults.scss';
 
 export const CategoryResults: React.FC = () => {
 
-  const {state } = useContext(GlobalClientContext);
+  const { state } = useContext(GlobalClientContext);
   const { data } = useGetCategories(state.searchTerms);
 
   const genes = data?.genes
@@ -21,22 +21,26 @@ export const CategoryResults: React.FC = () => {
       <div className="gene-categories">
         {genes?.map((gene: any) => {
           return (
-            <>
+            <div className="gene-category-result">
             <div className="gene-header">{gene.name}</div>
             <div className="category-info">{gene.geneCategoriesWithSources.map((cat: any) => {
               return (
                 <div className="category-item">
                   <div className="category-name">{cat.name}</div>
-                  <div className="sources-by-category">{cat.sourceNames.map((srcname:any) => srcname)}</div>
+                  <div className="sources-by-category">{cat.sourceNames.map((srcname: any, index: number) => {
+                    if(index === cat.sourceNames.length - 1) {
+                      return <span>{srcname}</span>
+                    }
+                    return <span>{srcname}, </span>
+                  })}</div>
                 </div>
               )
             })}
             </div>
-            </>
+            </div>
             )
         })}
       </div>
-
     </div>
   )
 };
