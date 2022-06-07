@@ -1,0 +1,32 @@
+.category-results-container {
+  .gene-categories {
+
+    .gene-header {
+      font-size: 1.2rem;
+    }
+
+    .category-info {
+      border-top: var(--text-primary) 1px solid;
+
+      .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+
+        .category-name {
+          border-bottom: var(--text-primary) 1px solid;
+          border-left: var(--text-primary) 1px solid;
+          width: 400px;
+        }
+
+        .sources-by-category {
+          border-bottom: var(--text-primary) 1px solid;
+          border-left: var(--text-primary) 1px solid;
+          border-right: var(--text-primary) 1px solid;
+          flex: 1;
+        }
+      }
+
+    }
+  }
+}
