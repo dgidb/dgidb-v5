@@ -12,12 +12,30 @@ import './CategoryResults.scss';
 export const CategoryResults: React.FC = () => {
 
   const {state } = useContext(GlobalClientContext);
-
-  // TODO: Update useGetCategories query to accept array of strings, also to return sources associated with gene categories
   const { data } = useGetCategories(state.searchTerms);
+
+  const genes = data?.genes
 
   return (
     <div className="category-results-container">
+      <div className="gene-categories">
+        {genes?.map((gene: any) => {
+          return (
+            <>
+            <div className="gene-header">{gene.name}</div>
+            <div className="category-info">{gene.geneCategoriesWithSources.map((cat: any) => {
+              return (
+                <div className="category-item">
+                  <div className="category-name">{cat.name}</div>
+                  <div className="sources-by-category">{cat.sourceNames.map((srcname:any) => srcname)}</div>
+                </div>
+              )
+            })}
+            </div>
+            </>
+            )
+        })}
+      </div>
 
     </div>
   )
