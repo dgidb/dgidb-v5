@@ -7,8 +7,7 @@ module Genome
         class Importer < Genome::Importers::Base
           attr_reader :new_version
 
-          def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-            @new_version = source_db_version
+          def initialize
             @source_db_name = 'CIViC'
           end
 
@@ -18,8 +17,43 @@ module Genome
 
           private
 
+          def create_new_source
+            @source ||= Source.create(
+              {
+                source_db_name: source_db_name,
+                source_db_version: set_current_date_version,
+                base_url: 'https://www.civicdb.org',
+                site_url: 'https://www.civicdb.org',
+                citation: 'Griffith M*, Spies NC*, Krysiak K*, McMichael JF, Coffman AC, Danos AM, Ainscough BJ, Ramirez CA, Rieke DT, Kujan L, Barnell EK, Wagner AH, Skidmore ZL, Wollam A, Liu CJ, Jones MR, Bilski RL, Lesurf R, Feng YY, Shah NM, Bonakdar M, Trani L, Matlock M, Ramu A, Campbell KM, Spies GC, Graubert AP, Gangavarapu K, Eldred JM, Larson DE, Walker JR, Good BM, Wu C, Su AI, Dienstmann R, Margolin AA, Tamborero D, Lopez-Bigas N, Jones SJ, Bose R, Spencer DH Wartman LD, Wilson RK, Mardis ER, Griffith OL†. 2016. CIViC is a community knowledgebase for expert crowdsourcing the clinical interpretation of variants in cancer. Nat Genet. 49, 170–174 (2017); doi: doi.org/10.1038/ng.3774. PMID: 28138153',
+                source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+                full_name: 'CIViC: Clinical Interpretation of Variants in Cancer',
+                license: 'Creative Commons Public Domain Dedication (CC0 1.0 Universal)',
+                license_link: 'https://docs.civicdb.org/en/latest/about/faq.html#how-is-civic-licensed'
+              }
+            )
+            @source.source_types << SourceType.find_by(type: 'interaction')
+            @source.source_types << SourceType.find_by(type: 'potentially_druggable')
+            @source.save
+          end
+
           def create_interaction_claims
             api_client = ApiClient.new
+            variant_edges = api_client.enumerate_variants
+            while !variant_edges.nil?
+              variant_edges.each do |edge|
+                # TODO working here
+                # edge.node.gene --> gene claim
+                # edge.node.evidenceItems.each --> use clinical significance and ev level for checks, drugs -> drug claims, source -> interaction sources
+              end
+              variants = api_client.enumerate_variants(variants[-1].cursor)
+            end
+
+            # delete/refactor everything below as needed
+
+
+
+
+
             api_client.variants.each do |variant|
               api_client.evidence_items_for_variant(variant['id']).select { |ei| importable_eid?(ei) }.each do |ei|
                 create_entries_for_evidence_item(variant, ei)
@@ -66,25 +100,6 @@ module Genome
           def create_gene_claim_aliases(gc, variant)
             create_gene_claim_alias(gc, variant['entrez_id'].to_s, 'Entrez Gene ID')
             create_gene_claim_alias(gc, variant['gene_id'].to_s, 'CIViC Gene ID')
-          end
-
-          def create_new_source
-            @source ||= Source.create(
-              {
-                source_db_name: source_db_name,
-                source_db_version: new_version,
-                base_url: 'https://www.civicdb.org',
-                site_url: 'https://www.civicdb.org',
-                citation: 'Griffith M*, Spies NC*, Krysiak K*, McMichael JF, Coffman AC, Danos AM, Ainscough BJ, Ramirez CA, Rieke DT, Kujan L, Barnell EK, Wagner AH, Skidmore ZL, Wollam A, Liu CJ, Jones MR, Bilski RL, Lesurf R, Feng YY, Shah NM, Bonakdar M, Trani L, Matlock M, Ramu A, Campbell KM, Spies GC, Graubert AP, Gangavarapu K, Eldred JM, Larson DE, Walker JR, Good BM, Wu C, Su AI, Dienstmann R, Margolin AA, Tamborero D, Lopez-Bigas N, Jones SJ, Bose R, Spencer DH Wartman LD, Wilson RK, Mardis ER, Griffith OL†. 2016. CIViC is a community knowledgebase for expert crowdsourcing the clinical interpretation of variants in cancer. Nat Genet. 49, 170–174 (2017); doi: doi.org/10.1038/ng.3774. PMID: 28138153',
-                source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
-                full_name: 'CIViC: Clinical Interpretation of Variants in Cancer',
-                license: 'Creative Commons Public Domain Dedication (CC0 1.0 Universal)',
-                license_link: 'https://docs.civicdb.org/en/latest/about/faq.html#how-is-civic-licensed'
-              }
-            )
-            @source.source_types << SourceType.find_by(type: 'interaction')
-            @source.source_types << SourceType.find_by(type: 'potentially_druggable')
-            @source.save
           end
         end
       end
