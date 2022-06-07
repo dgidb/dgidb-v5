@@ -2,10 +2,10 @@ import { useQuery } from 'react-query';
 import { gql } from 'graphql-request';
 import { graphQLClient } from 'config';
 
-
 const getCategoriesQuery = gql`
   query genes($names: [String!]!) {
     genes(name: $names) {
+      name
       geneCategoriesWithSources {
         name
         sourceNames
@@ -13,7 +13,6 @@ const getCategoriesQuery = gql`
     }
   }
 `
-
 export function useGetCategories(names: string[]) {
   return useQuery('categories', async () => {
     const res = await graphQLClient.request(
