@@ -27,6 +27,7 @@ export const BrowseCategories: React.FC = () => {
   }
 
   useEffect(() => {
+    console.log(data?.sources?.nodes)
     if (data?.sources?.nodes){
       let nodes = data?.sources?.nodes
       setSources(nodes)
@@ -58,12 +59,16 @@ export const BrowseCategories: React.FC = () => {
 
   useEffect(() => {
 
-    let allCategoriesCopy: Categories = allCategories;
+    let allCategoriesCopy: Categories = {};
 
     selectedSources.forEach((src: any) => {
       let cats = src.categoriesInSource;
       cats.forEach((cat: any) => {
-        allCategoriesCopy[cat.name] += cat.geneCount
+        if(typeof allCategoriesCopy[cat.name] === 'number') {
+          allCategoriesCopy[cat.name] += cat.geneCount
+        } else {
+          allCategoriesCopy[cat.name] = cat.geneCount
+        }
       })
     })
 
