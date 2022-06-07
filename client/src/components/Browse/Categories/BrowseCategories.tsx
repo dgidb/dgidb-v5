@@ -12,7 +12,6 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 // styles
 import './BrowseCategories.scss';
 import { Checkbox } from 'antd';
-import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 export const BrowseCategories: React.FC = () => {
   let [sources, setSources] = useState<any>([])
@@ -80,10 +79,13 @@ export const BrowseCategories: React.FC = () => {
 
   return (
     <div className="browse-categories-container">
-      <Checkbox.Group options={options} onChange={onChange} />
-      <div><Checkbox defaultChecked> Select/Deselect All</Checkbox></div>
+      <div className="source-checklist">
+        <Checkbox.Group options={options} onChange={onChange} />
+        <div><Checkbox defaultChecked> Select/Deselect All</Checkbox></div>
 
-      <div>
+      </div>
+
+      <div className="category-list">
         {categories?.map((cat: any) => {
           if(cat.geneCount) {
             return <div>{cat.name}: {cat.geneCount}</div>
