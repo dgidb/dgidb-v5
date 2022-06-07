@@ -6,6 +6,8 @@ module Types
 
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
+    field :sources, resolver: Resolvers::Sources
+    field :categories, resolver: Resolvers::Categories
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -117,11 +119,11 @@ module Types
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
       description "Category for a drug claim"
-      argument :id, String, required: true
+      argument :source_db_name, String, required: true
     end
 
-    def gene_claim_category(id: )
-      GeneClaimCategory.find_by(id: id)
+    def gene_claim_category(source_db_name: )
+      GeneClaimCategory.find_by(source: source)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do

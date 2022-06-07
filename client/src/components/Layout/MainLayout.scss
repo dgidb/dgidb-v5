@@ -47,7 +47,6 @@ header {
     position: relative;
     height: 80px;
 
-
     ul {
       display: flex;
       justify-content: flex-end;
@@ -65,9 +64,11 @@ header {
     }
   }
 
+  .ant-menu-dark.ant-menu-horizontal {
+    background-color: var(--background);
+    color: var(--text-primary);
+  }
 }
-
-
 
 footer {
   background-color: var(--theme-primary);

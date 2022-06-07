@@ -103,7 +103,7 @@ module Genome
           'immunotherapy'
         when 'component of'
           'product of'
-        when 'opener'
+        when 'opener'  # TODO: duplicate w/ 'other/unknown' -- how to resolve?
           'potentiator'
         when 'stablizer', 'stabilization', 'stabilizer'
           'chaperone'

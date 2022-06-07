@@ -11,16 +11,13 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 
 import { InteractionTypeGene } from 'components/Gene/GeneCharts';
 import { DirectionalityGene } from 'components/Gene/GeneCharts';
-import { InteractionScoreGene } from 'components/Gene/GeneCharts';
-import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
-
 
 // styles
 import './GeneSummary.scss';
+import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +34,7 @@ interface CountProps {
 
 const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
   const {state} = useContext(GlobalClientContext);
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByGenes(state.searchTerms);
   const [filterBy, setFilterBy]= useState<string>('')
   
   let genes = data?.genes;
@@ -84,14 +81,14 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
       <h4>Summary Infographics</h4>
 
       <div className="chart-section">
-        {chartType === 'score' && <InteractionTypeGene data={chartData} />}
+        {/* {chartType === 'score' && <InteractionTypeGene data={chartData} />} */}
         {chartType === 'type' && <InteractionTypeGene data={chartData} />}
         {chartType === 'directionality' && <DirectionalityGene />}
-        {chartType === 'approval' && <InteractionTypeGene data={chartData} />}
+        {chartType === 'approval' && <RegulatoryApprovalGene />}
       </div>
 
       <div className="chart-selector">
-        <div onClick={() => setChartType('score')}>Interaction Score</div>
+        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
         <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
         <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
@@ -103,7 +100,7 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
 export const GeneSummary: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
-  const { data, error, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
+  const { data, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {

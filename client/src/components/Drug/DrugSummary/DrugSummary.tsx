@@ -11,13 +11,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts'
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
-import { InteractionScoreDrug } from 'components/Drug/DrugCharts';
-import { RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
-
 
 // styles
 import './DrugSummary.scss';
@@ -92,7 +88,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
       </div>
 
       <div className="chart-selector">
-        <div onClick={() => setChartType('score')}>Interaction Score</div>
+        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
         <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
         <div onClick={() => setChartType('approval')}>Regulatory Approval</div>

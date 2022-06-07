@@ -41,7 +41,7 @@ export const GeneIntTable: React.FC = () => {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
+        <span className="cursor-pointer" onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
       )
     },
     {

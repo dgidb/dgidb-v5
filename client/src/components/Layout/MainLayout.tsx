@@ -27,7 +27,7 @@ const Header: React.FC = () => {
       <nav>
         <ul>
           <Menu mode="horizontal"  theme="dark">
-            <Menu.SubMenu key="SubMenu" title="Browse" >
+            <Menu.SubMenu key="SubMenu" title="Browse">
               <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
                 Categories
               </Menu.Item>
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
             About
           </li>
           <li onClick={() => navigate('/download')}>
-            Download
+            Downloads
           </li>
         </ul>
       </nav>

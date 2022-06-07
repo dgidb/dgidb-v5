@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 
-
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
@@ -21,9 +20,9 @@ const GeneRecordTable: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
-  const geneSymbol = 'FLT1'
+  const geneSymbol = useParams().gene;
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByGenes(state.searchTerms);
 
   useEffect(() => {
     console.log('intdainteractionResultsta', interactionResults);
