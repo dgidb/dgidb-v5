@@ -46,5 +46,3 @@ FROM interaction_claims ic
          LEFT JOIN gene_claims gc on ic.gene_claim_id = gc.id
          RIGHT JOIN interaction_claim_links icl on ic.id = icl.interaction_claim_id
 WHERE s.source_db_name = 'OncoKB';
-
-
