@@ -4,13 +4,15 @@ require "graphql/client/http"
 module Genome; module Importers; module ApiImporters; module Civic
   class ApiClient
 
-    ##
-    # this should be an actual enumerator but the ruby docs confuse me
-    # so for now, just call until you get nil
+    def enumerate_variants
+      variant_edges = send_query
+      Enumerator.new do |y|
+        until variant_edges.empty?
+          variant_edges.each { |edge| y << edge }
+          variant_edges = send_query(variant_edges[-1].cursor)
+        end
+      end
 
-    def enumerate_variants(cursor = '')
-      response = get_entries(cursor)
-      response.data.variants.edges
     end
 
     private
@@ -18,8 +20,8 @@ module Genome; module Importers; module ApiImporters; module Civic
     module CivicApi
       api_endpoint = 'https://civicdb.org/api/graphql/'
       HTTP = GraphQL::Client::HTTP.new(api_endpoint) do
-        def headers(context)
-          { "User-Agent": 'DGIDB' }
+        def headers(_context)
+          { 'User-Agent': 'DGIdb CIViC importer' }
         end
       end
 
@@ -29,7 +31,7 @@ module Genome; module Importers; module ApiImporters; module Civic
 
     Query = CivicApi::Client.parse <<-GRAPHQL
       query($after: String!){
-        variants(first: 25, after: $after) {
+        variants(first: 50, after: $after) {
           edges {
             cursor
             node {
@@ -38,13 +40,18 @@ module Genome; module Importers; module ApiImporters; module Civic
                 entrezId
                 officialName
                 name
-                link
+                geneAliases
               }
               evidenceItems {
                 nodes {
+                  name
                   id
                   clinicalSignificance
+                  evidenceType
                   evidenceLevel
+                  evidenceDirection
+                  evidenceRating
+                  link
                   drugs {
                     name
                     ncitId
@@ -52,6 +59,8 @@ module Genome; module Importers; module ApiImporters; module Civic
                   }
                   source {
                     citation
+                    citationId
+                    pmcId
                     sourceType
                   }
                 }
@@ -62,8 +71,9 @@ module Genome; module Importers; module ApiImporters; module Civic
       }
     GRAPHQL
 
-    def get_entries(cursor)
-      CivicApi::Client.query(Query, variables: { 'after': cursor })
+    def send_query(cursor = '')
+      response = CivicApi::Client.query(Query, variables: { 'after': cursor })
+      response.data.variants.edges
     end
   end
 end; end; end; end
