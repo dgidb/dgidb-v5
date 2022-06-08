@@ -90,6 +90,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         unless blank?(line['ligand_species'])
           create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species'])
         end
+        create_drug_claim_approval_rating(drug_claim, 'Approved') if line['approved_drug'] == 't'
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         type = line['type'].downcase

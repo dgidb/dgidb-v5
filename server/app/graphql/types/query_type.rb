@@ -6,6 +6,8 @@ module Types
 
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
+    field :sources, resolver: Resolvers::Sources
+    field :categories, resolver: Resolvers::Categories
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -50,6 +52,15 @@ module Types
 
     def gene(name: )
       Gene.find_by(name: name)
+    end
+
+    field :drug, Types::DrugType, null: true do
+      description "A drug"
+      argument :name, String, required: true
+    end
+
+    def drug(name: )
+      Drug.find_by(name: name)
     end
 
     field :genes, [Types::GeneType], null: false do
@@ -108,11 +119,11 @@ module Types
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
       description "Category for a drug claim"
-      argument :id, String, required: true
+      argument :source_db_name, String, required: true
     end
 
-    def gene_claim_category(id: )
-      GeneClaimCategory.find_by(id: id)
+    def gene_claim_category(source_db_name: )
+      GeneClaimCategory.find_by(source: source)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do
@@ -149,15 +160,6 @@ module Types
 
     def drug_claim_attribute(id:)
       DrugClaimAttribute.find_by(id: id)
-    end
-
-    field :drug_claim_type, Types::DrugClaimTypeType, null: true do
-      description "Types of drug claims"
-      argument :id, ID, required: true
-    end
-
-    def drug_claim_type(id:)
-      ::DrugClaimType.find_by(id: id)
     end
 
     field :drug_claim, Types::DrugClaimType, null: true do

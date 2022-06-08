@@ -1,0 +1,65 @@
+.drug-record-container {
+  padding: 20px;
+
+  .data-box {
+    padding: 1rem;
+    border: solid white 1px;
+
+    .box-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .box-content {
+      padding: .5rem;
+      max-height: 570px;
+    }
+  }
+
+  .drug-record-upper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    // grid-template-rows: repeat(9, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 0px;
+    margin-bottom: 15px;
+
+    .drug-record-info {
+      grid-area: 1 / 1 / 4 / 5;
+      max-height: 400px;
+      overflow: scroll;
+    }
+    .drug-record-approval {
+      grid-area: 1 / 5 / 4 / 7;
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+
+  .drug-record-lower  {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+
+    .drug-record-aliases {
+      grid-area: 4 / 1 / 6 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-active {
+      grid-area: 6 / 1 / 8 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-publications {
+      grid-area: 8 / 1 / 10 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-table {
+      grid-area: 4 / 3 / 10 / 7;
+    }
+  }
+}

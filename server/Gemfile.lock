@@ -80,6 +80,9 @@ GEM
     graphql-batch (0.4.3)
       graphql (>= 1.3, < 2)
       promise.rb (~> 0.7.2)
+    graphql-client (0.18.0)
+      activesupport (>= 3.0)
+      graphql
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     listen (3.7.1)
@@ -108,6 +111,8 @@ GEM
     rack (2.2.3)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
+    rack-mini-profiler (3.0.0)
+      rack (>= 1.2.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.1.6)
@@ -194,11 +199,13 @@ DEPENDENCIES
   graphiql-rails (~> 1.7.0)
   graphql (~> 1.12.15)
   graphql-batch (~> 0.4.3)
+  graphql-client
   listen (~> 3.3)
   nokogiri (>= 1.13.2)
   pg (~> 1.2.3)
   puma
   rack-cors
+  rack-mini-profiler
   rails (~> 6.1.3, >= 6.1.3.1)
   rspec-rails (~> 5.1)
   rufo
