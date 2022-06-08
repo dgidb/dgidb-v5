@@ -1,5 +1,10 @@
 .browse-categories-container {
   display: flex;
+  flex: stretch;
+
+  .category-list {
+    flex: 1;
+  }
 }
 
 .ant-checkbox-group {
@@ -8,5 +13,14 @@
 }
 
 .ant-checkbox-group-item, .ant-checkbox-wrapper{
-  color: var(--text-primary)
+  color: var(--text-primary);
+}
+
+.ant-collapse {
+  background-color: var(--background-primary);
+
+  .ant-collapse-header {
+    color: var(--text-primary) !important;
+  }
+
 }

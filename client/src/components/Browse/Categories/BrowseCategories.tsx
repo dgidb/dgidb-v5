@@ -5,13 +5,16 @@ import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
 import { useGetCategoriesBySource } from 'hooks/queries/useGetCategories';
+import { Collapse } from 'antd';
 
 // components
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { GeneListTable } from 'components/Browse/Categories/GeneListTable';
 
 // styles
 import './BrowseCategories.scss';
 import { Checkbox } from 'antd';
+
+const { Panel } = Collapse;
 
 export const BrowseCategories: React.FC = () => {
   let [sources, setSources] = useState<any>([])
@@ -27,7 +30,6 @@ export const BrowseCategories: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log(data?.sources?.nodes)
     if (data?.sources?.nodes){
       let nodes = data?.sources?.nodes
       setSources(nodes)
@@ -58,7 +60,6 @@ export const BrowseCategories: React.FC = () => {
   }
 
   useEffect(() => {
-
     let allCategoriesCopy: Categories = {};
 
     selectedSources.forEach((src: any) => {
@@ -87,19 +88,25 @@ export const BrowseCategories: React.FC = () => {
       <div className="source-checklist">
         <Checkbox.Group options={options} onChange={onChange} />
         <div><Checkbox defaultChecked> Select/Deselect All</Checkbox></div>
-
       </div>
 
       <div className="category-list">
-        {categories?.map((cat: any) => {
+         <Collapse>
+        {categories?.map((cat: any, index: number) => {
           if(cat.geneCount) {
-            return <div>{cat.name}: {cat.geneCount}</div>
+            return (
+              <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
+                <GeneListTable />
+             </Panel>
+            )
           } else {
             return null
           }
         })}
+        </Collapse>
 
       </div>
+
     </div>
   )
 };
