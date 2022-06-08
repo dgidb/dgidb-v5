@@ -18,7 +18,8 @@ export enum ActionTypes {
   EnableDarkMode = "ENABLE_DARK_MODE",
   DisableDarkMode = "DISABLE_DARK_MODE",
   SetByDrug = "SET_INTERACTIONS_BY_DRUG",
-  SetByGene = "SET_INTERACTIONS_BY_GENE"
+  SetByGene = "SET_INTERACTIONS_BY_GENE",
+  SetGeneCategories = "SET_GENE_CATEGORIES"
 }
 
 // search terms
@@ -55,6 +56,7 @@ export const searchTermsReducer = (
 type InteractionModePayload = {
   [ActionTypes.SetByDrug]: undefined;
   [ActionTypes.SetByGene]: undefined;
+  [ActionTypes.SetGeneCategories]: undefined;
 };
 
 export type InteractionModeActions = ActionMap<
@@ -71,6 +73,8 @@ export const interactionModeReducer = (
       return 'drug';
     case ActionTypes.SetByGene:
       return 'gene';
+    case ActionTypes.SetGeneCategories:
+      return 'categories';
     default:
       return state;
   }

@@ -8,6 +8,9 @@
 
 /* #480a77 */
 
+/* 412f50
+2c2133 */
+
 :root {
   --background: #180a20;
   --background-light: #3B2F41;
@@ -21,7 +24,9 @@
 
 [data-theme='light'] {
   --background: white;
+  --soft-background: white;
   --background-light: rgb(201, 204, 224);
+  --text-content: #313635;
   --theme-primary: #480a77;
   --text-primary: #26282e;
   --logo-gradient-1: #480a77; 
@@ -38,6 +43,8 @@
 
 [data-theme='dark'] {
   --background: #180a20;
+  --text-content: #c9dbd9;
+  --soft-background: #2c2133;
   --theme-primary: #480a77;
   --text-primary: #e8eaed;
 }

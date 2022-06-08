@@ -138,9 +138,7 @@ namespace :dgidb do
       end
       run_gtop_import args.dup
 
-      # TODO: remove WIP importers
-      adj_api_importer_names = api_importer_names.reject { |name| %w[pharos oncokb jax_ckb].include? name }
-      adj_api_importer_names.each do |name|
+      api_importer_names.each do |name|
         run_api_import(name, args.dup)
       end
     end

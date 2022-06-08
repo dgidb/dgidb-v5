@@ -130,6 +130,13 @@ module Genome
         ).first_or_create
       end
 
+      def create_drug_claim_approval_rating(drug_claim, rating)
+        DrugClaimApprovalRating.where(
+          rating: rating.strip.titleize,
+          drug_claim_id: drug_claim.id
+        ).first_or_create
+      end
+
       def create_interaction_claim(gene_claim, drug_claim)
         InteractionClaim.where(
           gene_claim_id: gene_claim.id,
@@ -139,10 +146,8 @@ module Genome
       end
 
       def create_interaction_claim_type(interaction_claim, type)
-        claim_type = InteractionClaimType.find_by(
-          type: Genome::Normalizers::InteractionClaimType.name_normalizer(type)
-        )
-        if claim_type.nil?
+        claim_type_value = Genome::Normalizers::InteractionClaimType.name_normalizer(type)
+        if claim_type_value.nil?
           msg = "Unrecognized InteractionClaimType #{type} from #{interaction_claim.inspect}"
           raise StandardError, msg unless Rails.env == 'development'
 
@@ -153,6 +158,7 @@ module Genome
           end
           Rails.logger.debug msg
         else
+          claim_type = InteractionClaimType.find_by(type: claim_type_value)
           unless interaction_claim.interaction_claim_types.include? claim_type
             interaction_claim.interaction_claim_types << claim_type
           end

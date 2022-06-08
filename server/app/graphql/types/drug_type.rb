@@ -12,6 +12,7 @@ module Types
     field :drug_aliases, [Types::DrugAliasType], null: false
     field :drug_attributes, [Types::DrugAttributeType], null: false
     field :drug_applications, [Types::DrugApplicationType], null: false
+    field :drug_approval_ratings, [Types::DrugApprovalRatingType], null: false
 
     def drug_claims
       Loaders::AssociationLoader.for(Drug, :drug_claims).load(object)
@@ -31,6 +32,10 @@ module Types
 
     def drug_applications
       Loaders::AssociationLoader.for(Drug, :drug_applications).load(object)
+    end
+
+    def drug_approval_ratings
+      Loaders::AssociationLoader.for(Drug, :drug_approval_ratings).load(object)
     end
   end
 end

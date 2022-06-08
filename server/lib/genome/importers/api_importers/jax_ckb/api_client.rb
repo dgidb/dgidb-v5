@@ -13,6 +13,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     end
 
     private
+
     def get_json(base_url)
       uri = URI.parse(base_url)
       body = make_get_request(uri)
@@ -22,11 +23,12 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
       raise StandardError.new("Request Failed!") unless res.code == '200'
+
       res.body
     end
 
     def get_html(base_url)
-      page = Nokogiri::HTML(open(base_url))
+      page = Nokogiri::HTML(URI.parse(base_url).open)
       table = page.css('#associatedEvidence')
       headers = table.xpath('table/thead//th').map{|h| h.text}
       rows = []
@@ -45,7 +47,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     end
 
     def gene_base_url
-      "https://ckb.jax.org/select2/getSelect2GenesForSearchTerm"
+      'https://ckb.jax.org/select2/getSelect2GenesForSearchTerm'
     end
 
     def gene_lookup_base_url(id)
