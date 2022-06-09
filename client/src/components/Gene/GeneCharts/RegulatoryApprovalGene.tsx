@@ -58,9 +58,6 @@ export const RegulatoryApprovalGene: React.FC = () => {
       labelArray.push(key)
     }
 
-    console.log('dataArray', dataArray)
-    console.log('labelArray', labelArray)
-
     // setApprovalRatings(approvalRatingsArray);
 
     setChartData({

@@ -22,8 +22,13 @@ export const CategoryResults: React.FC = () => {
         {genes?.map((gene: any) => {
           return (
             <div className="gene-category-result">
-            <div className="gene-header">{gene.name}</div>
-            <div className="category-info">{gene.geneCategoriesWithSources.map((cat: any) => {
+            <div className="gene-header">Search Term(s): "{gene.name}"</div>
+            <div className="category-info">
+            <div className="category-item">
+              <div className="category-name table-header">Category</div>
+              <div className="sources-by-category table-header">Sources</div>
+            </div>
+            {gene.geneCategoriesWithSources.map((cat: any) => {
               return (
                 <div className="category-item">
                   <div className="category-name">{cat.name}</div>
@@ -37,7 +42,7 @@ export const CategoryResults: React.FC = () => {
               )
             })}
             </div>
-            </div>
+          </div>
             )
         })}
       </div>

@@ -21,7 +21,6 @@ ChartJS.register(
   Tooltip,
 );
 
-
 export const InteractionScoreGene: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);

@@ -41,12 +41,12 @@ const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
 
   const toggleFilter = (geneName: string) => {
     if (filterBy === geneName){
-      setChartData(genes)
-      setFilterBy('')
+      setChartData(genes);
+      setFilterBy('');
     } else {
       let gene = genes.find((gene: any) => gene.name === geneName);
       setChartData([gene]);
-      setFilterBy(geneName)
+      setFilterBy(geneName);
     }
   }
 
