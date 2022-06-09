@@ -9,21 +9,31 @@
       }
 
       .category-info {
-        border: var(--text-primary) 1px solid;
+        border: var(--text-content) 1px solid;
 
         .category-item {
           display: flex;
           justify-content: space-between;
           align-items: stretch;
-          border-bottom: var(--text-primary) 1px solid;
+          border-bottom: var(--text-content) 1px solid;
+          font-weight: 300;
+          color: var(--text-primary-low);
+
+          .table-header {
+            background-color: var(--background-primary) !important;
+            font-weight: 500;
+            color: var(--text-primary-low);
+          }
 
           .category-name {
             width: 400px;
             padding: 3px 8px;
+            background-color: var(--background-light);
           }
 
           .sources-by-category {
-            border-left: var(--text-primary) 1px solid;
+            background-color: var(--background-light);
+            border-left: var(--text-content) 1px solid;
             flex: 1;
             padding: 3px 8px;
           }
