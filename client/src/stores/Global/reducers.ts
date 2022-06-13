@@ -19,7 +19,9 @@ export enum ActionTypes {
   DisableDarkMode = "DISABLE_DARK_MODE",
   SetByDrug = "SET_INTERACTIONS_BY_DRUG",
   SetByGene = "SET_INTERACTIONS_BY_GENE",
-  SetGeneCategories = "SET_GENE_CATEGORIES"
+  SetGeneCategories = "SET_GENE_CATEGORIES",
+  BrandPage = "BRAND_PAGE",
+  ContentPage = "CONTENT_PAGE"
 }
 
 // search terms
@@ -86,6 +88,7 @@ export const interactionModeReducer = (
 export interface themeSettingsType {
   showDisclaimer: boolean;
   darkModeEnabled: boolean;
+  brandTheme: boolean;
 }
 
 type ThemeSettingsPayload = {
@@ -93,6 +96,8 @@ type ThemeSettingsPayload = {
   [ActionTypes.ShowDisclaimer]: undefined,
   [ActionTypes.EnableDarkMode]: undefined,
   [ActionTypes.DisableDarkMode]: undefined
+  [ActionTypes.BrandPage]: undefined,
+  [ActionTypes.ContentPage]: undefined
 }
 
 export type ThemeSettingsActions = ActionMap<
@@ -114,6 +119,10 @@ export const themeSettingsReducer = (
       return {...stateCopy, darkModeEnabled: true};
     case ActionTypes.DisableDarkMode:
       return {...stateCopy, darkModeEnabled: false};
+    case ActionTypes.BrandPage:
+      return {...stateCopy, brandTheme: true};
+    case ActionTypes.ContentPage:
+      return {...stateCopy, brandTheme: false};
     default:
       return state;
   }

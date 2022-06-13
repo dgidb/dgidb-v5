@@ -1,3 +1,30 @@
 .results-page-container {
   // color: white !important;
 }
+
+// .ant-tabs {
+//   color: var(--background-dark);
+// }
+
+// .ant-tabs-tab:hover {
+//   color: var(--text-content);
+
+// }
+
+// .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+//   color: var(--text-content);
+// }
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--text-content);
+  background-color: var(--background-light);
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+  background-color: var(--background-light);
+
+}
+
+.ant-tabs-tab.ant-tabs-tab-active {
+  border-bottom: none !important;
+}

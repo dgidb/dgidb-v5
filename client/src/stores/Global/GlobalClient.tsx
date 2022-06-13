@@ -19,8 +19,9 @@ const initialState: InitialStateType = {
   interactionMode: 'gene',
   searchTerms: [],
   themeSettings: {
-    showDisclaimer: true,
+    showDisclaimer: false,
     darkModeEnabled: true,
+    brandTheme: false
   }
 }
 

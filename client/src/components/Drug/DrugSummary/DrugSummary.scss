@@ -1,5 +1,5 @@
 .drug-summary-container {
-  color: var(--text-primary);
+  color: var(--text-content);
   padding: 20px;
   width: 100%;
   display: flex;
@@ -7,12 +7,12 @@
   justify-content: center;
 
   h3 {
-    color: var(--text-primary);
+    color: var(--text-content);
     font-size: 2rem;
   }
 
   h4 {
-    color: var(--text-primary);
+    color: var(--text-content);
     font-size: 1.4rem;
   }
 
@@ -20,7 +20,7 @@
     display: flex;
 
     .interaction-count-container {
-      border: 1px var(--text-primary) solid;
+      border: 1px var(--text-content) solid;
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
@@ -60,7 +60,7 @@
     }
 
     .summary-infographic-container {
-      border: 1px var(--text-primary) solid;
+      border: 1px var(--text-content) solid;
       padding: 10px;
       // flex-grow: 4;
       width: 80%;

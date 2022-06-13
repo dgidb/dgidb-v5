@@ -25,7 +25,6 @@ interface Props {
   data: any;
 }
 
-
 export const InteractionTypeGene: React.FC<Props> = ({data}) => {
   const {state} = useContext(GlobalClientContext);
   // const { data } = useGetInteractionsByGenes(state.searchTerms);

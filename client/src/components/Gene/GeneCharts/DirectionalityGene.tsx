@@ -92,7 +92,7 @@ export const DirectionalityGene: React.FC = () => {
 
 
   return (
-    <div className="directionality-container">
+    <div className="pie-chart-container">
       <Pie options={options} data={chartData} />
     </div>
   )

@@ -21,7 +21,6 @@ ChartJS.register(
   Tooltip,
 );
 
-
 export const InteractionScoreDrug: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);

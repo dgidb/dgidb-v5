@@ -13,6 +13,10 @@ query sources($sourceType: SourceTypeFilter) {
     }
     nodes {
       sourceDbName
+      categoriesInSource {
+        name
+        geneCount
+      }
     }
   }
 }

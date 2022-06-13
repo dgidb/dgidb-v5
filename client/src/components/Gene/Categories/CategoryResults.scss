@@ -1,0 +1,48 @@
+.category-results-container {
+  .gene-categories {
+
+    .gene-category-result {
+      margin-bottom: 20px;
+
+      .gene-header {
+        font-size: 1.2rem;
+      }
+
+      .category-info {
+        border: var(--text-content) 1px solid;
+
+        .category-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: stretch;
+          border-bottom: var(--text-content) 1px solid;
+          font-weight: 300;
+          color: var(--text-primary-low);
+
+          .table-header {
+            background-color: var(--background-primary) !important;
+            font-weight: 500;
+            color: var(--text-primary-low);
+          }
+
+          .category-name {
+            width: 400px;
+            padding: 3px 8px;
+            background-color: var(--background-light);
+          }
+
+          .sources-by-category {
+            background-color: var(--background-light);
+            border-left: var(--text-content) 1px solid;
+            flex: 1;
+            padding: 3px 8px;
+          }
+        }
+
+        .category-item:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

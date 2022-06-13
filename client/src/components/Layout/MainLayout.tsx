@@ -71,7 +71,21 @@ export const MainLayout = ({children }: MainLayoutProps) => {
 
   const {state} = useContext(GlobalClientContext);
 
-  const theme = state.themeSettings.darkModeEnabled ? 'dark' : 'light';
+  let theme;
+
+  if (state.themeSettings.darkModeEnabled) {
+    if (state.themeSettings.brandTheme){
+      theme = 'dark-home';
+    } else {
+      theme = 'dark';
+    }
+  } else {
+    if (state.themeSettings.brandTheme){
+      theme = 'light-home';
+    } else {
+      theme = 'light';
+    }
+  }
 
   return(
     <div className={"layout-container"} data-theme={theme}>

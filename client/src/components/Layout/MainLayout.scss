@@ -2,16 +2,16 @@ html, body {
   background-color: var(--background);
   margin: 0;
   font-family: 'Lato';
-  color: var(--text-primary);
+  color: var(--text-content);
 
   h1, h2, h3, h4, h5 {
-    color: var(--text-primary);
+    color: var(--text-content);
   }
 }
 
 .layout-container {
   background-color: var(--background);
-  color: var(--text-primary);
+  color: var(--text-content);
   min-height: 100vh;
 
   .content-container {
@@ -66,7 +66,7 @@ header {
 
   .ant-menu-dark.ant-menu-horizontal {
     background-color: var(--background);
-    color: var(--text-primary);
+    color: var(--text-content);
   }
 }
 

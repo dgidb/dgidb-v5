@@ -1,0 +1,26 @@
+.browse-categories-container {
+  display: flex;
+  flex: stretch;
+
+  .category-list {
+    flex: 1;
+  }
+}
+
+.ant-checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-checkbox-group-item, .ant-checkbox-wrapper{
+  color: var(--text-content);
+}
+
+.ant-collapse {
+  background-color: var(--background-content);
+
+  .ant-collapse-header {
+    color: var(--text-content) !important;
+  }
+
+}

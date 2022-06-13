@@ -1,5 +1,9 @@
 module Types
   class SourceType < Types::BaseObject
+  class CategoryWithCount < Types::BaseObject
+    field :name, String, null: false
+    field :gene_count, Int, null: false
+  end
     field :id, String, null: false
     field :source_db_name, String, null: false
     field :source_db_version, String, null: false
@@ -28,6 +32,12 @@ module Types
     field :interaction_attributes, [Types::InteractionAttributeType], null: false
     field :source_types, [Types::SourceTypeType], null: false
     field :source_trust_level, Types::SourceTrustLevelType, null: true
+    field :categories_in_source, [CategoryWithCount], null: false
+
+
+    def categories_in_source
+      GeneClaimCategory.joins(gene_claims: [:source]).where("sources.id =? ", object.id).select("gene_claim_categories.name, count(distinct(gene_claims.id)) AS gene_count").group("gene_claim_categories.name")
+    end
 
     def gene_claims
       Loaders::AssociationLoader.for(Source, :gene_claims).load(object)
