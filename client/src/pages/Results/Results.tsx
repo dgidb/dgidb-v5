@@ -24,7 +24,7 @@ const GeneResults: React.FC = () => {
 
   return (
     <>
-      <Tabs defaultActiveKey="1" onChange={onChange}>
+      <Tabs defaultActiveKey="1" onChange={onChange} type="card">
         <TabPane tab="Unique Matches" key="1">
         <GeneSummary />
           <GeneIntTable />
