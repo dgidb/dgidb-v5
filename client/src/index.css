@@ -55,6 +55,7 @@
   --theme-primary: #480a77;
   --text-primary: #ffffff;
   --text-content: #c9dbd9;
+  --background-dark: #180a20;
 }
 
 [data-theme='dark-home'] {
