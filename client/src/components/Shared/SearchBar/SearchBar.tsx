@@ -99,14 +99,14 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
             tokenSeparators={[',', ' ']}
             options={options}
             onInputKeyDown={onKeyDown}
-            value={state.searchTerms}
             // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
-          />
+          >
+            {state.searchTerms}
+          </Select>
         </Form.Item>
 
           <div className="search-filters">
-
             <Popover 
               content={content} 
               trigger="click" 
@@ -116,11 +116,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
               <FilterOutlined 
                 style={{ fontSize: '150%', cursor: 'pointer'}}
               />
-
             </Popover>
-
           </div>
-
         </div>
       </div>
   </div>
