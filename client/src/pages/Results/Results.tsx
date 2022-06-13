@@ -12,12 +12,28 @@ import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 
 // styles
 import './Results.scss';
+import { Tabs } from 'antd';
+
+const { TabPane } = Tabs;
+
+const onChange = () => {
+
+}
 
 const GeneResults: React.FC = () => {
+
   return (
     <>
-      <GeneSummary />
-      <GeneIntTable />
+      <Tabs defaultActiveKey="1" onChange={onChange}>
+        <TabPane tab="Unique Matches" key="1">
+        <GeneSummary />
+          <GeneIntTable />
+        </TabPane>
+        <TabPane tab="Ambiguous or Unmatched" key="2">
+          {/* <GeneSummary />
+          <GeneIntTable /> */}
+        </TabPane>
+      </Tabs>
     </>
   )
 }
@@ -25,8 +41,16 @@ const GeneResults: React.FC = () => {
 const DrugResults: React.FC = () => {
   return (
     <>
-      <DrugSummary />
-      <DrugTable />
+      <Tabs defaultActiveKey="1" onChange={onChange}>
+        <TabPane tab="Unique Matches" key="1">
+        <DrugSummary />
+          <DrugTable />
+        </TabPane>
+        <TabPane tab="Ambiguous or Unmatched" key="2">
+          <DrugSummary />
+          <DrugTable />
+        </TabPane>
+      </Tabs>
     </>
   )
 }
