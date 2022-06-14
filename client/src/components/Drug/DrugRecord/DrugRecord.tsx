@@ -97,10 +97,6 @@ export const DrugRecord: React.FC = () => {
 
   let drugData = data?.drugs[0];
 
-  useEffect(() => {
-    console.log('my new data', drugData)
-  }, [drugData])
-
   return (
     <div className="drug-record-container">
       <div className="drug-record-header">{drug}</div>

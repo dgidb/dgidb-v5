@@ -24,10 +24,6 @@ const GeneRecordTable: React.FC = () => {
 
   const { data } = useGetInteractionsByGenes(state.searchTerms);
 
-  useEffect(() => {
-    console.log('intdainteractionResultsta', interactionResults);
-  }, [interactionResults])
-
   let genes = data?.genes;
 
   useEffect(() => {
@@ -50,7 +46,6 @@ const GeneRecordTable: React.FC = () => {
       title: 'Interaction Types',
       dataIndex: ['interactionTypes'],
       render: (text: any, record: any) => {
-        console.log('recooooord', record)
         return record?.interactionTypes.map((int: any) => {
           return <span>{int?.type}</span>
         })

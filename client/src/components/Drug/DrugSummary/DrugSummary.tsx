@@ -56,7 +56,6 @@ const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
         <div className="interaction-count"><b>Interactions</b></div>
       </div>
       {drugs?.map((drug: any) => {
-        console.log('drug', drug)
         return (
           <div className={`interaction-count-row ${filterBy === drug.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.name)}>
             <div className="interaction-count-drug">{drug.name}</div>
