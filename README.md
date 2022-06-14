@@ -2,9 +2,7 @@
 
 A from-scratch rewrite of the [Drug-Gene Interaction Database](https://dgidb.org/).
 
-# For developers
-
-## Getting started
+## For developers
 
 ### Initial dependencies
 
