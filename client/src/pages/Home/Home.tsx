@@ -79,12 +79,16 @@ export const Home: React.FC = () => {
         THE DRUG GENE INTERACTION DATABASE
       </div> */}
 
-
       <SearchBar handleSubmit={handleSubmit} />
 
       <div className="home-buttons">
         <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
-        <Button style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
+        <Button
+          onClick={() => dispatch({type: ActionTypes.AddDemoTerms})}
+          style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}}
+          type="primary">
+            Demo
+        </Button>
       </div>
       <div className="home-blurb">
         An open-source search engine for drug-gene interactions and the druggable genome.
