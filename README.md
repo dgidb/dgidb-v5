@@ -1,4 +1,6 @@
-<h1>DGIdb v5</h1>
+<h1 align="center">DGIdb v5</h1>
+
+A from-scratch rewrite of the [Drug-Gene Interaction Database](https://dgidb.org/).
 
 # For developers
 
