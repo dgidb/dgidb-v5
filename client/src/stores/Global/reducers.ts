@@ -11,8 +11,10 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export enum ActionTypes {
   AddTerm = "ADD_TERM",
-  DeleteTerm = "DELETE_TERMS",
+  DeleteTerm = "DELETE_TERM",
+  DeleteLastTerm = "DELETE_LAST_TERM",
   DeleteAllTerms = "DELETE_ALL_TERMS",
+  AddDemoTerms = "DEMO_TERMS",
   HideDisclaimer = "HIDE_DISCLAIMER",
   ShowDisclaimer = "SHOW_DISCLAIMER",
   EnableDarkMode = "ENABLE_DARK_MODE",
@@ -25,10 +27,11 @@ export enum ActionTypes {
 }
 
 // search terms
-
 type SearchTermsPayload = {
   [ActionTypes.AddTerm]: string;
-  [ActionTypes.DeleteTerm]: undefined;
+  [ActionTypes.AddDemoTerms]: undefined;
+  [ActionTypes.DeleteTerm]: string;
+  [ActionTypes.DeleteLastTerm]: undefined;
   [ActionTypes.DeleteAllTerms]: undefined;
 };
 
@@ -45,10 +48,14 @@ export const searchTermsReducer = (
   switch (action.type) {
     case ActionTypes.AddTerm:
       return [...stateCopy, action.payload]
-    case ActionTypes.DeleteTerm:
+    case ActionTypes.AddDemoTerms:
+      return ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1'];
+    case ActionTypes.DeleteLastTerm:
       return stateCopy.slice(0, -1);
     case ActionTypes.DeleteAllTerms:
       return [];
+    case ActionTypes.DeleteTerm:
+      return stateCopy.filter((term: any) => term !== action.payload)
     default:
       return state;
   }
