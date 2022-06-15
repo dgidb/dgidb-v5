@@ -51,10 +51,11 @@
 }
 
 [data-theme='dark'] {
-  --background: #3C3143;
+  --background: #180a20;
+  --highlight: #3C3143;
   --theme-primary: #480a77;
   --text-primary: #ffffff;
-  --text-content: #c9dbd9;
+  --text-content: #bac9c7;
   --background-dark: #180a20;
 }
 
