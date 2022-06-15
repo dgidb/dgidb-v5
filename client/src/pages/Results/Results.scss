@@ -17,12 +17,12 @@
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: var(--text-content);
-  background-color: var(--background-light);
+  background-color: var(--background);
 }
 
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
-  background-color: var(--background-light);
-
+  color: var(--text-content);
+  background-color: var(--background);
 }
 
 .ant-tabs-tab.ant-tabs-tab-active {
