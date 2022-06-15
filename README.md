@@ -21,6 +21,13 @@ cd dgidb-v5
 
 ### Server setup
 
+First, you may need to switch your Ruby version with RVM to match the version declared in the first few lines of the [Gemfile](server/Gemfile). For example, to switch to version 3.0.4:
+
+```shell
+rvm install 3.0.4
+rvm 3.0.4
+```
+
 From the repo root, enter the [server subdirectory](server/):
 
 ```shell
@@ -35,13 +42,6 @@ you can ignore these warnings with 'rvm rvmrc warning ignore ./Gemfile'.
 To ignore the warning for all files run 'rvm rvmrc warning ignore allGemfiles'.
 ```
 
-You may need to switch your Ruby version with RVM to match the version declared in the first few lines of the [Gemfile](server/Gemfile). For example, to switch to version 3.0.4:
-
-```shell
-rvm install 3.0.4
-rvm 3.0.4
-```
-
 Next, install Rails and other required gems with `bundle`:
 
 ```shell
@@ -52,12 +52,13 @@ The server will need a running Postgres instance. Postgres start commands may va
 
 ```shell
 pg_ctl -D /opt/homebrew/var/postgres start
+# on older macs you may need to use a different path instead, eg "pg_ctl -D /usr/local/var/postgres start"
 ```
 
 Database initialization utilities are in-progress, so for now, the easiest way to get a working database is to manually create it using the `psql` command. First, enter the psql console:
 
 ```
-psql
+psql -d postgres  # if you are opening psql for the first time, you'll need to connect to the database 'postgres'
 # should produce a prompt like the following:
 # psql (14.2)
 # Type "help" for help.
@@ -75,10 +76,10 @@ CREATE DATABASE dgidb;
 Next, back in the main shell, import a database dump file (ask on Slack if you need the latest file):
 
 ```shell
-psql -d dgidb -f dgidb_dump_20220526.sql  # provide path to data dump
+psql -d dgidb -f dgidb_dump_20220526.psql  # provide path to data dump
 ```
 
-Finally, start the Rails server:
+That should take a few minutes. Finally, start the Rails server:
 
 ```shell
 rails s
