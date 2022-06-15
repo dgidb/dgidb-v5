@@ -104,8 +104,8 @@ export const GeneRecord: React.FC = () => {
               {data?.gene?.geneAttributes?.map((attribute: any) => {
                 return (
                   <tr>
-                    <td>{attribute.name}:</td>
-                    <td>{attribute.value}</td>
+                    <td className="attribute-name">{attribute.name}:</td>
+                    <td className="attribute-value">{attribute.value}</td>
                   </tr>
                 )
               })}
@@ -117,7 +117,7 @@ export const GeneRecord: React.FC = () => {
           <div className="box-title">Categories</div>
           <div className="box-content">
             {data?.gene?.geneCategories?.map((category: any) => {
-              return <div>{category?.name}</div>
+              return <div className="box-item">{category?.name}</div>
             })}
           </div>
         </div>
@@ -127,7 +127,7 @@ export const GeneRecord: React.FC = () => {
           <div className="box-title">Aliases</div>
           <div className="box-content">
             {data?.gene?.geneAliases?.map((alias: any) => {
-              return <div>{alias?.alias}</div>
+              return <div className="box-item">{alias?.alias}</div>
             })}
           </div>
         </div>
@@ -135,7 +135,7 @@ export const GeneRecord: React.FC = () => {
           <div className="box-title">Publications</div>
           <div className="box-content">
             {data?.gene?.geneClaims?.map((claim: any) => {
-              return <div>{claim?.source?.citation}</div>
+              return <div className="box-link">{claim?.source?.citation}</div>
             })}
           </div>
         </div>

@@ -38,6 +38,7 @@
     border: solid white 1px;
 
     .box-title {
+      color: var(--text-primary);
       font-size: 1.4rem;
       font-weight: bold;
     }
@@ -45,6 +46,24 @@
     .box-content {
       padding: .5rem;
       max-height: 570px;
+
+      table > tbody > tr {
+        line-height: 1.6rem;
+      }
+
+      .box-item {
+        line-height: 1.55rem;
+      }
+
+      .attribute-name {
+        // color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .attribute-value {
+        color: var(--text-primary);
+        padding-left: 2rem;
+      }
     }
   }
 
