@@ -33,14 +33,18 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
+        next if row['Entrez Gene Name'] == 'N/A'
+
         gene_claim = create_gene_claim(row['Entrez Gene Name'].upcase, 'Gene Target Symbol')
-        create_gene_claim_alias(gene_claim, row['Enterez Gene Id'], 'Entrez Gene ID')
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['Enterez Gene Id']}", 'NCBI Gene ID')
         create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['Molecular Target'])
 
+        drug_primary_name = row['Pubchem name'].upcase
+        drug_primary_name.gsub('UNII-', 'UNII:') if drug_primary_name.starts_with?('UNII-')
         drug_claim = create_drug_claim(row['Pubchem name'].upcase, 'Primary Drug Name')
         create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name')
-        create_drug_claim_alias(drug_claim, row['CID'], 'PubChem Drug ID') unless row['CID'] == 'N/A'
-        create_drug_claim_alias(drug_claim, row['SID'], 'PubChem Drug SID') unless row['SID'] == 'N/A'
+        create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['CID']}", 'PubChem Drug ID') unless row['CID'] == 'N/A'
+        create_drug_claim_alias(drug_claim, "pubchem.substance:#{row['SID']}", 'PubChem Drug SID') unless row['SID'] == 'N/A'
         unless row['Other drug name'] == 'N/A'
           create_drug_claim_alias(drug_claim, row['Other drug name'], 'Other Drug Name')
         end

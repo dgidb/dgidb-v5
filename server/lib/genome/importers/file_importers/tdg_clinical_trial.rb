@@ -44,9 +44,16 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
       end
     end
 
+    def skip_row(row)
+      uniprot_acc_num = row['Uniprot Accession number'].downcase
+      return true if ['not specified', 'not applicable', 'dna', 'unknown', 'non-human target'].include?(uniprot_acc_num)
+    end
+
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t", encoding: 'iso-8859-1:utf-8') do |row|
-        gene_claim = create_gene_claim(row['Uniprot Accession number'], 'Uniprot Accession')
+        next if skip_row(row)
+
+        gene_claim = create_gene_claim("uniprot:#{row['Uniprot Accession number']}", 'UniprotKB ID')
         create_gene_claim_alias(gene_claim, row['Gene'], 'Gene Symbol')
         unless row['Target main class'].blank?
           create_gene_claim_attribute(gene_claim, 'Target Class', row['Target main class'])

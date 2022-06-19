@@ -69,16 +69,16 @@ module Genome; module Importers; module FileImporters; module Chembl
       @chembl_data.each do |row|
         primary_drug_name = row[2].strip.upcase
         drug_claim = create_drug_claim(primary_drug_name, "Primary Drug Name")
-        create_drug_claim_alias(drug_claim, row[1], "ChEMBL ID")
+        create_drug_claim_alias(drug_claim, "chembl:#{row[1]}", 'ChEMBL ID')
         create_drug_claim_approval_rating(drug_claim, "Max Phase #{row[5]}") unless row[5].nil?
         create_drug_claim_approval_rating(drug_claim, 'Withdrawn') unless row[3] != 1
 
         next if row[0].nil? || row[11].nil?
 
         gene_claim = create_gene_claim(row[11].upcase, "Target Gene Symbol")
-        create_gene_claim_alias(gene_claim, row[7], "ChEMBL ID")
+        create_gene_claim_alias(gene_claim, "chembl:#{row[7]}", 'ChEMBL ID')
         create_gene_claim_alias(gene_claim, row[10], "Target Description")
-        create_gene_claim_attribute(gene_claim, "UniProt accession", row[9])
+        create_gene_claim_alias(gene_claim, "uniprot:#{row[9]}", 'UniProtKB ID')
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 

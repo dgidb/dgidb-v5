@@ -37,7 +37,7 @@ module Genome; module Importers; module FileImporters; module HingoraniCasas;
         unless row['hgnc_names'].blank?
           gene_claim = create_gene_claim(row['hgnc_names'], 'HingoraniCasas Gene Symbol')
           create_gene_claim_alias(gene_claim, row['hgnc_names'].upcase, 'Gene Symbol')
-          create_gene_claim_alias(gene_claim, row['ensembl_gene_id'].upcase, 'Ensembl Id')
+          create_gene_claim_alias(gene_claim, "ensembl:#{row['ensembl_gene_id'].upcase}", 'Ensembl ID')
           create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
         end
       end

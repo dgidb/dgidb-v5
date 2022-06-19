@@ -45,12 +45,17 @@ module Genome; module Importers; module FileImporters; module Oncokb;
 
     def create_gene_claims
       CSV.foreach("#{@tsv_root}gene_claim.csv", headers: false, col_sep: ',') do |row|
+        next if row[0] == 'Other Biomarkers'
+
         gc = create_gene_claim(row[0], row[1])
         @gene_claims[row[0]] = gc
       end
       CSV.foreach("#{@tsv_root}gene_claim_aliases.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[0]]
-        create_gene_claim_alias(gc, row[1], row[2])
+        case row[2]
+        when 'OncoKB Entrez Id'
+          create_gene_claim_alias(gc, "ncbigene:#{row[1]}", 'NCBI Gene ID')
+        end
       end
     end
 

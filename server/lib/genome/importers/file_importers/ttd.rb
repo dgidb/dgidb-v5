@@ -47,7 +47,7 @@ module Genome; module Importers; module FileImporters; module Ttd;
         create_gene_claim_alias(gene_claim, gene_abbreviation, 'TTD Gene Abbreviation')
         create_gene_claim_alias(gene_claim, row['TargetID'], 'TTD Target ID')
 
-        drug_claim = create_drug_claim(row['Drug_Name'], 'TTD Drug Name')
+        drug_claim = create_drug_claim(row['Drug_Name'].gsub(/\A"|"\Z/, ''), 'TTD Drug Name')
         create_drug_claim_alias(drug_claim, row['DrugID'], 'TTD Drug ID')
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)

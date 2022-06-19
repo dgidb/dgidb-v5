@@ -33,12 +33,11 @@ module Genome; module Importers; module FileImporters; module MyCancerGenome;
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['Gene Symbol'], 'MyCancerGenome Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['Entrez Gene Id'], 'Entrez Gene Id')
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['Entrez Gene Id']}", 'NCBI Gene Id')
         create_gene_claim_alias(gene_claim, row['Gene Symbol'], 'MyCancerGenome Gene Symbol')
         create_gene_claim_alias(gene_claim, row['Reported Gene Name'], 'MyCancerGenome Reported Gene Name')
 
         drug_claim = create_drug_claim(
-          row['Primary Drug Name'].upcase,
           row['Primary Drug Name'].upcase,
           'MyCancerGenome Drug Name'
         )

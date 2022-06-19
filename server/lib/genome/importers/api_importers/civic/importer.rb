@@ -55,7 +55,7 @@ module Genome
             base_aliases.uniq.reject { |n| n == gene.official_name }.each do |gene_alias|
               create_gene_claim_alias(gc, gene_alias, 'Gene Symbol')
             end
-            create_gene_claim_alias(gc, "ncbigene:#{gene.entrez_id}", 'Entrez ID')
+            create_gene_claim_alias(gc, "ncbigene:#{gene.entrez_id}", 'NCBI Gene ID')
             create_gene_claim_alias(gc, "civic.gid:#{gene.id}", 'CIViC ID')
             gc
           end

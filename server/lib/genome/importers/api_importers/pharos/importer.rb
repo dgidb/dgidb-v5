@@ -57,7 +57,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
 
             gene_claim = create_gene_claim(gene['sym'], 'Gene Symbol')
             create_gene_claim_alias(gene_claim, gene['name'], 'Gene Name')
-            create_gene_claim_alias(gene_claim, gene['uniprot'], 'UniProt ID')
+            create_gene_claim_alias(gene_claim, "uniprot:#{gene['uniprot']}", 'UniProtKB ID')
             normalized_category = case category
                                   when 'GPCR'
                                     'G PROTEIN COUPLED RECEPTOR'
