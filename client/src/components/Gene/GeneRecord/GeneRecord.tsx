@@ -20,9 +20,9 @@ const GeneRecordTable: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
-  const geneSymbol = useParams().gene;
+  const geneSymbol: any = useParams().gene;
 
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
+  const { data } = useGetInteractionsByGenes([geneSymbol]);
 
   let genes = data?.genes;
 
@@ -133,7 +133,7 @@ export const GeneRecord: React.FC = () => {
         </div>
         <div className="data-box gene-record-publications">
           <div className="box-title">Publications</div>
-          <div className="box-content">
+          <div className="box-content publication-item">
             {data?.gene?.geneClaims?.map((claim: any) => {
               return <div className="box-link">{claim?.source?.citation}</div>
             })}
