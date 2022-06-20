@@ -57,7 +57,6 @@ export const CategoryResults: React.FC = () => {
           </div>
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          Content of Tab Pane 2
         </TabPane>
       </Tabs>
 
