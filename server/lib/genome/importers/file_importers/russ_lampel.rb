@@ -32,9 +32,8 @@ module Genome; module Importers; module FileImporters; module RussLampel;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['gene_stable_id'], 'RussLampel Gene Stable Id')
-        create_gene_claim_alias(gene_claim, row['gene_stable_id'], 'Ensembl Gene Id')
-        create_gene_claim_alias(gene_claim, row['display_id'], 'Display Id') unless row['display_id'] == 'N/A'
+        gene_claim = create_gene_claim("ensembl:#{row['gene_stable_id']}", 'Ensembl Gene ID')
+        create_gene_claim_alias(gene_claim, row['display_id'], 'Gene Symbol') unless row['display_id'] == 'N/A'
         create_gene_claim_alias(gene_claim, row['description'], 'Description') unless row['description'] == 'N/A'
         create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
       end

@@ -46,13 +46,24 @@ module Genome; module Importers; module FileImporters; module Drugbank;
             if record[2].exclude?"n/a"
                 gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
 
-                Hash[record[6].zip(record[5])].each do |nomen,syn|
-                  create_gene_claim_alias(gene_claim, syn, nomen)
+                Hash[record[6].zip(record[5])].each do |nomen, syn|
+                  case nomen
+                  when 'UniProtKB'
+                    create_gene_claim_alias(gene_claim, "uniprot:#{syn}", 'UniProtKB ID')
+                  when 'UniProt Accession'
+                    create_gene_claim_alias(gene_claim, syn, 'UniProtKB Entry Name')
+                  when 'IUPHAR', 'Guide to Pharmacology'
+                    create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", 'GuideToPharmacology Target ID')
+                  when 'HUGO Gene Nomenclature Committee (HGNC)'
+                    create_gene_claim_alias(gene_claim, syn, 'HGNC ID')
+                  else
+                    create_gene_claim_alias(gene_claim, syn, nomen)
+                  end
                 end
 
                 drug_claim = create_drug_claim(record[1], 'DrugBank Drug Name')
 
-                create_drug_claim_alias(drug_claim, record[0], 'DrugBank Identifier')
+                create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", 'DrugBank ID')
 
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 

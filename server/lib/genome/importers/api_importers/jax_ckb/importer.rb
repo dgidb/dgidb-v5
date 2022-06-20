@@ -31,14 +31,14 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     def create_interaction_claims
       api_client = ApiClient.new
       api_client.genes.each do |gene|
-        gene_claim = create_gene_claim(gene['geneName'], 'CKB Gene Name')
+        gene_claim = create_gene_claim(gene['geneName'], 'Primary Gene Name')
         create_gene_claim_aliases(gene_claim, gene)
         api_client.interactions_for_gene_id(gene['id']).each do |interaction|
           drug_name = interaction['Therapy Name']
           if drug_name.include? '+'
             combination_drug_name = drug_name
             combination_drug_name.split(' + ').each do |individual_drug_name|
-              drug_claim = create_drug_claim(individual_drug_name, 'CKB Drug Name')
+              drug_claim = create_drug_claim(individual_drug_name, 'Primary Drug Name')
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
               create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
               create_interaction_claim_publications(interaction_claim, interaction['References'])
@@ -46,7 +46,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
               create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
             end
           else
-            drug_claim = create_drug_claim(drug_name, 'CKB Drug Name')
+            drug_claim = create_drug_claim(drug_name, 'Primary Drug Name')
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             create_interaction_claim_publications(interaction_claim, interaction['References'])
             create_interaction_claim_attributes(interaction_claim, interaction)
@@ -58,9 +58,9 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     end
 
     def create_gene_claim_aliases(gene_claim, gene)
-      create_gene_claim_alias(gene_claim, gene['id'], 'CKB Entrez Id')
+      create_gene_claim_alias(gene_claim, "ncbigene:#{gene['id']}", 'NCBI Gene ID')
       gene['text'].split(' | ').each do |synonym|
-        create_gene_claim_alias(gene_claim, synonym, 'CKB Gene Synonym')
+        create_gene_claim_alias(gene_claim, synonym, 'Gene Synonym')
       end
     end
 

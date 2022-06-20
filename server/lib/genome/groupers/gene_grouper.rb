@@ -113,17 +113,31 @@ module Genome
         ).first_or_create
       end
 
+      def get_nomenclature(concept_id)
+        case concept_id
+        when /hgnc:/
+          'HGNC ID'
+        when /ensembl:/
+          'Ensembl Gene ID'
+        when /ncbigene:/
+          'NCBI Gene ID'
+        else
+          'Concept ID'
+        end
+      end
+
       def add_grouper_claim_aliases(claim, record)
+        concept_id = record['concept_id']
         GeneClaimAlias.where(
-          alias: record['concept_id'],
-          nomenclature: 'Concept ID',
+          alias: concept_id,
+          nomenclature: get_nomenclature(concept_id),
           gene_claim_id: claim.id
         ).first_or_create
 
         unless record['label'].nil?
           GeneClaimAlias.where(
             alias: record['label'],
-            nomenclature: 'Description',
+            nomenclature: 'Gene Description',
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -131,7 +145,7 @@ module Genome
         record.fetch('previous_symbols', []).each do |symbol|
           GeneClaimAlias.where(
             alias: symbol,
-            nomenclature: 'Previous Symbol',
+            nomenclature: 'Previous Gene Symbol',
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -139,7 +153,7 @@ module Genome
         record.fetch('aliases', []).each do |value|
           GeneClaimAlias.where(
             alias: value,
-            nomenclature: 'Alias',
+            nomenclature: 'Gene Synonym',
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -148,7 +162,7 @@ module Genome
         xrefs.each do |xref|
           GeneClaimAlias.where(
             alias: xref,
-            nomenclature: 'Xref',
+            nomenclature: get_nomenclature(xref),
             gene_claim_id: claim.id
           ).first_or_create
         end

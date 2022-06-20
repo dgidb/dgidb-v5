@@ -35,13 +35,23 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
         next if row['Entrez gene name'] == 'N/A' or row['pubchem drug name'] == 'N/A'
 
         gene_claim = create_gene_claim(row['Entrez gene name'].upcase, 'Gene Target Symbol')
-        create_gene_claim_alias(gene_claim, row['Gene ID'], 'Entrez Gene ID') unless row['Gene ID'] == 'N/A'
+        unless row['Gene ID'] == 'N/A' || row['Gene ID'].include?('.')
+          create_gene_claim_alias(gene_claim, "ncbigene:#{row['Gene ID']}", 'NCBI Gene ID')
+        end
         create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['genes']) unless row['genes'] == 'N/A'
 
         drug_claim = create_drug_claim(row['pubchem drug name'].upcase, 'Primary Drug Name')
         create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name') unless row['Drug name'] == 'N/A'
-        create_drug_claim_alias(drug_claim, row['pubchem drug id'], 'PubChem Drug ID') unless row['pubchem drug id'] == 'N/A'
-        create_drug_claim_alias(drug_claim, row['Other drug names'], 'Other Drug Name') unless row['Other drug names'] == 'N/A'
+        unless row['pubchem drug id'] == 'N/A'
+          create_drug_claim_alias(drug_claim, "pubchem.compound:{row['pubchem drug id']}", 'PubChem Compound ID')
+        end
+        unless row['Other drug names'] == 'N/A'
+          if row['Other drug names'].starts_with?('PF-')
+            create_drug_claim_alias(drug_claim, "pfam:#{row['Other drug names'].gsub(' ', '')}", 'PFAM ID')
+          else
+            create_drug_claim_alias(drug_claim, row['Other drug names'], 'Other Drug Name')
+          end
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['Interaction type'])
