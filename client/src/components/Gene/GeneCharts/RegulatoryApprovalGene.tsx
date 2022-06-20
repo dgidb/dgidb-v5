@@ -1,7 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
@@ -16,7 +14,6 @@ interface Props {
 }
 
 export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
-
   const [chartData, setChartData] = useState<any>({
     labels: ['Activating', 'Inhibiting', 'N/A'],
     datasets: [
@@ -35,7 +32,7 @@ export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
         gene.interactions?.forEach((int: any) => {
           int?.drug?.drugApprovalRatings.forEach((rating: any) => {
             if (newObj[rating.rating]) {
-              newObj[rating.rating] += 1;
+              ++newObj[rating.rating];
             } else {
               newObj[rating.rating] = 1;
             }
