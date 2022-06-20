@@ -52,7 +52,7 @@
 
 [data-theme='dark'] {
   --background: #180a20;
-  --highlight: #3C3143;
+  --highlight: #63516e;
   --theme-primary: #480a77;
   --text-primary: #ffffff;
   --text-content: #bac9c7;
@@ -61,6 +61,8 @@
 
 [data-theme='dark-home'] {
   --background: #180a20;
+  --highlight: #b3a8b9;
+  --theme-primary: #480a77;
   --text-content: #c9dbd9;
   --soft-background: #2c2133;
   --text-primary: #e8eaed;
