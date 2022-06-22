@@ -14,9 +14,11 @@ import {
 
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts'
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
+import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
 import './DrugSummary.scss';
+import { RegulatoryApprovalDrug } from '../DrugCharts/RegulatoryApprovalDrug';
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +45,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
       setChartData(drugs)
       setFilterBy('')
     } else {
-      let drug = drugs.find((drug: any) => drug.name === drugName);
+      let drug = drugs.find((drug: any) => drug.interactions[0]?.drug?.name === drugName);
       setChartData([drug]);
       setFilterBy(drugName)
     }
@@ -57,8 +59,8 @@ const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
       </div>
       {drugs?.map((drug: any) => {
         return (
-          <div className={`interaction-count-row ${filterBy === drug.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.name)}>
-            <div className="interaction-count-drug">{drug.name}</div>
+          <div className={`interaction-count-row ${filterBy === drug.interactions[0]?.drug?.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.interactions[0]?.drug?.name)}>
+            <div className="interaction-count-drug">{drug.interactions[0].drug.name}</div>
             <div className="interaction-count">{drug.interactions.length}</div>
           </div>
           )
@@ -73,24 +75,24 @@ interface InfoProps {
 
 const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
 
-  const [chartType, setChartType] = useState('score')
+  const [chartType, setChartType] = useState('categories')
 
   return (
     <div className="summary-infographic-container">
       <h4>Summary Infographics</h4>
 
       <div className="chart-section">
-        {chartType === 'score' && <InteractionTypeDrug data={chartData} />}
+        {chartType === 'categories' && <GeneCategories data={chartData} />}
         {chartType === 'type' && <InteractionTypeDrug data={chartData} />}
-        {chartType === 'directionality' && <DirectionalityDrug />}
-        {chartType === 'approval' && <InteractionTypeDrug data={chartData} />}
+        {chartType === 'directionality' && <DirectionalityDrug data={chartData} />}
+        {/* {chartType === 'approval' && <RegulatoryApprovalDrug data={chartData} />} */}
       </div>
 
       <div className="chart-selector">
-        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
+        <div onClick={() => setChartType('categories')}>Gene Categories</div>
         <div onClick={() => setChartType('type')}>Interaction Types</div>
         <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
-        <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
+        {/* <div onClick={() => setChartType('approval')}>Regulatory Approval</div> */}
       </div>
     </div>
   )
