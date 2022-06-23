@@ -14,99 +14,123 @@ import { GeneListTable } from 'components/Browse/Categories/GeneListTable';
 import './BrowseCategories.scss';
 import { Checkbox } from 'antd';
 
+const CheckboxGroup = Checkbox.Group;
 const { Panel } = Collapse;
-
-export const BrowseCategories: React.FC = () => {
-  let [sources, setSources] = useState<any>([])
-  let [options, setOptions] = useState<any>([])
-  let [selectedSources, setSelectedSources] = useState<any>([])
-  let [categories, setCategories] = useState<any>([])
-  let [allCategories, setAllCategories] = useState<any>([])
-
-  const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE")
 
   interface Categories {
     [key: string]: number
   }
 
-  useEffect(() => {
-    if (data?.sources?.nodes){
-      let nodes = data?.sources?.nodes
-      setSources(nodes)
+export const BrowseCategories: React.FC = () => {
+  const [plainOptions, setPlainOptions] = useState([]);
 
-      let sourceNames = nodes.map((node: any) => node.sourceDbName)
-      setOptions(sourceNames);
+  const [checkedList, setCheckedList] = useState<any>([]);
+  const [indeterminate, setIndeterminate] = useState(true);
+  const [checkAll, setCheckAll] = useState(false);
 
-      let allCategoriesObj: Categories = {}
+  const [allCategories, setAllCategories] = useState<any>([])
+  const [renderedCategories, setRenderedCategories] = useState<any>([])
 
-      nodes.forEach((node: any) => {
-        node.categoriesInSource.forEach((cat: any) => {
-          let key = cat.name
-          allCategoriesObj[key] = 0;
+
+  const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE")
+
+    useEffect(() => {
+      if (data?.sources?.nodes){
+        let nodes = data?.sources?.nodes
+        console.log('nodes', nodes);
+        let sources: any = [];
+
+        nodes.forEach((node: any) => {
+          sources.push(node.sourceDbName)
         })
-      })
 
-      setAllCategories(allCategoriesObj);
-    }
-  }, [data])
+        setPlainOptions(sources);
 
-  const onChange = (selectedSourceNames: any) => {
-    let selectedSourcesArray = selectedSourceNames.map((srcName: any) => {
-      return sources.find((src: any) => {
-        return src.sourceDbName === srcName;
-      })
-    })
-    setSelectedSources(selectedSourcesArray)
-  }
+        let allCategoriesObj: Categories = {}
 
-  useEffect(() => {
-    let allCategoriesCopy: Categories = {};
+        nodes.forEach((node: any) => {
+          node.categoriesInSource.forEach((cat: any) => {
+            let key = cat.name
+            allCategoriesObj[key] = 0;
+          })
+        })
 
-    selectedSources.forEach((src: any) => {
-      let cats = src.categoriesInSource;
-      cats.forEach((cat: any) => {
-        if(typeof allCategoriesCopy[cat.name] === 'number') {
-          allCategoriesCopy[cat.name] += cat.geneCount
-        } else {
-          allCategoriesCopy[cat.name] = cat.geneCount
+        setAllCategories(allCategoriesObj);
+      }
+    }, [data])
+
+    useEffect(() => {
+
+    }, [plainOptions])
+
+    useEffect(() => {
+      let allCategoriesCopy: Categories = {};
+
+      // return each node where where checked item is present
+
+      data?.sources?.nodes?.forEach((src: any) => {
+        let includes: any = checkedList.includes(src.sourceDbName)
+        if (includes) {
+          let cats: any = src?.categoriesInSource;
+          cats?.forEach((cat: any) => {
+            if(typeof allCategoriesCopy[cat.name] === 'number') {
+              allCategoriesCopy[cat.name] += cat.geneCount
+            } else {
+              allCategoriesCopy[cat.name] = cat.geneCount
+            }
+          })
         }
       })
-    })
 
-    let categoriesArray = [];
+      console.log('allCategoriesCopy', allCategoriesCopy)
 
-    for (const key in allCategoriesCopy) {
-      categoriesArray.push({name: key, geneCount: allCategoriesCopy[key]})
-    }
+      let categoriesArray = [];
 
-    setCategories(categoriesArray);
+      for (const key in allCategoriesCopy) {
+        categoriesArray.push({name: key, geneCount: allCategoriesCopy[key]})
+      }
 
-  }, [selectedSources])
+      setRenderedCategories(categoriesArray);
+    }, [checkedList])
 
-  return (
-    <div className="browse-categories-container">
-      <div className="source-checklist">
-        <Checkbox.Group options={options} onChange={onChange} />
-        <div><Checkbox defaultChecked> Select/Deselect All</Checkbox></div>
+    const onChange = (list: any) => {
+      setCheckedList(list);
+      setIndeterminate(!!list.length && list.length < plainOptions.length);
+      setCheckAll(list.length === plainOptions.length);
+    };
+
+    const onCheckAllChange = (e: any) => {
+      setCheckedList(e.target.checked ? plainOptions : []);
+      setIndeterminate(false);
+      setCheckAll(e.target.checked);
+    };
+
+    return (
+      <div className="browse-categories-container">
+        <div className="source-checklist">
+         <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+          <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+            Select/Deselect All
+          </Checkbox>
+        </div>
+
+        <div className="category-list">
+           <Collapse>
+          {renderedCategories?.map((cat: any, index: number) => {
+            if(cat.geneCount) {
+              return (
+                <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
+                  <GeneListTable />
+               </Panel>
+              )
+            } else {
+              return null
+            }
+          })}
+          </Collapse>
+
+        </div>
+
       </div>
-
-      <div className="category-list">
-         <Collapse>
-        {categories?.map((cat: any, index: number) => {
-          if(cat.geneCount) {
-            return (
-              <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
-                <GeneListTable />
-             </Panel>
-            )
-          } else {
-            return null
-          }
-        })}
-        </Collapse>
-
-      </div>
-
-    </div>
-  )
-};
+    )
+}
