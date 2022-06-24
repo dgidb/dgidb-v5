@@ -5,7 +5,7 @@ set :rbenv_ruby, '3.1.2'
 
 set :rails_env, 'production'
 
-#set :linked_files, fetch(:linked_files, []).push('config/credentials/staging.key')
+set :linked_files, fetch(:linked_files, []).push('config/master.key')
 
 puts ENV['DGIDB_STAGING_KEY']
 
