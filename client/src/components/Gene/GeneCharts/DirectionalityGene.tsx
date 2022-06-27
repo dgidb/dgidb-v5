@@ -26,6 +26,7 @@ export const DirectionalityGene: React.FC<Props> = ({data}) => {
   });
 
   const options = {
+    height: 500,
     responsive: true,
   }
 
