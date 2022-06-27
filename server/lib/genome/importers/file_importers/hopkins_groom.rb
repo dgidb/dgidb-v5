@@ -32,15 +32,17 @@ module Genome; module Importers; module FileImporters; module HopkinsGroom;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Uniprot_Acc'], 'HopkinsGroom Gene Name')
-        create_gene_claim_alias(gene_claim, row['Uniprot_Acc'].upcase, 'Uniprot Accession')
-        create_gene_claim_alias(gene_claim, row['Uniprot_Id'].upcase, 'Uniprot Id')
+        gene_claim = create_gene_claim("uniprot:#{row['Uniprot_Acc']}", 'UniProtKB ID')
+        create_gene_claim_alias(gene_claim, row['Uniprot_Id'].upcase, 'UniProtKB Entry Name')
         create_gene_claim_alias(gene_claim, row['Uniprot_Protein_Name'].upcase, 'Uniprot Protein Name')
-        create_gene_claim_alias(gene_claim, row['Uniprot_Protein_Name'].upcase, 'Uniprot Protein Name')
-        create_gene_claim_alias(gene_claim, row['Uniprot_Gene_Name'].upcase, 'Uniprot Gene Name') unless row['Uniprot_Gene_Name'] == 'N/A'
-        create_gene_claim_alias(gene_claim, row['Entrez_Id'].upcase, 'Entrez Gene Id') unless row['Entrez_Id'] == 'N/A'
+        unless row['Uniprot_Gene_Name'] == 'N/A'
+          create_gene_claim_alias(gene_claim, row['Uniprot_Gene_Name'].upcase, 'UniProtKB Gene Name')
+        end
+        unless row['Entrez_Id'] == 'N/A'
+          create_gene_claim_alias(gene_claim, "ncbigene:#{row['Entrez_Id'].upcase}", 'NCBI Gene ID')
+        end
         row['Ensembl_Id'].split('; ').each do |ensembl_id|
-          create_gene_claim_alias(gene_claim, ensembl_id.upcase, 'Ensembl Gene Id') unless ensembl_id == 'N/A'
+          create_gene_claim_alias(gene_claim, "ensembl:#{ensembl_id.upcase}", 'Ensembl Gene ID') unless ensembl_id == 'N/A'
         end
         create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
         unless row['DGIDB_Human_Readable'] == 'N/A'

@@ -33,11 +33,9 @@ module Genome; module Importers; module FileImporters; module Talc;
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim(row['gene_target'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['gene_target'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['entrez_id'], 'Entrez ID')
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_id']}", 'NCBI Gene ID')
 
-        drug_claim = create_drug_claim(row['drug_name'].upcase, 'TALC')
-        create_drug_claim_alias(drug_claim, row['drug_name'], 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['drug_name'].upcase, 'Primary Drug Name')
         unless row['drug_generic_name'] == 'NA'
           create_drug_claim_alias(drug_claim, row['drug_generic_name'], 'Drug Generic Name')
         end

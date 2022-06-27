@@ -137,12 +137,32 @@ module Genome
         response['therapy_descriptor']['therapy_id'] unless response['match_type'].zero?
       end
 
+      def produce_concept_id_nomenclature(concept_id)
+        case concept_id
+        when /rxcui:/
+          'RxNorm ID'
+        when /ncit:/
+          'NCIt Drug ID'
+        when /hemonc:/
+          'HemOnc Drug ID'
+        when /drugsatfda/
+          'Drugs@FDA ID'
+        when /chemidplus/
+          'ChemIDplus ID'
+        when /wikidata/
+          'Wikidata Drug ID'
+        else
+          'Concept ID'
+        end
+      end
+
       def create_drug_claim(record, source)
         # Drugs@FDA records don't have unique labels
         if record['label'].nil? || source.source_db_name == 'Drugs@FDA'
+          concept_id = record['concept_id']
           DrugClaim.where(
-            name: record['concept_id'],
-            nomenclature: 'Concept ID',
+            name: concept_id,
+            nomenclature: produce_concept_id_nomenclature(concept_id),
             source_id: source.id
           ).first_or_create
         else
@@ -212,7 +232,12 @@ module Genome
         claim_name = claim.name
 
         unless record['concept_id'] == claim_name
-          add_grouper_claim_alias(record['concept_id'], claim_name, claim.id, 'Concept ID')
+          add_grouper_claim_alias(
+            record['concept_id'],
+            claim_name,
+            claim.id,
+            produce_concept_id_nomenclature(record['concept_id'])
+          )
         end
 
         unless record['label'].nil? || record['label'] == claim_name

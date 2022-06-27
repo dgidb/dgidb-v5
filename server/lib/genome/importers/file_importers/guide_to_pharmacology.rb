@@ -43,21 +43,21 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         gene_name = line['Human Entrez Gene']
         next if blank?(gene_name)
 
-        gene_claim = create_gene_claim(gene_name, 'Entrez Gene ID')
+        gene_claim = create_gene_claim("ncbigene:#{gene_name}", 'NCBI Gene ID')
         target_to_entrez[line['Target id']] = gene_name
-        create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene ID') unless blank?(line['HGNC id'])
-        create_gene_claim_alias(gene_claim, line['HGNC id'], 'HUGO Gene Symbol') unless blank?(line['HGNC symbol'])
-        create_gene_claim_alias(gene_claim, line['HGNC name'], 'HUGO Gene Name') unless blank?(line['HGNC name'])
-        create_gene_claim_alias(gene_claim, line['Target id'], 'GuideToPharmacology ID')
-        create_gene_claim_alias(gene_claim, line['Target name'], 'GuideToPharmacology Name')
+        create_gene_claim_alias(gene_claim, line['HGNC id'], 'HGNC ID') unless blank?(line['HGNC id'])
+        create_gene_claim_alias(gene_claim, line['HGNC id'], 'Gene Symbol') unless blank?(line['HGNC symbol'])
+        create_gene_claim_alias(gene_claim, line['HGNC name'], 'Gene Name') unless blank?(line['HGNC name'])
+        create_gene_claim_alias(gene_claim, "iuphar.receptor:#{line['Target id']}", 'GuideToPharmacology Target ID')
+        create_gene_claim_alias(gene_claim, line['Target name'], 'Target Name')
         unless blank?(line['Human nucleotide RefSeq'])
-          create_gene_claim_alias(gene_claim, line['Human nucleotide RefSeq'], 'RefSeq Nucleotide Accession')
+          create_gene_claim_alias(gene_claim, "refseq:#{line['Human nucleotide RefSeq']}", 'Nucleotide Accession')
         end
         unless blank?(line['Human protein RefSeq'])
-          create_gene_claim_alias(gene_claim, line['Human protein RefSeq'], 'RefSeq Protein Accession')
+          create_gene_claim_alias(gene_claim, "refseq:#{line['Human protein RefSeq']}", 'Protein Accession')
         end
         unless blank?(line['Human SwissProt'])
-          create_gene_claim_alias(gene_claim, line['Human SwissProt'], 'SwissProt Accession')
+          create_gene_claim_alias(gene_claim, line['Human SwissProt'], 'UniProtKB ID')
         end
 
         create_gene_claim_attribute(gene_claim, 'GuideToPharmacology Gene Category Name', line['Family name'])
@@ -82,10 +82,10 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       CSV.foreach(interaction_file_path, headers: true) do |line|
         next unless valid_line?(line)
 
-        gene_claim = create_gene_claim(target_to_entrez[line['target_id']], 'Entrez Gene ID')
+        gene_claim = create_gene_claim(target_to_entrez[line['target_id']], 'NCBI Gene ID')
         create_gene_claim_aliases(gene_claim, line)
 
-        drug_claim = create_drug_claim("pubchem.substance:#{line['ligand_pubchem_sid']}", 'Concept ID')
+        drug_claim = create_drug_claim("pubchem.substance:#{line['ligand_pubchem_sid']}", 'PubChem Substance ID')
         create_drug_claim_aliases(drug_claim, line)
         unless blank?(line['ligand_species'])
           create_drug_claim_attribute(drug_claim, 'Name of the Ligand Species (if a Peptide)', line['ligand_species'])
@@ -114,7 +114,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       create_gene_claim_alias(gene_claim, line['target'], 'GuideToPharmacology Name') unless blank?(line['target'])
       unless blank?(line['target_ensembl_gene_id'])
         line['target_ensembl_gene_id'].split('|').each do |ensembl_id|
-          create_gene_claim_alias(gene_claim, ensembl_id, 'Ensembl ID')
+          create_gene_claim_alias(gene_claim, "ensembl:#{ensembl_id}", 'Ensembl Gene ID')
         end
       end
       unless blank?(line['target_gene_symbol'])
@@ -124,9 +124,13 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       end
       unless blank?(line['target_uniprot'])
         line['target_uniprot'].split('|').each do |uniprot_id|
-          create_gene_claim_alias(gene_claim, uniprot_id, 'UniProtKB ID')
+          create_gene_claim_alias(gene_claim, "uniprot:#{uniprot_id}", 'UniProtKB ID')
         end
       end
+    end
+
+    def strip_tags(drug_alias)
+      drug_alias.split("[PMID:")[0].strip
     end
 
     def create_drug_claim_aliases(drug_claim, line)

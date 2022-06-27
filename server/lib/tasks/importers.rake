@@ -42,6 +42,7 @@ namespace :dgidb do
       file_importer_glob = File.join(Rails.root, 'lib/genome/importers/file_importers/*')
       Dir.glob(file_importer_glob)
          .reject { |path| path =~ /guide_to_pharmacology/ }
+         .reject { |path| path.end_with?('.sql') }
          .map { |path| File.basename(path, '.rb') }
     end
 
@@ -133,7 +134,7 @@ namespace :dgidb do
     # run all imports
     send(:desc, 'Run all importers')
     send(:task, 'all', %i[gene_group drug_group] => :environment) do |_, args|
-      adj_file_importer_names.each do |name|
+      file_importer_names.each do |name|
         run_file_import(name, args.dup)
       end
       run_gtop_import args.dup
