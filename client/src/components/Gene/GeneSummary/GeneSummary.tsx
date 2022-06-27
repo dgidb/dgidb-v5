@@ -74,17 +74,17 @@ interface InfoProps {
 
 const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
 
-  const [chartType, setChartType] = useState('score')
+  const [chartType, setChartType] = useState('type')
 
   return (
     <div className="summary-infographic-container">
-      <h4>Summary Infographics</h4>
+      <h4>Infographics</h4>
 
       <div className="chart-section">
         {/* {chartType === 'score' && <InteractionTypeGene data={chartData} />} */}
         {chartType === 'type' && <InteractionTypeGene data={chartData} />}
-        {chartType === 'directionality' && <DirectionalityGene />}
-        {chartType === 'approval' && <RegulatoryApprovalGene />}
+        {chartType === 'directionality' && <DirectionalityGene data={chartData} />}
+        {chartType === 'approval' && <RegulatoryApprovalGene data={chartData}/>}
       </div>
 
       <div className="chart-selector">

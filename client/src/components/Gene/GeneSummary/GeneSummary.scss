@@ -92,8 +92,14 @@
         .approval-container {
           // height: 40%;
           // width: 40%;
+
+          canvas {
+            position: top;
+            width: 360px !important;
+          }
         }
       }
+
 
 
 

@@ -1,7 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
@@ -11,45 +9,37 @@ interface ApprovalRatings {
   [key: string]: number
 }
 
-export const RegulatoryApprovalGene: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
+interface Props {
+  data: any;
+}
 
-  const [approvalRatings, setApprovalRatings] = useState<any>([]);
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
-
+export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
   const [chartData, setChartData] = useState<any>({
     labels: ['Activating', 'Inhibiting', 'N/A'],
     datasets: [
       {
         label: 'Dataset 1',
-        data: [67, 32, 21],
+        data: [0, 0, 0],
         backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
       }
     ]
   });
 
-  let genes = data?.genes;
-
   useEffect(() => {
     let newObj: ApprovalRatings = {};
 
-    if (genes) {
-      genes?.forEach((gene: any) => {
+      data?.forEach((gene: any) => {
         gene.interactions?.forEach((int: any) => {
           int?.drug?.drugApprovalRatings.forEach((rating: any) => {
             if (newObj[rating.rating]) {
-              newObj[rating.rating] += 1;
+              ++newObj[rating.rating];
             } else {
               newObj[rating.rating] = 1;
             }
           })
         })
       })
-    }
 
-    //make data array and labels array
-
-    // let approvalRatingsArray = [];
     let dataArray = [];
     let labelArray = []
 
@@ -57,8 +47,6 @@ export const RegulatoryApprovalGene: React.FC = () => {
       dataArray.push(newObj[key])
       labelArray.push(key)
     }
-
-    // setApprovalRatings(approvalRatingsArray);
 
     setChartData({
       datasets: [
@@ -69,14 +57,21 @@ export const RegulatoryApprovalGene: React.FC = () => {
       ],
       labels: labelArray
     });
-
   }, [data])
-
 
   const options = {
     responsive: true,
+    height: 500,
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          boxWidth: 15,
+          padding: 8
+        }
+      }
+    }
   }
-
 
   return (
     <div className="approval-container">
