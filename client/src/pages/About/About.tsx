@@ -3,6 +3,9 @@ import React, { useState, useContext, useEffect} from 'react';
 
 // components
 import { Overview } from './SubSections/Overview';
+import { Publications } from './SubSections/Publications';
+import { TypesAndDirectionalities } from './SubSections/TypesAndDirectionalities';
+import { InteractionScoreQueryScore } from './SubSections/InteractionScoreQueryScore';
 
 // styles
 import './About.scss';
@@ -34,13 +37,18 @@ export const About = () => {
          <h3 id="about">About</h3>
           <Overview />
         </div>
-
+        <div className="doc-section">
         <h3 id="publications">Publications</h3>
-        <h3 id="interactions">Interactions</h3>
-        <h3 id="types">Types</h3>
-        <h3 id="directionalities">Directionalities</h3>
-        <h3 id="score">Score</h3>
-        <h3 id="query-score">Query Score</h3>
+          <Publications />
+        </div>
+        <div className="doc-section">
+        <h3 id="publications">Interaction Types and Directionalities</h3>
+          <TypesAndDirectionalities />
+        </div>
+        <div className="doc-section">
+        <h3 id="publications">Interaction Score and Query Score</h3>
+          <InteractionScoreQueryScore />
+        </div>
         <h3 id="api-documentation">API Documentation</h3>
         <h3 id="faq">FAQ</h3>
         <h3 id="known-data-clients">Known Data Clients</h3>
