@@ -12,6 +12,8 @@
   }
 
   h4 {
+    // background-color: var(--box);
+    // padding: 10px;
     color: var(--text-content);
     font-size: 1.4rem;
   }
@@ -21,6 +23,7 @@
 
     .interaction-count-container {
       border: 1px var(--text-content) solid;
+      // background-color: var(--box);
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
@@ -29,6 +32,7 @@
       .interaction-count-header {
         display: flex;
         justify-content: space-between;
+        // background-color: var(--box);
         margin-bottom: 10px;
         font-size: 1.2rem;
       }
@@ -93,6 +97,10 @@
           height: 50%;
           width: 50%;
         }
+
+        .gene-categories-container {
+          width: 40%;
+        }
       }
 
 
@@ -101,6 +109,7 @@
         display: flex;
         cursor: pointer;
         justify-content: space-between;
+        // padding: 10px;
       }
 
     }
