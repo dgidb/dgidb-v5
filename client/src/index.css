@@ -51,16 +51,20 @@
 }
 
 [data-theme='dark'] {
-  --background: #180a20;
+  --background: #120C1A;
+  --box-border: #392073;
+  --box: #21163a;
   --highlight: #63516e;
   --theme-primary: #480a77;
-  --text-primary: #ffffff;
+  --text-primary: #cec9d9;
+  --white: #ffffff;
   --text-content: #bac9c7;
+  --text-gray: ##928b9e;
   --background-dark: #180a20;
 }
 
 [data-theme='dark-home'] {
-  --background: #180a20;
+  --background: #120C1A;
   --highlight: #b3a8b9;
   --theme-primary: #480a77;
   --text-content: #c9dbd9;
