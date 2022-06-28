@@ -18,7 +18,7 @@ staging:
   host: <%= ENV.fetch("RDS_HOSTNAME") { "localhost" } %>
   port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
   username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
-  password: <%= ENV.fetch("RDS_PASSWORD") { <%=  Rails.application.credentials.dig(:staging, :db_password) %> } %>
+  password: <%= ENV.fetch("RDS_PASSWORD") {  Rails.application.credentials.dig(:staging, :db_password) } %>
 
 development:
   <<: *default
