@@ -1,6 +1,6 @@
 server "100.21.172.112", user: 'ubuntu', roles: %w{web db app}
 
-set :branch, 'staging'
+set :branch, 'staging-capistrano'
 set :rbenv_ruby, '3.1.2'
 
 set :rails_env, 'production'
