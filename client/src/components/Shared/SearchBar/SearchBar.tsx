@@ -101,7 +101,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
             options={options}
             onInputKeyDown={onKeyDown}
             value={state.searchTerms}
-            onDeselect={(val) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
+            onDeselect={(val: any) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
             // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
           >
