@@ -58,6 +58,7 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.gene.name.startsWith(value),
     },
     {
       title: 'Drug',
@@ -71,6 +72,7 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.drug.name.startsWith(value),
     },
     {
       title: 'Approval Status',
@@ -84,6 +86,7 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.drug.approved.startsWith(value),
     },
     {
       title: 'Indication',
@@ -106,6 +109,9 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      //TODO: fix this
+      onFilter: (value: any, record: any) => record?.drug.drugAttributes.startsWith(value),
+
     },
     {
       title: 'Interaction Score',
@@ -214,22 +220,23 @@ export const GeneIntTable: React.FC = () => {
       // this prevents the filtered column from narrowing its own options + not being able to reset
       if (!filters[prop]){
         switch (prop) {
-          case "variation.source_label":
+          case "gene.name":
             setGene(columnFilter(extra.currentDataSource, 1));
             break;
-          case "evidence_level.normalized_evidence_level":
+          case "drug.name":
             setDrug(columnFilter(extra.currentDataSource, 2));
             break;
-          case "disease.normalized_label":
+          case "drug.approved":
             setApprovalStatus(columnFilter(extra.currentDataSource, 3));
             break;
-          case "therapy.normalized_label":
+            //TODO: fix this case
+          case "drug.drugAttributes[0].name;":
             setIndication(columnFilter(extra.currentDataSource, 4));
             break;
-          case "source":
+          case "interactionScore":
             setIntScore(columnFilter(extra.currentDataSource, 5));
             break;
-          case "clinical_significance":
+          case "queryScore":
             setQueryScore(columnFilter(extra.currentDataSource, 6));
             break;
           default:

@@ -6,6 +6,10 @@ import { Overview } from './SubSections/Overview';
 import { Publications } from './SubSections/Publications';
 import { TypesAndDirectionalities } from './SubSections/TypesAndDirectionalities';
 import { InteractionScoreQueryScore } from './SubSections/InteractionScoreQueryScore';
+import { FAQ } from './SubSections/FAQ';
+import { KnownDataClients } from './SubSections/KnownDataClients';
+import { News } from './SubSections/News';
+import { Contact } from './SubSections/Contact';
 
 // styles
 import './About.scss';
@@ -20,13 +24,9 @@ export const About = () => {
       <Anchor affix={true} style={{color: 'red'}}>
         <Link href="#about" title="About" />
         <Link href="#publications" title="Publications" />
-        <Link href="#interactions" title="Interactions">
-          <Link href="#types" title="Types" />
-          <Link href="#directionalities" title="Directionalities" />
-          <Link href="#score" title="Score" />
-          <Link href="#query-score" title="Query Score" />
-        </Link>
-        <Link href="#api-documentation" title="API Documentation" />
+        <Link href="#interaction-types" title="Types/Directionalities" />
+        <Link href="#interaction-scores" title="Score/Query Score" />
+        {/* <Link href="#api-documentation" title="API Documentation" /> */}
         <Link href="#faq" title="FAQ" />
         <Link href="#known-data-clients" title="Known Data Clients" />
         <Link href="#news" title="News" />
@@ -42,18 +42,29 @@ export const About = () => {
           <Publications />
         </div>
         <div className="doc-section">
-        <h3 id="publications">Interaction Types and Directionalities</h3>
+        <h3 id="interaction-types">Interaction Types and Directionalities</h3>
           <TypesAndDirectionalities />
         </div>
         <div className="doc-section">
-        <h3 id="publications">Interaction Score and Query Score</h3>
+        <h3 id="interaction-scores">Interaction Score and Query Score</h3>
           <InteractionScoreQueryScore />
         </div>
-        <h3 id="api-documentation">API Documentation</h3>
+        <div className="doc-section">
         <h3 id="faq">FAQ</h3>
-        <h3 id="known-data-clients">Known Data Clients</h3>
+          <FAQ />
+        </div>
+        <div className="doc-section">
+        <h3 id="known-data-clients">KnownDataClients</h3>
+          <KnownDataClients />
+        </div>
+        <div className="doc-section">
         <h3 id="news">News</h3>
+          <News />
+        </div>
+        <div className="doc-section">
         <h3 id="contact">Contact</h3>
+          <Contact />
+        </div>
       </div>
     </div>
   )

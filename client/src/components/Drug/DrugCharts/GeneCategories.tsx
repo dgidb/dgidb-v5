@@ -30,8 +30,8 @@ export const GeneCategories: React.FC<Props> = ({data}) => {
   useEffect(() => {
     let newObj: ApprovalRatings = {};
 
-    data.forEach((drug: any) => {
-      drug.interactions.forEach((int: any) => {
+    data?.forEach((drug: any) => {
+      drug?.interactions?.forEach((int: any) => {
         int.gene.geneCategories.forEach((cat: any) => {
           if (newObj[cat.name]) {
             ++newObj[cat.name];
