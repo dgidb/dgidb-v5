@@ -1,6 +1,5 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
 import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
@@ -37,7 +36,6 @@ export const BrowseCategories: React.FC = () => {
     useEffect(() => {
       if (data?.sources?.nodes){
         let nodes = data?.sources?.nodes
-        console.log('nodes', nodes);
         let sources: any = [];
 
         nodes.forEach((node: any) => {
@@ -60,14 +58,15 @@ export const BrowseCategories: React.FC = () => {
     }, [data])
 
     useEffect(() => {
-
+      if (plainOptions) {
+        setCheckedList(plainOptions);
+      }
     }, [plainOptions])
 
     useEffect(() => {
       let allCategoriesCopy: Categories = {};
 
       // return each node where where checked item is present
-
       data?.sources?.nodes?.forEach((src: any) => {
         let includes: any = checkedList.includes(src.sourceDbName)
         if (includes) {
@@ -81,8 +80,6 @@ export const BrowseCategories: React.FC = () => {
           })
         }
       })
-
-      console.log('allCategoriesCopy', allCategoriesCopy)
 
       let categoriesArray = [];
 
@@ -130,7 +127,6 @@ export const BrowseCategories: React.FC = () => {
           </Collapse>
 
         </div>
-
       </div>
     )
 }
