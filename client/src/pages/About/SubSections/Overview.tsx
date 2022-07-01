@@ -2,8 +2,10 @@ export const Overview = () => {
 
   return(
     <div className="about-section-container doc-section">
-      <p>
-      Mining the druggable genome for personalized medicine
+      <p className="about-sub-header">
+      Mining the Druggable Genome for Personalized Medicine
+      </p>
+      <p className="about-citation">
         Citation: Integration of the Drug–Gene Interaction Database (DGIdb 4.0) with open crowdsource efforts. Freshour S, Kiwala S, Cotto KC, Coffman AC, McMichael JF, Song J, Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2020 Nov 25; doi: https://doi.org/10.1093/nar/gkaa1084. PMID: 33237278
       </p>
 
