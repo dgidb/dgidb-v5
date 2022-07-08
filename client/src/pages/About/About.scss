@@ -19,7 +19,6 @@
   .about-content-container {
     overflow: scroll;
     max-height: 90vh;
-    // color: var(--text-content);
     color: #d9d4cc;
     padding: 20px 40px;
     background-color: #28202D;
@@ -57,9 +56,21 @@
 
   .faq-section-container {
     .faq-item {
+      margin-bottom: 30px;
+
       .faq-question {
         font-weight: bold;
       }
+    }
+  }
+
+  .known-section-container {
+    li {
+      list-style-type: none;
+    }
+    a {
+      color: var(--text-accent);
+
     }
   }
 }
