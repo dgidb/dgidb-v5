@@ -22,6 +22,70 @@ query sources($sourceType: SourceTypeFilter) {
 }
 `
 
+const getGeneSourcesQuery = gql`
+query sources($sourceType: SourceTypeFilter) {
+  sources(sourceType: $sourceType) {
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+      sourceDbName
+      geneClaimsCount
+      geneClaimsInGroupsCount
+      citation
+      license
+      licenseLink
+    }
+  }
+}
+`
+
+const getDrugSourcesQuery = gql`
+query sources($sourceType: SourceTypeFilter) {
+  sources(sourceType: $sourceType) {
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+      sourceDbName
+      drugClaimsCount
+      drugClaimsInGroupsCount
+      citation
+      license
+      licenseLink
+    }
+  }
+}
+`
+
+const getInteractionSourcesQuery = gql`
+query sources($sourceType: SourceTypeFilter) {
+  sources(sourceType: $sourceType) {
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+      sourceDbName
+      drugClaimsCount
+      drugClaimsInGroupsCount
+      citation
+      license
+      licenseLink
+    }
+  }
+}
+`
+
+
 export function useGetDruggableSources(sourceType: string) {
   return useQuery('druggable-sources', async () => {
     const res = await graphQLClient.request(
