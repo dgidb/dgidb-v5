@@ -112,7 +112,7 @@ export const BrowseCategories: React.FC = () => {
         </div>
 
         <div className="category-list">
-           <Collapse>
+           <Collapse accordion>
           {renderedCategories?.map((cat: any, index: number) => {
             if(cat.geneCount) {
               return (
