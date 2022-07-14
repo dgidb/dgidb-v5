@@ -22,6 +22,17 @@ query sources($sourceType: SourceTypeFilter) {
 }
 `
 
+export function useGetDruggableSources(sourceType: string) {
+  return useQuery('druggable-sources', async () => {
+    const res = await graphQLClient.request(
+      getDruggableSourcesQuery,
+      { sourceType }
+    );
+    return res;
+  },
+  {enabled: sourceType !==''});
+}
+
 const getGeneSourcesQuery = gql`
 query sources($sourceType: SourceTypeFilter) {
   sources(sourceType: $sourceType) {
@@ -42,6 +53,17 @@ query sources($sourceType: SourceTypeFilter) {
   }
 }
 `
+
+export function useGetGeneSources(sourceType: string) {
+  return useQuery('gene-sources', async () => {
+    const res = await graphQLClient.request(
+      getGeneSourcesQuery,
+      { sourceType }
+    );
+    return res;
+  },
+  {enabled: sourceType !==''});
+}
 
 const getDrugSourcesQuery = gql`
 query sources($sourceType: SourceTypeFilter) {
@@ -64,6 +86,17 @@ query sources($sourceType: SourceTypeFilter) {
 }
 `
 
+export function useGetDrugSources(sourceType: string) {
+  return useQuery('drug-sources', async () => {
+    const res = await graphQLClient.request(
+      getDrugSourcesQuery,
+      { sourceType }
+    );
+    return res;
+  },
+  {enabled: sourceType !==''});
+}
+
 const getInteractionSourcesQuery = gql`
 query sources($sourceType: SourceTypeFilter) {
   sources(sourceType: $sourceType) {
@@ -77,6 +110,10 @@ query sources($sourceType: SourceTypeFilter) {
       sourceDbName
       drugClaimsCount
       drugClaimsInGroupsCount
+      geneClaimsCount
+      geneClaimsInGroupsCount
+      interactionClaimsCount
+      interactionClaimsInGroupsCount
       citation
       license
       licenseLink
@@ -85,11 +122,10 @@ query sources($sourceType: SourceTypeFilter) {
 }
 `
 
-
-export function useGetDruggableSources(sourceType: string) {
-  return useQuery('druggable-sources', async () => {
+export function useGetInteractionSources(sourceType: string) {
+  return useQuery('interaction-sources', async () => {
     const res = await graphQLClient.request(
-      getDruggableSourcesQuery,
+      getInteractionSourcesQuery,
       { sourceType }
     );
     return res;
