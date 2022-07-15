@@ -1,0 +1,42 @@
+b {
+  font-size: 2rem;
+}
+
+.sources-page-container {
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+  }
+
+  .gene-source-item {
+    border: 1px solid white;
+    margin-bottom: 2rem;
+    max-width: 280px;
+    padding: 10px;
+
+    .source-item-name {
+      font-size: 1.5rem;
+    }
+    .source-item-count {
+
+    }
+    .source-item-in-group {
+
+    }
+    .source-item-links {
+      display: flex;
+      justify-content: space-between;
+      .source-item-license {
+
+      }
+      .source-item-citation {
+
+      }
+    }
+  }
+
+}
