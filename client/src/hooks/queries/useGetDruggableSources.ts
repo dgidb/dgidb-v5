@@ -17,6 +17,15 @@ query sources($sourceType: SourceTypeFilter) {
         name
         geneCount
       }
+      drugClaimsCount
+      drugClaimsInGroupsCount
+      geneClaimsCount
+      geneClaimsInGroupsCount
+      interactionClaimsCount
+      interactionClaimsInGroupsCount
+      citation
+      license
+      licenseLink
     }
   }
 }
