@@ -111,7 +111,7 @@ export const Home: React.FC = () => {
       </div>
       <div className="home-links">
         <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
-          <a href="/api">API</a>
+          API
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           Downloads
