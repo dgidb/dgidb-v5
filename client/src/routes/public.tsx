@@ -12,7 +12,6 @@ import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout } from 'components/Layout';
 import { About } from 'pages/About';
-import { API } from 'pages/API/API';
 
 const App = () => {
 
@@ -63,7 +62,6 @@ export const Routes = () => {
         { path: '/browse/categories', element: <BrowseCategories /> },
         { path: '/browse/sources', element: <BrowseSources /> },
         { path: '/about', element: <About /> },
-        { path: '/api', element: <API /> },
         { path: '/', element: <Home /> },
         { path: '*', element: <Navigate to="." /> },
       ],
