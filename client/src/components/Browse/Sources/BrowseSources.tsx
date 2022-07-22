@@ -60,45 +60,66 @@ export const BrowseSources = () => {
           })
         }
       </div>
-
       <div><b>Drug Sources</b></div>
-      {
-        drugSources?.map((src: any) => {
-          return (
-            <div>
-              <div>source name: {src.sourceDbName}</div>
-              <div>gene claims count: {src.drugClaimsCount}</div>
-              <div>gene claims in group: {src.drugClaimsInGroupsCount}</div>
-            </div>
-          )
-        })
-      }
+      <div className="sources-grid">
+        {
+          drugSources?.map((src: any) => {
+            return (
+              <div className="gene-source-item">
+                <div className="source-item-name">{src.sourceDbName}</div>
+                <div className="source-item-count">Total: {src.drugClaimsCount}</div>
+                <div className="source-item-in-group">In Group: {src.drugClaimsInGroupsCount}</div>
+                <div className="source-item-links">
+                  <div className="source-item-license"><a>License</a></div>
+                  <div className="source-item-citation"><a>Full Citation</a></div>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+
       <div><b>Interaction Sources</b></div>
-      {
-        interactionSources?.map((src: any) => {
-          return (
-            <div>
-              <div>source name: {src.sourceDbName}</div>
-              <div>gene claims count: {src.drugClaimsCount}</div>
-              <div>gene claims in group: {src.drugClaimsInGroupsCount}</div>
-            </div>
-          )
-        })
-      }
-      <div><b>Potentially Druggalbe</b></div>
-      {
-          potentiallyDruggableSources?.map((src: any) => {
-          return (
-            <div>
-              <div>source name: {src.sourceDbName}</div>
-              <div>drug claims count: {src.drugClaimsCount}</div>
-              <div>drug claims in group: {src.drugClaimsInGroupsCount}</div>
-              <div>gene claims count: {src.geneClaimsCount}</div>
-              <div>gene claims in group: {src.geneClaimsInGroupsCount}</div>
-            </div>
-          )
-        })
-      }
+      <div className="sources-grid">
+        {
+          interactionSources?.map((src: any) => {
+            return (
+              <div className="gene-source-item">
+                <div className="source-item-name">{src.sourceDbName}</div>
+                <div className="source-item-count">gene claims count: {src.drugClaimsCount}</div>
+                <div className="source-item-in-group">gene claims in group: {src.drugClaimsInGroupsCount}</div>
+                <div className="source-item-links">
+                  <div className="source-item-license"><a>License</a></div>
+                  <div className="source-item-citation"><a>Full Citation</a></div>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+
+
+      <div><b>Potentially Druggable</b></div>
+      <div className="sources-grid">
+        {
+          interactionSources?.map((src: any) => {
+            return (
+              <div className="gene-source-item">
+                <div className="source-item-name">{src.sourceDbName}</div>
+                <div className="source-item-count">gene claims count: {src.drugClaimsCount}</div>
+                <div className="source-item-in-group">gene claims in group: {src.drugClaimsInGroupsCount}</div>
+                <div className="source-item-count">gene claims count: {src.geneClaimsCount}</div>
+                <div className="source-item-in-group">gene claims in group: {src.geneClaimsInGroupsCount}</div>
+                <div className="source-item-links">
+                  <div className="source-item-license"><a>License</a></div>
+                  <div className="source-item-citation"><a>Full Citation</a></div>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+
       <div className="source-item">
         <div className="source-title">
         </div>
