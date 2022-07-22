@@ -20,7 +20,7 @@ const initialState: InitialStateType = {
   searchTerms: [],
   themeSettings: {
     showDisclaimer: false,
-    darkModeEnabled: true,
+    darkModeEnabled: false,
     brandTheme: false
   }
 }
