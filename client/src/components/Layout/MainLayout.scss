@@ -64,6 +64,10 @@ header {
     }
   }
 
+  .ant-menu-title-content {
+    color: var(--text-content);
+  }
+
   .ant-menu-dark.ant-menu-horizontal {
     background-color: var(--background);
     color: var(--text-content);

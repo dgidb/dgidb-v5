@@ -4,7 +4,8 @@ module Types
     field :name, String, null: false
 
     field :gene_claims, [Types::GeneClaimType], null: false
-    field :genes, [Types::GeneType], null: false
+    field :genes, Types::GeneType.connection_type, null: false
+    field :gene_count, Int, null:false
 
     def gene_claims
       Loaders::AssociationLoader.for(GeneClaimCategory, :gene_claims).load(object)
@@ -12,6 +13,10 @@ module Types
 
     def genes
       Loaders::AssociationLoader.for(GeneClaimCategory, :genes).load(object)
+    end
+
+    def gene_count
+      object.genes.count
     end
   end
 end

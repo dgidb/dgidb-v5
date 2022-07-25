@@ -5,7 +5,7 @@
     color: white;
   }
 
-  // background-color: white;
+  background-color: var(--background);
   display: flex;
   color: var(--text-content);
   // font-size: 50px;
@@ -19,9 +19,9 @@
   .about-content-container {
     overflow: scroll;
     max-height: 90vh;
-    color: #d9d4cc;
+    color: var(--text-content);
     padding: 20px 40px;
-    background-color: #28202D;
+    background-color: var(--background);
 
 
     .doc-section {
