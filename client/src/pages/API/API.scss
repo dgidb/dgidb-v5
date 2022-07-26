@@ -10,6 +10,7 @@
     color: var(--text-content) !important
 }
 
+// divider override for the page headings. do not change the name, or it will throw off spacing
 .divider {
     margin: 8px 0 8px 0;
 }
@@ -43,9 +44,8 @@
     pre {
         display: block;
         padding: 9.5px;
-        margin: 0 0 10px;
-        font-size: 13px;
-        // line-height: 1.42857143;
+        margin: 2px 0 10px;
+        font-size: 11px !important;
         word-break: break-all;
         word-wrap: break-word;
         color: #333333;
@@ -64,6 +64,9 @@
     th {
         padding: 6px !important;
     }
+    code {
+        font-size: 11px;
+    }
 }
 
 .info-subsection {
@@ -71,4 +74,27 @@
     code {
         font-size: 11px;
     }
+}
+
+.note-section {
+    display: flex;
+}
+
+.badge {
+    background-color: #5bc0de;
+    margin-right: 5px;
+    height: 17px;
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.get {
+    background-color: #999999;
 }
