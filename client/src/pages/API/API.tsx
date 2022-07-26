@@ -1,11 +1,17 @@
 // hooks/dependencies
 import { Anchor, Divider, Table, Typography } from 'antd';
 import React, { useState, useContext, useEffect} from 'react';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import './API.scss';
+import { Collapse } from 'antd';
+import { ExampleResponse } from './ExampleResponse';
 
+const { Panel } = Collapse;
 const { Link } = Anchor;
 
 export const API = () => {
+  const {state, dispatch} = useContext(GlobalClientContext);
+  console.log(state?.themeSettings)
   const interactionTableData = [
     {
       parameter: 'genes / drugs (required)',
@@ -97,15 +103,6 @@ export const API = () => {
       dataIndex: 'description',
       key: 'description'
     },
-  ]
-
-  
-
-  const allDrugsTableData = [
-    {
-      parameter: 'page',
-      default: 1
-    }
   ]
 
   const getQueryParametersTable = (tableName: string) => {
@@ -210,7 +207,11 @@ export const API = () => {
             <pre>https://dgidb.org/api/v2/interactions</pre>
             <h5>Query Parameters: </h5>
             <Table dataSource={getQueryParametersTable('interactions')} columns={allInteractionsTableColumns} className='ant-table' pagination={false} />
-            <p>Show/Hide Response THIS NEEDS TO BE IMPLEMENTED</p>
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.all_interactions}</pre>
+              </Panel>
+            </Collapse>
             <Divider />
 
             <h4 id='interaction-details'>Interaction Details</h4>
@@ -223,7 +224,11 @@ export const API = () => {
               <p>The following example would query DGIdb for for the interaction with ID <code>001098f2-1b60-4c87-b3dd-245eb04ede43</code></p>
             </div>
             <pre>https://dgidb.org/api/v2/interactions/001098f2-1b60-4c87-b3dd-245eb04ede43</pre>
-            <p>Show/Hide Response THIS NEEDS TO BE IMPLEMENTED</p>
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.interaction_details}</pre>
+              </Panel>
+            </Collapse>
             <Divider />
 
             <h3 id='drugs'>Drugs</h3>
@@ -233,11 +238,21 @@ export const API = () => {
             <pre>https://dgidb.org/api/v2/drugs</pre>
             <h5>Query Parameters: </h5>
             <Table dataSource={getQueryParametersTable('drugs')} columns={allInteractionsTableColumns} pagination={false} />
-            <p>Show/Hide Response THIS NEEDS TO BE IMPLEMENTED</p>
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.all_drugs}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 
             <h4 id='drug-details'>Drug Details</h4>
+
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.drug_details}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 
@@ -248,31 +263,71 @@ export const API = () => {
             <pre>https://dgidb.org/api/v2/drugs</pre>
             <h5>Query Parameters: </h5>
             <Table dataSource={getQueryParametersTable('genes')} columns={allInteractionsTableColumns} pagination={false} />
-            <p>Show/Hide Response THIS NEEDS TO BE IMPLEMENTED</p>
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.all_genes}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 
             <h4 id='gene-details'>Gene Details</h4>
 
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.gene_details}</pre>
+              </Panel>
+            </Collapse>
+
             <Divider />
 
             <h3 id='interaction-types'>Interaction Types</h3>
+
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.interaction_types}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 
             <h3 id='interaction-sources'>Interaction Sources</h3>
 
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.interaction_sources}</pre>
+              </Panel>
+            </Collapse>
+
             <Divider />
 
             <h3 id='gene-categories'>Gene Categories</h3>
+
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.gene_categories}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 
             <h3 id='source-trust-levels'>Source Trust Levels</h3>
 
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.source_trust_levels}</pre>
+              </Panel>
+            </Collapse>
+
             <Divider />
 
             <h3 id='genes-in-category'>Genes in Category</h3>
+
+            <Collapse>
+              <Panel header="Show/Hide Response" key="1">
+                <pre>{ExampleResponse.genes_in_category}</pre>
+              </Panel>
+            </Collapse>
 
             <Divider />
 

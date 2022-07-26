@@ -18,6 +18,10 @@ type MainLayoutProps = {
 const Header: React.FC = () => {
 
   const navigate = useNavigate();
+  const {state} = useContext(GlobalClientContext);
+
+  let theme = state.themeSettings
+  console.log(theme)
 
   return (
     <header>

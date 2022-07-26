@@ -110,8 +110,8 @@ export const Home: React.FC = () => {
         An open-source search engine for drug-gene interactions and the druggable genome.
       </div>
       <div className="home-links">
-        <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
-          <a href='/api'>API</a>
+        <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline', cursor: 'pointer'}} >
+          <span onClick={() => navigate('/api')}>API</span>
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           Downloads
