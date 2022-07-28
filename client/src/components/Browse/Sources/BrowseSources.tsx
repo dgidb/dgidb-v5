@@ -42,7 +42,7 @@ export const BrowseSources = () => {
 
   return (
     <div className="sources-page-container">
-      <div><b>Gene Sources</b></div>
+      <div className="source-type-header"><b>Gene Sources</b></div>
       <div className="sources-grid">
         {
           geneSources?.map((src: any) => {
@@ -60,7 +60,7 @@ export const BrowseSources = () => {
           })
         }
       </div>
-      <div><b>Drug Sources</b></div>
+      <div className="source-type-header"><b>Drug Sources</b></div>
       <div className="sources-grid">
         {
           drugSources?.map((src: any) => {
@@ -79,7 +79,7 @@ export const BrowseSources = () => {
         }
       </div>
 
-      <div><b>Interaction Sources</b></div>
+      <div className="source-type-header"><b>Interaction Sources</b></div>
       <div className="sources-grid">
         {
           interactionSources?.map((src: any) => {
@@ -99,7 +99,7 @@ export const BrowseSources = () => {
       </div>
 
 
-      <div><b>Potentially Druggable</b></div>
+      <div className="source-type-header"><b>Potentially Druggable</b></div>
       <div className="sources-grid">
         {
           interactionSources?.map((src: any) => {
