@@ -12,6 +12,8 @@ import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout } from 'components/Layout';
 import { About } from 'pages/About';
+import { Test } from 'pages/Playground'
+
 
 const App = () => {
 
@@ -64,6 +66,7 @@ export const Routes = () => {
         { path: '/about', element: <About /> },
         { path: '/', element: <Home /> },
         { path: '*', element: <Navigate to="." /> },
+        { path: '/playground', element: <Test />}
       ],
     }
   ];
