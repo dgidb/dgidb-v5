@@ -21,17 +21,19 @@ export const About = () => {
 
   return(
     <div className="about-page-container">
-      <Anchor affix={true} style={{color: 'red'}}>
-        <Link href="#about" title="About" />
-        <Link href="#publications" title="Publications" />
-        <Link href="#interaction-types" title="Types/Directionalities" />
-        <Link href="#interaction-scores" title="Score/Query Score" />
-        {/* <Link href="#api-documentation" title="API Documentation" /> */}
-        <Link href="#faq" title="FAQ" />
-        <Link href="#known-data-clients" title="Known Data Clients" />
-        <Link href="#news" title="News" />
-        <Link href="#contact" title="Contact" />
-      </Anchor>
+      <div className="table-of-contents-container">
+        <Anchor affix={true} style={{color: 'red'}}>
+          <Link href="#about" title="About" />
+          <Link href="#publications" title="Publications" />
+          <Link href="#interaction-types" title="Types/Directionalities" />
+          <Link href="#interaction-scores" title="Score/Query Score" />
+          {/* <Link href="#api-documentation" title="API Documentation" /> */}
+          <Link href="#faq" title="FAQ" />
+          <Link href="#known-data-clients" title="Known Data Clients" />
+          <Link href="#news" title="News" />
+          <Link href="#contact" title="Contact" />
+        </Anchor>
+      </div>
       <div className="about-content-container">
         <div className="doc-section">
          <h3 id="about">About</h3>

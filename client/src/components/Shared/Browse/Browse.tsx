@@ -10,7 +10,7 @@ import { Collapse } from 'antd';
 import { GeneListTable } from 'components/Browse/Categories/GeneListTable';
 
 // styles
-import './BrowseCategories.scss';
+import './Browse.scss';
 import { Checkbox } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
@@ -20,7 +20,7 @@ const { Panel } = Collapse;
     [key: string]: number
   }
 
-export const BrowseCategories: React.FC = () => {
+export const Browse: React.FC = () => {
   const [plainOptions, setPlainOptions] = useState([]);
 
   const [checkedList, setCheckedList] = useState<any>([]);
@@ -112,7 +112,7 @@ export const BrowseCategories: React.FC = () => {
         </div>
 
         <div className="category-list">
-           <Collapse accordion>
+           <Collapse>
           {renderedCategories?.map((cat: any, index: number) => {
             if(cat.geneCount) {
               return (

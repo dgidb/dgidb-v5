@@ -1,14 +1,45 @@
 .about-page-container {
-  // background-color: white;
+
+  h3 {
+    font-size: 2rem;
+    color: white;
+  }
+
+  background-color: var(--background);
   display: flex;
   color: var(--text-content);
-  font-size: 50px;
+  // font-size: 50px;
 
   font-weight: 300;
 
+  .table-of-contents-container {
+    min-width: 180px;
+  }
+
   .about-content-container {
-    padding: 0 40px;
-    background-color: var(--soft-background);
+    overflow: scroll;
+    max-height: 90vh;
+    color: var(--text-content);
+    padding: 20px 40px;
+    background-color: var(--background);
+
+
+    .doc-section {
+      font-size: .95rem;
+    }
+
+    .about-section-container {
+      .about-sub-header {
+        font-size: 20px;
+        font-weight: 400;
+      }
+
+      .about-citation {
+        color: #8075FF;
+        font-size: .8rem;
+        font-weight: 400;
+      }
+    }
   }
 
   .ant-anchor-link-title {
@@ -21,5 +52,25 @@
 
   .doc-section {
     font-size: .89rem;
+  }
+
+  .faq-section-container {
+    .faq-item {
+      margin-bottom: 30px;
+
+      .faq-question {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .known-section-container {
+    li {
+      list-style-type: none;
+    }
+    a {
+      color: var(--text-accent);
+
+    }
   }
 }

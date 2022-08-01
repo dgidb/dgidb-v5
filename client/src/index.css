@@ -51,6 +51,7 @@
 }
 
 [data-theme='dark'] {
+  --text-accent: #8075FF;
   --background: #120C1A;
   --box-border: #392073;
   --box: #21163a;
@@ -70,4 +71,5 @@
   --text-content: #c9dbd9;
   --soft-background: #2c2133;
   --text-primary: #e8eaed;
+  --text-accent: #8075FF;
 }

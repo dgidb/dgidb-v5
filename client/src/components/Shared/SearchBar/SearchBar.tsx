@@ -116,9 +116,10 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
               visible={showFilters} 
               onVisibleChange={visible => setShowFilters(visible)} 
             >
-              <FilterOutlined 
+              {/* TODO: Reintroduce later
+              <FilterOutlined
                 style={{ fontSize: '150%', cursor: 'pointer'}}
-              />
+              /> */}
             </Popover>
           </div>
         </div>

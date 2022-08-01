@@ -1,1 +1,1 @@
-export * from './DrugTable'
+export * from './DrugTable';

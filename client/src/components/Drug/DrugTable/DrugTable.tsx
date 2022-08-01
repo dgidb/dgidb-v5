@@ -12,6 +12,12 @@ import './DrugTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
+// TODO: Why is there a module exports error when removing this?
+export const test2: React.FC = () => {
+  return (
+    <></>
+  )
+}
 export const DrugTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);

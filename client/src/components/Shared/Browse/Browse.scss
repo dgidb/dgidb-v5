@@ -13,7 +13,7 @@
   }
 
   .ant-table-wrapper {
-    background-color: var(--background-light) !important;
+    background-color: var(--highlight) !important;
   }
 
   .ant-table-pagination .ant-pagination {
@@ -21,7 +21,7 @@
   }
 
   .ant-table-container table > thead > tr > th {
-    background-color: var(--background-light);
+    background-color: var(--highlight);
   }
 }
 
