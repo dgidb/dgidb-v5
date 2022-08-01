@@ -1,5 +1,9 @@
 b {
-  font-size: 2rem;
+  font-size: 1.5rem;
+}
+
+.source-type-header {
+  margin-bottom: 12px;
 }
 
 .sources-page-container {
@@ -7,19 +11,22 @@ b {
   .sources-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 15px;
     grid-row-gap: 15px;
+    margin-bottom: 45px;
   }
 
   .gene-source-item {
+    background-color: var(--background-light) !important;
     border: 1px solid white;
     margin-bottom: 2rem;
-    max-width: 280px;
+    max-width: 320px;
     padding: 10px;
 
     .source-item-name {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
     }
     .source-item-count {
 
