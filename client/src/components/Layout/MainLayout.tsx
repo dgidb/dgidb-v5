@@ -36,12 +36,12 @@ const Header: React.FC = () => {
       </div>
       <nav>
         <ul>
-        <li>
-          <Dropdown overlay={menu}>
-            <Space>
-              Browse
+          <li>
+            <Dropdown overlay={menu}>
+              <Space>
+                Browse
               </Space>
-          </Dropdown>
+            </Dropdown>
           </li>
           <li onClick={() => navigate('/about')}>
             About
