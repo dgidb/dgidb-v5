@@ -3,6 +3,7 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from 'config';
 
 //TODO: this works in graphiql but not here? Field 'nodes' doesnt exist on type 'Query'
+//also, categoryName should not be hardcoded as "ENZYME". it should also take the array parameter (not a string)
 const getGeneListQuery = gql`
 query categories($categoryName: [String!]!) {
   nodes {
