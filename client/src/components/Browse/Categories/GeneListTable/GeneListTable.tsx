@@ -1,6 +1,7 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
 import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
+import { useGetGeneList } from 'hooks/queries/useGetGeneList';
 import { Collapse } from 'antd';
 
 // components
@@ -13,7 +14,7 @@ import { ColumnsType } from 'antd/es/table';
 
 export const GeneListTable: React.FC = () => {
 
-  const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE")
+  const { data } = useGetGeneList(["ENZYME"])
 
   const [interactionResults, setInteractionResults] = useState<any[]>([
     {gene: { name: 'ABCB11', description: 'ATP BINDING CASSETTE SUBFAMILY B MEMBER 11', sources: ['HopkinsGroom', 'Go']}},
