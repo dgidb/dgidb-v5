@@ -54,8 +54,8 @@ const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
   return (
     <div className="interaction-count-container">
       <div className="interaction-count-header">
-        <div className="interaction-count-drug"><b>Drug</b></div>
-        <div className="interaction-count"><b>Interactions</b></div>
+        <div className="interaction-count-drug"><h4>Drug</h4></div>
+        <div className="interaction-count"><h4>Interactions</h4></div>
       </div>
       {drugs?.map((drug: any) => {
         return (
