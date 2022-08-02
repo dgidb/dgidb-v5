@@ -18,7 +18,6 @@ import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
 import './DrugSummary.scss';
-import { RegulatoryApprovalDrug } from '../DrugCharts/RegulatoryApprovalDrug';
 
 ChartJS.register(
   CategoryScale,
@@ -54,8 +53,8 @@ const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
   return (
     <div className="interaction-count-container">
       <div className="interaction-count-header">
-        <div className="interaction-count-drug"><h4>Drug</h4></div>
-        <div className="interaction-count"><h4>Interactions</h4></div>
+        <div className="interaction-count-drug"><h2><b>Drug</b></h2></div>
+        <h2><b>Interactions</b></h2>
       </div>
       {drugs?.map((drug: any) => {
         return (
@@ -79,7 +78,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
 
   return (
     <div className="summary-infographic-container">
-      <h4>Summary Infographics</h4>
+      <h2>Summary Infographics</h2>
 
       <div className="chart-section">
         {chartType === 'categories' && <GeneCategories data={chartData} />}
@@ -118,7 +117,7 @@ export const DrugSummary: React.FC = () => {
   }
   return (
     <div className="drug-summary-container">
-      <h3>Drug Summary</h3>
+      <h1>Drug Summary</h1>
       <div className="drug-summary-content">
         <InteractionCountDrug setChartData={setChartData}/>
         <SummaryInfoDrug chartData={chartData} />
