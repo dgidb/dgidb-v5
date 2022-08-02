@@ -8,12 +8,10 @@
 
   h3 {
     color: var(--text-content);
-    font-size: 2rem;
   }
 
   h4 {
     color: var(--text-content);
-    font-size: 1.4rem;
   }
 
   .drug-summary-content {
@@ -40,14 +38,10 @@
           background-color: var(--background-light);
           cursor: pointer;
         }
+      }
 
-        .interaction-count-drug {
-          padding: 0 10px;
-        }
-
-        .interaction-count {
-          padding: 0 10px;
-        }
+      .interaction-count-drug {
+        margin-right: 1.5em;
       }
 
       .filtered-by {
