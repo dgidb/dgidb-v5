@@ -36,7 +36,7 @@ module Genome
       DrugClaim.where(
         name: name.strip,
         nomenclature: nomenclature.strip,
-        source_id: source.id
+        source_id: @source.id
       ).first_or_create
     end
 

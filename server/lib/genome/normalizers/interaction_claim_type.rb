@@ -48,11 +48,11 @@ module Genome
       end
 
       def self.default_type
-        InteractionClaimType.find_by(type: 'n/a')
+        ::InteractionClaimType.find_by(type: 'n/a')
       end
 
       def self.other_type
-        InteractionClaimType.find_by(type: 'other/unknown')
+        ::InteractionClaimType.find_by(type: 'other/unknown')
       end
 
       def self.add_unless_exists(type, interaction_claim)
@@ -126,7 +126,7 @@ module Genome
       end
 
       def self.all_interaction_claim_types
-        InteractionClaimType.all.each_with_object({}) do |i, h|
+        ::InteractionClaimType.all.each_with_object({}) do |i, h|
           h[i.type] = i
         end
       end
