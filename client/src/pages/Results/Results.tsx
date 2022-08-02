@@ -41,7 +41,7 @@ const GeneResults: React.FC = () => {
 const DrugResults: React.FC = () => {
   return (
     <>
-      <Tabs defaultActiveKey="1" onChange={onChange}>
+      <Tabs defaultActiveKey="1" onChange={onChange} type="card">
         <TabPane tab="Unique Matches" key="1">
         <DrugSummary />
           <DrugTable />
