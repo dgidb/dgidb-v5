@@ -53,8 +53,8 @@ const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
   return (
     <div className="interaction-count-container">
       <div className="interaction-count-header">
-        <div className="interaction-count-gene"><b>Gene</b></div>
-        <div className="interaction-count"><b>Interactions</b></div>
+        <div className="interaction-count-gene"><h2><b>Gene</b></h2></div>
+        <div className="interaction-count"><h2><b>Interactions</b></h2></div>
       </div>
       {genes?.map((gene: any) => {
         return (
@@ -78,7 +78,7 @@ const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
 
   return (
     <div className="summary-infographic-container">
-      <h4>Infographics</h4>
+      <h2>Infographics</h2>
 
       <div className="chart-section">
         {/* {chartType === 'score' && <InteractionTypeGene data={chartData} />} */}
@@ -117,7 +117,7 @@ export const GeneSummary: React.FC = () => {
   }
   return (
     <div className="gene-summary-container">
-      <h3>Gene Summary</h3>
+      <h1>Gene Summary</h1>
       <div className="gene-summary-content">
         <InteractionCount setChartData={setChartData}/>
         <SummaryInfo chartData={chartData} />
