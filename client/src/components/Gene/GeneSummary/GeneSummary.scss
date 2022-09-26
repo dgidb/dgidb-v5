@@ -83,17 +83,10 @@
           padding-left: 10px;
         }
         .type-container {
-          canvas {
-            max-height: 400px !important;
-            max-width: 400px !important;
-            min-height: 300px !important;
-            min-width: 300px !important;
-          }
           padding-left: 10px;
         }
         .approval-container {
           padding-left: 10px;
-          
         }
       }
       .chart-selector {
@@ -103,4 +96,11 @@
       }
     }
   }
+}
+
+canvas {
+  max-height: 400px !important;
+  max-width: 400px !important;
+  min-height: 300px !important;
+  min-width: 300px !important;
 }

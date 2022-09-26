@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { InteractionTypeDrug } from "components/Drug/DrugCharts";
+import { InteractionTypeDrug, RegulatoryApprovalDrug } from "components/Drug/DrugCharts";
 import { DirectionalityDrug } from "components/Drug/DrugCharts";
 import { GeneCategories } from "components/Drug/DrugCharts";
 
@@ -98,7 +98,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
         <InteractionTypeDrug data={chartData} />
         <InteractionTypeDrug data={chartData} />
         <DirectionalityDrug data={chartData} />
-        <InteractionTypeDrug data={chartData} />
+        <RegulatoryApprovalDrug data={chartData} />
       </div>
     </div>
   );

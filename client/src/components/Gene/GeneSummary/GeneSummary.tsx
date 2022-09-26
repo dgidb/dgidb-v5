@@ -108,7 +108,7 @@ const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-      {getWindowSize().innerWidth >= 1360 ? (
+      {getWindowSize().innerWidth >= 1550 ? (
         <div className="chart-section">
           <InteractionTypeGene data={chartData} />
           <DirectionalityGene data={chartData} />
