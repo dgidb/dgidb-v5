@@ -108,30 +108,27 @@ const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-
-      <div className="chart-section">
-        {getWindowSize().innerWidth >= 1360 ? (
-          <div>
-            <InteractionTypeGene data={chartData} />
-            <DirectionalityGene data={chartData} />
-            <RegulatoryApprovalGene data={chartData} />
-          </div>
-        ) : (
-          <div>
-            <Tabs defaultActiveKey="1" type="card">
-              <TabPane tab="Interaction Type" key="1">
-                <InteractionTypeGene data={chartData} />
-              </TabPane>
-              <TabPane tab="Directionality" key="2">
-                <DirectionalityGene data={chartData} />
-              </TabPane>
-              <TabPane tab="Regulatory Approval" key="3">
-                <RegulatoryApprovalGene data={chartData} />
-              </TabPane>
-            </Tabs>
-          </div>
-        )}
-      </div>
+      {getWindowSize().innerWidth >= 1360 ? (
+        <div className="chart-section">
+          <InteractionTypeGene data={chartData} />
+          <DirectionalityGene data={chartData} />
+          <RegulatoryApprovalGene data={chartData} />
+        </div>
+      ) : (
+        <div className="chart-section tabbed-view">
+          <Tabs defaultActiveKey="1" type="card" tabPosition="left">
+            <TabPane tab="Interaction Type" key="1">
+              <InteractionTypeGene data={chartData} />
+            </TabPane>
+            <TabPane tab="Directionality" key="2">
+              <DirectionalityGene data={chartData} />
+            </TabPane>
+            <TabPane tab="Regulatory Approval" key="3">
+              <RegulatoryApprovalGene data={chartData} />
+            </TabPane>
+          </Tabs>
+        </div>
+      )}
     </div>
   );
 };

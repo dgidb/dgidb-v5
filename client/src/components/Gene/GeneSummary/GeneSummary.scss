@@ -59,6 +59,11 @@
       flex-direction: column;
       height: 500px;
 
+      .tabbed-view {
+        align-items: flex-start !important;
+        justify-content: center;
+      }
+
       .chart-section {
         height: 100%;
         width: 100%;
@@ -66,22 +71,29 @@
         align-items: center;
         justify-content: space-between;
 
+        .ant-tabs {
+          min-width: 500px;
+        }
+
+        .ant-tabs-tabpane {
+          padding-left: 100px;
+        }
+
         .score-container {
           padding-left: 10px;
         }
         .type-container {
           canvas {
-            min-height: 200px !important;
-            min-width: 200px !important;
+            max-height: 400px !important;
+            max-width: 400px !important;
+            min-height: 300px !important;
+            min-width: 300px !important;
           }
           padding-left: 10px;
         }
         .approval-container {
           padding-left: 10px;
-          canvas {
-            height: 350px !important;
-            width: 350px !important;
-          }
+          
         }
       }
       .chart-selector {
