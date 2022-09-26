@@ -73,25 +73,15 @@ interface InfoProps {
 }
 
 const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
-
-  const [chartType, setChartType] = useState('categories')
-
   return (
     <div className="summary-infographic-container">
       <h2>Summary Infographics</h2>
 
       <div className="chart-section">
-        {chartType === 'categories' && <GeneCategories data={chartData} />}
-        {chartType === 'type' && <InteractionTypeDrug data={chartData} />}
-        {chartType === 'directionality' && <DirectionalityDrug data={chartData} />}
-        {/* {chartType === 'approval' && <RegulatoryApprovalDrug data={chartData} />} */}
-      </div>
-
-      <div className="chart-selector">
-        <div onClick={() => setChartType('categories')}>Gene Categories</div>
-        <div onClick={() => setChartType('type')}>Interaction Types</div>
-        <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
-        {/* <div onClick={() => setChartType('approval')}>Regulatory Approval</div> */}
+        <InteractionTypeDrug data={chartData} />
+        <InteractionTypeDrug data={chartData} />
+        <DirectionalityDrug data={chartData} />
+        <InteractionTypeDrug data={chartData} />
       </div>
     </div>
   )

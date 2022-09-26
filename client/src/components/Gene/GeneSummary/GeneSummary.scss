@@ -69,14 +69,21 @@
         .score-container {
           height: 50%;
           width: 50%;
+          padding-left: 10px;
         }
         .type-container {
           height: 50%;
           width: 50%;
+          padding-left: 10px;
         }
-        canvas {
-          position: top;
-          width: 360px !important;
+        .directionality-container {
+          // height: 25%;
+          // width: 25%;
+        }
+        .approval-container {
+          height: 50%;
+          width: 50%;
+          padding-left: 10px;
         }
       }
       .chart-selector {
