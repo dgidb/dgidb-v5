@@ -18,6 +18,8 @@ import { GeneCategories } from "components/Drug/DrugCharts";
 
 // styles
 import "./DrugSummary.scss";
+import { Tabs } from "antd";
+const { TabPane } = Tabs;
 
 ChartJS.register(
   CategoryScale,
@@ -90,16 +92,46 @@ interface InfoProps {
 }
 
 const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
   return (
     <div className="summary-infographic-container">
-      <h2>Summary Infographics</h2>
-
+      <h2>Infographics</h2>
+      {getWindowSize().innerWidth >= 1550 ? (
       <div className="chart-section">
         <InteractionTypeDrug data={chartData} />
-        <InteractionTypeDrug data={chartData} />
         <DirectionalityDrug data={chartData} />
-        <RegulatoryApprovalDrug data={chartData} />
-      </div>
+        <GeneCategories data={chartData} />
+      </div> ) : (
+        <div className="chart-section tabbed-view">
+          <Tabs defaultActiveKey="1" type="card" tabPosition="left">
+          <TabPane tab="Interaction Type" key="1">
+              <InteractionTypeDrug data={chartData} />
+            </TabPane>
+            <TabPane tab="Directionality" key="2">
+              <DirectionalityDrug data={chartData} />
+            </TabPane>
+            <TabPane tab="Categories" key="3">
+              <GeneCategories data={chartData} />
+            </TabPane>
+          </Tabs>
+        </div>
+      )}
+
     </div>
   );
 };
