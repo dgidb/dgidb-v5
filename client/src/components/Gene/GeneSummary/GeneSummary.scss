@@ -64,26 +64,24 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
 
         .score-container {
-          height: 50%;
-          width: 50%;
           padding-left: 10px;
         }
         .type-container {
-          height: 50%;
-          width: 50%;
+          canvas {
+            min-height: 200px !important;
+            min-width: 200px !important;
+          }
           padding-left: 10px;
-        }
-        .directionality-container {
-          // height: 25%;
-          // width: 25%;
         }
         .approval-container {
-          height: 50%;
-          width: 50%;
           padding-left: 10px;
+          canvas {
+            height: 350px !important;
+            width: 350px !important;
+          }
         }
       }
       .chart-selector {
