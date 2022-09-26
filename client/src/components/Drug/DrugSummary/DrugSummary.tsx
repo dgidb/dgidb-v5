@@ -1,7 +1,7 @@
 // hooks/dependencies
-import React, { useState, useEffect, useContext, SetStateAction } from "react";
-import { useGetInteractionsByDrugs } from "hooks/queries/useGetInteractions";
-import { GlobalClientContext } from "stores/Global/GlobalClient";
+import React, { useState, useEffect, useContext, SetStateAction } from 'react';
+import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,15 +10,15 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 
-import { InteractionTypeDrug, RegulatoryApprovalDrug } from "components/Drug/DrugCharts";
-import { DirectionalityDrug } from "components/Drug/DrugCharts";
-import { GeneCategories } from "components/Drug/DrugCharts";
+import { InteractionTypeDrug, RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
+import { DirectionalityDrug } from 'components/Drug/DrugCharts';
+import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
-import "./DrugSummary.scss";
-import { Tabs } from "antd";
+import './DrugSummary.scss';
+import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -37,14 +37,14 @@ interface CountProps {
 const InteractionCountDrug: React.FC<CountProps> = ({ setChartData }) => {
   const { state } = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
-  const [filterBy, setFilterBy] = useState<string>("");
+  const [filterBy, setFilterBy] = useState<string>('');
 
   let drugs = data?.drugs;
 
   const toggleFilter = (drugName: string) => {
     if (filterBy === drugName) {
       setChartData(drugs);
-      setFilterBy("");
+      setFilterBy('');
     } else {
       let drug = drugs.find(
         (drug: any) => drug.interactions[0]?.drug?.name === drugName
@@ -55,9 +55,9 @@ const InteractionCountDrug: React.FC<CountProps> = ({ setChartData }) => {
   };
 
   return (
-    <div className="interaction-count-container">
-      <div className="interaction-count-header">
-        <div className="interaction-count-drug">
+    <div className='interaction-count-container'>
+      <div className='interaction-count-header'>
+        <div className='interaction-count-drug'>
           <h2>
             <b>Drug</b>
           </h2>
@@ -71,15 +71,15 @@ const InteractionCountDrug: React.FC<CountProps> = ({ setChartData }) => {
           <div
             className={`interaction-count-row ${
               filterBy === drug.interactions[0]?.drug?.name
-                ? "filtered-by"
+                ? 'filtered-by'
                 : null
             }`}
             onClick={() => toggleFilter(drug.interactions[0]?.drug?.name)}
           >
-            <div className="interaction-count-drug">
+            <div className='interaction-count-drug'>
               {drug.interactions[0].drug.name}
             </div>
-            <div className="interaction-count">{drug.interactions.length}</div>
+            <div className='interaction-count'>{drug.interactions.length}</div>
           </div>
         );
       })}
@@ -98,9 +98,9 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -109,23 +109,23 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
     return { innerWidth, innerHeight };
   }
   return (
-    <div className="summary-infographic-container">
+    <div className='summary-infographic-container'>
       <h2>Infographics</h2>
       {getWindowSize().innerWidth >= 1550 ? (
-      <div className="chart-section">
+      <div className='chart-section'>
         <InteractionTypeDrug data={chartData} />
         <DirectionalityDrug data={chartData} />
         <GeneCategories data={chartData} />
       </div> ) : (
-        <div className="chart-section tabbed-view">
-          <Tabs defaultActiveKey="1" type="card" tabPosition="left">
-          <TabPane tab="Interaction Type" key="1">
+        <div className='chart-section tabbed-view'>
+          <Tabs defaultActiveKey='1' type='card' tabPosition='left'>
+          <TabPane tab='Interaction Type' key='1'>
               <InteractionTypeDrug data={chartData} />
             </TabPane>
-            <TabPane tab="Directionality" key="2">
+            <TabPane tab='Directionality' key='2'>
               <DirectionalityDrug data={chartData} />
             </TabPane>
-            <TabPane tab="Categories" key="3">
+            <TabPane tab='Categories' key='3'>
               <GeneCategories data={chartData} />
             </TabPane>
           </Tabs>
@@ -149,16 +149,16 @@ export const DrugSummary: React.FC = () => {
 
   if (isError || isLoading) {
     return (
-      <div className="drug-summary-container">
+      <div className='drug-summary-container'>
         {isError && <div>Error: Interactions not found!</div>}
         {isLoading && <div>Loading...</div>}
       </div>
     );
   }
   return (
-    <div className="drug-summary-container">
+    <div className='drug-summary-container'>
       <h1>Drug Summary</h1>
-      <div className="drug-summary-content">
+      <div className='drug-summary-content'>
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
