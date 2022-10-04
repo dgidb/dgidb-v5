@@ -59,24 +59,40 @@
       flex-direction: column;
       height: 500px;
 
+      .tabbed-view {
+        align-items: flex-start !important;
+        justify-content: center;
+      }
+
       .chart-section {
         height: 100%;
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+
+        .ant-tabs {
+          min-width: 500px;
+        }
+
+        .ant-tabs-tabpane {
+          padding-left: 100px;
+          div {
+            canvas {
+              height: 500px !important;
+              width: 500px !important;
+            }
+          }
+        }
 
         .score-container {
-          height: 50%;
-          width: 50%;
+          padding-left: 10px;
         }
         .type-container {
-          height: 50%;
-          width: 50%;
+          padding-left: 10px;
         }
-        canvas {
-          position: top;
-          width: 360px !important;
+        .approval-container {
+          padding-left: 10px;
         }
       }
       .chart-selector {
@@ -84,7 +100,13 @@
         cursor: pointer;
         justify-content: space-between;
       }
-
     }
   }
+}
+
+canvas {
+  max-height: 400px !important;
+  max-width: 400px !important;
+  min-height: 300px !important;
+  min-width: 150px !important;
 }
