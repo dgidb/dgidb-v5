@@ -66,7 +66,7 @@ module Genome
               create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE') if ei.evidence_level == 'A'
 
               dc = create_drug_claim(drug.name.upcase, 'Primary Drug Name')
-              create_drug_claim_alias(dc, "ncit:#{drug.ncit_id}", 'NCIt ID')
+              create_drug_claim_alias(dc, "ncit:#{drug.ncit_id}", 'NCIt ID') if drug.ncit_id
 
               ic = create_interaction_claim(gc, dc)
               if ei.source.citation_id.present? && ei.source.source_type == 'PubMed'
