@@ -27,7 +27,7 @@ module Genome; module Importers; module FileImporters; module Chembl
           base_url: "https://chembl.gitbook.io/chembl-interface-documentation/downloads",
           site_url: "https://www.ebi.ac.uk/chembl/",
           citation: "ChEMBL: towards direct deposition of bioassay data. Mendez D, Gaulton A, Bento AP, Chambers J, De Veij M, Félix E, Magariños MP, Mosquera JF, Mutowo P, Nowotka M, Gordillo-Marañón M, Hunter F, Junco L, Mugumbate G, Rodriguez-Lopez M, Atkinson F, Bosc N, Radoux CJ, Segura-Cabrera A, Hersey A, Leach AR. Nucleic Acids Res. 2019; 47(D1):D930-D940. doi: 10.1093/nar/gky1075",
-          source_db_version: "02-Feb-2022",
+          source_db_version: "15-Aug-2022",
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: "The ChEMBL Bioactivity Database",
