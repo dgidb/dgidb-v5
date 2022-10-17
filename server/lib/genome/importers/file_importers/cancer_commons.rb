@@ -35,16 +35,19 @@ module Genome; module Importers; module FileImporters; module CancerCommons;
       CSV.foreach(file_path, encoding: 'iso-8859-1:utf-8', :headers => true, :col_sep => "\t") do |row|
         gene_claim = create_gene_claim(row['primary_gene_name'].upcase, 'Gene Target Symbol')
         create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_gene_id']}", 'NCBI Gene ID')
-        create_gene_claim_attribute(gene_claim, 'CancerCommons Reported Gene Name', row['reported_gene_name'])
+        create_gene_claim_alias(gene_claim,  row['reported_gene_name'], 'CancerCommons Reported Gene Name')
 
         drug_claim = create_drug_claim(row['primary_drug_name'].strip.upcase, 'Primary Drug Name')
         create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
-        create_drug_claim_attribute(drug_claim, 'Source Reported Drug Name(s)', row['source_reported_drug_name'])
         create_drug_claim_attribute(drug_claim, 'Pharmaceutical Developer', row['pharmaceutical_developer'])
-        unless row['pubchem_drug_name'] == 'NA'
+
+        row['source_reported_drug_name'].split('/').map { |drug_name|
+          create_drug_claim_alias(drug_claim, drug_name, 'CancerCommons Reported Drug Name')
+        }
+        unless row['pubchem_drug_name'].upcase == 'NA'
           create_drug_claim_alias(drug_claim, row['pubchem_drug_name'], 'PubChem Drug Name')
         end
-        unless row['pubchem_drug_id'] == 'NA'
+        unless row['pubchem_drug_id'].upcase == 'NA'
           create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['pubchem_drug_id']}", 'PubChem Compound ID')
         end
         create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
