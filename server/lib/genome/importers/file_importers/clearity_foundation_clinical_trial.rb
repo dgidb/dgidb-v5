@@ -33,7 +33,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        next if row['Entrez Gene Name'] == 'N/A'
+        next if row['Entrez Gene Name'] == 'N/A' || row['Pubchem name'] == 'N/A'
 
         gene_claim = create_gene_claim(row['Entrez Gene Name'].upcase, 'Gene Target Symbol')
         create_gene_claim_alias(gene_claim, "ncbigene:#{row['Enterez Gene Id']}", 'NCBI Gene ID')
