@@ -52,6 +52,8 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       end
       CSV.foreach("#{@tsv_root}gene_claim_aliases.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[0]]
+        next if gc.nil?
+
         case row[2]
         when 'OncoKB Entrez Id'
           create_gene_claim_alias(gc, "ncbigene:#{row[1]}", 'NCBI Gene ID')
@@ -63,6 +65,8 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       CSV.foreach("#{@tsv_root}interaction_claim.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[1]]
         dc = @drug_claims[row[0]]
+        next if gc.nil? || dc.nil?
+
         ic = create_interaction_claim(gc, dc)
         @interaction_claims[[gc, dc]] = ic
 
@@ -70,12 +74,16 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       CSV.foreach("#{@tsv_root}interaction_claim_attributes.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[3]]
         dc = @drug_claims[row[2]]
+        next if gc.nil? || dc.nil?
+
         ic = @interaction_claims[[gc, dc]]
         create_interaction_claim_attribute(ic, row[0], row[1])
       end
       CSV.foreach("#{@tsv_root}interaction_claim_links.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[3]]
         dc = @drug_claims[row[2]]
+        next if gc.nil? || dc.nil?
+
         ic = @interaction_claims[[gc, dc]]
         create_interaction_claim_link(ic, row[0], row[1])
       end
