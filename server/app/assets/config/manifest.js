@@ -1,2 +1,2 @@
-//= link graphiql/rails/application.css
-//= link graphiql/rails/application.js
+//= link graphql/playground/application.css
+//= link graphql/playground/application.js

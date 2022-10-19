@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   get '/api/health_check', to: proc { [200, {}, ['success']] } unless Gene.first.nil?
 
-  mount GraphiQL::Rails::Engine, at: "/api/graphiql", graphql_path: "/api/graphql"
+  if Rails.env.development?
+    mount GraphQL::Playground::Engine, at: "/api/graphiql", graphql_path: "/api/graphql"
+  end
 end

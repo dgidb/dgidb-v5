@@ -23,6 +23,7 @@
     "css-loader": "^6.7.1",
     "env-cmd": "^10.1.0",
     "graphql": "^15.5.1",
+    "graphql-playground-react": "^1.7.28",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",
