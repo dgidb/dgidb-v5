@@ -46,6 +46,8 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
               create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
             end
           else
+            next if drug_name.upcase == 'N/A'
+
             drug_claim = create_drug_claim(drug_name, 'Primary Drug Name')
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             create_interaction_claim_publications(interaction_claim, interaction['References'])
