@@ -55,7 +55,7 @@ module Genome; module Importers; module FileImporters; module CancerCommons;
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['interaction_type'])
-        create_interaction_claim_attribute(interaction_claim, 'Reported Cancer Type', row['cancer_type'])
+        create_interaction_claim_attribute(interaction_claim, 'Cancer Type', row['cancer_type'])
         create_interaction_claim_link(
           interaction_claim,
           'Source TSV',
