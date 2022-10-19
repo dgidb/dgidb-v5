@@ -56,7 +56,7 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['Interaction type'])
         create_interaction_claim_attribute(interaction_claim, 'Clinical Trial ID', row['clinical trial ID']) unless row['clinical trial ID'] == 'N/A'
-        create_interaction_claim_attribute(interaction_claim, 'Type of Cancer Targeted', row['Disease'])
+        create_interaction_claim_attribute(interaction_claim, 'Cancer Type', row['Disease'])
         create_interaction_claim_attribute(interaction_claim, 'Indication of Interaction', row['indication of drug-gene interaction']) unless row['indication of drug-gene interaction'] == 'N/A'
         create_interaction_claim_link(interaction_claim, 'Clinical Trials', "https://www.mycancergenome.org/content/clinical_trials/")
       end
