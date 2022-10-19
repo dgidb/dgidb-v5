@@ -24,14 +24,14 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     def create_new_source
       @source ||= Source.create(
         {
-            base_url: 'https://go.drugbank.com/drugs',
-            site_url: 'https://go.drugbank.com/',
-            citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
-            source_db_version: '5.1.9',
-            source_db_name: 'DrugBank',
-            full_name: 'DrugBank - Open Data Drug & Drug Target Database',
-            license: 'Custom non-commercial',
-            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
+          base_url: 'https://go.drugbank.com/drugs',
+          site_url: 'https://go.drugbank.com/',
+          citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
+          source_db_version: '5.1.9',
+          source_db_name: 'DrugBank',
+          full_name: 'DrugBank - Open Data Drug & Drug Target Database',
+          license: 'Custom non-commercial',
+          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -39,42 +39,44 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     end
 
     def create_claims
-        run_parser
+      run_parser
 
-        @drug_filter.all_records.each do |record|
+      @drug_filter.all_records.each do |record|
+        next if record[1].strip == '' || !record[2].exclude?('n/a')
 
-            if record[2].exclude?"n/a"
-                gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
+        gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
 
-                Hash[record[6].zip(record[5])].each do |nomen, syn|
-                  case nomen
-                  when 'UniProtKB'
-                    create_gene_claim_alias(gene_claim, "uniprot:#{syn}", 'UniProtKB ID')
-                  when 'UniProt Accession'
-                    create_gene_claim_alias(gene_claim, syn, 'UniProtKB Entry Name')
-                  when 'IUPHAR', 'Guide to Pharmacology'
-                    create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", 'GuideToPharmacology Target ID')
-                  when 'HUGO Gene Nomenclature Committee (HGNC)'
-                    create_gene_claim_alias(gene_claim, syn, 'HGNC ID')
-                  else
-                    create_gene_claim_alias(gene_claim, syn, nomen)
-                  end
-                end
-
-                drug_claim = create_drug_claim(record[1], 'DrugBank Drug Name')
-
-                create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", 'DrugBank ID')
-
-                interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-
-                create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', record[3])
-
-                record[4].each do |pmid|
-                    create_interaction_claim_publication(interaction_claim, pmid)
-                end
+        Hash[record[6].zip(record[5])].each do |nomen, syn|
+          case nomen
+          when 'UniProtKB'
+            create_gene_claim_alias(gene_claim, "uniprot:#{syn}", 'UniProtKB ID')
+          when 'UniProt Accession'
+            create_gene_claim_alias(gene_claim, syn, 'UniProtKB Entry Name')
+          when 'IUPHAR', 'Guide to Pharmacology'
+            create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", 'GuideToPharmacology Target ID')
+          when 'HUGO Gene Nomenclature Committee (HGNC)'
+            create_gene_claim_alias(gene_claim, syn, 'HGNC ID')
+          else
+            if nomen == 'GenAtlas'
+              create_gene_claim_alias(gene_claim, syn, 'GenAtlas Gene Symbol')
+            else
+              create_gene_claim_alias(gene_claim, syn, nomen)
             end
+          end
         end
-        backfill_publication_information
+
+        drug_claim = create_drug_claim(record[1], 'DrugBank Drug Name')
+        create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", 'DrugBank ID')
+        interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+        unless record[3] == 'n/a'
+          create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', record[3])
+        end
+
+        record[4].each do |pmid|
+          create_interaction_claim_publication(interaction_claim, pmid)
+        end
+      end
+      backfill_publication_information
     end
   end
 
