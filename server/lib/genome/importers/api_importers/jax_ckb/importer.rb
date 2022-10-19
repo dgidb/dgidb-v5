@@ -40,7 +40,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
             combination_drug_name.split(' + ').each do |individual_drug_name|
               drug_claim = create_drug_claim(individual_drug_name, 'Primary Drug Name')
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
+              create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
               create_interaction_claim_publications(interaction_claim, interaction['References'])
               create_interaction_claim_attributes(interaction_claim, interaction)
               create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")

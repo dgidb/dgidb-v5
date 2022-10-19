@@ -36,7 +36,7 @@ module Genome; module Importers; module FileImporters; module Fda
         row['Drug'].split(',').each do |drug|
           drug_claim = create_drug_claim(drug, 'FDA Drug Name')
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-          create_interaction_claim_attribute(interaction_claim, 'Combination therapy', combination_therapy)
+          create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_therapy)
           unless fusion_protein.nil?
             create_interaction_claim_attribute(interaction_claim, 'Fusion protein', fusion_protein)
           end

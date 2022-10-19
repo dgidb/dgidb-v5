@@ -49,7 +49,7 @@ module Genome; module Importers; module FileImporters; module Cgi
               row['Gene'].split(';').each do |indv_gene|
                 gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
+                create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
                 create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
                 create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
                 add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
@@ -58,7 +58,7 @@ module Genome; module Importers; module FileImporters; module Cgi
             else
               gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
+              create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
               create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
               create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
               if row['Source'].include?('PMID')
@@ -76,7 +76,7 @@ module Genome; module Importers; module FileImporters; module Cgi
                 row['Gene'].split(';').each do |indv_gene|
                   gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
                   interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                  create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
+                  create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
                   create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
                   create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
                   add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
@@ -85,7 +85,7 @@ module Genome; module Importers; module FileImporters; module Cgi
               else
                 gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
+                create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
                 create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
                 create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
                 add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
