@@ -55,7 +55,7 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
 
         gene_claim = create_gene_claim("uniprot:#{row['Uniprot Accession number']}", 'UniprotKB ID')
         create_gene_claim_alias(gene_claim, row['Gene'], 'Gene Symbol')
-        unless row['Target main class'].blank?
+        unless row['Target main class'].blank? || %w[unknown Unknown_function Other Other_receptors Other_transporters OtherCD1].include?(row['Target main class'])
           create_gene_claim_attribute(gene_claim, 'Target Class', row['Target main class'])
         end
         unless row['Target class'].nil?
@@ -73,8 +73,8 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
         add_approval_data(drug_claim, row['Year of Approval (FDA)'])
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_attribute(interaction_claim, 'Trial Name', row['Trial name'])
-        create_interaction_claim_attribute(interaction_claim, 'Novel drug target', row['Target_Novelty_VALIDATED'])
+        create_interaction_claim_attribute(interaction_claim, 'Clinical Trial Name', row['Trial name'])
+        create_interaction_claim_attribute(interaction_claim, 'Novel Drug Target', row['Target_Novelty_VALIDATED'])
         create_interaction_claim_link(interaction_claim, source.citation, 'https://www.annualreviews.org/doi/10.1146/annurev-pharmtox-011613-135943')
       end
     end
