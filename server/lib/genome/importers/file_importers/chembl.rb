@@ -24,69 +24,69 @@ module Genome; module Importers; module FileImporters; module Chembl
     def create_new_source
       @source ||= Source.create(
         {
-          base_url: "https://chembl.gitbook.io/chembl-interface-documentation/downloads",
-          site_url: "https://www.ebi.ac.uk/chembl/",
-          citation: "ChEMBL: towards direct deposition of bioassay data. Mendez D, Gaulton A, Bento AP, Chambers J, De Veij M, Félix E, Magariños MP, Mosquera JF, Mutowo P, Nowotka M, Gordillo-Marañón M, Hunter F, Junco L, Mugumbate G, Rodriguez-Lopez M, Atkinson F, Bosc N, Radoux CJ, Segura-Cabrera A, Hersey A, Leach AR. Nucleic Acids Res. 2019; 47(D1):D930-D940. doi: 10.1093/nar/gky1075",
-          source_db_version: "15-Aug-2022",
+          base_url: 'https://chembl.gitbook.io/chembl-interface-documentation/downloads',
+          site_url: 'https://www.ebi.ac.uk/chembl/',
+          citation: 'ChEMBL: towards direct deposition of bioassay data. Mendez D, Gaulton A, Bento AP, Chambers J, De Veij M, Félix E, Magariños MP, Mosquera JF, Mutowo P, Nowotka M, Gordillo-Marañón M, Hunter F, Junco L, Mugumbate G, Rodriguez-Lopez M, Atkinson F, Bosc N, Radoux CJ, Segura-Cabrera A, Hersey A, Leach AR. Nucleic Acids Res. 2019; 47(D1):D930-D940. doi: 10.1093/nar/gky1075',
+          source_db_version: '15-Aug-2022',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
-          full_name: "The ChEMBL Bioactivity Database",
-          license: "Creative Commons Attribution-Share Alike 3.0 Unported License",
-          license_link: "https://chembl.gitbook.io/chembl-interface-documentation/about",
+          full_name: 'The ChEMBL Bioactivity Database',
+          license: 'Creative Commons Attribution-Share Alike 3.0 Unported License',
+          license_link: 'https://chembl.gitbook.io/chembl-interface-documentation/about'
         }
       )
-      @source.source_types << SourceType.find_by(type: "interaction")
+      @source.source_types << SourceType.find_by(type: 'interaction')
       @source.save
     end
 
     def query_chembl_db
       db = SQLite3::Database.open file_path
-      db.results_as_hash = false
+      db.results_as_hash = true
       @chembl_data = db.execute(
-        "SELECT
-          drug_mechanism.action_type,
-          molecule_dictionary.chembl_id,
-          molecule_dictionary.pref_name,
-          molecule_dictionary.withdrawn_flag,
-          drug_mechanism.mechanism_of_action,
-          cast(molecule_dictionary.max_phase as text),
-          cast(drug_mechanism.direct_interaction as text),
-          target_dictionary.chembl_id,
-          target_components.targcomp_id,
-          component_sequences.accession,
-          component_sequences.description,
-          component_synonyms.component_synonym
-        FROM drug_mechanism
-        JOIN molecule_dictionary on molecule_dictionary.molregno = drug_mechanism.molregno
-        LEFT JOIN target_dictionary on target_dictionary.tid = drug_mechanism.tid
-        LEFT JOIN target_components on target_components.tid = target_dictionary.tid
-        LEFT JOIN component_sequences on target_components.component_id = component_sequences.component_id
-        LEFT JOIN component_synonyms on component_sequences.component_id = component_synonyms.component_id AND component_synonyms.syn_type = 'GENE_SYMBOL'"
+        "SELECT md.chembl_id AS chembl_id,
+               md.pref_name AS drug_name,
+               md.withdrawn_flag AS withdrawn_flag,
+               cast(md.max_phase AS text) AS max_phase,
+               dm.mechanism_of_action AS moa_description,
+               dm.action_type AS interaction_type,
+               cast(dm.direct_interaction AS text) AS is_direct_interaction,
+               td.chembl_id AS target_chembl_id,
+               cseq.accession AS uniprot_acc,
+               cseq.description AS target_description,
+               csyn.component_synonym AS target_gene_symbol
+        FROM drug_mechanism dm
+                 JOIN molecule_dictionary md on md.molregno = dm.molregno
+                 LEFT JOIN target_dictionary td on td.tid = dm.tid
+                 LEFT JOIN action_type at on dm.action_type = at.action_type
+                 LEFT JOIN target_components tc on tc.tid = td.tid
+                 LEFT JOIN component_sequences cseq on tc.component_id = cseq.component_id
+                 LEFT JOIN component_synonyms csyn on cseq.component_id = csyn.component_id
+            AND csyn.syn_type = 'GENE_SYMBOL'"
       )
     end
 
     def create_interaction_claims
       @chembl_data.each do |row|
-        primary_drug_name = row[2].strip.upcase
-        drug_claim = create_drug_claim(primary_drug_name, "Primary Drug Name")
-        create_drug_claim_alias(drug_claim, "chembl:#{row[1]}", 'ChEMBL ID')
-        create_drug_claim_approval_rating(drug_claim, "Max Phase #{row[5]}") unless row[5].nil?
-        create_drug_claim_approval_rating(drug_claim, 'Withdrawn') unless row[3] != 1
+        primary_drug_name = row['drug_name'].strip.upcase
+        drug_claim = create_drug_claim(primary_drug_name, 'Primary Drug Name')
+        create_drug_claim_alias(drug_claim, "chembl:#{row['chembl_id']}", 'ChEMBL ID')
+        create_drug_claim_approval_rating(drug_claim, "Max Phase #{row['max_phase']}") unless row[5].nil?
+        create_drug_claim_approval_rating(drug_claim, 'Withdrawn') if row[3] == 1
 
-        next if row[0].nil? || row[11].nil?
+        next if row['chembl_id'].nil? || row['target_gene_symbol'].nil?
 
-        gene_claim = create_gene_claim(row[11].upcase, "Target Gene Symbol")
-        create_gene_claim_alias(gene_claim, "chembl:#{row[7]}", 'ChEMBL ID')
-        create_gene_claim_alias(gene_claim, row[10], "Target Description")
-        create_gene_claim_alias(gene_claim, "uniprot:#{row[9]}", 'UniProtKB ID')
+        gene_claim = create_gene_claim(row['target_gene_symbol'].upcase, 'Target Gene Symbol')
+        create_gene_claim_alias(gene_claim, "chembl:#{row['target_chembl_id']}", 'ChEMBL ID')
+        create_gene_claim_alias(gene_claim, row['target_description'], 'Target Description')
+        create_gene_claim_alias(gene_claim, "uniprot:#{row['uniprot_acc']}", 'UniProtKB ID')
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
-        create_interaction_claim_type(interaction_claim, row[4])
-        direct_interaction = row[6] == "1" ? "true" : "false"
-        create_interaction_claim_attribute(interaction_claim, "Direct Interaction", direct_interaction)
-        create_interaction_claim_link(interaction_claim, "Source", File.join("data", "chembl_30.db"))
-        create_interaction_claim_attribute(interaction_claim, "Mechanism of Action", row[5])
+        create_interaction_claim_type(interaction_claim, row['interaction_type'])
+        direct_interaction = row['is_direct_interaction'] == '1' ? 'true' : 'false'
+        create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', direct_interaction)
+        create_interaction_claim_link(interaction_claim, 'Source', File.join('data', 'chembl_31.db'))
+        create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row['moa_description'])
       end
     end
   end
