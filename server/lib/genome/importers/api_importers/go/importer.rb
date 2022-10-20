@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Go;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'GO'
     end
 
@@ -17,7 +16,7 @@ module Genome; module Importers; module ApiImporters; module Go;
           base_url: 'http://amigo.geneontology.org/amigo/gene_product/UniProtKB:',
           site_url: 'http://www.geneontology.org/',
           citation: 'Gene ontology: tool for the unification of biology. The unification of biology. The Gene Ontology Consortium. Ashburner M, Ball CA, ..., Rubin GM, Sherlock G. Nat Genet. 2000 May;25(1):25-9. PMID: 10802651.',
-          source_db_version: @new_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'The Gene Ontology',
           license: 'Creative Commons Attribution 4.0 Unported License',
@@ -45,7 +44,13 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def create_gene_claim_for_entry(gene, category)
+      return if gene['bioentity_label'].strip == ''
+
       gene_claim = create_gene_claim(gene['bioentity_label'], 'Gene Symbol')
+      unless gene['bioentity_name'].include? 'Uncharacterized'
+        create_gene_claim_alias(gene_claim, gene['bioentity_name'], 'Gene Ontology Gene Name')
+      end
+
       unless gene['synonym'].nil?
         gene['synonym'].each do |synonym|
           if synonym.include? 'UniProtKB:'
@@ -55,6 +60,7 @@ module Genome; module Importers; module ApiImporters; module Go;
           end
         end
       end
+
       create_gene_claim_category(gene_claim, category)
     end
 

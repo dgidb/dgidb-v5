@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'JAX-CKB'
     end
 
@@ -15,7 +14,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
       @source ||= Source.create(
         {
           source_db_name: source_db_name,
-          source_db_version: new_version,
+          source_db_version: set_current_date_version,
           base_url: 'https://ckb.jax.org/gene/show?geneId=',
           site_url: 'https://ckb.jax.org',
           citation: 'Sara E. Patterson, Rangjiao Liu, Cara M. Statz, Daniel Durkin, Anuradha Lakshminarayana, and Susan M. Mockus. The Clinical Trial Landscape in Oncology and Connectivity of Somatic Mutational Profiles to Targeted Therapies. Human Genomics, 2016 Jan 16;10(1):4. PMID: 26772741',

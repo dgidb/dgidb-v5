@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Clearity Foundation Biomarkers',
-          license: 'Unknown; data is no longer publicly available from site',
+          license: License::UNKNOWN_UNAVAILABLE,
           license_link: 'https://www.clearityfoundation.org/about-clearity/contact/',
         }
       )

@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'Pharos'
     end
 
@@ -19,7 +18,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
           base_url: 'https://pharos-api.ncats.io/graphql',
           site_url: 'https://pharos.nih.gov/',
           citation: 'Nguyen, D.-T., Mathias, S. et al, "Pharos: Collating Protein Information to Shed Light on the Druggable Genome", Nucl. Acids Res.i>, 2017, 45(D1), D995-D1002. DOI: 10.1093/nar/gkw1072. PMID: 27903890',
-          source_db_version: @new_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Pharos',
           license: 'Creative Commons Attribution-ShareAlike 4.0 International License',

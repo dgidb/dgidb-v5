@@ -22,7 +22,7 @@ module Genome; module Importers; module FileImporters; module Fda
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'FDA Pharmacogenomic Biomarkers',
-          license: 'Public Domain',
+          license: License::PUBLIC_DOMAIN,
           license_link: 'https://www.fda.gov/about-fda/about-website/website-policies#linking'
         }
       )

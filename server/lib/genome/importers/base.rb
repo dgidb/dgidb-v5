@@ -212,6 +212,16 @@ module Genome
         source_db_version = Date.today.strftime('%d-%B-%Y')
         @new_version = source_db_version
       end
+
+      module License
+        UNKNOWN_UNAVAILABLE = 'Unknown; data is no longer publicly available from site'.freeze
+        UNKNOWN = 'Unknown'.freeze
+        CC_BY_NC_3_0 = 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)'.freeze
+        CC_BY_SA_3_0 = 'Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)'.freeze
+        CC_BY_SA_4_0 = 'Create Commons Attribution-ShareAlike 4.0 International License'.freeze
+        PUBLIC_DOMAIN = 'Public domain'.freeze
+        CUSTOM_NON_COMMERCIAL = 'Custom Non-Commercial'.freeze
+      end
     end
   end
 end

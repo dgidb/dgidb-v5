@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module CarisMolecularInte
           source_db_name: source_db_name,
           full_name: 'Caris Molecular Intelligence',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
-          license: 'Unknown',
+          license: License::UNKNOWN,
           license_link: 'https://www.carismolecularintelligence.com/contact-us/'
         }
       )

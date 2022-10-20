@@ -26,7 +26,7 @@ module Genome; module Importers; module FileImporters; module Dtc;
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Drug Target Commons',
-          license: 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)',
+          license: License::CC_BY_NC_3_0,
           license_link: 'https://academic.oup.com/database/article/doi/10.1093/database/bay083/5096727'
         }
       )

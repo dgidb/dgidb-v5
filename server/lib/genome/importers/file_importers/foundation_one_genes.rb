@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module FoundationOneGenes
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Foundation One',
-          license: 'Unknown; data is no longer publicly available from site',
+          license: License::UNKNOWN_UNAVAILABLE,
           license_link: 'https://www.foundationmedicine.com/resource/legal-and-privacy'
         }
       )

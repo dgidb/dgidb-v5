@@ -31,7 +31,7 @@ module Genome; module Importers; module FileImporters; module Chembl
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'The ChEMBL Bioactivity Database',
-          license: 'Creative Commons Attribution-Share Alike 3.0 Unported License',
+          license: License::CC_BY_SA_3_0,
           license_link: 'https://chembl.gitbook.io/chembl-interface-documentation/about'
         }
       )

@@ -22,7 +22,7 @@ module Genome; module Importers; module FileImporters; module HumanProteinAtlas;
           source_db_version: '19.3',
           source_db_name: source_db_name,
           full_name: 'The Human Protein Atlas',
-          license: 'Creative Commons Attribution-ShareAlike 3.0 International License',
+          license: License::CC_BY_SA_3_0,
           license_link: 'https://www.proteinatlas.org/about/licence'
         }
       )

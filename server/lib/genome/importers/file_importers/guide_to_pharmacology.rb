@@ -29,7 +29,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         source_db_version: '2022.1',
         source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
         full_name: 'Guide to Pharmacology',
-        license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
+        license: License::CC_BY_SA_4_0,
         license_link: 'https://www.guidetopharmacology.org/about.jsp'
       )
       @source.source_db_version = set_current_date_version
@@ -41,17 +41,21 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     def import_gene_claims
       CSV.foreach(gene_file_path, headers: true) do |line|
         gene_name = line['Human Entrez Gene']
-        next if blank?(gene_name)
+        next if blank?(gene_name) || gene_name.include?('|')
 
         gene_claim = create_gene_claim("ncbigene:#{gene_name}", 'NCBI Gene ID')
         target_to_entrez[line['Target id']] = gene_name
         create_gene_claim_alias(gene_claim, line['HGNC id'], 'HGNC ID') unless blank?(line['HGNC id'])
-        create_gene_claim_alias(gene_claim, line['HGNC id'], 'Gene Symbol') unless blank?(line['HGNC symbol'])
+        if blank?(line['HGNC symbol']) || (line['HGNC symbol'] != line['HGNC symbol'].to_i.to_s)
+          create_gene_claim_alias(gene_claim, line['HGNC id'], 'Gene Symbol')
+        end
         create_gene_claim_alias(gene_claim, line['HGNC name'], 'Gene Name') unless blank?(line['HGNC name'])
         create_gene_claim_alias(gene_claim, "iuphar.receptor:#{line['Target id']}", 'GuideToPharmacology Target ID')
         create_gene_claim_alias(gene_claim, line['Target name'], 'Target Name')
         unless blank?(line['Human nucleotide RefSeq'])
-          create_gene_claim_alias(gene_claim, "refseq:#{line['Human nucleotide RefSeq']}", 'Nucleotide Accession')
+          line['Human nucleotide RefSeq'][7..].split('|') do |acc|
+            create_gene_claim_alias(gene_claim, "refseq:#{acc}", 'Nucleotide Accession')
+          end
         end
         unless blank?(line['Human protein RefSeq'])
           create_gene_claim_alias(gene_claim, "refseq:#{line['Human protein RefSeq']}", 'Protein Accession')
@@ -82,7 +86,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       CSV.foreach(interaction_file_path, headers: true) do |line|
         next unless valid_line?(line)
 
-        gene_claim = create_gene_claim(target_to_entrez[line['target_id']], 'NCBI Gene ID')
+        gene_claim = GeneClaim.first_or_create(name: "NCBIGENE:#{line['target_id']}")
         create_gene_claim_aliases(gene_claim, line)
 
         drug_claim = create_drug_claim("pubchem.substance:#{line['ligand_pubchem_sid']}", 'PubChem Substance ID')
@@ -153,8 +157,8 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         'Details of the Assay for Interaction': line['assay_description'],
         'Specific Action of the Ligand': line['action'],
         'Details of Interaction': line['action_comment'],
-        'Endogenous Drug?': line['endogenous'],
-        'Direct Interaction?': line['primary_target']
+        'Endogenous Drug': line['endogenous'],
+        'Direct Interaction': line['primary_target']
       }
       boolean_parser = {
         't' => 'True',

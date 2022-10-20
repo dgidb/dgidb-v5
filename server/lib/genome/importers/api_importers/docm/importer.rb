@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Docm
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'DoCM'
     end
 
@@ -76,15 +75,15 @@ module Genome; module Importers; module ApiImporters; module Docm
     def create_new_source
       @source ||= Source.create(
         {
-            base_url: 'http://docm.info/',
-            site_url: 'http://docm.info/',
-            citation: 'DoCM: a database of curated mutations in cancer. Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. Nat Methods. 2016;13(10):806-7. PMID: 27684579',
-            source_db_version: new_version,
-            source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
-            source_db_name: source_db_name,
-            full_name: 'Database of Curated Mutations',
-            license: 'Creative Commons Attribution 4.0 International License',
-            license_link: 'http://www.docm.info/about'
+          base_url: 'http://docm.info/',
+          site_url: 'http://docm.info/',
+          citation: 'DoCM: a database of curated mutations in cancer. Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. Nat Methods. 2016;13(10):806-7. PMID: 27684579',
+          source_db_version: set_current_date_version,
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          source_db_name: source_db_name,
+          full_name: 'Database of Curated Mutations',
+          license: 'Creative Commons Attribution 4.0 International License',
+          license_link: 'http://www.docm.info/about'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
