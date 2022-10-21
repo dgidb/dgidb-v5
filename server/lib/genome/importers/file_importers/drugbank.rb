@@ -57,8 +57,11 @@ module Genome; module Importers; module FileImporters; module Drugbank;
           when 'HUGO Gene Nomenclature Committee (HGNC)'
             create_gene_claim_alias(gene_claim, syn, GeneNomenclature::HGNC_ID)
           else
-            if nomen == 'GenAtlas'
+            case nomen
+            when 'GenAtlas'
               create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
+            when 'GenBank Protein Atlas'
+              create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
             else
               create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
             end

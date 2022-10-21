@@ -52,7 +52,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         unless row['Mode of action'].upcase == 'N/A'
-          create_interaction_claim_attribute(interaction_claim, InteractionAttribute::MOA, row['Mode of action'])
+          create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, row['Mode of action'])
         end
         if row['Interaction type'] == 'HIF-1alpha'
           create_interaction_claim_type(interaction_claim, 'inhibitor')

@@ -45,9 +45,11 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
 
         gene_claim = create_gene_claim("ncbigene:#{gene_name}", GeneNomenclature::NCBI_ID)
         target_to_entrez[line['Target id']] = gene_name
-        create_gene_claim_alias(gene_claim, line['HGNC id'], GeneNomenclature::HGNC_ID) unless blank?(line['HGNC id'])
+        unless blank?(line['HGNC id'])
+          create_gene_claim_alias(gene_claim, "hgnc:#{line['HGNC id']}", GeneNomenclature::HGNC_ID)
+        end
         if blank?(line['HGNC symbol']) || (line['HGNC symbol'] != line['HGNC symbol'].to_i.to_s)
-          create_gene_claim_alias(gene_claim, line['HGNC id'], GeneNomenclature::SYMBOL)
+          create_gene_claim_alias(gene_claim, line['HGNC symbol'], GeneNomenclature::SYMBOL)
         end
         create_gene_claim_alias(gene_claim, line['HGNC name'], GeneNomenclature::NAME) unless blank?(line['HGNC name'])
         create_gene_claim_alias(gene_claim, "iuphar.receptor:#{line['Target id']}", GeneNomenclature::GTOP_ID)
