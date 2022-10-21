@@ -32,17 +32,19 @@ module Genome; module Importers; module FileImporters; module Talc;
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['gene_target'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_id']}", 'NCBI Gene ID')
+        gene_claim = create_gene_claim(row['gene_target'])
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_id']}", GeneNomenclature::NCBI_ID)
 
-        drug_claim = create_drug_claim(row['drug_name'].upcase, 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['drug_name'].upcase)
         unless row['drug_generic_name'] == 'NA'
-          create_drug_claim_alias(drug_claim, row['drug_generic_name'], 'Drug Generic Name')
+          create_drug_claim_alias(drug_claim, row['drug_generic_name'], DrugNomenclature::GENERIC_NAME)
         end
         unless row['drug_trade_name'] == 'NA'
-          create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
+          create_drug_claim_alias(drug_claim, row['drug_trade_name'], DrugNomenclature::TRADE_NAME)
         end
-        create_drug_claim_alias(drug_claim, row['drug_synonym'], 'Drug Synonym') unless row['drug_synonym'] == 'NA'
+        unless row['drug_synonym'] == 'NA'
+          create_drug_claim_alias(drug_claim, row['drug_synonym'], DrugNomenclature::ALIAS)
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['interaction_type']) unless row['interaction_type'] == 'NA'

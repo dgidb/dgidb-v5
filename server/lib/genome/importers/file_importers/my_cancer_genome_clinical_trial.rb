@@ -34,30 +34,48 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
       CSV.foreach(file_path, :headers => true, :col_sep => "\t") do |row|
         next if row['Entrez gene name'] == 'N/A' or row['pubchem drug name'] == 'N/A'
 
-        gene_claim = create_gene_claim(row['Entrez gene name'].upcase, 'Gene Target Symbol')
+        gene_claim = create_gene_claim(row['Entrez gene name'].upcase, GeneNomenclature::NAME)
         unless row['Gene ID'] == 'N/A' || row['Gene ID'].include?('.')
-          create_gene_claim_alias(gene_claim, "ncbigene:#{row['Gene ID']}", 'NCBI Gene ID')
+          create_gene_claim_alias(gene_claim, "ncbigene:#{row['Gene ID']}", GeneNomenclature::NCBI_ID)
         end
-        create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['genes']) unless row['genes'] == 'N/A'
+        unless row['genes'] == 'N/A'
+          create_gene_claim_attribute(gene_claim, GeneAttributeName::TARGET_EVENT, row['genes'])
+        end
 
-        drug_claim = create_drug_claim(row['pubchem drug name'].upcase, 'Primary Drug Name')
-        create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name') unless row['Drug name'] == 'N/A'
+        drug_claim = create_drug_claim(row['pubchem drug name'].upcase)
+        unless row['Drug name'] == 'N/A'
+          create_drug_claim_alias(drug_claim, row['Drug name'], DrugNomenclature::TRADE_NAME)
+        end
         unless row['pubchem drug id'] == 'N/A'
-          create_drug_claim_alias(drug_claim, "pubchem.compound:{row['pubchem drug id']}", 'PubChem Compound ID')
+          create_drug_claim_alias(drug_claim, "pubchem.compound:{row['pubchem drug id']}",
+                                  DrugNomenclature::PUBCHEM_COMPOUND_ID)
         end
         unless row['Other drug names'] == 'N/A'
           if row['Other drug names'].starts_with?('PF-')
-            create_drug_claim_alias(drug_claim, "pfam:#{row['Other drug names'].gsub(' ', '')}", 'PFAM ID')
+            create_drug_claim_alias(drug_claim, "pfam:#{row['Other drug names'].gsub(' ', '')}",
+                                    DrugNomenclature::PFAM_ID)
           else
-            create_drug_claim_alias(drug_claim, row['Other drug names'], 'Other Drug Name')
+            create_drug_claim_alias(drug_claim, row['Other drug names'], DrugNomenclature::ALIAS)
           end
         end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['Interaction type'])
-        create_interaction_claim_attribute(interaction_claim, 'Clinical Trial ID', row['clinical trial ID']) unless row['clinical trial ID'] == 'N/A'
-        create_interaction_claim_attribute(interaction_claim, 'Cancer Type', row['Disease'])
-        create_interaction_claim_attribute(interaction_claim, 'Indication of Interaction', row['indication of drug-gene interaction']) unless row['indication of drug-gene interaction'] == 'N/A'
+        unless row['clinical trial ID'] == 'N/A'
+          create_interaction_claim_attribute(
+            interaction_claim,
+            InteractionAttributeName::CLINICAL_TRIAL_ID,
+            row['clinical trial ID']
+          )
+        end
+        create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::CANCER_TYPE, row['Disease'])
+        unless row['indication of drug-gene interaction'] == 'N/A'
+          create_interaction_claim_attribute(
+            interaction_claim,
+            InteractionAttributeName::INDICATION,
+            row['indication of drug-gene interaction']
+          )
+        end
         create_interaction_claim_link(interaction_claim, 'Clinical Trials', "https://www.mycancergenome.org/content/clinical_trials/")
       end
     end

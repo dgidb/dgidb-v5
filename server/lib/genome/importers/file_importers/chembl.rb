@@ -68,25 +68,25 @@ module Genome; module Importers; module FileImporters; module Chembl
     def create_interaction_claims
       @chembl_data.each do |row|
         primary_drug_name = row['drug_name'].strip.upcase
-        drug_claim = create_drug_claim(primary_drug_name, 'Primary Drug Name')
-        create_drug_claim_alias(drug_claim, "chembl:#{row['chembl_id']}", 'ChEMBL ID')
+        drug_claim = create_drug_claim(primary_drug_name)
+        create_drug_claim_alias(drug_claim, "chembl:#{row['chembl_id']}", DrugNomenclature::CHEMBL_ID)
         create_drug_claim_approval_rating(drug_claim, "Max Phase #{row['max_phase']}") unless row[5].nil?
         create_drug_claim_approval_rating(drug_claim, 'Withdrawn') if row[3] == 1
 
         next if row['chembl_id'].nil? || row['target_gene_symbol'].nil?
 
-        gene_claim = create_gene_claim(row['target_gene_symbol'].upcase, 'Target Gene Symbol')
-        create_gene_claim_alias(gene_claim, "chembl:#{row['target_chembl_id']}", 'ChEMBL ID')
-        create_gene_claim_alias(gene_claim, row['target_description'], 'Target Description')
-        create_gene_claim_alias(gene_claim, "uniprot:#{row['uniprot_acc']}", 'UniProtKB ID')
+        gene_claim = create_gene_claim(row['target_gene_symbol'].upcase)
+        create_gene_claim_alias(gene_claim, "chembl:#{row['target_chembl_id']}", GeneNomenclature::CHEMBL_ID)
+        create_gene_claim_alias(gene_claim, row['target_description'], GeneNomenclature::DESCRIPTION)
+        create_gene_claim_alias(gene_claim, "uniprot:#{row['uniprot_acc']}", GeneNomenclature::UNIPROTKB_ID)
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
 
         create_interaction_claim_type(interaction_claim, row['interaction_type'])
         direct_interaction = row['is_direct_interaction'] == '1' ? 'true' : 'false'
-        create_interaction_claim_attribute(interaction_claim, 'Direct Interaction', direct_interaction)
+        create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::DIRECT, direct_interaction)
         create_interaction_claim_link(interaction_claim, 'Source', File.join('data', 'chembl_31.db'))
-        create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', row['moa_description'])
+        create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, row['moa_description'])
       end
     end
   end

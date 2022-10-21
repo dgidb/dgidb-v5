@@ -17,9 +17,9 @@ module Genome; module Importers; module ApiImporters; module Docm
       api_client.variants.each do |variant|
         interaction_information = parse_interaction_information(variant)
         interaction_information.each do |interaction_info|
-          gc = create_gene_claim(variant['gene'], 'DoCM Entrez Gene Symbol')
+          gc = create_gene_claim(variant['gene'], GeneNomenclature::NCBI_NAME)
           dc = create_drug_claim(interaction_info['Therapeutic Context'].upcase,
-                                 'DoCM Drug Name')
+                                 DrugNomenclature::PRIMARY_NAME)
           ic = create_interaction_claim(gc, dc)
           create_interaction_claim_attributes(ic, interaction_info)
           create_interaction_claim_publications(ic, variant['diseases'])
@@ -58,9 +58,9 @@ module Genome; module Importers; module ApiImporters; module Docm
 
     def create_interaction_claim_attributes(interaction_claim, interaction_info)
       {
-        'Clinical Status' => 'Status',
-        'Pathway' => 'Pathway',
-        'Variant Effect' => 'Effect'
+        InteractionAttributeName::APPROVAL_STATUS => 'Status',
+        InteractionAttributeName::PATHWAY => 'Pathway',
+        InteractionAttributeName::VARIANT_EFFECT => 'Effect'
       }.each do |name, interaction_info_key|
         create_interaction_claim_attribute(interaction_claim, name, interaction_info[interaction_info_key])
       end

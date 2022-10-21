@@ -54,9 +54,9 @@ module Genome; module Importers; module ApiImporters; module Pharos;
           genes.each do |gene|
             next if gene['sym'].nil?
 
-            gene_claim = create_gene_claim(gene['sym'], 'Gene Symbol')
-            create_gene_claim_alias(gene_claim, gene['name'], 'Gene Name')
-            create_gene_claim_alias(gene_claim, "uniprot:#{gene['uniprot']}", 'UniProtKB ID')
+            gene_claim = create_gene_claim(gene['sym'], GeneNomenclature::SYMBOL)
+            create_gene_claim_alias(gene_claim, gene['name'], GeneNomenclature::NAME)
+            create_gene_claim_alias(gene_claim, "uniprot:#{gene['uniprot']}", GeneNomenclature::UNIPROTKB_ID)
             normalized_category = case category
                                   when 'GPCR'
                                     'G PROTEIN COUPLED RECEPTOR'

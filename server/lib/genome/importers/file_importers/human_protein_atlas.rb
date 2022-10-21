@@ -32,15 +32,15 @@ module Genome; module Importers; module FileImporters; module HumanProteinAtlas;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, "ensembl:#{row['Ensembl']}", 'Ensembl Gene ID')
+        gene_claim = create_gene_claim(row['Gene'])
+        create_gene_claim_alias(gene_claim, "ensembl:#{row['Ensembl']}", GeneNomenclature::ENSEMBL_ID)
         unless row['Gene synonym'].nil?
           row['Gene synonym'].split(', ').each do |s|
-            create_gene_claim_alias(gene_claim, s, 'Human Protein Atlas Gene Synonym')
+            create_gene_claim_alias(gene_claim, s, GeneNomenclature::SYNONYM)
           end
         end
-        create_gene_claim_alias(gene_claim, row['Gene description'], 'Human Protein Atlas Gene Description')
-        create_gene_claim_alias(gene_claim, "uniprot:#{row['Uniprot']}", 'UniProtKB ID')
+        create_gene_claim_alias(gene_claim, row['Gene description'], GeneNomenclature::DESCRIPTION)
+        create_gene_claim_alias(gene_claim, "uniprot:#{row['Uniprot']}", GeneNomenclature::UNIPROTKB_ID)
 
         row['Protein class'].split(', ').each do |c|
           create_gene_claim_category(gene_claim, categories[c]) if categories.key? c

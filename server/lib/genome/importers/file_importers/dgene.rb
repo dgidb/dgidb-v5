@@ -34,11 +34,11 @@ module Genome; module Importers; module FileImporters; module Dgene
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         if row['tax_id'] == '9606'
-          gene_claim = create_gene_claim(row['Symbol'], 'Gene Symbol')
-          create_gene_claim_alias(gene_claim, "ncbigene:#{row['GeneID']}", 'NCBI Gene ID')
+          gene_claim = create_gene_claim(row['Symbol'])
+          create_gene_claim_alias(gene_claim, "ncbigene:#{row['GeneID']}", GeneNomenclature::NCBI_ID)
           row['Synonyms'].split('|').each do |indv_synonym|
             unless indv_synonym == '-' || indv_synonym == '1'
-              create_gene_claim_alias(gene_claim, indv_synonym, 'dGene Synonym')
+              create_gene_claim_alias(gene_claim, indv_synonym, GeneNomenclature::SYNONYM)
             end
           end
           create_gene_claim_category(gene_claim, categories[row['class']])

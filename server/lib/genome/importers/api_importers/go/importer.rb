@@ -46,17 +46,17 @@ module Genome; module Importers; module ApiImporters; module Go;
     def create_gene_claim_for_entry(gene, category)
       return if gene['bioentity_label'].strip == ''
 
-      gene_claim = create_gene_claim(gene['bioentity_label'], 'Gene Symbol')
+      gene_claim = create_gene_claim(gene['bioentity_label'])
       unless gene['bioentity_name'].include? 'Uncharacterized'
-        create_gene_claim_alias(gene_claim, gene['bioentity_name'], 'Gene Ontology Gene Name')
+        create_gene_claim_alias(gene_claim, gene['bioentity_name'], GeneNomenclature::NAME)
       end
 
       unless gene['synonym'].nil?
         gene['synonym'].each do |synonym|
           if synonym.include? 'UniProtKB:'
-            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', 'uniprot'), 'UniProtKB ID')
+            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', 'uniprot'), GeneNomenclature::UNIPROTKB_ID)
           else
-            create_gene_claim_alias(gene_claim, synonym, 'GO Gene Synonym')
+            create_gene_claim_alias(gene_claim, synonym, GeneNomenclature::SYNONYM)
           end
         end
       end

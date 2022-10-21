@@ -39,10 +39,10 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           pharmgkb_gene_id = row['Entity1_id']
           drug_name = row['Entity2_name']
           pharmgkb_drug_id = row['Entity2_id']
-          drug_claim = create_drug_claim(drug_name, 'PharmGKB Drug Name')
-          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, 'PharmGKB ID')
-          gene_claim = create_gene_claim(gene_name, 'PharmGKB Gene Name')
-          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, 'PharmGKB ID')
+          drug_claim = create_drug_claim(drug_name)
+          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, DrugNomenclature::PHARMGKB_ID)
+          gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
+          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, GeneNomenclature::PHARMGKB_ID)
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           create_interaction_claim_link(interaction_claim, 'PharmGKB interaction', "https://www.pharmgkb.org/combination/#{pharmgkb_gene_id},#{pharmgkb_drug_id}/overview")
           if row['PMIDs'].present?
@@ -53,10 +53,10 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           pharmgkb_drug_id = row['Entity1_id']
           gene_name = row['Entity2_name']
           pharmgkb_gene_id = row['Entity2_id']
-          drug_claim = create_drug_claim(drug_name, 'PharmGKB Drug Name')
-          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, 'PharmGKB ID')
-          gene_claim = create_gene_claim(gene_name, 'PharmGKB Gene Name')
-          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, 'PharmGKB ID')
+          drug_claim = create_drug_claim(drug_name)
+          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, DrugNomenclature::PHARMGKB_ID)
+          gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
+          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, GeneNomenclature::PHARMGKB_ID)
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           create_interaction_claim_link(interaction_claim, 'PharmGKB interaction', "https://www.pharmgkb.org/combination/#{pharmgkb_gene_id},#{pharmgkb_drug_id}/overview")
           add_interaction_claim_publications(interaction_claim, row['PMIDs']) if row['PMIDs'].present?

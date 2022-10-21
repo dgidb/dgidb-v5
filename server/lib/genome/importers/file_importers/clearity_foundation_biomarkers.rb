@@ -33,23 +33,27 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['gene_name'].upcase, 'Gene Target Symbol')
-        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_gene_id']}", 'NCBI Gene ID')
-        create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['reported_gene_name'])
+        gene_claim = create_gene_claim(row['gene_name'].upcase)
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_gene_id']}", GeneNomenclature::NCBI_ID)
+        create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', GeneNomenclature::Name)
 
-        drug_claim = create_drug_claim(row['drug_name'].upcase, 'Primary Drug Name')
-        create_drug_claim_attribute(drug_claim, 'Drug Class', row['drug_class'])
+        drug_claim = create_drug_claim(row['drug_name'].upcase)
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['drug_class'])
         unless row['drug_trade_name'].blank?
-          create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
+          create_drug_claim_alias(drug_claim, row['drug_trade_name'], DrugNomenclature::TRADE_NAME)
         end
-        create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['pubchem_id']}", 'PubChem Drug ID') unless row['pubchem_id'].blank?
-        create_drug_claim_attribute(drug_claim, 'Drug Classification', row['drug_subclass'])
+        unless row['pubchem_id'].blank?
+          create_drug_claim_alias(
+            drug_claim, "pubchem.compound:#{row['pubchem_id']}", DrugNomenclature::PUBCHEM_COMPOUND_ID
+          )
+        end
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_SUBCLASS, row['drug_subclass'])
         unless row['linked_class_info'].blank?
-          create_drug_claim_attribute(drug_claim, 'Link to Clearity Drug Class Schematic', row['linked_class_info'])
+          create_drug_claim_attribute(drug_claim, DrugAttributeName::CLEARITY_LINK, row['linked_class_info'])
         end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_attribute(interaction_claim, 'Mechanism of Interaction', row['reported_drug_response'])
+        create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, row['reported_drug_response'])
         # This currently doesn't appear to be an interaction type
         create_interaction_claim_type(interaction_claim, 'BIOMARKER')
         # TODO: should it be added?

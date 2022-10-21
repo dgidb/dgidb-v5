@@ -37,9 +37,9 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
           if drug_name.include? '+'
             combination_drug_name = drug_name
             combination_drug_name.split(' + ').each do |individual_drug_name|
-              drug_claim = create_drug_claim(individual_drug_name, 'Primary Drug Name')
+              drug_claim = create_drug_claim(individual_drug_name, DrugNomenclature::PRIMARY_NAME)
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, 'Combination Therapy', combination_drug_name)
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
               create_interaction_claim_publications(interaction_claim, interaction['References'])
               create_interaction_claim_attributes(interaction_claim, interaction)
               create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
@@ -47,7 +47,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
           else
             next if drug_name.upcase == 'N/A'
 
-            drug_claim = create_drug_claim(drug_name, 'Primary Drug Name')
+            drug_claim = create_drug_claim(drug_name, DrugNomenclature::PRIMARY_NAME)
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             create_interaction_claim_publications(interaction_claim, interaction['References'])
             create_interaction_claim_attributes(interaction_claim, interaction)
@@ -79,8 +79,13 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     end
 
     def create_interaction_claim_attributes(interaction_claim, interaction)
-      ['Indication/Tumor Type', 'Response Type', 'Approval Status', 'Evidence Type'].each do |name|
-        create_interaction_claim_attribute(interaction_claim, name, interaction[name])
+      {
+        InteractionAttributeName::INDICATION => 'Indication/Tumor Type',
+        InteractionAttributeName::RESPONSE => 'Response Type',
+        InteractionAttributeName::APPROVAL_STATUS => 'Approval Status',
+        InteractionAttributeName::EV_TYPE => 'Evidence Type'
+      }.each do |name, key|
+        create_interaction_claim_attribute(interaction_claim, name, interaction[key])
       end
     end
   end

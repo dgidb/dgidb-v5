@@ -35,23 +35,23 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         next if row['Entrez Gene Name'] == 'N/A' || row['Pubchem name'] == 'N/A'
 
-        gene_claim = create_gene_claim(row['Entrez Gene Name'].upcase, 'Gene Target Symbol')
-        create_gene_claim_alias(gene_claim, "ncbigene:#{row['Enterez Gene Id']}", 'NCBI Gene ID')
-        create_gene_claim_attribute(gene_claim, 'Reported Genome Event Targeted', row['Molecular Target'])
+        gene_claim = create_gene_claim(row['Entrez Gene Name'].upcase)
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['Enterez Gene Id']}", GeneNomenclature::NCBI_ID)
+        create_gene_claim_attribute(gene_claim, GeneAttributeName::TARGET_EVENT, row['Molecular Target'])
 
         drug_primary_name = row['Pubchem name'].upcase
         drug_primary_name.gsub('UNII-', 'UNII:') if drug_primary_name.starts_with?('UNII-')
-        drug_claim = create_drug_claim(row['Pubchem name'].upcase, 'Primary Drug Name')
-        create_drug_claim_alias(drug_claim, row['Drug name'], 'Drug Trade Name')
-        create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['CID']}", 'PubChem Drug ID') unless row['CID'] == 'N/A'
-        create_drug_claim_alias(drug_claim, "pubchem.substance:#{row['SID']}", 'PubChem Drug SID') unless row['SID'] == 'N/A'
+        drug_claim = create_drug_claim(row['Pubchem name'].upcase)
+        create_drug_claim_alias(drug_claim, row['Drug name'], DrugNomenclature::TRADE_NAME)
+        create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['CID']}", DrugNomenclature::PUBCHEM_COMPOUND_ID) unless row['CID'] == 'N/A'
+        create_drug_claim_alias(drug_claim, "pubchem.substance:#{row['SID']}", DrugNomenclature::PUBCHEM_SUBSTANCE_ID) unless row['SID'] == 'N/A'
         unless row['Other drug name'] == 'N/A'
-          create_drug_claim_alias(drug_claim, row['Other drug name'], 'Other Drug Name')
+          create_drug_claim_alias(drug_claim, row['Other drug name'], DrugNomenclature::ALIAS)
         end
-        create_drug_claim_attribute(drug_claim, 'Clinical Trial ID', row['Clinical Trial ID(s)'])
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::CLINICAL_TRIAL_ID, row['Clinical Trial ID(s)'])
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_attribute(interaction_claim, 'Mechanism of Interaction', row['Mode of action'])
+        create_interaction_claim_attribute(interaction_claim, InteractionAttribute::MOA, row['Mode of action'])
         if row['Interaction type'] == 'HIF-1alpha'
           create_interaction_claim_type(interaction_claim, 'inhibitor')
         else

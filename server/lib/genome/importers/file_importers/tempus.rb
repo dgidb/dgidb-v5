@@ -32,7 +32,7 @@ module Genome; module Importers; module FileImporters; module Tempus
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true) do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'Gene Symbol')
+        gene_claim = create_gene_claim(row['Gene'])
         create_gene_claim_category(gene_claim, 'CLINICALLY ACTIONABLE')
       end
     end
