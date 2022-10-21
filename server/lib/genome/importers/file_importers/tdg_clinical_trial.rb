@@ -77,7 +77,7 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
           interaction_claim,
           InteractionAttributeName::CLINICAL_TRIAL_NAME,
           row['Trial name']
-        )
+        ) unless row['Trial name'] == '-'
         create_interaction_claim_attribute(
           interaction_claim,
           InteractionAttributeName::NOVEL,
