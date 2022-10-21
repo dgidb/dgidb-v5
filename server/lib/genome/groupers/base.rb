@@ -1,7 +1,7 @@
 module Genome
   module Groupers
     # Provides some shared methods for groupers, shouldn't be directly instantiated.
-    class Base
+    class Base < Genome::DataImporter
       # Sends an empty query to concept normalizer to retrieve the service's version
       def retrieve_normalizer_version
         response = retrieve_normalizer_response('')

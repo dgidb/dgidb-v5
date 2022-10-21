@@ -140,19 +140,19 @@ module Genome
       def produce_concept_id_nomenclature(concept_id)
         case concept_id
         when /rxcui:/
-          'RxNorm ID'
+          DrugNomenclature::RXNORM_ID
         when /ncit:/
-          'NCIt Drug ID'
+          DrugNomenclature::NCIT_ID
         when /hemonc:/
-          'HemOnc Drug ID'
+          DrugNomenclature::HEMONC_ID
         when /drugsatfda/
-          'Drugs@FDA ID'
+          DrugNomenclature::DRUGSATFDA_ID
         when /chemidplus/
-          'ChemIDplus ID'
+          DrugNomenclature::CHEMIDPLUS_ID
         when /wikidata/
-          'Wikidata Drug ID'
+          DrugNomenclature::WIKIDATA_ID
         else
-          'Concept ID'
+          DrugNomenclature::CONCEPT_ID
         end
       end
 
@@ -205,14 +205,14 @@ module Genome
         end
 
         record.fetch('approval_year', []).to_set.each do |year|
-          DrugClaimAttribute.create(name: 'Year of Approval', value: year, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::APPROVAL_YEAR, value: year, drug_claim_id: claim.id)
         end
 
         indications = record.fetch('has_indication')
         return unless indications.nil?
 
         indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
-          DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::INDICATION, value: indication, drug_claim_id: claim.id)
         end
       end
 
@@ -241,19 +241,19 @@ module Genome
         end
 
         unless record['label'].nil? || record['label'] == claim_name
-          add_grouper_claim_alias(record['label'], claim_name, claim.id, 'Primary Drug Name')
+          add_grouper_claim_alias(record['label'], claim_name, claim.id, DrugNomenclature::PRIMARY_NAME)
         end
 
         prune_alias_list(record.fetch('aliases', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::ALIAS)
         end
 
         prune_alias_list(record.fetch('trade_names', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Trade Name')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::TRADE_NAME)
         end
 
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Xref')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::XREF)
         end
       end
 

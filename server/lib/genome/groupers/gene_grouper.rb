@@ -11,9 +11,9 @@ module Genome
         @sources = {}
 
         @source_gene_type_names = {
-          Ensembl: 'Ensembl Biotype',
-          NCBI: 'NCBI Gene Type',
-          HGNC: 'HGNC Locus Type'
+          Ensembl: GeneAttributeName::ENSEMBL_TYPE,
+          NCBI: GeneAttributeName::NCBI_TYPE,
+          HGNC: GeneAttributeName::HGNC_TYPE
         }
       end
 
@@ -108,7 +108,7 @@ module Genome
       def create_gene_claim(record, source)
         GeneClaim.where(
           name: record['symbol'],
-          nomenclature: 'Gene Symbol',
+          nomenclature: GeneNomenclature::SYMBOL,
           source_id: source.id
         ).first_or_create
       end
@@ -116,13 +116,13 @@ module Genome
       def get_nomenclature(concept_id)
         case concept_id
         when /hgnc:/
-          'HGNC ID'
+          GeneNomenclature::HGNC_ID
         when /ensembl:/
-          'Ensembl Gene ID'
+          GeneNomenclature::ENSEMBL_ID
         when /ncbigene:/
-          'NCBI Gene ID'
+          GeneNomenclature::NCBI_ID
         else
-          'Concept ID'
+          GeneNomenclature::CONCEPT_ID
         end
       end
 
@@ -137,7 +137,7 @@ module Genome
         unless record['label'].nil?
           GeneClaimAlias.where(
             alias: record['label'],
-            nomenclature: 'Gene Description',
+            nomenclature: GeneNomenclature::DESCRIPTION,
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -145,7 +145,7 @@ module Genome
         record.fetch('previous_symbols', []).each do |symbol|
           GeneClaimAlias.where(
             alias: symbol,
-            nomenclature: 'Previous Gene Symbol',
+            nomenclature: GeneNomenclature::PREVIOUS_SYMBOL,
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -153,7 +153,7 @@ module Genome
         record.fetch('aliases', []).each do |value|
           GeneClaimAlias.where(
             alias: value,
-            nomenclature: 'Gene Synonym',
+            nomenclature: GeneNomenclature::SYNONYM,
             gene_claim_id: claim.id
           ).first_or_create
         end
