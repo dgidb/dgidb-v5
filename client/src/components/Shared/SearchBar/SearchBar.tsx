@@ -7,7 +7,6 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './SearchBar.scss';
-import {FilterOutlined} from '@ant-design/icons'
 
 type SearchBarProps = {
   handleSubmit: () => void;
@@ -21,7 +20,6 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
   const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);
   const defaultValues = state.searchTerms  
-  const [selectedValues, setSelectedValues] = useState(defaultValues);
   
   const { Option } = Select;
 
@@ -44,8 +42,6 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
       </div>
     </div>
   )
-
-  console.log(state.searchTerms)
 
   const onKeyDown = (value: any) => {
 
@@ -110,7 +106,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
             // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
           >
-            {selectedValues}
+            {state.searchTerms}
           </Select>
         </Form.Item>
 
