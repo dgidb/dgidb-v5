@@ -19,7 +19,6 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);
-  const defaultValues = state.searchTerms  
   
   const { Option } = Select;
 
