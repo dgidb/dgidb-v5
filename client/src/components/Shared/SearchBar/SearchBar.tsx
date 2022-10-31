@@ -19,7 +19,9 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
 
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
-  const [showFilters, setShowFilters] = useState(false);  
+  const [showFilters, setShowFilters] = useState(false);
+  const defaultValues = state.searchTerms  
+  const [selectedValues, setSelectedValues] = useState(defaultValues);
   
   const { Option } = Select;
 
@@ -42,6 +44,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
       </div>
     </div>
   )
+
+  console.log(state.searchTerms)
 
   const onKeyDown = (value: any) => {
 
@@ -93,19 +97,20 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
       <div className="search-input">
         <Form.Item>
           <Select 
+            allowClear
             size="large" 
             placeholder="" 
-            mode="tags"
-            allowClear
+            mode="multiple"
             tokenSeparators={[',', ' ']}
             options={options}
             onInputKeyDown={onKeyDown}
             value={state.searchTerms}
-            onDeselect={(val) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
+            onClear={() => state.searchTerms = []}
+            onDeselect={(val: any) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
             // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
           >
-            {state.searchTerms}
+            {selectedValues}
           </Select>
         </Form.Item>
 
@@ -113,8 +118,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
             <Popover 
               content={content} 
               trigger="click" 
-              visible={showFilters} 
-              onVisibleChange={visible => setShowFilters(visible)} 
+              open={showFilters} 
+              onOpenChange={open => setShowFilters(open)} 
             >
               {/* TODO: Reintroduce later
               <FilterOutlined
