@@ -34,22 +34,16 @@ interaction_claim_types = [
     reference: 'DrugBank examples: <a href="http://www.ncbi.nlm.nih.gov/pubmed/12070353">pubmed:12070353</a>'
   },
   {
-    type: 'n/a',
-    directionality: nil,
-    definition: 'DGIdb assigns this label to any drug-gene interaction for which the interaction type is not specified by the reporting source.',
-    reference: nil
-  },
-  {
     type: 'negative modulator',
     directionality: 1,
     definition: 'In a negative modulator interaction, the drug negatively regulates the amount or activity of its target. In contrast to an inhibitory allosteric modulator, this interaction type may not involve any direct binding to the target.',
     reference: '<a href="https://en.wikipedia.org/wiki/Allosteric_modulator">Wikipedia - Allosteric Modulator</a>'
   },
   {
-    type: 'partial agonist',
-    directionality: 0,
-    definition: 'In a partial agonist interaction, a drug will elicit a reduced amplitude functional response at its target receptor, as compared to the response elicited by a full agonist.',
-    reference: '<a href="https://en.wikipedia.org/wiki/Receptor_antagonist#Partial_agonists">Wikipedia - Receptor Antagonist</a>'
+    type: 'antibody',
+    directionality: 1,
+    definition: 'TODO',
+    reference: 'TODO'
   },
   {
     type: 'adduct',
@@ -98,12 +92,6 @@ interaction_claim_types = [
     directionality: 1,
     definition: 'An antisense oligonucleotide interaction occurs when a complementary RNA drug binds to an mRNA target to inhibit translation by physically obstructing the mRNA translation machinery.',
     reference: '<a href="http://www.ncbi.nlm.nih.gov/pubmed/10228554">pubmed:10228554</a>'
-  },
-  {
-    type: 'vaccine',
-    directionality: 0,
-    definition: 'In vaccine interactions, the drugs stimulate or restore an immune response to their target.',
-    reference: '<a href="https://www.cancer.gov/about-cancer/treatment/types/immunotherapy#q3">NCI - Cancer Vaccines</a>'
   },
   {
     type: 'antibody',
@@ -200,6 +188,24 @@ interaction_claim_types = [
     directionality: nil,
     definition: 'Substrates are drugs which are metabolized by the protein they are interacting with.',
     reference: '<a href="https://www.fda.gov/drugs/drug-interactions-labeling/drug-development-and-drug-interactions-table-substrates-inhibitors-and-inducers">FDA - Table of Substrates, Inhibitors and Inducers</a>'
+  },
+  {
+    type: 'vaccine',
+    directionality: 0,
+    definition: 'In vaccine interactions, the drugs stimulate or restore an immune response to their target.',
+    reference: '<a href="https://www.cancer.gov/about-cancer/treatment/types/immunotherapy#q3">NCI - Cancer Vaccines</a>'
+  },
+  {
+    type: 'immunotherapy',
+    directionality: nil,
+    definition: 'Immunotherapy is used to upregulate or downregulate the immune system to achieve a therapeutic effect in immunological mediated disorders, including immunodeficiencies, hypersensitivity reactions, autoimmune diseases, tissue and organ transplantations, malignancies, inflammatory disorders, infectious diseases, and any other disease, where immunotherapy can improve the quality and life expectancy.',
+    reference: 'https://www.ncbi.nlm.nih.gov/books/NBK519046/'
+  },
+  {
+    type: 'cytotoxic',
+    directionality: nil,  # TODO
+    definition: 'TODO',  # TODO
+    reference: 'TODO'  # TODO
   }
 ]
 interaction_claim_types.each do |claim_type|
