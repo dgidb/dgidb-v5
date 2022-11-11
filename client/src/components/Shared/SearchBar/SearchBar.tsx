@@ -95,7 +95,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
             allowClear
             size="large" 
             placeholder="" 
-            mode="multiple"
+            mode="tags"
             tokenSeparators={[',', ' ']}
             options={options}
             onInputKeyDown={onKeyDown}
