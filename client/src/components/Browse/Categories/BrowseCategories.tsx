@@ -4,7 +4,7 @@ import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
 import { useGetCategoriesBySource } from 'hooks/queries/useGetCategories';
-import Collapse from '@mui/material/Collapse';
+import { Collapse } from 'antd';
 
 // components
 import { GeneListTable } from 'components/Browse/Categories/GeneListTable';
@@ -12,9 +12,9 @@ import { GeneListTable } from 'components/Browse/Categories/GeneListTable';
 // styles
 import './BrowseCategories.scss';
 import { Checkbox } from 'antd';
-import { Accordion, AccordionSummary, Typography } from '@mui/material';
 
 const CheckboxGroup = Checkbox.Group;
+const { Panel } = Collapse;
 
   interface Categories {
     [key: string]: number
@@ -112,20 +112,20 @@ export const BrowseCategories: React.FC = () => {
         </div>
 
         <div className="category-list">
+           <Collapse accordion>
           {renderedCategories?.map((cat: any, index: number) => {
             if(cat.geneCount) {
               return (
-                <Accordion>
-                <AccordionSummary key={index}>
-                  <Typography>{cat.name} {cat.geneCount}</Typography>
-               </AccordionSummary>
-               <GeneListTable />
-               </Accordion>
+                <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
+                  <GeneListTable />
+               </Panel>
               )
             } else {
               return null
             }
           })}
+          </Collapse>
+
         </div>
       </div>
     )

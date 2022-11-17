@@ -4,9 +4,9 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
 // styles, icons
+import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './SearchBar.scss';
-import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 
 type SearchBarProps = {
   handleSubmit: () => void;
@@ -15,12 +15,33 @@ type SearchBarProps = {
 const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
 
   const {state, dispatch} = useContext(GlobalClientContext);
-  console.log(state)
 
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
   const [showFilters, setShowFilters] = useState(false);
   
+  const { Option } = Select;
+
+  let content = (
+    <div>
+      <div className="filter-options ">
+        <h5>Preset Filters</h5>
+        <Checkbox>Approved</Checkbox>
+        <Checkbox>Antineoplastic</Checkbox>
+        <Checkbox>Immunotherapies</Checkbox>
+      </div>
+      <div className="filter-options ">
+        <h5>Advanced Filters</h5>
+        <span>Source Databases</span>
+        <Button style={{ width: 80}}>22 of 22</Button>
+        <span>Gene Categories</span>
+        <Button style={{ width: 80}}>43 of 43</Button>
+        <span>Interaction Types</span>
+        <Button style={{ width: 80}}>31 of 31</Button>
+      </div>
+    </div>
+  )
+
   const onKeyDown = (value: any) => {
 
     let deleteTag = value.key === 'Backspace' && !inputValue.length;
@@ -47,9 +68,9 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
         <Select 
           value={state.interactionMode}
           style={{ width: 200 }} 
-          onChange={(event) => {
-            const value = event.target.value
-            if (value === 'gene'){
+          size="large"
+          onChange={(value) => {
+            if(value === 'gene'){
               dispatch({type: ActionTypes.SetByGene})
             } else if (value === 'drug'){
               dispatch({type: ActionTypes.SetByDrug})
@@ -57,25 +78,50 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
               dispatch({type: ActionTypes.SetGeneCategories})
             }
           }}
+          dropdownRender={(menu: any) => (
+            <div>
+              {menu}
+            </div>
+          )} 
         >
-          <MenuItem className="hi4" value="gene">Interactions by Gene</MenuItem>
-          <MenuItem value="drug">Interactions by Drug</MenuItem>
-          <MenuItem value="categories">Gene Categories</MenuItem>
+          <Option className="hi4" value="gene">Interactions by Gene</Option>
+          <Option value="drug">Interactions by Drug</Option>
+          <Option value="categories">Gene Categories</Option>
         </Select>
       </div>
       <div className="search-input">
-          <Autocomplete 
-            multiple={true}
-            value={[]}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label="Multiple values"
-                placeholder="Favorites"
-              />
-            )}
-            options={options} />
+        <Form.Item>
+          <Select 
+            allowClear
+            size="large" 
+            placeholder="" 
+            mode="tags"
+            tokenSeparators={[',', ' ']}
+            options={options}
+            onInputKeyDown={onKeyDown}
+            value={state.searchTerms}
+            onClear={() => state.searchTerms = []}
+            onDeselect={(val: any) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
+            // onChange={value => setQueryParams(value)}
+            onSearch={value => setInputValue(value)}
+          >
+            {state.searchTerms}
+          </Select>
+        </Form.Item>
+
+          <div className="search-filters">
+            <Popover 
+              content={content} 
+              trigger="click" 
+              open={showFilters} 
+              onOpenChange={open => setShowFilters(open)} 
+            >
+              {/* TODO: Reintroduce later
+              <FilterOutlined
+                style={{ fontSize: '150%', cursor: 'pointer'}}
+              /> */}
+            </Popover>
+          </div>
         </div>
       </div>
   </div>

@@ -9,10 +9,10 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { queryClient } from 'providers/app';
 
 // styles
+import { Button, Switch } from 'antd';
 import SunIcon from 'components/Shared/SVG/SunIcon';
 import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
-import { Button, Switch } from '@mui/material';
 
 export const Home: React.FC = () => {
 
@@ -98,11 +98,11 @@ export const Home: React.FC = () => {
       <SearchBar handleSubmit={handleSubmit} />
 
       <div className="home-buttons">
-        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}>Search</Button>
+        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
         <Button
           onClick={() => handleDemoClick()}
           style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}}
-          >
+          type="primary">
             Demo
         </Button>
       </div>
@@ -123,9 +123,10 @@ export const Home: React.FC = () => {
 
       <div className="darkmode-toggle">
         <Switch
+          loading={isToggling}
           defaultChecked
-          checkedIcon={SunIcon}
-          icon={MoonIcon}
+          checkedChildren={<SunIcon />}
+          unCheckedChildren={<MoonIcon />}
           onChange={() => setIsToggling(true)}
         />
       </div>
