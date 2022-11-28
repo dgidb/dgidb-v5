@@ -4,14 +4,14 @@ module Types
     field :drug_id, ID, null: false
     field :rating, String, null: false
     field :drug, Types::DrugType, null: false
-    field :sources, [Types::SourceType], null: false
+    field :source, Types::SourceType, null: false
 
     def drug
       Loaders::RecordLoader.for(Drug).load(object.drug_id)
     end
 
-    def sources
-      Loaders::AssociationLoader.for(DrugApprovalRating, :sources).load(object)
+    def source
+      Loaders::RecordLoader.for(Source).load(object.source_id)
     end
   end
 end
