@@ -42,8 +42,8 @@ interaction_claim_types = [
   {
     type: 'antibody',
     directionality: 1,
-    definition: 'TODO',
-    reference: 'TODO'
+    definition: 'An antibody interaction occurs when an antibody drug specifically binds the target molecule. Most interactions of this class fall under various natural antibody functions: neutralization, antibody-dependent cell-mediated cytotoxicity (ADCC), complement-dependent cytotoxicity (CDC), or drug delivery carriers.',
+    reference: '<a href="https://www.ncbi.nlm.nih.gov/pubmed/26441475/">pubmed:26441475</a>'
   },
   {
     type: 'adduct',
@@ -201,12 +201,6 @@ interaction_claim_types = [
     definition: 'Immunotherapy is used to upregulate or downregulate the immune system to achieve a therapeutic effect in immunological mediated disorders, including immunodeficiencies, hypersensitivity reactions, autoimmune diseases, tissue and organ transplantations, malignancies, inflammatory disorders, infectious diseases, and any other disease, where immunotherapy can improve the quality and life expectancy.',
     reference: 'https://www.ncbi.nlm.nih.gov/books/NBK519046/'
   },
-  {
-    type: 'cytotoxic',
-    directionality: nil,  # TODO
-    definition: 'TODO',  # TODO
-    reference: 'TODO'  # TODO
-  }
 ]
 interaction_claim_types.each do |claim_type|
   InteractionClaimType.where(
