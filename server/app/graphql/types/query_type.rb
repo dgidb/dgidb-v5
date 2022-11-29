@@ -172,7 +172,7 @@ module Types
     end
 
     field :drug_application, Types::DrugApplicationType, null: true do
-      description "Put the description here"
+      description "Drug application"
       argument :id, ID, required: true
     end
 
@@ -181,7 +181,7 @@ module Types
     end
 
     field :drug_approval_rating, Types::DrugApprovalRatingType, null: true do
-      description "Put the description here"
+      description "Drug approval rating"
       argument :id, ID, required: true
     end
 
