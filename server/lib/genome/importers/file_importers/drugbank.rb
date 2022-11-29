@@ -42,41 +42,46 @@ module Genome; module Importers; module FileImporters; module Drugbank;
       run_parser
 
       @drug_filter.all_records.each do |record|
+        # TODO: issue-142
         next if record[1].strip == '' || !record[2].exclude?('n/a')
 
-        gene_claim = create_gene_claim(record[2], GeneNomenclature::NAME)
+        unless record[2] == '' # TODO: issue-142
+          gene_claim = create_gene_claim(record[2], GeneNomenclature::NAME)
 
-        Hash[record[6].zip(record[5])].each do |nomen, syn|
-          case nomen
-          when 'UniProtKB'
-            create_gene_claim_alias(gene_claim, "uniprot:#{syn}", GeneNomenclature::UNIPROTKB_ID)
-          when 'UniProt Accession'
-            create_gene_claim_alias(gene_claim, syn, GeneNomenclature::UNIPROTKB_NAME)
-          when 'IUPHAR', 'Guide to Pharmacology'
-            create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", GeneNomenclature::GTOP_ID)
-          when 'HUGO Gene Nomenclature Committee (HGNC)'
-            create_gene_claim_alias(gene_claim, syn, GeneNomenclature::HGNC_ID)
-          else
+          Hash[record[6].zip(record[5])].each do |nomen, syn|
             case nomen
-            when 'GenAtlas'
-              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
-            when 'GenBank Protein Atlas'
-              create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
+            when 'UniProtKB'
+              create_gene_claim_alias(gene_claim, "uniprot:#{syn}", GeneNomenclature::UNIPROTKB_ID)
+            when 'UniProt Accession'
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::UNIPROTKB_NAME)
+            when 'IUPHAR', 'Guide to Pharmacology'
+              create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", GeneNomenclature::GTOP_ID)
+            when 'HUGO Gene Nomenclature Committee (HGNC)'
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::HGNC_ID)
             else
-              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
+              case nomen
+              when 'GenAtlas'
+                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
+              when 'GenBank Protein Atlas'
+                create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
+              else
+                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
+              end
             end
           end
         end
 
         drug_claim = create_drug_claim(record[1])
         create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", DrugNomenclature::DRUGBANK_ID)
-        interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        unless record[3] == 'n/a'
-          create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, record[3])
-        end
+        unless record[2] != ''
+          interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+          unless record[3] == 'n/a'
+            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, record[3])
+          end
 
-        record[4].each do |pmid|
-          create_interaction_claim_publication(interaction_claim, pmid)
+          record[4].each do |pmid|
+            create_interaction_claim_publication(interaction_claim, pmid)
+          end
         end
       end
       backfill_publication_information
