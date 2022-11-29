@@ -171,6 +171,24 @@ module Types
       DrugClaim.find_by(id: id)
     end
 
+    field :drug_application, Types::DrugApplicationType, null: true do
+      description "Put the description here"
+      argument :id, ID, required: true
+    end
+
+    def drug_application(id:)
+      DrugApplication.find_by(id: id)
+    end
+
+    field :drug_approval_rating, Types::DrugApprovalRatingType, null: true do
+      description "Put the description here"
+      argument :id, ID, required: true
+    end
+
+    def drug_approval_rating(id:)
+      DrugApprovalRating.find_by(id: id)
+    end
+
     field :drug, Types::DrugType, null: true do
       description "A drug"
       argument :id, ID, required: true
