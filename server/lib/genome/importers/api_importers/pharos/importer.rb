@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'Pharos'
     end
 
@@ -19,7 +18,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
           base_url: 'https://pharos-api.ncats.io/graphql',
           site_url: 'https://pharos.nih.gov/',
           citation: 'Nguyen, D.-T., Mathias, S. et al, "Pharos: Collating Protein Information to Shed Light on the Druggable Genome", Nucl. Acids Res.i>, 2017, 45(D1), D995-D1002. DOI: 10.1093/nar/gkw1072. PMID: 27903890',
-          source_db_version: @new_version,
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Pharos',
           license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
@@ -55,9 +54,9 @@ module Genome; module Importers; module ApiImporters; module Pharos;
           genes.each do |gene|
             next if gene['sym'].nil?
 
-            gene_claim = create_gene_claim(gene['sym'], 'Gene Symbol')
-            create_gene_claim_alias(gene_claim, gene['name'], 'Gene Name')
-            create_gene_claim_alias(gene_claim, "uniprot:#{gene['uniprot']}", 'UniProtKB ID')
+            gene_claim = create_gene_claim(gene['sym'], GeneNomenclature::SYMBOL)
+            create_gene_claim_alias(gene_claim, gene['name'], GeneNomenclature::NAME)
+            create_gene_claim_alias(gene_claim, "uniprot:#{gene['uniprot']}", GeneNomenclature::UNIPROTKB_ID)
             normalized_category = case category
                                   when 'GPCR'
                                     'G PROTEIN COUPLED RECEPTOR'

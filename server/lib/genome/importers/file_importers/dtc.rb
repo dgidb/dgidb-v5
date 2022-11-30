@@ -26,7 +26,7 @@ module Genome; module Importers; module FileImporters; module Dtc;
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Drug Target Commons',
-          license: 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)',
+          license: License::CC_BY_NC_3_0,
           license_link: 'https://academic.oup.com/database/article/doi/10.1093/database/bay083/5096727'
         }
       )
@@ -42,12 +42,12 @@ module Genome; module Importers; module FileImporters; module Dtc;
         pmid = row['pubmed_id']
         mechanism = row['ep_action_mode']
         unless drug_name.nil? || gene_name.nil?
-          drug_claim = create_drug_claim(drug_name, 'DTC Drug Name')
+          drug_claim = create_drug_claim(drug_name)
           unless drug_id.nil?
-            create_drug_claim_alias(drug_claim, drug_id, 'ChEMBL Drug ID')
+            create_drug_claim_alias(drug_claim, drug_id, DrugNomenclature::CHEMBL_ID)
           end
           gene_name.split(',').each do |indv_gene|
-            gene_claim = create_gene_claim(indv_gene, 'DTC Gene Name')
+            gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             unless pmid.nil? || pmid == '' || pmid == '""' || pmid == "''" || pmid[0] == '-' || pmid == '15288657'
               create_interaction_claim_publication(interaction_claim, pmid)

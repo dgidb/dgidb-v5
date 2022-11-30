@@ -50,13 +50,13 @@ module Genome
           end
 
           def create_gene_claim_entries(gene)
-            gc = create_gene_claim(gene.official_name, 'Gene Symbol')
+            gc = create_gene_claim(gene.official_name)
             base_aliases = gene.gene_aliases + [gene.name]
             base_aliases.uniq.reject { |n| n == gene.official_name }.each do |gene_alias|
-              create_gene_claim_alias(gc, gene_alias, 'Gene Symbol')
+              create_gene_claim_alias(gc, gene_alias, GeneNomenclature::SYMBOL)
             end
-            create_gene_claim_alias(gc, "ncbigene:#{gene.entrez_id}", 'NCBI Gene ID')
-            create_gene_claim_alias(gc, "civic.gid:#{gene.id}", 'CIViC ID')
+            create_gene_claim_alias(gc, "ncbigene:#{gene.entrez_id}", GeneNomenclature::NCBI_ID)
+            create_gene_claim_alias(gc, "civic.gid:#{gene.id}", GeneNomenclature::CIVIC_ID)
             gc
           end
 
@@ -65,8 +65,8 @@ module Genome
               create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.clinical_significance == 'Resistance'
               create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE') if ei.evidence_level == 'A'
 
-              dc = create_drug_claim(drug.name.upcase, 'Primary Drug Name')
-              create_drug_claim_alias(dc, "ncit:#{drug.ncit_id}", 'NCIt ID')
+              dc = create_drug_claim(drug.name.upcase, DrugNomenclature::PRIMARY_NAME)
+              create_drug_claim_alias(dc, "ncit:#{drug.ncit_id}", DrugNomenclature::NCIT_ID) if drug.ncit_id
 
               ic = create_interaction_claim(gc, dc)
               if ei.source.citation_id.present? && ei.source.source_type == 'PubMed'
