@@ -108,7 +108,7 @@ module Genome
           name: name.strip,
           nomenclature: nomenclature.strip,
           source_id: source.id
-        ).first_or_create
+        ).first_or_create!
       end
 
       def create_drug_claim_alias(drug_claim, synonym, nomenclature)
