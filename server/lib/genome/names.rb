@@ -1,120 +1,121 @@
+# frozen_string_literal: true
 module Genome
   class DataImporter
     module License
-      UNKNOWN_UNAVAILABLE = 'Unknown; data is no longer publicly available from site'.freeze
-      UNKNOWN = 'Unknown'.freeze
-      CC_BY_NC_3_0 = 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)'.freeze
-      CC_BY_SA_3_0 = 'Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)'.freeze
-      CC_BY_SA_4_0 = 'Create Commons Attribution-ShareAlike 4.0 International License'.freeze
-      PUBLIC_DOMAIN = 'Public domain'.freeze
-      CUSTOM_NON_COMMERCIAL = 'Custom Non-Commercial'.freeze
+      UNKNOWN_UNAVAILABLE = 'Unknown; data is no longer publicly available from site'
+      UNKNOWN = 'Unknown'
+      CC_BY_NC_3_0 = 'Creative Commons Attribution-NonCommercial 3.0 (BY-NC)'
+      CC_BY_SA_3_0 = 'Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)'
+      CC_BY_SA_4_0 = 'Create Commons Attribution-ShareAlike 4.0 International License'
+      PUBLIC_DOMAIN = 'Public domain'
+      CUSTOM_NON_COMMERCIAL = 'Custom Non-Commercial'
     end
 
     module DrugNomenclature
-      PRIMARY_NAME = 'Primary Name'.freeze
+      PRIMARY_NAME = 'Primary Name'
 
-      DEVELOPMENT_NAME = 'Development Name'.freeze
-      ALIAS = 'ALIAS'.freeze
-      TRADE_NAME = 'Trade Name'.freeze
-      GENERIC_NAME = 'Generic Name'.freeze
-      XREF = 'Xref'.freeze
+      DEVELOPMENT_NAME = 'Development Name'
+      ALIAS = 'ALIAS'
+      TRADE_NAME = 'Trade Name'
+      GENERIC_NAME = 'Generic Name'
+      XREF = 'Xref'
 
-      RXNORM_ID = 'RxNorm ID'.freeze
-      HEMONC_ID = 'HemOnc ID'.freeze
-      DRUGSATFDA_ID = 'Drugs@FDA ID'.freeze
-      CHEMIDPLUS_ID = 'ChemIDplus ID'.freeze
-      WIKIDATA_ID = 'Wikidata ID'.freeze
-      CONCEPT_ID = 'Concept ID'.freeze
-      GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'.freeze
-      DRUGBANK_ID = 'DrugBank ID'.freeze
-      PHARMGKB_ID = 'PharmGKB ID'.freeze
-      CHEMBL_ID = 'ChEMBL ID'.freeze
-      PUBCHEM_COMPOUND_ID = 'PubChem Compound ID'.freeze
-      PUBCHEM_SUBSTANCE_ID = 'PubChem Substance ID'.freeze
-      NCIT_ID = 'NCIt ID'.freeze
-      PFAM_ID = 'PFAM ID'.freeze
-      TTD_ID = 'TTD ID'.freeze
+      RXNORM_ID = 'RxNorm ID'
+      HEMONC_ID = 'HemOnc ID'
+      DRUGSATFDA_ID = 'Drugs@FDA ID'
+      CHEMIDPLUS_ID = 'ChemIDplus ID'
+      WIKIDATA_ID = 'Wikidata ID'
+      CONCEPT_ID = 'Concept ID'
+      GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'
+      DRUGBANK_ID = 'DrugBank ID'
+      PHARMGKB_ID = 'PharmGKB ID'
+      CHEMBL_ID = 'ChEMBL ID'
+      PUBCHEM_COMPOUND_ID = 'PubChem Compound ID'
+      PUBCHEM_SUBSTANCE_ID = 'PubChem Substance ID'
+      NCIT_ID = 'NCIt ID'
+      PFAM_ID = 'PFAM ID'
+      TTD_ID = 'TTD ID'
     end
 
     module DrugAttributeName
-      NOTES = 'Notes'.freeze
-      DRUG_CLASS = 'Drug Class'.freeze
-      DRUG_SUBCLASS = 'Drug Subclass'.freeze
-      CLINICAL_TRIAL_ID = 'Clinical Trial ID'.freeze
-      INDICATION = 'Indication'.freeze
-      DEVELOPER = 'Developer'.freeze
-      APPROVAL_YEAR = 'Year of Approval'.freeze
-      CLEARITY_LINK = 'Link to Clearity Drug Class Schematic'.freeze
-      SPECIES_NAME = 'Name of Ligand Species'.freeze
-      GENE_SYMBOL = 'Gene Symbol for Endogenous Peptides'.freeze
+      NOTES = 'Notes'
+      DRUG_CLASS = 'Drug Class'
+      DRUG_SUBCLASS = 'Drug Subclass'
+      CLINICAL_TRIAL_ID = 'Clinical Trial ID'
+      INDICATION = 'Indication'
+      DEVELOPER = 'Developer'
+      APPROVAL_YEAR = 'Year of Approval'
+      CLEARITY_LINK = 'Link to Clearity Drug Class Schematic'
+      SPECIES_NAME = 'Name of Ligand Species'
+      GENE_SYMBOL = 'Gene Symbol for Endogenous Peptides'
     end
 
     module GeneNomenclature
-      SYMBOL = 'Gene Symbol'.freeze
-      NAME = 'Gene Name'.freeze
-      SYNONYM = 'Gene Synonym'.freeze
-      DESCRIPTION = 'Description'.freeze
-      PREVIOUS_SYMBOL = 'Previous Symbol'.freeze
+      SYMBOL = 'Gene Symbol'
+      NAME = 'Gene Name'
+      SYNONYM = 'Gene Synonym'
+      DESCRIPTION = 'Description'
+      PREVIOUS_SYMBOL = 'Previous Symbol'
 
-      NCBI_NAME = 'NCBI Gene Name'.freeze
-      NCBI_ID = 'NCBI Gene ID'.freeze
-      REFSEQ_ACC = 'RefSeq Accession'.freeze
-      ENSEMBL_ID = 'Ensembl Gene ID'.freeze
-      HGNC_ID = 'HGNC ID'.freeze
-      UNIPROTKB_ID = 'UniProtKB ID'.freeze
-      UNIPROTKB_NAME = 'UniProtKB Entry Name'.freeze
-      UNIPROTKB_PROTEIN_NAME = 'UniProtKB Protein Name'.freeze
-      UNIPROTKB_GENE_NAME = 'UniProtKB Gene Name'.freeze
-      CIVIC_ID = 'CIViC ID'.freeze
-      TTD_ID = 'TTD ID'.freeze
-      PHARMGKB_ID = 'PharmGKB ID'.freeze
-      CHEMBL_ID = 'ChEMBL ID'.freeze
-      GTOP_ID = 'GuideToPharmacology ID'.freeze
-      GENBANK_ID = 'GenBank Protein ID'.freeze
-      CONCEPT_ID = 'Concept ID'.freeze
+      NCBI_NAME = 'NCBI Gene Name'
+      NCBI_ID = 'NCBI Gene ID'
+      REFSEQ_ACC = 'RefSeq Accession'
+      ENSEMBL_ID = 'Ensembl Gene ID'
+      HGNC_ID = 'HGNC ID'
+      UNIPROTKB_ID = 'UniProtKB ID'
+      UNIPROTKB_NAME = 'UniProtKB Entry Name'
+      UNIPROTKB_PROTEIN_NAME = 'UniProtKB Protein Name'
+      UNIPROTKB_GENE_NAME = 'UniProtKB Gene Name'
+      CIVIC_ID = 'CIViC ID'
+      TTD_ID = 'TTD ID'
+      PHARMGKB_ID = 'PharmGKB ID'
+      CHEMBL_ID = 'ChEMBL ID'
+      GTOP_ID = 'GuideToPharmacology ID'
+      GENBANK_ID = 'GenBank Protein ID'
+      CONCEPT_ID = 'Concept ID'
     end
 
     module GeneAttributeName
-      GTOP_FAMILY_ID = 'GuideToPharmacology Family ID'.freeze
-      GTOP_FAMILY_NAME = 'GuideToPharmacology Family Name'.freeze
-      INTERPRO_ACC_ID = 'InterPro Accession ID'.freeze
-      INTERPRO_NAME_SHORT = 'InterPro Short Name'.freeze
-      INTERPRO_TYPE = 'InterPro Type'.freeze
-      UNIPROTKB_EV = 'UniProtKB Evidence'.freeze
-      UNIPROTKB_STATUS = 'UniProtKB Status'.freeze
-      CITES = 'Counted Citations from 1950-2009'.freeze
-      QUERY = 'Initial Gene Query'.freeze
-      TARGET_EVENT = 'Reported Genome Event Targeted'.freeze
-      CLASS = 'Target Class'.freeze
-      MAIN_CLASS = 'Target Main Class'.freeze
-      SUBCLASS = 'Target Subclass'.freeze
-      HELIX_CT = 'Transmembrane Helix Count'.freeze
-      ENSEMBL_TYPE = 'Ensembl Biotype'.freeze
-      NCBI_TYPE = 'NCBI Gene Type'.freeze
-      HGNC_TYPE = 'HGNC Locus Type'.freeze
+      GTOP_FAMILY_ID = 'GuideToPharmacology Family ID'
+      GTOP_FAMILY_NAME = 'GuideToPharmacology Family Name'
+      INTERPRO_ACC_ID = 'InterPro Accession ID'
+      INTERPRO_NAME_SHORT = 'InterPro Short Name'
+      INTERPRO_TYPE = 'InterPro Type'
+      UNIPROTKB_EV = 'UniProtKB Evidence'
+      UNIPROTKB_STATUS = 'UniProtKB Status'
+      CITES = 'Counted Citations from 1950-2009'
+      QUERY = 'Initial Gene Query'
+      TARGET_EVENT = 'Reported Genome Event Targeted'
+      CLASS = 'Target Class'
+      MAIN_CLASS = 'Target Main Class'
+      SUBCLASS = 'Target Subclass'
+      HELIX_CT = 'Transmembrane Helix Count'
+      ENSEMBL_TYPE = 'Ensembl Biotype'
+      NCBI_TYPE = 'NCBI Gene Type'
+      HGNC_TYPE = 'HGNC Locus Type'
     end
 
     module InteractionAttributeName
-      ALTERATION = 'Alteration'.freeze
-      APPROVAL_STATUS = 'Approval Status'.freeze
-      CLINICAL_TRIAL_ID = 'Clinical Trial ID'.freeze
-      CLINICAL_TRIAL_NAME = 'Clinical Trial Name'.freeze
-      COMBINATION = 'Combination Therapy'.freeze
-      CONTEXT = 'Interaction Context'.freeze
-      BINDING_SITE = 'Specific Binding Site'.freeze
-      ASSAY = 'Assay Details'.freeze
-      DETAILS = 'Details'.freeze
-      ENDOGENOUS_DRUG = 'Endogenous Drug'.freeze
-      DIRECT = 'Direct Interaction'.freeze
-      EV_TYPE = 'Evidence Type'.freeze
-      FUSION_PROTEIN = 'Fusion Protein'.freeze
-      INDICATION = 'Indication'.freeze
-      CANCER_TYPE = 'Cancer Type'.freeze
-      MOA = 'Mechanism of Action'.freeze
-      NOVEL = 'Novel Drug Target'.freeze
-      PATHWAY = 'Pathway'.freeze
-      RESPONSE = 'Response Type'.freeze
-      VARIANT_EFFECT = 'Variant Effect'.freeze
+      ALTERATION = 'Alteration'
+      APPROVAL_STATUS = 'Approval Status'
+      CLINICAL_TRIAL_ID = 'Clinical Trial ID'
+      CLINICAL_TRIAL_NAME = 'Clinical Trial Name'
+      COMBINATION = 'Combination Therapy'
+      CONTEXT = 'Interaction Context'
+      BINDING_SITE = 'Specific Binding Site'
+      ASSAY = 'Assay Details'
+      DETAILS = 'Details'
+      ENDOGENOUS_DRUG = 'Endogenous Drug'
+      DIRECT = 'Direct Interaction'
+      EV_TYPE = 'Evidence Type'
+      FUSION_PROTEIN = 'Fusion Protein'
+      INDICATION = 'Indication'
+      CANCER_TYPE = 'Cancer Type'
+      MOA = 'Mechanism of Action'
+      NOVEL = 'Novel Drug Target'
+      PATHWAY = 'Pathway'
+      RESPONSE = 'Response Type'
+      VARIANT_EFFECT = 'Variant Effect'
     end
   end
 end
