@@ -9,6 +9,8 @@ class DrugClaim < ::ActiveRecord::Base
   has_many :drug_claim_attributes, inverse_of: :drug_claim, dependent: :delete_all
   has_many :drug_claim_approval_ratings, inverse_of: :drug_claim, dependent: :delete_all
 
+  validates :name, presence: true, allow_blank: false
+
   def self.for_search
     eager_load(
       drug: [
