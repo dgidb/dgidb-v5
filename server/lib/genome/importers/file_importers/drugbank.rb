@@ -130,7 +130,9 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         when 'drugbank-id'
             if attrs['primary']
                 @drugbank_id_flag = true
-                @is_primary_drug = true
+                if @is_not_salts
+                    @is_primary_drug = true
+                end
             end
 
         when 'name'
@@ -195,14 +197,14 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if @target_name_flag
             if @is_target
                 @target_name_flag = false
-                @current_target_name = string
+                @current_target_name = string unless string.strip == ""
             end
         end
 
         if target_action_flag
             if is_target
                 @target_action_flag = false
-                @current_target_action = string
+                @current_target_action = string unless string.strip == ""
             end
         end
 
