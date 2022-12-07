@@ -40,6 +40,7 @@ gem 'nokogiri', '>= 1.13.2'
 
 # Importer dependencies
 gem 'graphql-client'
+gem 'tqdm'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
