@@ -35,7 +35,7 @@ module Genome
 
         create_sources
 
-        claims.each do |gene_claim|
+        claims.tqdm.each do |gene_claim|
           normalized_gene = normalize_claim(gene_claim.name, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?
 
