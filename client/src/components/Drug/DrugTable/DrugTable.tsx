@@ -133,7 +133,7 @@ export const DrugTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span className="cursor-pointer" onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</span>
+        <a onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</a>
       ),
       filters: drug.map((el: any) => {
         return {
@@ -147,7 +147,7 @@ export const DrugTable: React.FC = () => {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.gene?.name}</span>
+        <a onClick={() => navigate(`/genes/${record?.gene?.name}`)}>{record?.gene?.name}</a>
       ),
       filters: gene.map((el: any) => {
         return {

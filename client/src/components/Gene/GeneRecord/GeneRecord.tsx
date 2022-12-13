@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, {useState, useContext, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 
@@ -16,8 +16,8 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 const GeneRecordTable: React.FC = () => {
-
   const {state} = useContext(GlobalClientContext);
+  const navigate = useNavigate();
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const geneSymbol: any = useParams().gene;
@@ -39,7 +39,7 @@ const GeneRecordTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <a onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</a>
       )
     },
     {
