@@ -2,7 +2,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -22,7 +21,6 @@ export const DrugTable: React.FC = () => {
 
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const navigate = useNavigate();
 
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
   
@@ -133,7 +131,7 @@ export const DrugTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <a onClick={() => navigate(`/drugs/${record?.drug?.name}`)}>{record?.drug?.name}</a>
+        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
       ),
       filters: drug.map((el: any) => {
         return {
@@ -147,7 +145,7 @@ export const DrugTable: React.FC = () => {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <a onClick={() => navigate(`/genes/${record?.gene?.name}`)}>{record?.gene?.name}</a>
+        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
       ),
       filters: gene.map((el: any) => {
         return {
