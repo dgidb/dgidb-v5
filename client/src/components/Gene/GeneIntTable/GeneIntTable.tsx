@@ -2,7 +2,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -25,8 +24,6 @@ export const GeneIntTable: React.FC = () => {
   const [intScore, setIntScore] = useState<any>([]);
   const [queryScore, setQueryScore] = useState<any>([]);
 
-  const navigate = useNavigate();
-
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
   
   let genes = data?.genes;
@@ -41,16 +38,12 @@ export const GeneIntTable: React.FC = () => {
     setInteractionResults(interactionData)
   }, [genes])
 
-  const navToRecord = (gene: string) => {
-    navigate(`/genes/${gene}`);
-  }
-
   const columns: ColumnsType<any> = [
     {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span className="cursor-pointer" onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
+        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
       ),
       filters: gene.map((el: any) => {
         return {
@@ -64,7 +57,7 @@ export const GeneIntTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
       ),
       filters: drug.map((el: any) => {
         return {

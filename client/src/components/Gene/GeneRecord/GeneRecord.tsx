@@ -16,7 +16,6 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 const GeneRecordTable: React.FC = () => {
-
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
@@ -39,7 +38,7 @@ const GeneRecordTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
       )
     },
     {

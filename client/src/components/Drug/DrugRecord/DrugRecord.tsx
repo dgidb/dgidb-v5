@@ -16,7 +16,6 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 const DrugRecordTable: React.FC = () => {
-
   const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
@@ -24,7 +23,7 @@ const DrugRecordTable: React.FC = () => {
 
   const { data } = useGetInteractionsByDrugs([drugName!]);
 
-  let drugs = data?.drugs[0]?.interactions;
+  let drugs = data?.drugs?.[0]?.interactions;
 
   useEffect(() => {
     setInteractionResults(drugs)
@@ -35,7 +34,7 @@ const DrugRecordTable: React.FC = () => {
       title: 'Gene',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.gene?.name}</span>
+        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
       )
     },
     {
