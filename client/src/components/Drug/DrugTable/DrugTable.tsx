@@ -31,6 +31,7 @@ export const DrugTable: React.FC = () => {
   const [gene, setGene] = useState<any>([]);
   const [intScore, setIntScore] = useState<any>([]);
   const [queryScore, setQueryScore] = useState<any>([]);
+  const [approvalStatus, setApprovalStatus] = useState<any>([]);
 
   const onlyUnique = (value: any, index: any, self: any) => {
     return self.indexOf(value) === index;
@@ -43,6 +44,9 @@ export const DrugTable: React.FC = () => {
     let duplicateGene= interactionResults?.map((item: any) => {
       return item?.gene.name;
     })
+    let duplicateApprovalStatus = interactionResults?.map((item: any) => {
+      return item?.drug?.approved;
+    })
     let duplicateIntScore = interactionResults?.map((item: any) => {
       return item?.interactionScore;
     })
@@ -54,6 +58,7 @@ export const DrugTable: React.FC = () => {
     // setting state to unique instances of object values
     setDrug(duplicateDrug.filter(onlyUnique))
     setGene(duplicateGene.filter(onlyUnique))
+    setApprovalStatus(duplicateApprovalStatus.filter(onlyUnique))
     setIntScore(duplicateIntScore.filter(onlyUnique))
     setQueryScore(duplicateQueryScore.filter(onlyUnique))
   }
@@ -67,8 +72,9 @@ export const DrugTable: React.FC = () => {
   enum ColumnType {
     drug = 1,
     gene = 2,
-    intScore = 3,
-    queryScore = 4,
+    approvalStatus = 3,
+    intScore = 4,
+    queryScore = 5,
   }
 
   const columnFilter = (unfilteredData: any, column: ColumnType) => {
@@ -79,8 +85,10 @@ export const DrugTable: React.FC = () => {
         case 2:
           return item?.gene?.name;
         case 3:
-          return item?.interactionScore;
+          return item?.drug?.approved
         case 4:
+          return item?.interactionScore;
+        case 5:
           return item?.queryScore;
         default:
           return null;
@@ -101,11 +109,14 @@ export const DrugTable: React.FC = () => {
           case "gene":
             setGene(columnFilter(extra.currentDataSource, 2));
             break;
+          case "drug.approved":
+            setApprovalStatus(columnFilter(extra.currentDataSource, 3));
+            break;
           case "interactionScore":
-            setIntScore(columnFilter(extra.currentDataSource, 3));
+            setIntScore(columnFilter(extra.currentDataSource, 4));
             break;
           case "queryScore":
-            setQueryScore(columnFilter(extra.currentDataSource, 4));
+            setQueryScore(columnFilter(extra.currentDataSource, 5));
             break;
           default:
             break;
@@ -113,8 +124,6 @@ export const DrugTable: React.FC = () => {
       }
     }
   }
-
-
 
   useEffect(() => {
     let interactionData: any = [];
@@ -154,6 +163,20 @@ export const DrugTable: React.FC = () => {
         }
       }),
       onFilter: (value: any, record: any) => record?.gene.name.startsWith(value),
+    },
+    {
+      title: 'Regulatory Approval',
+      dataIndex: ['drug', 'approved'],
+      render: (text: any, record: any) => (
+        <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
+      ),
+      filters: approvalStatus.map((el: any) => {
+        return {
+          text: el ? "Approved" : "Not Approved",
+          value: el,
+        }
+      }),
+      onFilter: (value: any, record: any) => record?.drug.approved === value,
     },
     {
       title: 'Interaction Score',
