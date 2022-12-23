@@ -90,10 +90,8 @@ const DrugRecordTable: React.FC = () => {
 
 export const DrugRecord: React.FC = () => {
 
-  const drug = useParams().drug;
-
-  const { data} = useGetDrugRecord(['DABRAFENIB']);
-
+  const drug = useParams().drug as string;
+  const data = useGetDrugRecord([drug]).data;
   let drugData = data?.drugs[0];
 
   return (

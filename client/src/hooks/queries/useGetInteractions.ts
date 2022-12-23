@@ -54,6 +54,7 @@ const getInteractionsByDrugsQuery = gql`
         }
         drug {
           name
+          approved
         }
         interactionScore
         interactionTypes {
@@ -86,6 +87,3 @@ export function useGetInteractionsByDrugs(names: string[]) {
   }, 
   {enabled: names !== []});
 }
-
-
-

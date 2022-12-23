@@ -68,18 +68,18 @@ export const GeneIntTable: React.FC = () => {
       onFilter: (value: any, record: any) => record?.drug.name.startsWith(value),
     },
     {
-      title: 'Approval Status',
+      title: 'Regulatory Approval',
       dataIndex: ['drug', 'approved'],
       render: (text: any, record: any) => (
         <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
       ),
       filters: approvalStatus.map((el: any) => {
         return {
-          text: el,
+          text: el ? "Approved" : "Not Approved",
           value: el,
         }
       }),
-      onFilter: (value: any, record: any) => record?.drug.approved.startsWith(value),
+      onFilter: (value: any, record: any) => record?.drug?.approved === value,
     },
     {
       title: 'Indication',
