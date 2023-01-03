@@ -28,6 +28,7 @@ module Genome
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
 
+        set_response_structure
         create_sources
 
         claims.tqdm.each do |drug_claim|
@@ -37,10 +38,23 @@ module Genome
           if normalized_drug.is_a? String
             normalized_id = normalized_drug
           else
-            normalized_id = normalized_drug['therapeutic_descriptor']['therapeutic']
-            create_new_drug(normalized_drug['therapeutic_descriptor']) if Drug.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_drug[@descriptor_name][@id_name]
+            create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
+        end
+      end
+
+      def set_response_structure
+        url = URI("#{@normalizer_url_root}search?q=")
+        body = fetch_json_response(url)
+        version = body['service_meta_']['version']
+        if version < '0.4.0'
+          @descriptor_name = 'therapy_descriptor'
+          @id_name = 'therapy_id'
+        else
+          @descriptor_name = 'therapeutic_descriptor'
+          @id_name = 'therapeutic'
         end
       end
 
@@ -134,7 +148,7 @@ module Genome
       end
 
       def get_concept_id(response)
-        response['therapeutic_descriptor']['therapeutic'] unless response['match_type'].zero?
+        response[@descriptor_name][@id_name] unless response['match_type'].zero?
       end
 
       def produce_concept_id_nomenclature(concept_id)
@@ -258,7 +272,7 @@ module Genome
       end
 
       def add_grouper_data(drug, descriptor)
-        drug_data = retrieve_normalizer_data(descriptor['therapeutic'])
+        drug_data = retrieve_normalizer_data(descriptor[@id_name])
 
         drug_data.each do |source_name, source_data|
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
@@ -276,11 +290,11 @@ module Genome
 
       def create_new_drug(descriptor)
         name = if descriptor.fetch('label').blank?
-                 descriptor['therapeutic']
+                 descriptor[@id_name]
                else
                  descriptor['label']
                end
-        drug = Drug.where(concept_id: descriptor['therapeutic'], name: name.upcase).first_or_create
+        drug = Drug.where(concept_id: descriptor[@id_name], name: name.upcase).first_or_create
 
         add_grouper_data(drug, descriptor)
       end
