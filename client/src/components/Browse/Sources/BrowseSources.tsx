@@ -44,12 +44,14 @@ export const BrowseSources = () => {
     return (
       <div className="source-item-card">
         <div className="source-item-name">{src.sourceDbName}</div>
-        <div hidden={!(src.geneClaimsCount && src.geneClaimsCount > 0)}><b>Gene Claims Count:</b> {src.geneClaimsCount}</div>
-        <div hidden={!(src.geneClaimsInGroupsCount && src.geneClaimsInGroupsCount > 0)}><b>Gene Claims In Group:</b> {src.geneClaimsInGroupsCount}</div>
-        <div hidden={!(src.drugClaimsCount && src.drugClaimsCount > 0)}><b>Drug Claims Count:</b> {src.drugClaimsCount}</div>
-        <div hidden={!(src.drugClaimsInGroupsCount && src.drugClaimsInGroupsCount > 0)}><b>Drug Claims In Group:</b> {src.drugClaimsInGroupsCount}</div>
-        <div><b>License: </b><a href={src.licenseLink} target="_blank">{src.license}</a></div>
-        <div><b>Full Citation:</b> {src.citation}</div>
+        <div className="source-item-rows">
+          <div hidden={!(src.geneClaimsCount && src.geneClaimsCount > 0)}><b>Gene Claims Count:</b> {src.geneClaimsCount}</div>
+          <div hidden={!(src.geneClaimsInGroupsCount && src.geneClaimsInGroupsCount > 0)}><b>Gene Claims In Group:</b> {src.geneClaimsInGroupsCount}</div>
+          <div hidden={!(src.drugClaimsCount && src.drugClaimsCount > 0)}><b>Drug Claims Count:</b> {src.drugClaimsCount}</div>
+          <div hidden={!(src.drugClaimsInGroupsCount && src.drugClaimsInGroupsCount > 0)}><b>Drug Claims In Group:</b> {src.drugClaimsInGroupsCount}</div>
+          <div><b>License: </b><a href={src.licenseLink} target="_blank">{src.license}</a></div>
+          <div><b>Full Citation:</b> {src.citation}</div>
+        </div>
       </div>
     )
   }

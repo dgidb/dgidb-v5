@@ -14,17 +14,18 @@
   }
 
   .source-item-card {
-    background-color: var(--background-light) !important;
+    background-color: var(--soft-background) !important;
     border: 1px solid white;
     margin-bottom: 2rem;
 
     .source-item-name {
       font-size: 1.2rem;
       font-weight: 700;
+      padding: 10px;
+      background-color: var(--background-light) !important;
     }
-    .source-item-links {
-      display: flex;
-      justify-content: space-between;
+    .source-item-rows {
+      padding: 0 10px 10px;
     }
   }
 
