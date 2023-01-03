@@ -1,5 +1,4 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect} from 'react';
 import {
   useGetDruggableSources,
   useGetGeneSources,
@@ -22,107 +21,59 @@ export const BrowseSources = () => {
   let interactionSources = interactionData?.sources?.nodes;
   let potentiallyDruggableSources = potentiallyDruggableData?.sources?.nodes;
 
-  useEffect(() => {
-    console.log('geneData', geneData)
-  }, [geneData])
+  const sectionsMap = [
+    {
+      heading: "Gene Sources",
+      sources: geneSources,
+    },
+    {
+      heading: "Drug Sources",
+      sources: drugSources,
+    },
+    {
+      heading: "Interaction Sources",
+      sources: interactionSources,
+    },
+    {
+      heading: "Potentially Druggable Sources",
+      sources: potentiallyDruggableSources,
+    },
+  ]
 
-  useEffect(() => {
-    console.log('drugData', drugData)
-  }, [drugData])
-
-  useEffect(() => {
-    console.log('interactionData', interactionData)
-  }, [interactionData])
-
-  useEffect(() => {
-    console.log('potentiallyDruggableData', potentiallyDruggableData)
-  }, [potentiallyDruggableData])
+  const getCard = (src: any) => {
+    return (
+      <div className="source-item-card">
+        <div className="source-item-name">{src.sourceDbName}</div>
+        <div hidden={!(src.geneClaimsCount && src.geneClaimsCount > 0)}><b>Gene Claims Count:</b> {src.geneClaimsCount}</div>
+        <div hidden={!(src.geneClaimsInGroupsCount && src.geneClaimsInGroupsCount > 0)}><b>Gene Claims In Group:</b> {src.geneClaimsInGroupsCount}</div>
+        <div hidden={!(src.drugClaimsCount && src.drugClaimsCount > 0)}><b>Drug Claims Count:</b> {src.drugClaimsCount}</div>
+        <div hidden={!(src.drugClaimsInGroupsCount && src.drugClaimsInGroupsCount > 0)}><b>Drug Claims In Group:</b> {src.drugClaimsInGroupsCount}</div>
+        <div><b>License: </b><a href={src.licenseLink} target="_blank">{src.license}</a></div>
+        <div><b>Full Citation:</b> {src.citation}</div>
+      </div>
+    )
+  }
 
   // gene section, drug section, interaction, potentially druggable
 
   return (
     <div className="sources-page-container">
-      <div className="source-type-header"><h2><b>Gene Sources</b></h2></div>
-      <div className="sources-grid">
-        {
-          geneSources?.map((src: any) => {
-            return (
-              <div className="gene-source-item">
-                <div className="source-item-name">{src.sourceDbName}</div>
-                <div className="source-item-count">Total: {src.geneClaimsCount}</div>
-                <div className="source-item-in-group">In Group: {src.geneClaimsInGroupsCount}</div>
-                <div className="source-item-links">
-                  <div className="source-item-license"><a>License</a></div>
-                  <div className="source-item-citation"><a>Full Citation</a></div>
-                </div>
+      {
+        sectionsMap.map((section: any) => {
+          return (
+            <>
+              <div className="source-type-header"><h2><b>{section.heading}</b></h2></div>
+              <div className="sources-grid">
+                {
+                  section.sources?.map((src: any) => {
+                    return getCard(src)
+                  })
+                }
               </div>
-            )
-          })
-        }
-      </div>
-      <div className="source-type-header"><h2><b>Drug Sources</b></h2></div>
-      <div className="sources-grid">
-        {
-          drugSources?.map((src: any) => {
-            return (
-              <div className="gene-source-item">
-                <div className="source-item-name">{src.sourceDbName}</div>
-                <div className="source-item-count">Total: {src.drugClaimsCount}</div>
-                <div className="source-item-in-group">In Group: {src.drugClaimsInGroupsCount}</div>
-                <div className="source-item-links">
-                  <div className="source-item-license"><a>License</a></div>
-                  <div className="source-item-citation"><a>Full Citation</a></div>
-                </div>
-              </div>
-            )
-          })
-        }
-      </div>
-
-      <div className="source-type-header"><h2><b>Interaction Sources</b></h2></div>
-      <div className="sources-grid">
-        {
-          interactionSources?.map((src: any) => {
-            return (
-              <div className="gene-source-item">
-                <div className="source-item-name">{src.sourceDbName}</div>
-                <div className="source-item-count">gene claims count: {src.drugClaimsCount}</div>
-                <div className="source-item-in-group">gene claims in group: {src.drugClaimsInGroupsCount}</div>
-                <div className="source-item-links">
-                  <div className="source-item-license"><a>License</a></div>
-                  <div className="source-item-citation"><a>Full Citation</a></div>
-                </div>
-              </div>
-            )
-          })
-        }
-      </div>
-
-      <div className="source-type-header"><h2><b>Potentially Druggable</b></h2></div>
-      <div className="sources-grid">
-        {
-          interactionSources?.map((src: any) => {
-            return (
-              <div className="gene-source-item">
-                <div className="source-item-name">{src.sourceDbName}</div>
-                <div className="source-item-count">gene claims count: {src.drugClaimsCount}</div>
-                <div className="source-item-in-group">gene claims in group: {src.drugClaimsInGroupsCount}</div>
-                <div className="source-item-count">gene claims count: {src.geneClaimsCount}</div>
-                <div className="source-item-in-group">gene claims in group: {src.geneClaimsInGroupsCount}</div>
-                <div className="source-item-links">
-                  <div className="source-item-license"><a>License</a></div>
-                  <div className="source-item-citation"><a>Full Citation</a></div>
-                </div>
-              </div>
-            )
-          })
-        }
-      </div>
-
-      <div className="source-item">
-        <div className="source-title">
-        </div>
-      </div>
+            </>
+          )
+        })
+      }
     </div>
   )
 }
