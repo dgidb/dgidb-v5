@@ -14,19 +14,21 @@
   }
 
   .source-item-card {
-    background-color: var(--soft-background) !important;
-    border: 1px solid white;
+    background-color: var(--background-light) !important;
+    border: 5px solid white;
     margin-bottom: 2rem;
 
     .source-item-name {
       font-size: 1.2rem;
       font-weight: 700;
       padding: 10px;
-      background-color: var(--background-light) !important;
+      border: 5px;
     }
-    .source-item-rows {
-      padding: 0 10px 10px;
+    .source-section {
+      background-color: white;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
     }
   }
-
 }
