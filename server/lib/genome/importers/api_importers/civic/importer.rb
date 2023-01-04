@@ -62,7 +62,7 @@ module Genome
 
           def create_entries_for_evidence_item(gc, ei)
             ei.drugs.select { |d| importable_drug?(d) }.each do |drug|
-              create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.clinical_significance == 'Resistance'
+              create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.clinical_significance.downcase == 'resistance'
               create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE') if ei.evidence_level == 'A'
 
               dc = create_drug_claim(drug.name.upcase, DrugNomenclature::PRIMARY_NAME)
