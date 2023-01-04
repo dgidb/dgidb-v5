@@ -177,6 +177,7 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.4.2)
     thor (1.2.1)
+    tqdm (0.3.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     websocket-driver (0.7.5)
@@ -212,6 +213,7 @@ DEPENDENCIES
   search_object_graphql (= 0.3.1)
   spring
   sqlite3
+  tqdm
   tzinfo-data
 
 RUBY VERSION
