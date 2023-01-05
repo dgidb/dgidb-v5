@@ -35,20 +35,29 @@ export const BrowseSources = () => {
     {
       heading: "Gene Sources",
       sources: geneSources,
+      value: "Gene",
     },
     {
       heading: "Drug Sources",
       sources: drugSources,
+      value: "Drug",
     },
     {
       heading: "Interaction Sources",
       sources: interactionSources,
+      value: "Interaction",
     },
     {
       heading: "Potentially Druggable Sources",
       sources: potentiallyDruggableSources,
+      value: "Potentially Druggable",
     },
   ]
+
+  const handleButtonClick = (event: any) => {
+    const value = event.target.value
+    setFilter(value)
+  }
 
   const getCard = (src: any) => {
     const geneClaimsCountExists = src.geneClaimsCount ? true : false
@@ -85,7 +94,7 @@ export const BrowseSources = () => {
               >
                 <b>Full Citation</b>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails style={{maxHeight: "150px", overflow: "scroll", padding: "0 10px 10px"}}>
                 {src.citation}
               </AccordionDetails>
             </Accordion>
@@ -100,18 +109,37 @@ export const BrowseSources = () => {
   return (
     <Box className="sources-page-container">
       <Box display="flex"><h1 style={{marginRight: "10px"}}><b>Sources</b></h1> <Box my="auto">details about data sources in DGIdb</Box></Box>
-      <Box mb="10px">
-        <ButtonGroup variant="contained" color="primary">
-          <Button>All</Button>
-          <Button>Gene</Button>
-          <Button>Drug</Button>
-          <Button>Interaction</Button>
-          <Button>Potentially Druggable</Button>
+      <Box mb="20px">
+        <ButtonGroup color="primary" onClick={handleButtonClick}>
+          <Button variant={filter === "All" ? "outlined" : "contained"} 
+            value="All">
+              All
+            </Button>
+          <Button 
+            variant={filter === "Gene" ? "outlined" : "contained"} 
+            value="Gene">
+            Gene
+          </Button>
+          <Button 
+            variant={filter === "Drug" ? "outlined" : "contained"} 
+            value="Drug">
+            Drug
+          </Button>
+          <Button 
+            variant={filter === "Interaction" ? "outlined" : "contained"} 
+            value="Interaction">
+            Interaction
+          </Button>
+          <Button 
+            variant={filter === "Potentially Druggable" ? "outlined" : "contained"} 
+            value="Potentially Druggable">
+            Potentially Druggable
+          </Button>
         </ButtonGroup>
       </Box>
       {
         sectionsMap.map((section: any) => {
-          return (
+          return section.value === filter || filter === "All" ? (
             <>
               <Box className="source-type-header"><h2><b>{section.heading}</b></h2></Box>
               <Box className="sources-grid">
@@ -122,8 +150,8 @@ export const BrowseSources = () => {
                 }
               </Box>
             </>
-          )
-        })
+          ) : <></>
+        }) 
       }
     </Box>
   )

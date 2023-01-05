@@ -10,13 +10,13 @@
     grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 15px;
     grid-row-gap: 15px;
-    margin-bottom: 45px;
+    margin-bottom: 30px;
   }
 
   .source-item-card {
     background-color: var(--background-light) !important;
-    border: 5px solid white;
-    margin-bottom: 2rem;
+    border: 5px solid var(--background-light);
+    border-radius: 5px;
 
     .source-item-name {
       font-size: 1.2rem;
