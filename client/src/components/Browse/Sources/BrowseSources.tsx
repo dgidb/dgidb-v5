@@ -110,27 +110,27 @@ export const BrowseSources = () => {
     <Box className="sources-page-container">
       <Box display="flex"><h1 style={{marginRight: "10px"}}><b>Sources</b></h1> <Box my="auto">details about data sources in DGIdb</Box></Box>
       <Box mb="20px">
-        <ButtonGroup color="primary" onClick={handleButtonClick}>
+        <ButtonGroup color="primary" onClick={handleButtonClick} className="filter-buttons">
           <Button variant={filter === "All" ? "outlined" : "contained"} 
             value="All">
               All
             </Button>
-          <Button 
+          <Button
             variant={filter === "Gene" ? "outlined" : "contained"} 
             value="Gene">
             Gene
           </Button>
-          <Button 
+          <Button
             variant={filter === "Drug" ? "outlined" : "contained"} 
             value="Drug">
             Drug
           </Button>
-          <Button 
+          <Button
             variant={filter === "Interaction" ? "outlined" : "contained"} 
             value="Interaction">
             Interaction
           </Button>
-          <Button 
+          <Button
             variant={filter === "Potentially Druggable" ? "outlined" : "contained"} 
             value="Potentially Druggable">
             Potentially Druggable
