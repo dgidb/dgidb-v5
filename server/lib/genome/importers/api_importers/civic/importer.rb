@@ -82,12 +82,6 @@ module Genome
               mp_nodes = variant_edge.node.molecular_profiles.nodes
               ei_nodes = mp_nodes.reduce([]) { |tot, node| tot.concat(node.evidence_items.nodes) }
               ei_nodes = ei_nodes.select { |ei| importable_eid?(ei) }
-              # variant_edge.node.molecular_profiles.nodes.reduce([]) {}
-              # variant_edge.node.molecular_profiles.nodes.each do |mp_node|
-              #   mp_node.evidence_items.nodes.each do |ei_node|
-              #     ei_nodes << ei_node if importable_eid?(ei_node)
-              #   end
-              # end
               next if ei_nodes.length.zero?
 
               gc = create_gene_claim_entries(variant_edge.node.gene)
