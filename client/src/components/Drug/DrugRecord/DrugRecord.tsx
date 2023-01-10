@@ -3,9 +3,12 @@ import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetInteractionsByDrugs} from 'hooks/queries/useGetInteractions';
 import { useGetDrugRecord } from 'hooks/queries/useGetDrugRecord';
-
-// components
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -126,12 +129,16 @@ export const DrugRecord: React.FC = () => {
       </div>
       <div className="drug-record-lower">
         <div className="data-box drug-record-aliases">
-          <div className="box-title">Aliases</div>
-          <div className="box-content">
-            {drugData?.drugAliases?.map((alias: any) => {
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <b>Aliases</b>
+            </AccordionSummary>
+            <AccordionDetails>
+              {drugData?.drugAliases?.map((alias: any) => {
               return <div>{alias?.alias}</div>
-            })}
-          </div>
+              })}
+            </AccordionDetails>
+          </Accordion>
         </div>
         <div className="data-box drug-record-active">
           <div className="box-title">Active</div>
