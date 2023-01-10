@@ -61,8 +61,8 @@ module Genome
           end
 
           def create_entries_for_evidence_item(gc, ei)
-            ei.drugs.select { |d| importable_drug?(d) }.each do |drug|
-              create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.clinical_significance.downcase == 'resistance'
+            ei.therapies.select { |d| importable_drug?(d) }.each do |drug|
+              create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.significance.downcase == 'resistance'
               create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE') if ei.evidence_level == 'A'
 
               dc = create_drug_claim(drug.name.upcase, DrugNomenclature::PRIMARY_NAME)
@@ -79,11 +79,12 @@ module Genome
           def create_interaction_claims
             api_client = ApiClient.new
             api_client.enumerate_variants.each do |variant_edge|
-              node = variant_edge.node
-              ei_nodes = node.evidence_items.nodes.select { |ei| importable_eid?(ei) }
+              mp_nodes = variant_edge.node.molecular_profiles.nodes
+              ei_nodes = mp_nodes.reduce([]) { |tot, node| tot.concat(node.evidence_items.nodes) }
+              ei_nodes = ei_nodes.select { |ei| importable_eid?(ei) }
               next if ei_nodes.length.zero?
 
-              gc = create_gene_claim_entries(node.gene)
+              gc = create_gene_claim_entries(variant_edge.node.gene)
               ei_nodes.each do |ei_node|
                 create_entries_for_evidence_item(gc, ei_node)
               end
