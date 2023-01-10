@@ -42,26 +42,30 @@ module Genome; module Importers; module ApiImporters; module Civic
                 name
                 geneAliases
               }
-              evidenceItems {
+              molecularProfiles {
                 nodes {
-                  name
-                  id
-                  clinicalSignificance
-                  evidenceType
-                  evidenceLevel
-                  evidenceDirection
-                  evidenceRating
-                  link
-                  drugs {
-                    name
-                    ncitId
-                    id
-                  }
-                  source {
-                    citation
-                    citationId
-                    pmcId
-                    sourceType
+                  evidenceItems {
+                    nodes {
+                      name
+                      id
+                      significance
+                      evidenceType
+                      evidenceLevel
+                      evidenceDirection
+                      evidenceRating
+                      link
+                      therapies {
+                        name
+                        ncitId
+                        id
+                      }
+                      source {
+                        citation
+                        citationId
+                        pmcId
+                        sourceType
+                      }
+                    }
                   }
                 }
               }
