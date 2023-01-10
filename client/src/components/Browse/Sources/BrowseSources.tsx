@@ -70,7 +70,7 @@ export const BrowseSources = () => {
     const interactionClaimsInGroupExists = src.interactionClaimsInGroupsCount ? true : false
     
     return (
-      <Box className="source-item-card">
+      <>
         <Box className="source-item-name">{src.sourceDbName}</Box>
         <Box className="source-item-rows">
           <Box className="source-section" hidden={!(geneClaimsCountExists && geneClaimsInGroupExists)}>
@@ -100,7 +100,7 @@ export const BrowseSources = () => {
             </Accordion>
           </Box>
         </Box>
-      </Box>
+      </>
     )
   }
 
@@ -111,45 +111,37 @@ export const BrowseSources = () => {
       <Box display="flex"><h1 style={{marginRight: "10px"}}><b>Sources</b></h1></Box>
       <Box mb="20px">
         <ButtonGroup color="primary" onClick={handleButtonClick} className="filter-buttons">
-          <Button variant={filter === "All" ? "outlined" : "contained"} 
-            value="All">
-              All
-            </Button>
-          <Button
-            variant={filter === "Gene" ? "outlined" : "contained"} 
-            value="Gene">
-            Gene
+          <Button variant={filter === "All" ? "outlined" : "contained"} value="All">
+            All
           </Button>
-          <Button
-            variant={filter === "Drug" ? "outlined" : "contained"} 
-            value="Drug">
-            Drug
-          </Button>
-          <Button
-            variant={filter === "Interaction" ? "outlined" : "contained"} 
-            value="Interaction">
-            Interaction
-          </Button>
-          <Button
-            variant={filter === "Potentially Druggable" ? "outlined" : "contained"} 
-            value="Potentially Druggable">
-            Potentially Druggable
-          </Button>
+          {
+            sectionsMap.map((section: any) => {
+              return (
+                <Button variant={filter === section.value ? "outlined" : "contained"} 
+                value={section.value}
+                key={section.value}>
+                  {section.value}
+                </Button>
+              )
+            })
+          }
         </ButtonGroup>
       </Box>
       {
         sectionsMap.map((section: any) => {
           return section.value === filter || filter === "All" ? (
-            <>
+            <Box key={section.heading}>
               <Box className="source-type-header"><h2><b>{section.heading}</b></h2></Box>
               <Box className="sources-grid">
                 {
                   section.sources?.map((src: any) => {
-                    return getCard(src)
+                    return (
+                      <Box className="source-item-card" key={src.sourceDbName}>{getCard(src)}</Box>
+                    )
                   })
                 }
               </Box>
-            </>
+            </Box>
           ) : <></>
         }) 
       }
