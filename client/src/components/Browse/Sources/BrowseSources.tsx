@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState } from 'react';
 
 // hooks/dependencies
 import {
@@ -75,15 +75,15 @@ export const BrowseSources = () => {
         <Box className="source-item-rows">
           <Box className="source-section" hidden={!(geneClaimsCountExists && geneClaimsInGroupExists)}>
             <Box><b>Gene Claims Count:</b> {src.geneClaimsCount}</Box>
-            <Box><b>Gene Claims In Group:</b> {src.geneClaimsInGroupsCount}</Box>
+            <Box><b>Gene Claims In Groups:</b> {src.geneClaimsInGroupsCount}</Box>
           </Box>
           <Box className="source-section" hidden={!(drugClaimsCountExists && drugClaimsInGroupExists)}>
             <Box><b>Drug Claims Count:</b> {src.drugClaimsCount}</Box>
-            <Box><b>Drug Claims In Group:</b> {src.drugClaimsInGroupsCount}</Box>
+            <Box><b>Drug Claims In Groups:</b> {src.drugClaimsInGroupsCount}</Box>
           </Box>
           <Box className="source-section" hidden={!(interactionClaimsCountExists && interactionClaimsInGroupExists)}>
             <Box><b>Interaction Claims Count:</b> {src.interactionClaimsCount}</Box>
-            <Box><b>Interaction Claims In Group:</b> {src.interactionClaimsInGroupsCount}</Box>
+            <Box><b>Interaction Claims In Groups:</b> {src.interactionClaimsInGroupsCount}</Box>
           </Box>
           <Box className="source-section"><b>License: </b><a href={src.licenseLink} target="_blank">{src.license}</a></Box>
           <Box m="10px">
@@ -108,7 +108,7 @@ export const BrowseSources = () => {
 
   return (
     <Box className="sources-page-container">
-      <Box display="flex"><h1 style={{marginRight: "10px"}}><b>Sources</b></h1> <Box my="auto">details about data sources in DGIdb</Box></Box>
+      <Box display="flex"><h1 style={{marginRight: "10px"}}><b>Sources</b></h1></Box>
       <Box mb="20px">
         <ButtonGroup color="primary" onClick={handleButtonClick} className="filter-buttons">
           <Button variant={filter === "All" ? "outlined" : "contained"} 
