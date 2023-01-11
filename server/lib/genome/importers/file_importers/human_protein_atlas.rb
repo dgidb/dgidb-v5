@@ -18,7 +18,10 @@ module Genome; module Importers; module FileImporters; module HumanProteinAtlas;
         {
           base_url: 'https://www.proteinatlas.org/search/protein_class%3APotential+drug+targets',
           site_url: 'https://www.proteinatlas.org/',
-          citation: 'Uhlén M, Fagerberg L, Hallström BM, et al. Proteomics. Tissue-based map of the human proteome. Science. 2015;347(6220):1260419. doi:10.1126/science.1260419. PMID: 25613900',
+          citation: 'Uhlén M, Fagerberg L, Hallström BM, Lindskog C, Oksvold P, Mardinoglu A, Sivertsson Å, Kampf C, Sjöstedt E, Asplund A, Olsson I, Edlund K, Lundberg E, Navani S, Szigyarto CA, Odeberg J, Djureinovic D, Takanen JO, Hober S, Alm T, Edqvist PH, Berling H, Tegel H, Mulder J, Rockberg J, Nilsson P, Schwenk JM, Hamsten M, von Feilitzen K, Forsberg M, Persson L, Johansson F, Zwahlen M, von Heijne G, Nielsen J, Pontén F. Proteomics. Tissue-based map of the human proteome. Science. 2015 Jan 23;347(6220):1260419. doi: 10.1126/science.1260419. PMID: 25613900.',
+          citation_short: 'Uhlén M, et al. Proteomics. Tissue-based map of the human proteome. Science. 2015 Jan 23;347(6220):1260419.',
+          pmid: '25613900',
+          doi: '10.1126/science.1260419',
           source_db_version: '19.3',
           source_db_name: source_db_name,
           full_name: 'The Human Protein Atlas',

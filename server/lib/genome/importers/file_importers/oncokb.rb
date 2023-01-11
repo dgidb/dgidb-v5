@@ -23,7 +23,11 @@ module Genome; module Importers; module FileImporters; module Oncokb;
     def create_new_source
       @source ||= Source.create(
         base_url: 'https://www.oncokb.org',
-        citation: 'OncoKB: A Precision Oncology Knowledge Base. Chakravarty D, Gao J, Phillips S, et. al. JCO Precision Oncology 2017 :1, 1-16. PMID: 28890946',
+        citation: 'Chakravarty D, Gao J, Phillips SM, Kundra R, Zhang H, Wang J, Rudolph JE, Yaeger R, Soumerai T, Nissan MH, Chang MT, Chandarlapaty S, Traina TA, Paik PK, Ho AL, Hantash FM, Grupe A, Baxi SS, Callahan MK, Snyder A, Chi P, Danila D, Gounder M, Harding JJ, Hellmann MD, Iyer G, Janjigian Y, Kaley T, Levine DA, Lowery M, Omuro A, Postow MA, Rathkopf D, Shoushtari AN, Shukla N, Voss M, Paraiso E, Zehir A, Berger MF, Taylor BS, Saltz LB, Riely GJ, Ladanyi M, Hyman DM, Baselga J, Sabbatini P, Solit DB, Schultz N. OncoKB: A Precision Oncology Knowledge Base. JCO Precis Oncol. 2017 Jul;2017:PO.17.00011. doi: 10.1200/PO.17.00011. Epub 2017 May 16. PMID: 28890946; PMCID: PMC5586540.',
+        citation_short: 'Chakravarty D, et al. OncoKB: A Precision Oncology Knowledge Base. JCO Precis Oncol. 2017 Jul;2017:PO.17.00011.',
+        pmid: '28890946',
+        pmcid: 'PMC5586540',
+        doi: '10.1200/PO.17.00011',
         site_url: 'http://www.oncokb.org/',
         source_db_name: source_db_name,
         source_db_version: '23-July-2020',

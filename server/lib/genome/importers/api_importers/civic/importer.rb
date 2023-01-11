@@ -24,10 +24,13 @@ module Genome
                 source_db_version: set_current_date_version,
                 base_url: 'https://www.civicdb.org',
                 site_url: 'https://www.civicdb.org',
-                citation: 'Griffith M, Spies NC, Krysiak K, McMichael JF, Coffman AC, Danos AM, Ainscough BJ, Ramirez CA, Rieke DT, Kujan L, Barnell EK, Wagner AH, Skidmore ZL, Wollam A, Liu CJ, Jones MR, Bilski RL, Lesurf R, Feng YY, Shah NM, Bonakdar M, Trani L, Matlock M, Ramu A, Campbell KM, Spies GC, Graubert AP, Gangavarapu K, Eldred JM, Larson DE, Walker JR, Good BM, Wu C, Su AI, Dienstmann R, Margolin AA, Tamborero D, Lopez-Bigas N, Jones SJ, Bose R, Spencer DH Wartman LD, Wilson RK, Mardis ER, Griffith OL. 2016. CIViC is a community knowledgebase for expert crowdsourcing the clinical interpretation of variants in cancer. Nat Genet. 49, 170–174 (2017); doi: doi.org/10.1038/ng.3774. PMID: 28138153',
+                citation: 'Krysiak K, Danos AM, Saliba J, McMichael JF, Coffman AC, Kiwala S, Barnell EK, Sheta L, Grisdale CJ, Kujan L, Pema S, Lever J, Ridd S, Spies NC, Andric V, Chiorean A, Rieke DT, Clark KA, Reisle C, Venigalla AC, Evans M, Jani P, Takahashi H, Suda A, Horak P, Ritter DI, Zhou X, Ainscough BJ, Delong S, Kesserwan C, Lamping M, Shen H, Marr AR, Hoang MH, Singhal K, Khanfar M, Li BV, Lin WH, Terraf P, Corson LB, Salama Y, Campbell KM, Farncombe KM, Ji J, Zhao X, Xu X, Kanagal-Shamanna R, King I, Cotto KC, Skidmore ZL, Walker JR, Zhang J, Milosavljevic A, Patel RY, Giles RH, Kim RH, Schriml LM, Mardis ER, Jones SJM, Raca G, Rao S, Madhavan S, Wagner AH, Griffith M, Griffith OL. CIViCdb 2022: evolution of an open-access cancer variant interpretation knowledgebase. Nucleic Acids Res. 2022 Nov 14:gkac979. doi: 10.1093/nar/gkac979. Epub ahead of print. PMID: 36373660.',
+                citation_short: 'Krysiak K, et al. CIViCdb 2022: evolution of an open-access cancer variant interpretation knowledgebase. Nucleic Acids Res. 2022 Nov 14:gkac979.',
+                pmid: '28138153',
+                doi: '10.1093/nar/gkac979',
                 source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
                 full_name: 'CIViC: Clinical Interpretation of Variants in Cancer',
-                license: 'Creative Commons Public Domain Dedication (CC0 1.0 Universal)',
+                license: License::CC0_1_0,
                 license_link: 'https://docs.civicdb.org/en/latest/about/faq.html#how-is-civic-licensed'
               }
             )

@@ -17,11 +17,15 @@ module Genome; module Importers; module ApiImporters; module Pharos;
         {
           base_url: 'https://pharos-api.ncats.io/graphql',
           site_url: 'https://pharos.nih.gov/',
-          citation: 'Nguyen, D.-T., Mathias, S. et al, "Pharos: Collating Protein Information to Shed Light on the Druggable Genome", Nucl. Acids Res.i>, 2017, 45(D1), D995-D1002. DOI: 10.1093/nar/gkw1072. PMID: 27903890',
+          citation: "Nguyen DT, Mathias S, Bologa C, Brunak S, Fernandez N, Gaulton A, Hersey A, Holmes J, Jensen LJ, Karlsson A, Liu G, Ma'ayan A, Mandava G, Mani S, Mehta S, Overington J, Patel J, Rouillard AD, Schürer S, Sheils T, Simeonov A, Sklar LA, Southall N, Ursu O, Vidovic D, Waller A, Yang J, Jadhav A, Oprea TI, Guha R. Pharos: Collating protein information to shed light on the druggable genome. Nucleic Acids Res. 2017 Jan 4;45(D1):D995-D1002. doi: 10.1093/nar/gkw1072. Epub 2016 Nov 29. PMID: 27903890; PMCID: PMC5210555.",
+          citation_short: "Nguyen DT, et al. Pharos: Collating protein information to shed light on the druggable genome. Nucleic Acids Res. 2017 Jan 4;45(D1):D995-D1002.",
+          pmid: '27903890',
+          pmcid: 'PMC5210555',
+          doi: '10.1093/nar/gkw1072',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Pharos',
-          license: 'Creative Commons Attribution-ShareAlike 4.0 International License',
+          license: License::CC_BY_SA_4_0,
           license_link: 'https://pharos.nih.gov/about',
         }
       )

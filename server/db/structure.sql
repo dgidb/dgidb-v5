@@ -555,7 +555,11 @@ CREATE TABLE public.sources (
     drug_claims_in_groups_count integer DEFAULT 0,
     source_trust_level_id character varying(255),
     license character varying,
-    license_link character varying
+    license_link character varying,
+    citation_short character varying,
+    pmid character varying,
+    pmcid character varying,
+    doi character varying
 );
 
 
@@ -1850,6 +1854,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220520141004'),
 ('20220520193230'),
 ('20220523150744'),
-('20220523183117');
+('20220523183117'),
+('20230110183235');
 
 

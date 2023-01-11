@@ -18,12 +18,16 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
         {
           base_url: 'http://www.pharmgkb.org',
           site_url: 'http://www.pharmgkb.org/',
-          citation: 'Whirl-Carrillo,M., McDonagh,E.M., Hebert,J.M., Gong,L., Sangkuhl,K., Thorn,C.F., Altman,R.B. and Klein,T.E. (2012) Pharmacogenomics knowledge for personalized medicine. Clin. Pharmacol. Ther., 92, 414–417. PMID: 22992668',
+          citation: 'Whirl-Carrillo M, Huddart R, Gong L, Sangkuhl K, Thorn CF, Whaley R, Klein TE. An Evidence-Based Framework for Evaluating Pharmacogenomics Knowledge for Personalized Medicine. Clin Pharmacol Ther. 2021 Sep;110(3):563-572. doi: 10.1002/cpt.2350. Epub 2021 Jul 22. PMID: 34216021; PMCID: PMC8457105.',
+          citation_short: 'Whirl-Carrillo M, et al. An Evidence-Based Framework for Evaluating Pharmacogenomics Knowledge for Personalized Medicine. Clin Pharmacol Ther. 2021 Sep;110(3):563-572.',
+          pmid: '34216021',
+          pmcid: 'PMC8457105',
+          doi: '10.1002/cpt.2350',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'PharmGKB - The Pharmacogenomics Knowledgebase',
+          license: License::CC_BY_SA_4_0,
           license_link: 'https://www.pharmgkb.org/page/dataUsagePolicy',
-          license: 'Creative Commons Attribution-ShareAlike 4.0 International License'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
