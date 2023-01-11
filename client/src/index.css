@@ -32,8 +32,8 @@
 
 [data-theme='light'] {
   --background: white;
-  --soft-background: white;
-  --background-light: rgb(234, 232, 245);
+  --soft-background: #f3f1fb;
+  --background-light: #dfdde9;
   --text-content: #313635;
   --text-primary: #26282e;
   --logo-gradient-1: #480a77; 
