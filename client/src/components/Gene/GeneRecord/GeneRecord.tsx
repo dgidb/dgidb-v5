@@ -200,7 +200,7 @@ export const GeneRecord: React.FC = () => {
           {
           sectionsMap.map((section) => {
             return (
-            <Accordion key={section.name} defaultExpanded disableGutters>
+            <Accordion key={section.name} defaultExpanded>
               <AccordionSummary
                 style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
                 expandIcon={<ExpandMoreIcon />}>
@@ -215,7 +215,7 @@ export const GeneRecord: React.FC = () => {
         }
         </Box>
         <Box ml={1}>
-        <Accordion defaultExpanded disableGutters>
+        <Accordion defaultExpanded>
           <AccordionSummary
             style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
             expandIcon={<ExpandMoreIcon />}>
