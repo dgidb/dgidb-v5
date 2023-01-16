@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Genes Query', type: :graphql do
+RSpec.describe 'Druggable Sources Query', type: :graphql do
   before(:example) do
     @src_type = create(:source_type)
     @src = create(:source, source_types: [@src_type])
