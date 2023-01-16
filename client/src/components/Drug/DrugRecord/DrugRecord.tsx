@@ -99,7 +99,7 @@ export const DrugRecord: React.FC = () => {
 
   return (
     <div className="drug-record-container">
-      <div className="drug-record-header">{drug}</div>
+      <div className="drug-record-header"><h1>{drug}</h1></div>
       <div className="drug-record-upper">
         <div className="data-box drug-record-info">
           <div className="box-title">Drug Info</div>

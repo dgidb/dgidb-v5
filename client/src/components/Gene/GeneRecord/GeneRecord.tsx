@@ -3,6 +3,11 @@ import React, {useState, useContext, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
@@ -12,8 +17,12 @@ import { truncateDecimals } from 'utils/format';
 
 // styles
 import './GeneRecord.scss';
-import { Table } from 'antd';
+import { Table as AntTable } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 const GeneRecordTable: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
@@ -74,14 +83,14 @@ const GeneRecordTable: React.FC = () => {
   ]
 
   return (
-    <div className="gene-record-interactions">
-      <Table
+    <Box className="gene-record-interactions">
+      <AntTable
         dataSource={interactionResults}
         columns={columns}
         rowKey={(record, index) => `${index}`}
-        pagination={{ pageSize: 15}}
+        pagination={{ pageSize: 10}}
       />
-    </div>
+    </Box>
   )
 };
 
@@ -91,61 +100,134 @@ export const GeneRecord: React.FC = () => {
 
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
 
+  const geneInfoTable = (
+    <Table>
+      <TableBody>
+        {data?.gene?.geneAttributes?.map((attribute: any) => {
+          return (
+            <TableRow key={attribute.name + " " + attribute.value}>
+                <TableCell className="attribute-name">{attribute.name}:</TableCell>
+                  <TableCell className="attribute-value">{attribute.value}</TableCell>
+                </TableRow>
+            )
+        })}
+      </TableBody>
+    </Table>
+  )
+
+  const categoriesTable = (
+    <Table>
+      <TableBody>
+        {data?.gene?.geneCategories?.map((category: any) => {
+          return (
+            <TableRow key={category.name + " " + category.value}>
+                <TableCell className="attribute-name">{category.name}</TableCell>
+                </TableRow>
+            )
+        })}
+      </TableBody>
+    </Table>
+  )
+
+  const aliasesTable = (
+    <Table>
+      <TableBody>
+        {data?.gene?.geneAliases?.map((alias: any) => {
+          return (
+            <TableRow key={alias.alias}>
+                <TableCell className="attribute-name">{alias.alias}</TableCell>
+                </TableRow>
+            )
+        })}
+      </TableBody>
+    </Table>
+  )
+
+  const publicationsTable = (
+    <Table>
+      <TableBody>
+        {data?.gene?.geneClaims?.map((claim: any) => {
+          return (
+            <TableRow key={claim?.source?.citation}>
+                <TableCell className="attribute-name">{claim?.source?.citation}</TableCell>
+                </TableRow>
+            )
+        })}
+      </TableBody>
+    </Table>
+  )
+
+  const sectionsMap = [
+    {
+      name: "Gene Info",
+      sectionContent: (
+        <Box className="box-content">
+            {geneInfoTable}
+          </Box>
+      ),
+    },
+    {
+      name: "Aliases",
+      sectionContent: (
+        <Box className="box-content">
+            {aliasesTable}
+          </Box>
+      ),
+    },
+    {
+      name: "Categories",
+      sectionContent: (
+        <Box className="box-content">
+            {categoriesTable}
+          </Box>
+      ),
+    },
+    {
+      name: "Publications",
+      sectionContent: (
+        <Box className="box-content publication-item">
+            {publicationsTable}
+          </Box>
+      ),
+    },
+  ]
+
   return (
-    <div className="content gene-record-container">
-      <div className="gene-record-header">{geneSymbol}</div>
-      <div className="gene-record-upper">
-        <div className="data-box gene-record-info">
-          <div className="box-title">Gene Info</div>
-          <div className="box-content">
-            <table>
-              <tbody>
-              {data?.gene?.geneAttributes?.map((attribute: any) => {
-                return (
-                  <tr>
-                    <td className="attribute-name">{attribute.name}:</td>
-                    <td className="attribute-value">{attribute.value}</td>
-                  </tr>
-                )
-              })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="data-box gene-record-categories">
-          <div className="box-title">Categories</div>
-          <div className="box-content">
-            {data?.gene?.geneCategories?.map((category: any) => {
-              return <div className="box-item">{category?.name}</div>
-            })}
-          </div>
-        </div>
-      </div>
-      <div className="gene-record-lower">
-        <div className="data-box gene-record-aliases">
-          <div className="box-title">Aliases</div>
-          <div className="box-content">
-            {data?.gene?.geneAliases?.map((alias: any) => {
-              return <div className="box-item">{alias?.alias}</div>
-            })}
-          </div>
-        </div>
-        <div className="data-box gene-record-publications">
-          <div className="box-title">Publications</div>
-          <div className="box-content publication-item">
-            {data?.gene?.geneClaims?.map((claim: any) => {
-              return <div className="box-link">{claim?.source?.citation}</div>
-            })}
-          </div>
-        </div>
-        <div className="data-box gene-record-table">
-          <div className="box-title">Interactions</div>
-          <div className="box-content">
+    <Box className="content gene-record-container">
+      <Box className="gene-record-header"><h1><b>{geneSymbol}</b></h1></Box>
+      <Box display="flex">
+        <Box display="block" width="45%">
+          {
+          sectionsMap.map((section) => {
+            return (
+            <Accordion key={section.name} defaultExpanded disableGutters>
+              <AccordionSummary
+                style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
+                expandIcon={<ExpandMoreIcon />}>
+                <h3><b>{section.name}</b></h3>
+              </AccordionSummary>
+              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "0 10px 10px"}}>
+                {section.sectionContent}
+              </AccordionDetails>
+            </Accordion>
+            )
+          })
+        }
+        </Box>
+        <Box ml={1}>
+        <Accordion defaultExpanded disableGutters>
+          <AccordionSummary
+            style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
+            expandIcon={<ExpandMoreIcon />}>
+              <h3><b>Interactions</b></h3>
+          </AccordionSummary>
+          <AccordionDetails>
             <GeneRecordTable />
-          </div>
-        </div>
-      </div>
-    </div>
+          </AccordionDetails>
+        </Accordion>
+        </Box>
+      </Box>
+    </Box>
   )
 };
 
