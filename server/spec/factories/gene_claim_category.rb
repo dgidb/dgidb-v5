@@ -3,4 +3,3 @@ FactoryBot.define do
     name { 'CLINICALLY ACTIONABLE' }
   end
 end
-

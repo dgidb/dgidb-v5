@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Drug Interaction Query', type: :graphql do
   before(:example) do
-    @drug = build(:drug, approved: true)
+    @drug = create(:drug, approved: true)
     @cat = create(:gene_claim_category)
     @gene = create(:gene, gene_categories: [@cat])
     @int_type = create(:interaction_claim_type)
