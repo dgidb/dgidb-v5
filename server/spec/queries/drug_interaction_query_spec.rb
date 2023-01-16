@@ -48,7 +48,7 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
     gene = interaction['gene']
     expect(gene['name']).to eq @gene.name
     expect(gene['geneCategories'].size).to eq 1
-    expect(gene['geneCategories'][0]['name']).to eq 'CLINICALLY ACTIONABLE'
+    expect(gene['geneCategories'][0]['name']).to eq @cat.name
 
     drug = interaction['drug']
     expect(drug['name']).to eq @drug.name
@@ -56,7 +56,7 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
 
     expect(interaction['interactionScore']).to eq @int.score
     expect(interaction['interactionTypes'].size).to eq 1
-    expect(interaction['interactionTypes'][0]['type']).to eq 'ligand'
-    expect(interaction['interactionTypes'][0]['directionality']).to be_nil
+    expect(interaction['interactionTypes'][0]['type']).to eq @int_type.type
+    expect(interaction['interactionTypes'][0]['directionality']).to eq @int_type.directionality
   end
 end
