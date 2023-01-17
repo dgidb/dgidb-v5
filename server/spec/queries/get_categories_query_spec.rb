@@ -57,4 +57,3 @@ RSpec.describe 'Get Categories Queries', type: :graphql do
     expect(gene['geneCategories'][0]['name']).to eq @cat.name
   end
 end
-
