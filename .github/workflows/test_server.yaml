@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_USER: dgidb
           POSTGRES_DB: dgidb_test
-          POSTGRES_PASSWORD: dgidb
+          # POSTGRES_PASSWORD: dgidb
         ports:
           - 5432:5432
 
