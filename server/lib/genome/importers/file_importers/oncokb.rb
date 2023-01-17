@@ -79,7 +79,7 @@ module Genome; module Importers; module FileImporters; module Oncokb;
         ic = @interaction_claims[[gc, dc]]
 
         ica_name = row[0]
-        ica_name = InteractionAttributeName::COMBINATION if ica_name = 'combination therapy'
+        ica_name = InteractionAttributeName::COMBINATION if ica_name == 'combination therapy'
         create_interaction_claim_attribute(ic, ica_name, row[1])
       end
       CSV.foreach("#{@tsv_root}interaction_claim_links.csv", headers: false, col_sep: ',') do |row|
