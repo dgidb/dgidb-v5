@@ -100,94 +100,78 @@ export const GeneRecord: React.FC = () => {
 
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
 
-  const geneInfoTable = (
-    <Table>
-      <TableBody>
-        {data?.gene?.geneAttributes?.map((attribute: any) => {
-          return (
-            <TableRow key={attribute.name + " " + attribute.value}>
-                <TableCell className="attribute-name">{attribute.name}:</TableCell>
-                  <TableCell className="attribute-value">{attribute.value}</TableCell>
-                </TableRow>
-            )
-        })}
-      </TableBody>
-    </Table>
-  )
-
-  const categoriesTable = (
-    <Table>
-      <TableBody>
-        {data?.gene?.geneCategories?.map((category: any) => {
-          return (
-            <TableRow key={category.name + " " + category.value}>
-                <TableCell className="attribute-name">{category.name}</TableCell>
-                </TableRow>
-            )
-        })}
-      </TableBody>
-    </Table>
-  )
-
-  const aliasesTable = (
-    <Table>
-      <TableBody>
-        {data?.gene?.geneAliases?.map((alias: any) => {
-          return (
-            <TableRow key={alias.alias}>
-                <TableCell className="attribute-name">{alias.alias}</TableCell>
-                </TableRow>
-            )
-        })}
-      </TableBody>
-    </Table>
-  )
-
-  const publicationsTable = (
-    <Table>
-      <TableBody>
-        {data?.gene?.geneClaims?.map((claim: any) => {
-          return (
-            <TableRow key={claim?.source?.citation}>
-                <TableCell className="attribute-name">{claim?.source?.citation}</TableCell>
-                </TableRow>
-            )
-        })}
-      </TableBody>
-    </Table>
-  )
-
   const sectionsMap = [
     {
       name: "Gene Info",
       sectionContent: (
         <Box className="box-content">
-            {geneInfoTable}
-          </Box>
+          <Table>
+            <TableBody>
+              {data?.gene?.geneAttributes?.map((attribute: any) => {
+                return (
+                  <TableRow key={attribute.name + " " + attribute.value}>
+                    <TableCell className="attribute-name">{attribute.name}:</TableCell>
+                    <TableCell className="attribute-value">{attribute.value}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       ),
     },
     {
       name: "Aliases",
       sectionContent: (
         <Box className="box-content">
-            {aliasesTable}
-          </Box>
+          <Table>
+            <TableBody>
+              {data?.gene?.geneAliases?.map((alias: any) => {
+                return (
+                  <TableRow key={alias.alias}>
+                    <TableCell className="attribute-name">{alias.alias}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       ),
     },
     {
       name: "Categories",
       sectionContent: (
         <Box className="box-content">
-            {categoriesTable}
-          </Box>
+          <Table>
+            <TableBody>
+              {data?.gene?.geneCategories?.map((category: any) => {
+                return (
+                  <TableRow key={category.name + " " + category.value}>
+                    <TableCell className="attribute-name">{category.name}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       ),
     },
     {
       name: "Publications",
       sectionContent: (
         <Box className="box-content publication-item">
-            {publicationsTable}
-          </Box>
+          <Table>
+            <TableBody>
+              {data?.gene?.geneClaims?.map((claim: any) => {
+                return (
+                  <TableRow key={claim?.source?.citation}>
+                    <TableCell className="attribute-name">{claim?.source?.citation}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </Box>
       ),
     },
   ]
@@ -196,7 +180,7 @@ export const GeneRecord: React.FC = () => {
     <Box className="content gene-record-container">
       <Box className="gene-record-header"><h1><b>{geneSymbol}</b></h1></Box>
       <Box display="flex">
-        <Box display="block" width="45%">
+        <Box display="block" width="35%">
           {
           sectionsMap.map((section) => {
             return (
@@ -214,17 +198,17 @@ export const GeneRecord: React.FC = () => {
           })
         }
         </Box>
-        <Box ml={1}>
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
-            expandIcon={<ExpandMoreIcon />}>
-              <h3><b>Interactions</b></h3>
-          </AccordionSummary>
-          <AccordionDetails>
-            <GeneRecordTable />
-          </AccordionDetails>
-        </Accordion>
+        <Box ml={1} width="65%">
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
+              expandIcon={<ExpandMoreIcon />}>
+                <h3><b>Interactions</b></h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <GeneRecordTable />
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Box>
     </Box>
