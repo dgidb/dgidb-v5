@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :gene_claim_category do
-    name { 'CLINICALLY ACTIONABLE' }
+    sequence(:name) { |i| "Gene claim category name #{i}" }
   end
 end

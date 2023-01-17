@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :drug_attribute do
     drug
-    name { 'Drug Class' }
-    value { 'ALK Inhibitor' }
+    sequence(:name) { |i| "Drug attribute name #{i}" }
+    sequence(:value) { |i| "Drug attribute value #{i}" }
   end
 end

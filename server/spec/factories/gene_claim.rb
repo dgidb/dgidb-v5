@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :gene_claim do
     source
-    name { 'BRAF' }
-    nomenclature { 'Gene Symbol' }
+    sequence(:name) { |i| "Gene claim #{i}" }
+    sequence(:nomenclature) { |i| "Gene claim nomenclature #{i}" }
   end
 end
 

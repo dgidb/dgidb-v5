@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :gene_attribute do
     gene
-    name { 'InterPro Accession ID' }
-    value { 'interpro:IPR006202' }
+    sequence(:name) { |i| "Gene attribute name #{i}" }
+    sequence(:value) { |i| "Gene attribute value #{i}" }
   end
 end

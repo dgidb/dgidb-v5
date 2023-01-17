@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :drug_approval_rating do
     drug
-    rating { 'Prescribable' }
+    sequence(:rating) { |i| "Drug approval rating #{i}" }
   end
 end

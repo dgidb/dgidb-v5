@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :source_type do
-    type { 'potentially_druggable' }
-    display_name { 'Category' }
+    sequence(:type, %w[potentially_druggable gene drug interaction].cycle)
+    sequence(:display_name) { |i| "Source type display name #{i}" }
   end
 end
