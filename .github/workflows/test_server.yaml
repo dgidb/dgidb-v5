@@ -13,9 +13,9 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_USER: dgidb
-          POSTGRES_DB: dgidb_test
-          # POSTGRES_PASSWORD: dgidb
+          POSTGRES_USER: 'postgres'
+          POSTGRES_DB: 'dgidb_test'
+          POSTGRES_PASSWORD: 'ci'
         ports:
           - 5432:5432
 
