@@ -5,12 +5,11 @@ RSpec.describe 'Genes Query', type: :graphql do
     @src = create(:source)
     @gene_claim = create(:gene_claim, source: @src)
     @gene_attr = create(:gene_attribute)
-    @gene_alias = create(:gene_alias, alias: 'BRAF-1')
+    @gene_alias = create(:gene_alias)
     @gene_cat = create(:gene_claim_category)
     @gene = create(:gene, gene_attributes: [@gene_attr], gene_aliases: [@gene_alias], gene_claims: [@gene_claim], gene_categories: [@gene_cat])
   end
 
-  # TODO: parts of this query appear to need rewriting
   let :query do
     <<-GRAPHQL
     query gene($name: String!) {

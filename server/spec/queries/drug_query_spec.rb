@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Genes Query', type: :graphql do
   before(:example) do
-    @drug_alias = create(:drug_alias, alias: 'GLEEVEC')
+    @drug_alias = create(:drug_alias)
     @drug_attr = create(:drug_attribute)
     @drug = create(:drug, drug_aliases: [@drug_alias], drug_attributes: [@drug_attr])
   end
