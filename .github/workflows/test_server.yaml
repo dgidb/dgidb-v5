@@ -1,0 +1,42 @@
+name: Server checks
+on:
+  push:
+    branches: [ main, staging, dev ]
+  pull_request:
+    branches: [ main, staging, dev ]
+
+jobs:
+  tests:
+    name: Server tests
+    runs-on: 'ubuntu-latest'
+    services:
+      postgres:
+        image: postgres:14
+        # env:
+        #   POSTGRES_USER: dgidb
+        #   POSTGRES_DB: dgidb_test
+        #   POSTGRES_PASSWORD: dgidb
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Set up Ruby'
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '3.0'
+          working-directory: ./server
+
+      - name: 'Set up DB'
+        env:
+          RAILS_ENV: test
+        run: bundle exec rails db:create db:schema:load
+        working-directory: ./server
+
+      - name: 'Run tests'
+        env:
+          RAILS_ENV: test
+        run: bundle exec rspec
+        working-directory: ./server
