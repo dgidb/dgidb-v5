@@ -33,7 +33,7 @@ jobs:
         env:
           CI_BUILD: true
           RAILS_ENV: test
-        run: bundle exec rails db:create db:schema:load
+        run: bundle exec rails db:create db:structure:load
         working-directory: ./server
 
       - name: 'Run tests'
