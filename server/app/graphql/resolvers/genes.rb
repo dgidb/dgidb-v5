@@ -8,7 +8,7 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   scope { Gene.all }
 
-  option(:id, type: ID) { |scope, value| scope.where(id: value)}
+  option(:ids, type: [String]) { |scope, value| scope.where(id: value)}
   option(:name, type: String) { |scope, value| scope.where("name ILIKE ?", "#{value}%")}
   option(:long_name, type: String) { |scope, value| scope.where("long_name ILIKE?", "#{value}%")}
   option(:entrez_id, type: Int) { |scope, value| scope.where(entrez_id: value)}
