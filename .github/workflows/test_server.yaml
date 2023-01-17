@@ -31,12 +31,14 @@ jobs:
 
       - name: 'Set up DB'
         env:
+          CI_BUILD: true
           RAILS_ENV: test
         run: bundle exec rails db:create db:schema:load
         working-directory: ./server
 
       - name: 'Run tests'
         env:
+          CI_BUILD: true
           RAILS_ENV: test
         run: bundle exec rspec
         working-directory: ./server
