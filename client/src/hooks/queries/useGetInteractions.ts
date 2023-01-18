@@ -44,22 +44,24 @@ const getInteractionsByGenesQuery = gql`
 // by drugs
 const getInteractionsByDrugsQuery = gql`
   query drugs($names: [String!]!) {
-    drugs(name: $names) {
-      interactions {
-        gene {
-          name
-          geneCategories {
+    drugs(names: $names) {
+      nodes {
+        interactions {
+          gene {
             name
+            geneCategories {
+              name
+            }
           }
-        }
-        drug {
-          name
-          approved
-        }
-        interactionScore
-        interactionTypes {
-          type
-          directionality
+          drug {
+            name
+            approved
+          }
+          interactionScore
+          interactionTypes {
+            type
+            directionality
+          }
         }
       }
     }

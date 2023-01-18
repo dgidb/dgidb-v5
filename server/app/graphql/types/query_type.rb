@@ -66,15 +66,6 @@ module Types
       Drug.find_by(name: name)
     end
 
-    field :drugs, [Types::DrugType], null: false do
-      description "Drugs"
-      argument :name, [String], required: true
-    end
-
-    def drugs(name: )
-      Drug.where(name: name)
-    end
-
     field :gene_alias, Types::GeneAliasType, null: true do
       description "Alias for a gene"
       argument :id, String, required: true

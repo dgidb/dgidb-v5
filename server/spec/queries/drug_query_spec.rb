@@ -9,26 +9,29 @@ RSpec.describe 'Genes Query', type: :graphql do
 
   let :query do
     <<-GRAPHQL
-    query drugs($name: [String!]!) {
-      drugs(name: $name) {
-        drugAliases {
-          alias
-        }
-        drugAttributes {
-          id
-          name
-          value
+    query drugs($names: [String!]!) {
+      drugs(names: $names) {
+        nodes {
+          drugAliases {
+            alias
+          }
+          drugAttributes {
+            id
+            name
+            value
+          }
+
         }
       }
     }
     GRAPHQL
   end
 
-  it 'should execute getGeneRecordQuery correctly' do
-    result = execute_graphql(query, variables: { name: [@drug.name] })
-    expect(result['data']['drugs'].size).to eq 1
+  it 'should execute getDrugRecordQuery correctly' do
+    result = execute_graphql(query, variables: { names: [@drug.name] })
+    expect(result['data']['drugs']['nodes'].size).to eq 1
 
-    drug = result['data']['drugs'][0]
+    drug = result['data']['drugs']['nodes'][0]
 
     expect(drug['drugAliases'].size).to eq 1
     expect(drug['drugAliases'][0]['alias']).to eq @drug_alias.alias
