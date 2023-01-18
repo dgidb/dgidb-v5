@@ -88,7 +88,6 @@ const DrugRecordTable: React.FC = () => {
       <AntTable
         dataSource={interactionResults}
         columns={columns}
-        rowKey={(record, index) => `${index}`}
         pagination={{ pageSize: 10}}
       />
     </Box>
@@ -96,12 +95,9 @@ const DrugRecordTable: React.FC = () => {
 };
 
 export const DrugRecord: React.FC = () => {
-
   const drug = useParams().drug as string;
   const data = useGetDrugRecord([drug]).data;
   let drugData = data?.drugs[0];
-
-  console.log(drugData)
 
   const noData = (
     <TableRow>

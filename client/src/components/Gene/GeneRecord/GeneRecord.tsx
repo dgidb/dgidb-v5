@@ -87,7 +87,6 @@ const GeneRecordTable: React.FC = () => {
       <AntTable
         dataSource={interactionResults}
         columns={columns}
-        rowKey={(record, index) => `${index}`}
         pagination={{ pageSize: 10}}
       />
     </Box>
@@ -95,7 +94,6 @@ const GeneRecordTable: React.FC = () => {
 };
 
 export const GeneRecord: React.FC = () => {
-
   const geneSymbol = useParams().gene;
 
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
@@ -169,9 +167,9 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content publication-item">
           <Table>
             <TableBody>
-              {geneData?.geneClaims ? geneData?.geneClaims?.map((claim: any) => {
+              {geneData?.geneClaims ? geneData?.geneClaims?.map((claim: any, index: number) => {
                 return (
-                  <TableRow key={claim?.source?.citation}>
+                  <TableRow key={index}>
                     <TableCell className="attribute-name">{claim?.source?.citation}</TableCell>
                   </TableRow>
                 )
