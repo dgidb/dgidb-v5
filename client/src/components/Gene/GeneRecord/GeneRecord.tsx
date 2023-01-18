@@ -99,6 +99,13 @@ export const GeneRecord: React.FC = () => {
   const geneSymbol = useParams().gene;
 
   const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
+  const geneData = data?.gene
+
+  const noData = (
+    <TableRow>
+      <TableCell style={{borderBottom: "none"}}>No data available.</TableCell>
+    </TableRow>
+  )
 
   const sectionsMap = [
     {
@@ -107,14 +114,14 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {data?.gene?.geneAttributes?.map((attribute: any) => {
+              {geneData?.geneAttributes.length ? geneData?.geneAttributes?.map((attribute: any) => {
                 return (
                   <TableRow key={attribute.name + " " + attribute.value}>
                     <TableCell className="attribute-name">{attribute.name}:</TableCell>
                     <TableCell className="attribute-value">{attribute.value}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -126,13 +133,13 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {data?.gene?.geneAliases?.map((alias: any) => {
+              {geneData?.geneAliases ? geneData?.geneAliases?.map((alias: any) => {
                 return (
                   <TableRow key={alias.alias}>
                     <TableCell className="attribute-name">{alias.alias}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -144,13 +151,13 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {data?.gene?.geneCategories?.map((category: any) => {
+              {geneData?.geneCategories ? geneData?.geneCategories?.map((category: any) => {
                 return (
                   <TableRow key={category.name + " " + category.value}>
                     <TableCell className="attribute-name">{category.name}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -162,13 +169,13 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content publication-item">
           <Table>
             <TableBody>
-              {data?.gene?.geneClaims?.map((claim: any) => {
+              {geneData?.geneClaims ? geneData?.geneClaims?.map((claim: any) => {
                 return (
                   <TableRow key={claim?.source?.citation}>
                     <TableCell className="attribute-name">{claim?.source?.citation}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -176,7 +183,7 @@ export const GeneRecord: React.FC = () => {
     },
   ]
 
-  return (
+  return geneData && (
     <Box className="content gene-record-container">
       <Box className="gene-record-header"><h1><b>{geneSymbol}</b></h1></Box>
       <Box display="flex">
@@ -190,7 +197,7 @@ export const GeneRecord: React.FC = () => {
                 expandIcon={<ExpandMoreIcon />}>
                 <h3><b>{section.name}</b></h3>
               </AccordionSummary>
-              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "0 10px 10px"}}>
+              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "5px"}}>
                 {section.sectionContent}
               </AccordionDetails>
             </Accordion>

@@ -103,6 +103,12 @@ export const DrugRecord: React.FC = () => {
 
   console.log(drugData)
 
+  const noData = (
+    <TableRow>
+      <TableCell style={{borderBottom: "none"}}>No data available.</TableCell>
+    </TableRow>
+  )
+
   const sectionsMap = [
     {
       name: "Drug Info",
@@ -110,14 +116,14 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.drugAttributes?.map((attribute: any) => {
+              {drugData?.drugAttributes.length ? drugData?.drugAttributes?.map((attribute: any) => {
                 return (
                   <TableRow key={attribute.name + " " + attribute.value}>
                     <TableCell className="attribute-name">{attribute.name}:</TableCell>
                     <TableCell className="attribute-value">{attribute.value}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -129,31 +135,32 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.drugAliases?.map((alias: any) => {
+              {drugData?.drugAliases ? drugData?.drugAliases?.map((alias: any) => {
                 return (
                   <TableRow key={alias.alias}>
                     <TableCell className="attribute-name">{alias.alias}</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
       ),
     },
     {
+      // TODO: THIS NEEDS IMPLEMENTED
       name: "Active",
       sectionContent: (
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories?.map((category: any) => {
+              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
                 return (
                   <TableRow key={category.name}>
                     <TableCell className="attribute-name">{category.name}:</TableCell>
                   </TableRow>
                 )
-              })}
+                }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -165,13 +172,13 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories?.map((category: any) => {
+              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
                 return (
                   <TableRow key={category.name}>
                     <TableCell className="attribute-name">{category.name}:</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -183,13 +190,13 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content publication-item">
           <Table>
             <TableBody>
-              {drugData?.geneClaims?.map((claim: any) => {
+              {drugData?.geneClaims ? drugData?.geneClaims?.map((claim: any) => {
                 return (
                   <TableRow key={claim?.source?.citation}>
                     <TableCell className="attribute-name">{claim?.source?.citation}:</TableCell>
                   </TableRow>
                 )
-              })}
+              }) : noData}
             </TableBody>
           </Table>
         </Box>
@@ -197,7 +204,7 @@ export const DrugRecord: React.FC = () => {
     },
   ]
 
-  return (
+  return drugData && (
     <Box className="drug-record-container">
       <Box className="drug-record-header"><h1><b>{drug}</b></h1></Box>
       <Box display="flex">
@@ -211,7 +218,7 @@ export const DrugRecord: React.FC = () => {
                 expandIcon={<ExpandMoreIcon />}>
                 <h3><b>{section.name}</b></h3>
               </AccordionSummary>
-              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "0 10px 10px"}}>
+              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "5px"}}>
                 {section.sectionContent}
               </AccordionDetails>
             </Accordion>
