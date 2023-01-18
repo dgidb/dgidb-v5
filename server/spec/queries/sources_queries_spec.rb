@@ -11,6 +11,7 @@ RSpec.describe 'Sources queries', type: :graphql do
     @drug_claim = create(:drug_claim, drug: @drug, source: @src)
     @int = create(:interaction, drug: @drug, gene: @gene)
     @int_claim = create(:interaction_claim, drug_claim: @drug_claim, gene_claim: @gene_claim, source: @src, interaction: @int)
+    Genome::Normalizers::PopulateCounters.populate_source_counters
   end
 
   let :drug_sources_query do
