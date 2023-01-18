@@ -23,7 +23,7 @@ const GeneRecordTable: React.FC = () => {
 
   const { data } = useGetInteractionsByGenes([geneSymbol]);
 
-  let genes = data?.genes;
+  let genes = data?.genes?.nodes;
 
   useEffect(() => {
     let interactionData = genes?.find((gene: any) => {

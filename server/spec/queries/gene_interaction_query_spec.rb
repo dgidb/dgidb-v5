@@ -18,34 +18,36 @@ RSpec.describe 'Gene Interaction Query', type: :graphql do
   let :query do
     <<-GRAPHQL
     query genes($names: [String!]!) {
-      genes(name: $names) {
-        name
-        interactions {
-          drug {
-            name
-            approved
-            drugApprovalRatings {
-              rating
-            }
-            drugAttributes {
+      genes(names: $names) {
+        nodes {
+          name
+          interactions {
+            drug {
               name
-              value
+              approved
+              drugApprovalRatings {
+                rating
+              }
+              drugAttributes {
+                name
+                value
+              }
             }
-          }
-          gene {
-            name
-          }
-          interactionScore
-          interactionTypes {
-            type
-            directionality
-          }
-          publications {
-            pmid
-          }
-          sources {
-            id
-            fullName
+            gene {
+              name
+            }
+            interactionScore
+            interactionTypes {
+              type
+              directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              id
+              fullName
+            }
           }
         }
       }
@@ -56,7 +58,7 @@ RSpec.describe 'Gene Interaction Query', type: :graphql do
   it 'should execute getInteractionsByGenesQuery correctly' do
     result = execute_graphql(query, variables: { names: [@gene.name] })
 
-    genes = result['data']['genes']
+    genes = result['data']['genes']['nodes']
     expect(genes.size).to eq 1
 
     interactions = genes[0]['interactions']

@@ -25,8 +25,8 @@ export const GeneIntTable: React.FC = () => {
   const [queryScore, setQueryScore] = useState<any>([]);
 
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
-  
-  let genes = data?.genes;
+
+  let genes = data?.genes?.nodes;
 
   useEffect(() => {
     let interactionData: any = [];
@@ -255,7 +255,7 @@ export const GeneIntTable: React.FC = () => {
         {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
       </span>
       <Skeleton loading={!interactionResults.length}>
-        <Table 
+        <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}

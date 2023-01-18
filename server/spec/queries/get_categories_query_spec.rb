@@ -13,11 +13,13 @@ RSpec.describe 'Get Categories Queries', type: :graphql do
   let :get_categories_query do
     <<-GRAPHQL
     query genes($names: [String!]!) {
-      genes(name: $names) {
-        name
-        geneCategoriesWithSources {
+      genes(names: $names) {
+        nodes {
           name
-          sourceNames
+          geneCategoriesWithSources {
+            name
+            sourceNames
+          }
         }
       }
     }
@@ -26,7 +28,7 @@ RSpec.describe 'Get Categories Queries', type: :graphql do
 
   it 'should execute getGeneRecordQuery correctly' do
     result = execute_graphql(get_categories_query, variables: { names: [@gene.name] })
-    genes = result['data']['genes']
+    genes = result['data']['genes']['nodes']
     expect(genes.size).to eq 1
     expect(genes[0]['name']).to eq @gene.name
 
@@ -39,9 +41,11 @@ RSpec.describe 'Get Categories Queries', type: :graphql do
   let :get_categories_by_source_query do
     <<-GRAPHQL
     query categories($names: [String!]!) {
-      genes(name: $names) {
-        geneCategories {
-          name
+      genes(names: $names) {
+        nodes{
+          geneCategories {
+            name
+          }
         }
       }
     }
@@ -50,9 +54,9 @@ RSpec.describe 'Get Categories Queries', type: :graphql do
 
   it 'should execute getCategoriesBySourceQuery correctly' do
     result = execute_graphql(get_categories_by_source_query, variables: { names: [@gene.name] })
-    expect(result['data']['genes'].size).to eq 1
+    expect(result['data']['genes']['nodes'].size).to eq 1
 
-    gene = result['data']['genes'][0]
+    gene = result['data']['genes']['nodes'][0]
     expect(gene['geneCategories'].size).to eq 1
     expect(gene['geneCategories'][0]['name']).to eq @cat.name
   end

@@ -39,7 +39,7 @@ const InteractionCount: React.FC<CountProps> = ({ setChartData }) => {
   const { data } = useGetInteractionsByGenes(state.searchTerms);
   const [filterBy, setFilterBy] = useState<string>('');
 
-  let genes = data?.genes;
+  let genes = data?.genes?.nodes;
 
   const toggleFilter = (geneName: string) => {
     if (filterBy === geneName) {
@@ -141,7 +141,7 @@ export const GeneSummary: React.FC = () => {
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.genes);
+    setChartData(data?.genes?.nodes);
   }, [data]);
 
   if (isError || isLoading) {
