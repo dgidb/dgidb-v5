@@ -9,7 +9,6 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
     @int = create(:interaction, drug: @drug, gene: @gene, interaction_types: [@int_type])
   end
 
-  # TODO share query with frontend?
   let :query do
     <<-GRAPHQL
     query drugs($names: [String!]!) {
