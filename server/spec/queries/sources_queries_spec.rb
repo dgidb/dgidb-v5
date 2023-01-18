@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-# TODO
-# * how to test cursor
-# * share some specific checks
-# * figure out the groups issues
 RSpec.describe 'Sources queries', type: :graphql do
   before(:example) do
     @src_type = create(:source_type)
@@ -47,7 +43,7 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(source['sourceDbName']).to eq @src.source_db_name
 
     expect(source['drugClaimsCount']).to eq 1
-    # expect(source['drugClaimsInGroupsCount']).to eq 1
+    expect(source['drugClaimsInGroupsCount']).to eq 1
 
     expect(source['citation']).to eq @src.citation
     expect(source['license']).to eq @src.license
@@ -84,7 +80,7 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(source['sourceDbName']).to eq @src.source_db_name
 
     expect(source['geneClaimsCount']).to eq 1
-    # expect(source['geneClaimsInGroupsCount']).to eq 1
+    expect(source['geneClaimsInGroupsCount']).to eq 1
 
     expect(source['citation']).to eq @src.citation
     expect(source['license']).to eq @src.license
@@ -125,11 +121,11 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(source['sourceDbName']).to eq @src.source_db_name
 
     expect(source['drugClaimsCount']).to eq 1
-    # expect(source['drugClaimsInGroupsCount']).to eq 1
+    expect(source['drugClaimsInGroupsCount']).to eq 1
     expect(source['geneClaimsCount']).to eq 1
-    # expect(source['geneClaimsInGroupsCount']).to eq 1
+    expect(source['geneClaimsInGroupsCount']).to eq 1
     expect(source['interactionClaimsCount']).to eq 1
-    # expect(source['interactionClaimsInGroupsCount']).to eq 1
+    expect(source['interactionClaimsInGroupsCount']).to eq 1
 
     expect(source['citation']).to eq @src.citation
     expect(source['license']).to eq @src.license
@@ -170,11 +166,11 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(source['sourceDbName']).to eq @src.source_db_name
 
     expect(source['drugClaimsCount']).to eq 1
-    # expect(source['drugClaimsInGroupsCount']).to eq 1
+    expect(source['drugClaimsInGroupsCount']).to eq 1
     expect(source['geneClaimsCount']).to eq 1
-    # expect(source['geneClaimsInGroupsCount']).to eq 1
+    expect(source['geneClaimsInGroupsCount']).to eq 1
     expect(source['interactionClaimsCount']).to eq 1
-    # expect(source['interactionClaimsInGroupsCount']).to eq 1
+    expect(source['interactionClaimsInGroupsCount']).to eq 1
 
     expect(source['citation']).to eq @src.citation
     expect(source['license']).to eq @src.license

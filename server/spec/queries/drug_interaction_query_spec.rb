@@ -51,7 +51,7 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
 
     drug = interaction['drug']
     expect(drug['name']).to eq @drug.name
-    # expect(drug['approved']).to be_true  # TODO fails
+    expect(drug['approved']).to be_true
 
     expect(interaction['interactionScore']).to eq @int.score
     expect(interaction['interactionTypes'].size).to eq 1
