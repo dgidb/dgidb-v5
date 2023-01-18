@@ -67,7 +67,7 @@ RSpec.describe 'Gene Interaction Query', type: :graphql do
 
     drug = interaction['drug']
     expect(drug['name']).to eq @drug.name
-    # expect(drug['approved']).to be_true  # TODO fails?
+    expect(drug['approved']).to be_true
     expect(drug['drugApprovalRatings'].size).to eq 1
     expect(drug['drugApprovalRatings'][0]['rating']).to eq @drug_appr_rating.rating
     expect(drug['drugAttributes'].size).to eq 1
