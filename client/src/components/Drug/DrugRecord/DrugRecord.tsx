@@ -23,7 +23,7 @@ const DrugRecordTable: React.FC = () => {
 
   const { data } = useGetInteractionsByDrugs([drugName!]);
 
-  let drugs = data?.drugs?.[0]?.interactions;
+  let drugs = data?.drugs?.nodes?.[0]?.interactions;
 
   useEffect(() => {
     setInteractionResults(drugs)
@@ -92,7 +92,7 @@ export const DrugRecord: React.FC = () => {
 
   const drug = useParams().drug as string;
   const data = useGetDrugRecord([drug]).data;
-  let drugData = data?.drugs[0];
+  let drugData = data?.drugs?.nodes[0];
 
   return (
     <div className="drug-record-container">

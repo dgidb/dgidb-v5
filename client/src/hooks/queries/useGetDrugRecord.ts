@@ -14,15 +14,18 @@ import { graphQLClient } from 'config';
 // `
 
 const getDrugRecordQuery = gql`
-query drugs($name: [String!]!) {
-  drugs(name: $name) {
-    drugAliases {
-      alias
-    }
-    drugAttributes {
-      id
-      name
-      value
+query drugs($names: [String!]!) {
+  drugs(names: $names) {
+    nodes {
+      drugAliases {
+        alias
+      }
+      drugAttributes {
+        id
+        name
+        value
+      }
+
     }
   }
 }
@@ -57,13 +60,13 @@ query drugs($name: [String!]!) {
 // }
 
 
-export function useGetDrugRecord(name: string[]) {
+export function useGetDrugRecord(names: string[]) {
   return useQuery('drug-record', async () => {
     const res = await graphQLClient.request(
       getDrugRecordQuery,
-      { name }
+      { names }
     );
     return res;
   },
-  {enabled: name !== []});
+  {enabled: names !== []});
 }
