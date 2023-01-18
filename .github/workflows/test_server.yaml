@@ -1,4 +1,4 @@
-name: Server checks
+name: Backend checks
 on:
   push:
     branches: [ main, staging, dev ]
@@ -7,7 +7,7 @@ on:
 
 jobs:
   tests:
-    name: Server tests
+    name: Backend tests
     runs-on: 'ubuntu-latest'
     services:
       postgres:
