@@ -41,13 +41,13 @@ module Genome; module Importers; module FileImporters; module Dtc;
         gene_name = row['gene_names']
         pmid = row['pubmed_id']
         mechanism = row['ep_action_mode']
-        unless drug_name.nil? || gene_name.nil?
+        unless drug_name.nil? || gene_name.nil? || drug_name&.strip == "" || gene_name&.strip == ""
           drug_claim = create_drug_claim(drug_name)
           unless drug_id.nil?
             create_drug_claim_alias(drug_claim, drug_id, DrugNomenclature::CHEMBL_ID)
           end
           gene_name.split(',').each do |indv_gene|
-            gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
+            gene_claim = create_gene_claim(indv_gene.strip, GeneNomenclature::SYMBOL)
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             unless pmid.nil? || pmid == '' || pmid == '""' || pmid == "''" || pmid[0] == '-' || pmid == '15288657'
               create_interaction_claim_publication(interaction_claim, pmid)
