@@ -7,7 +7,7 @@ module Types
     field :id, ID, null: false
     field :name, String, null: true
     field :long_name, String, null: true
-    field :entrez_id, Int, null: true
+    field :concept_id, String, null: true
 
     field :gene_claims, [Types::GeneClaimType], null: false
     field :interactions, [Types::InteractionType], null: false
