@@ -4,21 +4,19 @@
   .gene-record-header {
     display: flex;
     flex-direction: row;
-    align-items: end;
+    align-items: end; // TODO ???
     margin-bottom: 0.5em;
 
     .symbol {
       font-weight: bold;
       font-size: 36px;
-      color: --var(--text-primary)
+      color: var(--text-primary);
     }
 
     .concept-id {
-      color: gray;
+      color: var(--text-accent);
       font-size: 24px;
-      margin-left: 0.5em;
-      // TOOD tempfix for weird vertical alignment issue
-      margin-bottom: 5px;
+      margin-left: 0.75em;
     }
   }
 
