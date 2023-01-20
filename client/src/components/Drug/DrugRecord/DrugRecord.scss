@@ -4,7 +4,7 @@
   .drug-record-header {
     display: flex;
     flex-direction: row;
-    align-items: end; // TODO ??
+    align-items: end; // isn't aligning name object correctly
     margin-bottom: 0.5em;
 
     .name {
