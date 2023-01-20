@@ -96,8 +96,8 @@ const DrugRecordTable: React.FC = () => {
 
 export const DrugRecord: React.FC = () => {
   const drug = useParams().drug as string;
-  const data = useGetDrugRecord([drug]).data;
-  let drugData = data?.drugs?.nodes[0];
+  const data = useGetDrugRecord(drug).data;
+  let drugData = data?.drug;
 
   const noData = (
     <TableRow>

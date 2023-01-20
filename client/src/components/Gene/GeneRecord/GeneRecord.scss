@@ -1,6 +1,27 @@
 .gene-record-container {
   padding: 20px;
 
+  .gene-record-header {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    margin-bottom: 0.5em;
+
+    .symbol {
+      font-weight: bold;
+      font-size: 36px;
+      color: --var(--text-primary)
+    }
+
+    .concept-id {
+      color: gray;
+      font-size: 24px;
+      margin-left: 0.5em;
+      // TOOD tempfix for weird vertical alignment issue
+      margin-bottom: 5px;
+    }
+  }
+
   .data-box {
     padding: 1rem;
     border: solid white 1px;

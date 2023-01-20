@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetInteractionsByGenes} from 'hooks/queries/useGetInteractions';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
@@ -8,9 +8,6 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-// components
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -25,7 +22,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 const GeneRecordTable: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
+  // const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const geneSymbol: any = useParams().gene;
@@ -96,7 +93,9 @@ const GeneRecordTable: React.FC = () => {
 export const GeneRecord: React.FC = () => {
   const geneSymbol = useParams().gene;
 
-  const { data, isError, isLoading } = useGetGeneRecord(geneSymbol!);
+  const { data,
+    // isError, isLoading
+  } = useGetGeneRecord(geneSymbol!);
   const geneData = data?.gene
 
   const noData = (
@@ -183,7 +182,7 @@ export const GeneRecord: React.FC = () => {
 
   return geneData && (
     <Box className="content gene-record-container">
-      <Box className="gene-record-header"><h1><b>{geneSymbol}</b></h1></Box>
+      <Box className="gene-record-header"><Box className="symbol">{geneSymbol}</Box><Box className="concept-id">{geneData.conceptId}</Box></Box>
       <Box display="flex">
         <Box display="block" width="35%">
           {
