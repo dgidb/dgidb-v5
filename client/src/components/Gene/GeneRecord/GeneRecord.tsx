@@ -22,7 +22,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 const GeneRecordTable: React.FC = () => {
-  // const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const geneSymbol: any = useParams().gene;
@@ -37,7 +36,7 @@ const GeneRecordTable: React.FC = () => {
     })
 
     setInteractionResults(interactionData?.interactions)
-  }, [genes])
+  }, [genes, geneSymbol])
 
   const columns: ColumnsType<any> = [
     {
