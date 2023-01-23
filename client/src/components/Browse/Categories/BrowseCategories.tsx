@@ -1,13 +1,10 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from "react";
-import { useGetInteractionsByGenes } from "hooks/queries/useGetInteractions";
-import { useGetGeneRecord } from "hooks/queries/useGetGeneRecord";
+import React, { useState, useEffect } from "react";
 import { useGetDruggableSources } from "hooks/queries/useGetDruggableSources";
-import { useGetCategoriesBySource } from "hooks/queries/useGetCategories";
 import { Collapse } from "antd";
 
 // components
-import { GeneListTable } from "components/Browse/Categories/GeneListTable";
+import { BrowseCategoriesGenesTable } from "components/Browse/Categories/BrowseCategoriesGenesTable";
 
 // styles
 import "./BrowseCategories.scss";
@@ -27,7 +24,6 @@ export const BrowseCategories: React.FC = () => {
   const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
 
-  const [allCategories, setAllCategories] = useState<any>([]);
   const [renderedCategories, setRenderedCategories] = useState<any>([]);
 
   const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE");
@@ -42,17 +38,6 @@ export const BrowseCategories: React.FC = () => {
       });
 
       setPlainOptions(sources);
-
-      let allCategoriesObj: Categories = {};
-
-      nodes.forEach((node: any) => {
-        node.categoriesInSource.forEach((cat: any) => {
-          let key = cat.name;
-          allCategoriesObj[key] = 0;
-        });
-      });
-
-      setAllCategories(allCategoriesObj);
     }
   }, [data]);
 
@@ -124,7 +109,7 @@ export const BrowseCategories: React.FC = () => {
             if (cat.geneCount) {
               return (
                 <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
-                  <GeneListTable />
+                  <BrowseCategoriesGenesTable categoryName={cat.name} sourceDbNames={checkedList} />
                 </Panel>
               );
             } else {
