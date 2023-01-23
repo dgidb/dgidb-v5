@@ -8,6 +8,7 @@ const getInteractionsByGenesQuery = gql`
     genes(names: $names) {
       nodes {
         name
+        conceptId
         interactions {
           drug {
             name

@@ -2,7 +2,7 @@ module Types::Queries
   module GeneLookupQuery
     def self.included(klass)
       klass.field :gene_matches, Types::GeneMatchType, null: false do
-        description "Match Gene search terms to known Entrez Genes in the database."
+        description "Match Gene search terms to known genes in the database."
         argument :search_terms, [GraphQL::Types::String], required: true
       end
 
@@ -15,30 +15,28 @@ module Types::Queries
           no_matches: []
         }
 
-        #find exact matches on gene smybol
+        #find exact matches on gene symbol
         direct_symbol_matches = Gene.where('name in (?)', remaining_terms)
-        direct_symbol_matches.each do |g| 
+        direct_symbol_matches.each do |g|
           results[:direct_matches] << {
             search_term: g.name,
             matches: [g],
             match_type: :direct
           }
         end
-        remaining_terms = remaining_terms - direct_symbol_matches.map(&:name)
+        remaining_terms -= direct_symbol_matches.map(&:name)
 
-        #find exact matches on entrez id
-        terms_as_entrez_ids = remaining_terms.map { |term| Integer(term) rescue nil }.compact
-        
-        if terms_as_entrez_ids.size > 0
-          direct_entrez_id_matches = Gene.where('concept_id in (?)', terms_as_entrez_ids)
-          direct_entrez_id_matches.each do |g| 
+        #find exact matches on concept ID
+        if remaining_terms.size.positive?
+          direct_id_matches = Gene.where('concept_id in (?)', remaining_terms)
+          direct_id_matches.each do |g|
             results[:direct_matches] << {
-              search_term: g.entrez_id,
+              search_term: g.concept_id,
               matches: [g],
               match_type: :direct
             }
           end
-          remaining_terms = remaining_terms - direct_matches.map(&:entrez_id)
+          remaining_terms -= direct_id_matches.map(&:concept_id)
         end
 
         #find matches through aliases
@@ -60,7 +58,7 @@ module Types::Queries
             match_type: key.to_sym
           }
         end
-        remaining_terms = remaining_terms - alias_matches.map { |term, _| term }
+        remaining_terms -= alias_matches.map { |term, _| term }
 
         #what still remains is unmatched
         remaining_terms.each do |term|

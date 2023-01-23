@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetInteractionsByDrugs} from 'hooks/queries/useGetInteractions';
 import { useGetDrugRecord } from 'hooks/queries/useGetDrugRecord';
@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // methods
@@ -23,7 +22,6 @@ import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 
 const DrugRecordTable: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const drugName = useParams().drug
@@ -96,8 +94,8 @@ const DrugRecordTable: React.FC = () => {
 
 export const DrugRecord: React.FC = () => {
   const drug = useParams().drug as string;
-  const data = useGetDrugRecord([drug]).data;
-  let drugData = data?.drugs?.nodes[0];
+  const data = useGetDrugRecord(drug).data;
+  let drugData = data?.drug;
 
   const noData = (
     <TableRow>
@@ -202,7 +200,10 @@ export const DrugRecord: React.FC = () => {
 
   return drugData && (
     <Box className="drug-record-container">
-      <Box className="drug-record-header"><h1><b>{drug}</b></h1></Box>
+      <Box className="drug-record-header">
+        <Box className="name">{drug}</Box>
+        <Box className="concept-id">{drugData.conceptId}</Box>
+      </Box>
       <Box display="flex">
         <Box display="block" width="35%">
           {

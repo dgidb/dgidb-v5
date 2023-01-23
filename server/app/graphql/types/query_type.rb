@@ -57,15 +57,6 @@ module Types
       Gene.find_by(name: name)
     end
 
-    field :drug, Types::DrugType, null: true do
-      description "A drug"
-      argument :name, String, required: true
-    end
-
-    def drug(name: )
-      Drug.find_by(name: name)
-    end
-
     field :gene_alias, Types::GeneAliasType, null: true do
       description "Alias for a gene"
       argument :id, String, required: true
@@ -176,11 +167,11 @@ module Types
 
     field :drug, Types::DrugType, null: true do
       description "A drug"
-      argument :id, ID, required: true
+      argument :name, String, required: true
     end
 
-    def drug(id:)
-      Drug.find_by(id: id)
+    def drug(name: )
+      Drug.find_by(name: name)
     end
 
     field :interaction_attribute, Types::InteractionAttributeType, null: true do

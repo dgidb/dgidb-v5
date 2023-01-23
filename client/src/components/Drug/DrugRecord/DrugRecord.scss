@@ -1,6 +1,26 @@
 .drug-record-container {
   padding: 20px;
 
+  .drug-record-header {
+    display: flex;
+    flex-direction: row;
+    align-items: end; // isn't aligning name object correctly
+    margin-bottom: 0.5em;
+
+    .name {
+      font-weight: bold;
+      font-size: 36px;
+      color: var(--text-primary);
+    }
+
+    .concept-id {
+      color: var(--text-accent);
+      font-size: 24px;
+      margin-left: 0.75em;
+      margin-bottom: 0.22em;
+    }
+  }
+
   .data-box {
     padding: 1rem;
     border: solid white 1px;
