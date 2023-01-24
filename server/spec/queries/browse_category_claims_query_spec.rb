@@ -18,14 +18,15 @@ RSpec.describe 'Browse Category Claims Query', type: :graphql do
 
   let :query do
     <<-GRAPHQL
-    query geneClaimCategory($name: String!, $sourceNames: [String!]!) {
-      geneClaimCategory(name:$name) {
-        name,
-        genes(categoryName:$name,sourceNames:$sourceNames) {
+    query geneClaimCategory($categoryName: String!, $sourceDbNames: [String!]!) {
+      geneClaimCategory(name: $categoryName) {
+        name
+        genes(categoryName: $categoryName, sourceNames: $sourceDbNames) {
           edges {
             node {
               name
               conceptId
+              longName
               sourceDbNames
             }
           }
@@ -37,7 +38,7 @@ RSpec.describe 'Browse Category Claims Query', type: :graphql do
 
   it 'should execute getClaimsForCategory correctly' do
     source_names = [@src1.source_db_name, @src2.source_db_name]
-    result = execute_graphql(query, variables: {name: @cat1.name, sourceNames: source_names})
+    result = execute_graphql(query, variables: {categoryName: @cat1.name, sourceDbNames: source_names})
     cat = result['data']['geneClaimCategory']
     expect(cat['name']).to eq @cat1.name
 
