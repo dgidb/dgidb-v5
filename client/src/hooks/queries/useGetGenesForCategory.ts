@@ -12,6 +12,7 @@ const getGenesForCategoryQuery = gql`
           node {
             name
             conceptId
+            longName
             sourceDbNames
           }
         }
