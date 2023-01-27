@@ -9,6 +9,7 @@ import { GeneIntTable } from 'components/Gene/GeneIntTable';
 import { DrugSummary } from 'components/Drug/DrugSummary';
 import { DrugTable } from 'components/Drug/DrugTable';
 import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
+import { AmbiguousTermsSummary } from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 
 // styles
 import './Results.scss';
@@ -16,22 +17,16 @@ import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const onChange = () => {
-
-}
-
 const GeneResults: React.FC = () => {
-
   return (
     <>
-      <Tabs defaultActiveKey="1" onChange={onChange} type="card">
+      <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Unique Matches" key="1">
-        <GeneSummary />
+          <GeneSummary />
           <GeneIntTable />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          {/* <GeneSummary />
-          <GeneIntTable /> */}
+          <AmbiguousTermsSummary />
         </TabPane>
       </Tabs>
     </>
@@ -41,9 +36,9 @@ const GeneResults: React.FC = () => {
 const DrugResults: React.FC = () => {
   return (
     <>
-      <Tabs defaultActiveKey="1" onChange={onChange} type="card">
+      <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Unique Matches" key="1">
-        <DrugSummary />
+          <DrugSummary />
           <DrugTable />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
