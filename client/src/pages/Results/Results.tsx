@@ -42,8 +42,7 @@ const DrugResults: React.FC = () => {
           <DrugTable />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          <DrugSummary />
-          <DrugTable />
+          <AmbiguousTermsSummary />
         </TabPane>
       </Tabs>
     </>
