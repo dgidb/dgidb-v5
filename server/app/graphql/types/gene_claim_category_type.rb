@@ -18,11 +18,9 @@ module Types
 
     field :genes, GeneCategoryResult.connection_type, null: false do
       argument :source_names, [String], required: false
-      # argument :category_name, String, required: true
     end
 
 
-    # def genes(source_names: [], category_name: '')
     def genes(source_names: [], category_name: '')
       if category_name.empty? && !context[:category_name].nil?
         category_name = context[:category_name]
