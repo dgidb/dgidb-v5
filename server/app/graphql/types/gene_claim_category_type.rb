@@ -23,8 +23,10 @@ module Types
 
 
     # def genes(source_names: [], category_name: '')
-    def genes(source_names: [])
-      category_name = context[:category_name]
+    def genes(source_names: [], category_name: '')
+      if category_name.empty? && !context[:category_name].nil?
+        category_name = context[:category_name]
+      end
 
       query = GeneClaim.select('genes.name, genes.concept_id, genes.long_name, array_agg(DISTINCT sources.source_db_name) AS source_db_names')
          .joins('LEFT JOIN sources ON sources.id = gene_claims.source_id')
