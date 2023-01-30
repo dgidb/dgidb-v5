@@ -21,6 +21,7 @@ export const BrowseCategories: React.FC = () => {
   const [plainOptions, setPlainOptions] = useState([]);
 
   const [checkedList, setCheckedList] = useState<any>([]);
+
   const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
 
@@ -37,7 +38,11 @@ export const BrowseCategories: React.FC = () => {
         sources.push(node.sourceDbName);
       });
 
-      setPlainOptions(sources.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase())));
+      setPlainOptions(
+        sources.sort((a: string, b: string) =>
+          a.toLowerCase().localeCompare(b.toLowerCase())
+        )
+      );
     }
   }, [data]);
 
@@ -71,7 +76,9 @@ export const BrowseCategories: React.FC = () => {
       categoriesArray.push({ name: key, geneCount: allCategoriesCopy[key] });
     }
 
-    categoriesArray.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    categoriesArray.sort((a, b) =>
+      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+    );
     setRenderedCategories(categoriesArray);
   }, [checkedList]);
 
@@ -110,7 +117,14 @@ export const BrowseCategories: React.FC = () => {
             if (cat.geneCount) {
               return (
                 <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
-                  <BrowseCategoriesGenesTable categoryName={cat.name} sourceDbNames={checkedList} />
+                  <BrowseCategoriesGenesTable
+                    categoryName={cat.name}
+                    sourceDbNames={
+                      plainOptions.length === checkedList.length
+                        ? []
+                        : checkedList
+                    }
+                  />
                 </Panel>
               );
             } else {

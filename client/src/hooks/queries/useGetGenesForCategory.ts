@@ -33,7 +33,6 @@ export function useGetGenesForCategory(
       });
       return res;
     },
-    // TODO try running w/ no source names to get all at once
-    { enabled: categoryName !== "" && sourceDbNames.length > 0 }
+    { enabled: categoryName !== "" }
   );
 }
