@@ -18,10 +18,14 @@ module Types
 
     field :genes, GeneCategoryResult.connection_type, null: false do
       argument :source_names, [String], required: false
-      argument :category_name, String, required: true
+      # argument :category_name, String, required: true
     end
 
-    def genes(source_names: [], category_name: '')
+
+    # def genes(source_names: [], category_name: '')
+    def genes(source_names: [])
+      category_name = context[:category_name]
+
       query = GeneClaim.select('genes.name, genes.concept_id, genes.long_name, array_agg(DISTINCT sources.source_db_name) AS source_db_names')
          .joins('LEFT JOIN sources ON sources.id = gene_claims.source_id')
          .joins('RIGHT JOIN gene_claim_categories_gene_claims ON gene_claims.id = gene_claim_categories_gene_claims.gene_claim_id')

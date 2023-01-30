@@ -99,6 +99,7 @@ module Types
     end
 
     def gene_claim_category(name: )
+      context.scoped_set!(:category_name, name)
       GeneClaimCategory.find_by(name: name)
     end
 

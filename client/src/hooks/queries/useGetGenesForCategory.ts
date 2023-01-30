@@ -6,7 +6,7 @@ const getGenesForCategoryQuery = gql`
   query geneClaimCategory($categoryName: String!, $sourceDbNames: [String!]!) {
     geneClaimCategory(name: $categoryName) {
       name
-      genes(categoryName: $categoryName, sourceNames: $sourceDbNames) {
+      genes(sourceNames: $sourceDbNames) {
         edges {
           node {
             name
