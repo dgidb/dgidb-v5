@@ -12,7 +12,7 @@ module Types
     class GeneCategoryResult < Types::BaseObject
       field :name, String, null: false
       field :concept_id, String, null: false
-      field :long_name, String, null: false
+      field :long_name, String, null: true
       field :source_db_names, [String],  null: false
     end
 
@@ -22,13 +22,14 @@ module Types
     end
 
     def genes(source_names: [], category_name: '')
-      query = GeneClaim.select('genes.name, genes.concept_id, genes.long_name, array_agg(sources.source_db_name) as source_db_names')
-         .joins('left join sources on sources.id = gene_claims.source_id')
-         .joins('right join gene_claim_categories_gene_claims on gene_claims.id = gene_claim_categories_gene_claims.gene_claim_id')
-         .joins('left join gene_claim_categories on gene_claim_categories.id = gene_claim_categories_gene_claims.gene_claim_category_id')
-         .joins('left join genes on genes.id = gene_claims.gene_id')
+      query = GeneClaim.select('genes.name, genes.concept_id, genes.long_name, array_agg(DISTINCT sources.source_db_name) AS source_db_names')
+         .joins('LEFT JOIN sources ON sources.id = gene_claims.source_id')
+         .joins('RIGHT JOIN gene_claim_categories_gene_claims ON gene_claims.id = gene_claim_categories_gene_claims.gene_claim_id')
+         .joins('LEFT JOIN gene_claim_categories ON gene_claim_categories.id = gene_claim_categories_gene_claims.gene_claim_category_id')
+         .joins('LEFT JOIN genes ON genes.id = gene_claims.gene_id')
          .where(gene_claim_categories: { name: category_name })
          .group(['genes.name', 'genes.concept_id', 'genes.long_name'])
+         .where.not('genes.name': nil)
 
       if source_names.any?
         query.where(sources: {source_db_name: source_names})
