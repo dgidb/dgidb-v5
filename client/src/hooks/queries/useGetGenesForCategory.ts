@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import { gql } from "graphql-request";
 import { graphQLClient } from "config";
 
-// TODO update query
 const getGenesForCategoryQuery = gql`
   query geneClaimCategory($categoryName: String!, $sourceDbNames: [String!]!) {
     geneClaimCategory(name: $categoryName) {

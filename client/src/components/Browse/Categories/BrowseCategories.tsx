@@ -37,7 +37,7 @@ export const BrowseCategories: React.FC = () => {
         sources.push(node.sourceDbName);
       });
 
-      setPlainOptions(sources);
+      setPlainOptions(sources.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase())));
     }
   }, [data]);
 
@@ -71,6 +71,7 @@ export const BrowseCategories: React.FC = () => {
       categoriesArray.push({ name: key, geneCount: allCategoriesCopy[key] });
     }
 
+    categoriesArray.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
     setRenderedCategories(categoriesArray);
   }, [checkedList]);
 
