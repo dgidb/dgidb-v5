@@ -44,6 +44,9 @@ module Genome; module Importers; module ApiImporters; module Civic
               }
               molecularProfiles {
                 nodes {
+                  variants {
+                    id
+                  }
                   evidenceItems {
                     nodes {
                       name
