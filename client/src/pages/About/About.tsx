@@ -9,6 +9,8 @@ import { InteractionScoreQueryScore } from './SubSections/InteractionScoreQueryS
 import { FAQ } from './SubSections/FAQ';
 import { KnownDataClients } from './SubSections/KnownDataClients';
 import { Contact } from './SubSections/Contact';
+import { TypesTable } from 'components/About/InteractionClaimTypes/TypesTable'
+
 
 // styles
 import './About.scss';
@@ -44,6 +46,7 @@ export const About = () => {
         <div className="doc-section">
         <h3 id="interaction-types">Interaction Types and Directionalities</h3>
           <TypesAndDirectionalities />
+          <TypesTable/>
         </div>
         <div className="doc-section">
         <h3 id="interaction-scores">Interaction Score and Query Score</h3>
