@@ -18,12 +18,13 @@ import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 const GeneResults: React.FC = () => {
+  const {state} = useContext(GlobalClientContext);
   return (
     <>
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Unique Matches" key="1">
           <GeneSummary />
-          <GeneIntTable />
+          <GeneIntTable searchTerms={state.searchTerms} />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
           <AmbiguousTermsSummary />

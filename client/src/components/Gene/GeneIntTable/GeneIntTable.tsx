@@ -11,9 +11,12 @@ import './GeneIntTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-export const GeneIntTable: React.FC = () => {
+interface Props {
+  searchTerms: string[];
+}
 
-  const {state} = useContext(GlobalClientContext);
+export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
+  console.log(searchTerms)
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   //filter options
@@ -24,7 +27,9 @@ export const GeneIntTable: React.FC = () => {
   const [intScore, setIntScore] = useState<any>([]);
   const [queryScore, setQueryScore] = useState<any>([]);
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data, isError, isLoading } = useGetInteractionsByGenes(searchTerms);
+  console.log("data")
+  console.log(data)
 
   let genes = data?.genes?.nodes;
 
