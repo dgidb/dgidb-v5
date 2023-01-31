@@ -10,6 +10,7 @@ module Types
     field :drugs, resolver: Resolvers::Drugs
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
+    field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
 
 
     field :source, Types::SourceType, null: true do
