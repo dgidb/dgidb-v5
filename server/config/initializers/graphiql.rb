@@ -6,18 +6,20 @@ GraphiQL::Rails.config.initial_query =  <<~QUERY
 # The GraphiQL environment will offer autocompletion and validation as you experient with what's possible.
 #
 {
-  drugs(name: ["DOVITINIB"]) {
-    interactions {
-      gene {
-        name
-      }
-      drug {
-        name
-      }
-      interactionScore
-      interactionTypes {
-        type
-        directionality
+  drugs(names: ["DOVITINIB"]) {
+    nodes {
+      interactions {
+        gene {
+          name
+        }
+        drug {
+          name
+        }
+        interactionScore
+        interactionTypes {
+          type
+          directionality
+        }
       }
     }
   }

@@ -4,10 +4,13 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
+    include Types::Queries::GeneLookupQuery
+
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
+
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -52,33 +55,6 @@ module Types
 
     def gene(name: )
       Gene.find_by(name: name)
-    end
-
-    field :drug, Types::DrugType, null: true do
-      description "A drug"
-      argument :name, String, required: true
-    end
-
-    def drug(name: )
-      Drug.find_by(name: name)
-    end
-
-    field :genes, [Types::GeneType], null: false do
-      description "A gene"
-      argument :name, [String], required: true
-    end
-
-    def genes(name: )
-      Gene.where(name: name)
-    end
-
-    field :drugs, [Types::DrugType], null: false do
-      description "Drugs"
-      argument :name, [String], required: true
-    end
-
-    def drugs(name: )
-      Drug.where(name: name)
     end
 
     field :gene_alias, Types::GeneAliasType, null: true do
@@ -191,11 +167,11 @@ module Types
 
     field :drug, Types::DrugType, null: true do
       description "A drug"
-      argument :id, ID, required: true
+      argument :name, String, required: true
     end
 
-    def drug(id:)
-      Drug.find_by(id: id)
+    def drug(name: )
+      Drug.find_by(name: name)
     end
 
     field :interaction_attribute, Types::InteractionAttributeType, null: true do

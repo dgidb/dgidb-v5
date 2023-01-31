@@ -23,8 +23,8 @@ export const DrugTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
-  
-  let drugs = data?.drugs;
+
+  let drugs = data?.drugs?.nodes;
 
   //filter options
   const [drug, setDrug] = useState<any>([]);
@@ -215,7 +215,7 @@ export const DrugTable: React.FC = () => {
         {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
       </span>
       <Skeleton loading={!interactionResults.length}>
-        <Table 
+        <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}

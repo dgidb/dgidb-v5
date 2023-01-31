@@ -13,8 +13,8 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(id: value)
   end
 
-  option(:name, type: String, description: 'Substring filtering on drug name.') do |scope, value|
-    scope.where("name ILIKE ?", "%#{value}%")
+  option(:names, type: [String], description: 'Substring filtering on drug name.') do |scope, value|
+    scope.where(name: value)
   end
 
   option(:approved, type: Boolean, description: 'Filtering on approval status of drug.') do |scope, value|

@@ -39,7 +39,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({ setChartData }) => {
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
   const [filterBy, setFilterBy] = useState<string>('');
 
-  let drugs = data?.drugs;
+  let drugs = data?.drugs?.nodes;
 
   const toggleFilter = (drugName: string) => {
     if (filterBy === drugName) {
@@ -144,7 +144,7 @@ export const DrugSummary: React.FC = () => {
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.drugs);
+    setChartData(data?.drugs?.nodes);
   }, [data]);
 
   if (isError || isLoading) {
