@@ -6,6 +6,8 @@ import { useGetGenesForCategory } from "hooks/queries/useGetGenesForCategory";
 import "./BrowseCategoriesGenesTable.scss";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { Box } from "@mui/system";
+import { Skeleton } from "@mui/material";
 
 interface BrowseCategoriesGenesTableProps {
   categoryName: String;
@@ -17,7 +19,7 @@ export const BrowseCategoriesGenesTable: React.FC<
 > = ({ categoryName, sourceDbNames }) => {
   const [genesInCategory, setGenesInCategory] = useState([]);
 
-  const { data } = useGetGenesForCategory(categoryName, sourceDbNames);
+  const { data, isError, isLoading } = useGetGenesForCategory(categoryName, sourceDbNames);
   const genes = data?.geneClaimCategory?.genes?.edges;
 
   useEffect(() => {
@@ -58,6 +60,18 @@ export const BrowseCategoriesGenesTable: React.FC<
     },
   ];
 
+  if (isLoading) {
+    return (
+      <Box className="loading">
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+      </Box>
+    )
+  }
+   else if (isError) {
+    return (<Box>Error! Unable to complete request</Box>)
+  }
   return (
     <div className="gene-list-table-container">
       <Table
