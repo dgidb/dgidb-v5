@@ -16,10 +16,22 @@ module Types
       field :source_db_names, [String],  null: false
     end
 
-    field :genes, GeneCategoryResult.connection_type, null: false do
-      argument :source_names, [String], required: false
+    field :gene_count, Int, null: false do
+      argument :source_db_names, [String], required: false
     end
 
+    def gene_count(source_db_names: [])
+      object.gene_claims.select('DISTINCT genes.name, genes.concept_id')
+        .joins('LEFT JOIN genes ON gene_claims.gene_id = genes.id')
+        .joins('LEFT JOIN sources ON gene_claims.source_id = sources.id')
+        .where('sources.source_db_name': source_db_names)
+        .size
+    end
+
+    field :genes, GeneCategoryResult.connection_type, null: false do
+      argument :source_names, [String], required: false
+      argument :category_name, String, required: false
+    end
 
     def genes(source_names: [], category_name: '')
       if category_name.empty? && !context[:category_name].nil?
