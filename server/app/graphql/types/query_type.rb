@@ -94,12 +94,13 @@ module Types
     end
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
-      description "Category for a drug claim"
-      argument :source_db_name, String, required: true
+      description "Category for a gene claim"
+      argument :name, String, required: true
     end
 
-    def gene_claim_category(source_db_name: )
-      GeneClaimCategory.find_by(source: source)
+    def gene_claim_category(name: )
+      context.scoped_set!(:category_name, name)
+      GeneClaimCategory.find_by(name: name)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do
