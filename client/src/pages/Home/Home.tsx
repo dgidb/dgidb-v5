@@ -114,7 +114,7 @@ export const Home: React.FC = () => {
           API
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
-          Downloads
+          <a href='/downloads'>Downloads</a>
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           <a href="https://github.com/dgidb/dgidb-v5">Github</a>
