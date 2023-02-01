@@ -32,6 +32,8 @@ export const About = () => {
           <Link href="#faq" title="FAQ" />
           <Link href="#known-data-clients" title="Known Data Clients" />
           <Link href="#contact" title="Contact" />
+          <Link href="#current-contributors" title="Current Contributors" />
+          <Link href="#acknowledgements" title="Acknowledgements" />
         </Anchor>
       </div>
       <div className="about-content-container">
