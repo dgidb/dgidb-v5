@@ -51,7 +51,7 @@ export const Contact = () => {
         <a href="mailto:Alex.Wagner@nationwidechildrens.org">Email</a></p>
         <h4>Matthew Cannon</h4>
         <p>Developer<br/>
-        <a href="">LinkedIn Profile</a><br/>
+        <a href="https://www.linkedin.com/in/matthew-cannon-b250a730/">LinkedIn Profile</a><br/>
         <a href="mailto:Matthew.Cannon2@nationwidechildrens.org">Email</a></p>
         <h4>Katie Stahl</h4>
         <p>Developer<br/>
