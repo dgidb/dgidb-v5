@@ -3,14 +3,16 @@ import { gql } from "graphql-request";
 import { graphQLClient } from "config";
 
 const getInteractionClaimTypesQuery = gql`
-  query interactionClaimTypes {
-    nodes {
+  query {
+    interactionClaimTypes {
+      nodes {
         type
         definition
         reference
+        directionality
       }
     }
-
+  }
 `;
 
 export function useGetInteractionClaimTypes() {
@@ -21,4 +23,4 @@ export function useGetInteractionClaimTypes() {
       return res;
     },
   );
-}
+};
