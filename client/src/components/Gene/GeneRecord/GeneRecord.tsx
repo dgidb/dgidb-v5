@@ -23,7 +23,8 @@ import TableCell from "@mui/material/TableCell";
 
 // components
 // import CoolTooltips from 'components/Shared/Tooltip/Tooltip'
-import { CoolComponent } from 'components/Shared/Tooltip/Tooltip'
+import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
+import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
 
 const GeneRecordTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
@@ -63,13 +64,13 @@ const GeneRecordTable: React.FC = () => {
       title: "PMIDs",
       dataIndex: ["publications"],
       render: (text: any, record: any) => (
-        <span>{record?.publications?.length}</span>
+        <span> <PublicationsTooltip display_text={record?.publications.length} hover_texts={record?.publications}></PublicationsTooltip></span>
       ),
     },
     {
       title: "Sources",
       dataIndex: ["sources"],
-      render: (text: any, record: any) => <span><CoolComponent argument={record?.sources.length}></CoolComponent></span>,
+      render: (text: any, record: any) => <span> <SourcesTooltip hover_texts={record?.sources} display_text={record?.sources.length}></SourcesTooltip></span>,
     },
     {
       title: "Interaction Score",

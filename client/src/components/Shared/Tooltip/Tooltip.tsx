@@ -17,28 +17,53 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   }));
 
 interface Props {
-    argument: string;
+    display_text: string;
+    hover_texts: any;
 }
 
-export const CoolComponent: React.FC<Props> = ({argument}) => {
+export const SourcesTooltip: React.FC<Props> = ({display_text,hover_texts}) => {
     return (
 
         <div>
           <HtmlTooltip
             title={
               <React.Fragment>
-                <Typography color="inherit">{argument}</Typography>
+                <Typography color="inherit">{hover_texts.map((row: any, key:number) => (
+                    <p>{row.fullName}</p>
+                ))}
+                </Typography>
                 <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
                 {"It's very engaging. Right?"}
               </React.Fragment>
             }
           >
-            <Button>{argument}</Button>
+            <Button>{display_text}</Button>
           </HtmlTooltip>
         </div>
       );
 };
 
+export const PublicationsTooltip: React.FC<Props> = ({display_text,hover_texts}) => {
+    return (
+
+        <div>
+          <HtmlTooltip
+            title={
+              <React.Fragment>
+                <Typography color="inherit">{hover_texts.map((row: any, key:number) => (
+                    <p>{row.pmid}</p>
+                ))}
+                </Typography>
+                <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+                {"It's very engaging. Right?"}
+              </React.Fragment>
+            }
+          >
+            <Button>{display_text}</Button>
+          </HtmlTooltip>
+        </div>
+      );
+};
 
 // const test = 'text'
 
