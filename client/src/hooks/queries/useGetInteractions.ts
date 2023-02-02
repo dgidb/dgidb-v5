@@ -67,7 +67,6 @@ const getInteractionsByDrugsQuery = gql`
             pmid
           }
           sources {
-            id
             fullName
           }
         }
