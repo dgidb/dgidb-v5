@@ -51,7 +51,7 @@ export const PublicationsTooltip: React.FC<Props> = ({display_text,hover_texts})
             title={
               <React.Fragment>
                 <Typography color="inherit">{hover_texts.map((row: any, key:number) => (
-                    <p>{row.pmid}</p>
+                    <p><a href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}>{row.pmid}</a></p>
                 ))}
                 </Typography>
                 <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
