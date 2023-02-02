@@ -19,7 +19,7 @@ query drug($name: String!) {
 `
 
 export function useGetDrugRecord(name: string) {
-  return useQuery('drug-record', async () => {
+  return useQuery('drug-record' + name, async () => {
     const res = await graphQLClient.request(
       getDrugRecordQuery,
       { name }

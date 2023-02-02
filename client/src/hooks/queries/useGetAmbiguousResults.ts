@@ -28,7 +28,7 @@ const getGeneMatchesQuery = gql`
 
 export function useGetMatchedResults(names: string[]) {
   return useQuery(
-    "gene_matches",
+    "gene_matches" + names,
     async () => {
       const res = await graphQLClient.request(getGeneMatchesQuery, {
         names,

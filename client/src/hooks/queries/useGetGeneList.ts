@@ -28,7 +28,7 @@ query categories($categoryName: [String!]!) {
 `
 
 export function useGetGeneList(name: string[]) {
-  return useQuery('gene-list', async () => {
+  return useQuery('gene-list' + name, async () => {
     const res = await graphQLClient.request(
       getGeneListQuery,
       { name }
