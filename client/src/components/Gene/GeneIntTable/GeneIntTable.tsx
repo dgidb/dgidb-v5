@@ -16,7 +16,6 @@ interface Props {
 }
 
 export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
-  console.log(searchTerms)
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   //filter options
@@ -27,9 +26,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
   const [intScore, setIntScore] = useState<any>([]);
   const [queryScore, setQueryScore] = useState<any>([]);
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(searchTerms);
-  console.log("data")
-  console.log(data)
+  const { data } = useGetInteractionsByGenes(searchTerms)
 
   let genes = data?.genes?.nodes;
 
@@ -41,7 +38,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
       })
     })
     setInteractionResults(interactionData)
-  }, [genes])
+  }, [genes, searchTerms])
 
   const columns: ColumnsType<any> = [
     {
