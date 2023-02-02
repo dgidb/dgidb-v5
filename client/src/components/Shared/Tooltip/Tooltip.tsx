@@ -64,25 +64,3 @@ export const PublicationsTooltip: React.FC<Props> = ({display_text,hover_texts})
         </div>
       );
 };
-
-// const test = 'text'
-
-//   export default function CoolTooltips() {
-
-//     return (
-
-//       <div>
-//         <HtmlTooltip
-//           title={
-//             <React.Fragment>
-//               <Typography color="inherit">{test}</Typography>
-//               <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
-//               {"It's very engaging. Right?"}
-//             </React.Fragment>
-//           }
-//         >
-//           <Button>HTML</Button>
-//         </HtmlTooltip>
-//       </div>
-//     );
-//   }
