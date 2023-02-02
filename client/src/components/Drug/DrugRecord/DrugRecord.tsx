@@ -58,20 +58,18 @@ const DrugRecordTable: React.FC = () => {
     //     <span>{record?.publications?.length}</span>
     //   )
     // },
-    // {
-    //   title: 'PMIDs',
-    //   dataIndex: ['sources'],
-    //   render: (text: any, record: any) => (
-    //     <span>{record?.sources.length}</span>
-    //   )
-    // },
-    // {
-    //   title: 'Sources',
-    //   dataIndex: ['interactionScore'],
-    //   render: (text: any, record: any) => (
-    //     <span>{truncateDecimals(record?.interactionScore, 2)}</span>
-    //   )
-    // },
+    {
+      title: "PMIDs",
+      dataIndex: ["publications"],
+      render: (text: any, record: any) => (
+        <span>{record?.publications?.length}</span>
+      ),
+    },
+    {
+      title: "Sources",
+      dataIndex: ["sources"],
+      render: (text: any, record: any) => <span>{record?.sources.length}</span>,
+    },
     {
       title: 'Interaction Score',
       dataIndex: ['interactionScore'],
