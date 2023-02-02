@@ -11,6 +11,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
       backgroundColor: '#f5f5f9',
       color: 'rgba(0, 0, 0, 0.87)',
       maxWidth: 220,
+      minWidth: 160,
       fontSize: theme.typography.pxToRem(12),
       border: '1px solid #dadde9',
     },
@@ -32,8 +33,7 @@ export const SourcesTooltip: React.FC<Props> = ({display_text,hover_texts}) => {
                     <p>{row.fullName}</p>
                 ))}
                 </Typography>
-                <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
-                {"It's very engaging. Right?"}
+                <em>{"Full citation and license can be found under '"}<b>{"Browse Sources"}</b>{"'."}</em>
               </React.Fragment>
             }
           >
@@ -54,8 +54,7 @@ export const PublicationsTooltip: React.FC<Props> = ({display_text,hover_texts})
                     <p><a href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}>{row.pmid}</a></p>
                 ))}
                 </Typography>
-                <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
-                {"It's very engaging. Right?"}
+                <em>{"Full publications above"}</em>
               </React.Fragment>
             }
           >
