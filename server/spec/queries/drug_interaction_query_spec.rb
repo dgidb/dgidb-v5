@@ -5,8 +5,13 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
     @drug = build(:drug, approved: true)
     @cat = create(:gene_claim_category)
     @gene = create(:gene, gene_categories: [@cat])
+    @pub = create(:publication)
     @int_type = create(:interaction_claim_type)
-    @int = create(:interaction, drug: @drug, gene: @gene, interaction_types: [@int_type])
+    @src = create(:source)
+    @gene_claim = create(:gene_claim, source: @src)
+    @drug_claim = create(:drug_claim, source: @src)
+    @int = create(:interaction, drug: @drug, gene: @gene, interaction_types: [@int_type], publications: [@pub], sources: [@src])
+    @int_claim = create(:interaction_claim, source: @src, gene_claim: @gene_claim, drug_claim: @drug_claim, interaction: @int)
   end
 
   let :query do
@@ -29,6 +34,12 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
             interactionTypes {
               type
               directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              fullName
             }
           }
         }
@@ -59,5 +70,11 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
     expect(interaction['interactionTypes'].size).to eq 1
     expect(interaction['interactionTypes'][0]['type']).to eq @int_type.type
     expect(interaction['interactionTypes'][0]['directionality']).to eq @int_type.directionality
+
+    expect(interaction['publications'].size).to eq 1
+    expect(interaction['publications'][0]['pmid']).to eq @pub.pmid
+
+    expect(interaction['sources'].size).to eq 1
+    expect(interaction['sources'][0]['fullName']).to eq @src.full_name
   end
 end

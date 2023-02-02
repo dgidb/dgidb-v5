@@ -63,6 +63,12 @@ const getInteractionsByDrugsQuery = gql`
             type
             directionality
           }
+          publications {
+            pmid
+          }
+          sources {
+            fullName
+          }
         }
       }
     }
