@@ -22,7 +22,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
 // components
-// import CoolTooltips from 'components/Shared/Tooltip/Tooltip'
 import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
 import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
 
