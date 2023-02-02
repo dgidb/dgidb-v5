@@ -10,7 +10,8 @@ export const Contact = () => {
 
       <div className="contact-section-container left-section">
         <h4>The McDonnell Genome Institute</h4>
-        <p><a href="http://genome.wustl.edu/">http://genome.wustl.edu/</a></p>
+        <p>Washington University<br/>
+        <a href="http://genome.wustl.edu/">http://genome.wustl.edu/</a></p>
 
         <h4>Malachi Griffith</h4>
         <p>Creator<br/>
@@ -44,7 +45,8 @@ export const Contact = () => {
 
       <div className="contact-section-container right-section">
         <h4>The Institute for Genomic Medicine</h4>
-        <p><a href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine">https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine</a></p>
+        <p>Nationwide Children's Hospital<br/>
+        <a href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine">https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine</a></p>
         <h4>Alex Wagner</h4>
         <p>Creator, developer<br/>
         <a href="http://alexwagner.info">Academic profile</a><br/>
