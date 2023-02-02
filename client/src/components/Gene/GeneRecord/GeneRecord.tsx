@@ -21,6 +21,10 @@ import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
+// components
+// import CoolTooltips from 'components/Shared/Tooltip/Tooltip'
+import { CoolComponent } from 'components/Shared/Tooltip/Tooltip'
+
 const GeneRecordTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
@@ -65,7 +69,7 @@ const GeneRecordTable: React.FC = () => {
     {
       title: "Sources",
       dataIndex: ["sources"],
-      render: (text: any, record: any) => <span>{record?.sources.length}</span>,
+      render: (text: any, record: any) => <span><CoolComponent argument={record?.sources.length}></CoolComponent></span>,
     },
     {
       title: "Interaction Score",

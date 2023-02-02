@@ -16,20 +16,48 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     },
   }));
 
-  export default function CoolTooltips() {
+interface Props {
+    argument: string;
+}
+
+export const CoolComponent: React.FC<Props> = ({argument}) => {
     return (
-      <div>
-        <HtmlTooltip
-          title={
-            <React.Fragment>
-              <Typography color="inherit">Tooltip with HTML</Typography>
-              <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
-              {"It's very engaging. Right?"}
-            </React.Fragment>
-          }
-        >
-          <Button>HTML</Button>
-        </HtmlTooltip>
-      </div>
-    );
-  }
+
+        <div>
+          <HtmlTooltip
+            title={
+              <React.Fragment>
+                <Typography color="inherit">{argument}</Typography>
+                <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+                {"It's very engaging. Right?"}
+              </React.Fragment>
+            }
+          >
+            <Button>{argument}</Button>
+          </HtmlTooltip>
+        </div>
+      );
+};
+
+
+// const test = 'text'
+
+//   export default function CoolTooltips() {
+
+//     return (
+
+//       <div>
+//         <HtmlTooltip
+//           title={
+//             <React.Fragment>
+//               <Typography color="inherit">{test}</Typography>
+//               <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+//               {"It's very engaging. Right?"}
+//             </React.Fragment>
+//           }
+//         >
+//           <Button>HTML</Button>
+//         </HtmlTooltip>
+//       </div>
+//     );
+//   }
