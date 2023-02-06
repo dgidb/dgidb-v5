@@ -1,33 +1,59 @@
+require "graphql/client"
+require "graphql/client/http"
 require 'open-uri'
 
 module Genome; module Importers; module ApiImporters; module Pharos;
   class ApiClient
-    def genes_for_category(category, start = 0, count = 10)
-      get_entries(gene_lookup_base_url, category, start, count)
-    end
-
-    def get_entries(url, category, start, count)
-      uri = URI.parse(url).tap do |u|
-        u.query = URI.encode_www_form(params(category, start, count))
+    def enumerate_genes(category)
+      skip = 0
+      top = 50
+      genes = send_query(category, skip, top)
+      Enumerator.new do |y|
+        until genes.empty?
+          skip += genes.size
+          genes.each { |gene| y << gene }
+          genes = send_query(category, skip, top)
+        end
       end
-      body = make_get_request(uri)
-      JSON.parse(body)['data']['search']['targetResult']['targets']
     end
 
-    def make_get_request(uri)
-      res = Net::HTTP.get_response(uri)
-      raise StandardError, 'Request Failed!' unless res.code == '200'
-      res.body
+    private
+
+    module PharosApi
+      endpoint = 'https://pharos-api.ncats.io/graphql'
+      HTTP = GraphQL::Client::HTTP.new(endpoint) do
+        def headers(_context)
+          { 'User-Agent': 'DGIdb.org Pharos importer' }
+        end
+      end
+
+      Schema = GraphQL::Client.load_schema(HTTP)
+      Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
     end
 
-    def gene_lookup_base_url
-      'https://pharos-api.ncats.io/graphql'
-    end
-
-    def params(category, start, count)
-      {
-        'query' => "{search(term:\"#{category}\",facets:\"Family\"){targetResult{targets(skip:#{start},top:#{count}){uniprot,name,sym}}}}"
+    Query = PharosApi::Client.parse <<-GRAPHQL
+      query($filter: IFilter, $skip: Int, $top: Int) {
+        targets(filter: $filter) {
+          targets(skip: $skip, top: $top) {
+            uniprot
+            name
+            sym
+            fam
+            preferredSymbol
+          }
+        }
       }
+    GRAPHQL
+
+    def send_query(category, skip, top)
+      response = PharosApi::Client.query(Query, variables: {
+        'filter': {
+          'term': category
+        },
+        'skip': skip,
+        'top': top
+      })
+      response.data.targets.targets
     end
   end
 end; end; end; end
