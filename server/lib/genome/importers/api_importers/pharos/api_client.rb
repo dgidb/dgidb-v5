@@ -4,9 +4,6 @@ require 'open-uri'
 
 module Genome; module Importers; module ApiImporters; module Pharos;
   class ApiClient
-    categories_to_get = ['ENZYME', 'TRANSCRIPTION FACTOR', 'KINASE', 'TRANSPORTER', 'GPCR', 'ION CHANNEL', 'NUCLEAR RECEPTOR']
-    category = categories_to_get.pop
-
     def enumerate_genes(category)
       skip = 0
       top = 50
