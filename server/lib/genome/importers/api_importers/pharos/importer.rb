@@ -30,28 +30,28 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     end
 
     def categories
-      ['ENZYME', 'TRANSCRIPTION FACTOR', 'KINASE', 'TRANSPORTER', 'GPCR', 'ION CHANNEL', 'NUCLEAR RECEPTOR']
+      ['Enzyme', 'Transcription Factor', 'Kinase', 'Transporter', 'GPCR', 'Ion Channel', 'Nuclear Receptor']
     end
 
     def create_gene_claims
       api_client = ApiClient.new
-      api_client.enumerate_genes.each do |gene|
-        puts gene.facetValues
-        category = gene.fam.upcase
-        next if gene.sym.nil? or !categories.include?(category)
+      categories.each do |category|
+        api_client.enumerate_genes(category).each do |gene|
+          next if gene.sym.nil?
 
-        gene_claim = create_gene_claim(gene.sym, GeneNomenclature::SYMBOL)
-        create_gene_claim_alias(gene_claim, gene.name, GeneNomenclature::NAME)
-        create_gene_claim_alias(gene_claim, "uniprot:#{gene.uniprot}", GeneNomenclature::UNIPROTKB_ID)
-        normalized_category = case category
-                              when 'GPCR'
-                                'G PROTEIN COUPLED RECEPTOR'
-                              when 'Nuclear Receptor'
-                                'NUCLEAR HORMONE RECEPTOR'
-                              else
-                                category.upcase
-                              end
-        create_gene_claim_category(gene_claim, normalized_category)
+          gene_claim = create_gene_claim(gene.sym, GeneNomenclature::SYMBOL)
+          create_gene_claim_alias(gene_claim, gene.name, GeneNomenclature::NAME)
+          create_gene_claim_alias(gene_claim, "uniprot:#{gene.uniprot}", GeneNomenclature::UNIPROTKB_ID)
+          normalized_category = case category
+                                when 'GPCR'
+                                  'G PROTEIN COUPLED RECEPTOR'
+                                when 'Nuclear Receptor'
+                                  'NUCLEAR HORMONE RECEPTOR'
+                                else
+                                  category.upcase
+                                end
+          create_gene_claim_category(gene_claim, normalized_category)
+        end
       end
     end
   end

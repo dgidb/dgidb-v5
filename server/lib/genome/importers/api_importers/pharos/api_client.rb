@@ -4,23 +4,18 @@ require 'open-uri'
 
 module Genome; module Importers; module ApiImporters; module Pharos;
   class ApiClient
-    def enumerate_genes
-      categories_to_get = ['ENZYME', 'TRANSCRIPTION FACTOR', 'KINASE', 'TRANSPORTER', 'GPCR', 'ION CHANNEL', 'NUCLEAR RECEPTOR']
-      category = categories_to_get.pop
+    categories_to_get = ['ENZYME', 'TRANSCRIPTION FACTOR', 'KINASE', 'TRANSPORTER', 'GPCR', 'ION CHANNEL', 'NUCLEAR RECEPTOR']
+    category = categories_to_get.pop
+
+    def enumerate_genes(category)
       skip = 0
       top = 50
       genes = send_query(category, skip, top)
       Enumerator.new do |y|
-        until genes.empty? and categories_to_get.empty?
-          puts genes.size
-          puts category
+        until genes.empty?
           skip += genes.size
           genes.each { |gene| y << gene }
           genes = send_query(category, skip, top)
-          if genes.empty?
-            category = categories_to_get.pop
-            skip = 0
-          end
         end
       end
     end
@@ -48,7 +43,6 @@ module Genome; module Importers; module ApiImporters; module Pharos;
             sym
             fam
             preferredSymbol
-            facetValues(facetName: "IDG Family")
           }
         }
       }
