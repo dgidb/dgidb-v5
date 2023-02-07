@@ -38,7 +38,6 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       @source.save
     end
 
-
     def import_gene_claims
       refseq_id_pattern = /^((AC|AP|NC|NG|NM|NP|NR|NT|NW|XM|XP|XR|YP|ZP)_\d+|(NZ\_[A-Z]{4}\d+))(\.\d+)?$/
 
