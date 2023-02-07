@@ -1,7 +1,6 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -10,6 +9,7 @@ import { truncateDecimals } from 'utils/format';
 import './GeneIntTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { CircularProgress } from '@mui/material';
 
 interface Props {
   searchTerms: string[];
@@ -24,7 +24,6 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
   const [approvalStatus, setApprovalStatus] = useState<any>([]);
   const [indication, setIndication] = useState<any>([]);
   const [intScore, setIntScore] = useState<any>([]);
-  const [queryScore, setQueryScore] = useState<any>([]);
 
   const { data } = useGetInteractionsByGenes(searchTerms)
 
@@ -121,19 +120,6 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
         }
       }),
     },
-    {
-      title: 'Query Score',
-      dataIndex: ['queryScore'],
-      render: (text: any, record: any) => (
-        <span></span>
-      ),
-      filters: queryScore.map((el: any) => {
-        return {
-          text: el,
-          value: el,
-        }
-      }),
-    },
   ]
 
   const onlyUnique = (value: any, index: any, self: any) => {
@@ -175,7 +161,6 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
     setApprovalStatus(duplicateApprovalStatus.filter(onlyUnique))
     setIndication(duplicateIndication.filter(onlyUnique))
     setIntScore(duplicateIntScore.filter(onlyUnique))
-    setQueryScore(duplicateQueryScore.filter(onlyUnique))
   }
 
   enum ColumnType {
@@ -231,9 +216,6 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
           case "interactionScore":
             setIntScore(columnFilter(extra.currentDataSource, 5));
             break;
-          case "queryScore":
-            setQueryScore(columnFilter(extra.currentDataSource, 6));
-            break;
           default:
             break;
         }
@@ -250,7 +232,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
   //   )
   // }
 
-  return (
+  return interactionResults.length ? (
     <div className="interaction-table-container">
       <span>
         <h3>Interaction Results</h3>
@@ -266,5 +248,5 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
         />
       </Skeleton>
     </div>
-  )
+  ) : <CircularProgress />
 };

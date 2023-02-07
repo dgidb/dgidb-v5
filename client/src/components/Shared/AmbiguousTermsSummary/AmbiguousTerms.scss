@@ -1,0 +1,21 @@
+.ambiguous-record-container {
+  background-color: var(--soft-background);
+}
+
+.gene-table-container {
+  background-color: white;
+  overflow-y: scroll;
+}
+
+.unmatched-terms {
+  height: fit-content;
+  background-color: var(--soft-background);
+  border: 2px solid var(--soft-background);
+  border-radius: 5px;
+  margin-left: 20px;
+  padding: 10px;
+}
+
+.unmatched-terms-list {
+  margin-left: 18px;
+}
