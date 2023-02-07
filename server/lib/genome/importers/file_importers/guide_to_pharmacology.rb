@@ -38,7 +38,10 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       @source.save
     end
 
+
     def import_gene_claims
+      refseq_id_pattern = /^((AC|AP|NC|NG|NM|NP|NR|NT|NW|XM|XP|XR|YP|ZP)_\d+|(NZ\_[A-Z]{4}\d+))(\.\d+)?$/
+
       CSV.foreach(gene_file_path, headers: true) do |line|
         gene_name = line['Human Entrez Gene']
         next if blank?(gene_name) || gene_name.include?('|')
@@ -56,14 +59,22 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         create_gene_claim_alias(gene_claim, line['Target name'], GeneNomenclature::NAME)
         unless blank?(line['Human nucleotide RefSeq'])
           line['Human nucleotide RefSeq'][7..].split('|') do |acc|
-            create_gene_claim_alias(gene_claim, "refseq:#{acc}", GeneNomenclature::REFSEQ_ACC)
+            if acc.match(refseq_id_pattern)
+              create_gene_claim_alias(gene_claim, "refseq:#{acc}", GeneNomenclature::REFSEQ_ACC)
+            end
           end
         end
         unless blank?(line['Human protein RefSeq'])
-          create_gene_claim_alias(gene_claim, "refseq:#{line['Human protein RefSeq']}", GeneNomenclature::REFSEQ_ACC)
+          line['Human protein RefSeq'][7..].split('|') do |acc|
+            if acc.match(refseq_id_pattern)
+              create_gene_claim_alias(gene_claim, "refseq:#{acc}", GeneNomenclature::REFSEQ_ACC)
+            end
+          end
         end
         unless blank?(line['Human SwissProt'])
-          create_gene_claim_alias(gene_claim, line['Human SwissProt'], GeneNomenclature::UNIPROTKB_ID)
+          line['Human SwissProt'].split('|').each do |swissprot_id|
+            create_gene_claim_alias(gene_claim, "uniprot:#{swissprot_id}", GeneNomenclature::UNIPROTKB_ID)
+          end
         end
 
         create_gene_claim_attribute(gene_claim, GeneAttributeName::GTOP_FAMILY_NAME, line['Family name'])
