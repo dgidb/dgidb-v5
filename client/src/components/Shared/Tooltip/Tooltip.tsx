@@ -33,7 +33,7 @@ export const SourcesTooltip: React.FC<Props> = ({displayText,hoverTexts}) => {
                     <p>{row.fullName}</p>
                 ))}
                 </Typography>
-                <em>Full citation and license can be found under <b>{"Browse Sources"}</b>.</em>
+                <em>Full citation and license can be found under <b>Browse Sources</b>.</em>
               </>
             }
           >
