@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -18,47 +19,45 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   }));
 
 interface Props {
-    display_text: string;
-    hover_texts: any;
+    displayText: string;
+    hoverTexts: any;
 }
 
-export const SourcesTooltip: React.FC<Props> = ({display_text,hover_texts}) => {
+export const SourcesTooltip: React.FC<Props> = ({displayText,hoverTexts}) => {
     return (
-
         <div>
           <HtmlTooltip
             title={
               <React.Fragment>
-                <Typography color="inherit">{hover_texts.map((row: any, key:number) => (
+                <Typography color="inherit">{hoverTexts.map((row: any, key:number) => (
                     <p>{row.fullName}</p>
                 ))}
                 </Typography>
-                <em>{"Full citation and license can be found under '"}<b>{"Browse Sources"}</b>{"'."}</em>
+                <em>Full citation and license can be found under <b>{"Browse Sources"}</b>.</em>
               </React.Fragment>
             }
           >
-            <Button>{display_text}</Button>
+            <Button>{displayText}</Button>
           </HtmlTooltip>
         </div>
       );
 };
 
-export const PublicationsTooltip: React.FC<Props> = ({display_text,hover_texts}) => {
+export const PublicationsTooltip: React.FC<Props> = ({displayText,hoverTexts}) => {
     return (
-
         <div>
           <HtmlTooltip
             title={
               <React.Fragment>
-                <Typography color="inherit">{hover_texts.map((row: any, key:number) => (
-                    <p><a href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}>{row.pmid}</a></p>
+                <Typography color="inherit">{hoverTexts.map((row: any, key:number) => (
+                    <p><Link href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}>{row.pmid}</Link></p>
                 ))}
                 </Typography>
-                <em>{"Full publications above"}</em>
+                <em>Full publications above</em>
               </React.Fragment>
             }
           >
-            <Button>{display_text}</Button>
+            <Button>{displayText}</Button>
           </HtmlTooltip>
         </div>
       );

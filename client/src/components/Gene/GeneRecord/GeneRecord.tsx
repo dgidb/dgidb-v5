@@ -63,13 +63,13 @@ const GeneRecordTable: React.FC = () => {
       title: "PMIDs",
       dataIndex: ["publications"],
       render: (text: any, record: any) => (
-        <span> <PublicationsTooltip display_text={record?.publications.length} hover_texts={record?.publications}></PublicationsTooltip></span>
+        <span> <PublicationsTooltip displayText={record?.publications.length} hoverTexts={record?.publications}></PublicationsTooltip></span>
       ),
     },
     {
       title: "Sources",
       dataIndex: ["sources"],
-      render: (text: any, record: any) => <span> <SourcesTooltip hover_texts={record?.sources} display_text={record?.sources.length}></SourcesTooltip></span>,
+      render: (text: any, record: any) => <span> <SourcesTooltip hoverTexts={record?.sources} displayText={record?.sources.length}></SourcesTooltip></span>,
     },
     {
       title: "Interaction Score",
