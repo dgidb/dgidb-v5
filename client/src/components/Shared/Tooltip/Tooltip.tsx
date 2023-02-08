@@ -28,13 +28,13 @@ export const SourcesTooltip: React.FC<Props> = ({displayText,hoverTexts}) => {
         <div>
           <HtmlTooltip
             title={
-              <React.Fragment>
+              <>
                 <Typography color="inherit">{hoverTexts.map((row: any, key:number) => (
                     <p>{row.fullName}</p>
                 ))}
                 </Typography>
                 <em>Full citation and license can be found under <b>{"Browse Sources"}</b>.</em>
-              </React.Fragment>
+              </>
             }
           >
             <Button>{displayText}</Button>
@@ -48,13 +48,13 @@ export const PublicationsTooltip: React.FC<Props> = ({displayText,hoverTexts}) =
         <div>
           <HtmlTooltip
             title={
-              <React.Fragment>
+              <>
                 <Typography color="inherit">{hoverTexts.map((row: any, key:number) => (
                     <p><Link href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}>{row.pmid}</Link></p>
                 ))}
                 </Typography>
                 <em>Full publications above</em>
-              </React.Fragment>
+              </>
             }
           >
             <Button>{displayText}</Button>
