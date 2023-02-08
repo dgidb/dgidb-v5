@@ -43,9 +43,9 @@ namespace :dgidb do
   desc 'create a dump of the current local database'
   task dump_local: ['setup_path'] do
     if username.blank?
-      system "pg_dump -T schema_migrations -E UTF8 -a -f #{data_file} -h #{host} #{database_name}"
+      system "pg_dump -T \"schema_migrations|ar_internal_metadata\" -E UTF8 -a -f #{data_file} -h #{host} #{database_name}"
     else
-      system "pg_dump -T schema_migrations -E UTF8 -a -f #{data_file} -U #{username} -h #{host} #{database_name}"
+      system "pg_dump -T \"schema_migrations|ar_internal_metadata\" -E UTF8 -a -f #{data_file} -U #{username} -h #{host} #{database_name}"
     end
   end
 
