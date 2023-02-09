@@ -13,15 +13,15 @@ export const AmbiguousTermsSummary: React.FC = () => {
   const ambiguousTerms = data?.geneMatches?.ambiguousMatches
 
   return (
-    <Box display="flex" justifyContent="space-between">
-      <Box width="80%">
+    <Box display='flex' justifyContent='space-between'>
+      <Box width='80%'>
         { ambiguousTerms?.map((term: any) => {
           return <AmbiguousResult ambiguousTermData={term} />
         })
         }
       </Box>
-      <Box width="20%" className="unmatched-terms"><h3><b>Unmatched Terms:</b></h3>
-        <ul className="unmatched-terms-list">{ unmatchedTerms?.map((term: any) => {
+      <Box width='20%' className='unmatched-terms'><h3><b>Unmatched Terms:</b></h3>
+        <ul className='unmatched-terms-list'>{ unmatchedTerms?.map((term: any) => {
           return <li><h4>{term.searchTerm}</h4></li>
         })
         }</ul>

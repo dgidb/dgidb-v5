@@ -77,7 +77,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       ),
       filters: approvalStatus.map((el: any) => {
         return {
-          text: el ? "Approved" : "Not Approved",
+          text: el ? 'Approved' : 'Not Approved',
           value: el,
         }
       }),
@@ -201,20 +201,20 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       // this prevents the filtered column from narrowing its own options + not being able to reset
       if (!filters[prop]){
         switch (prop) {
-          case "gene.name":
+          case 'gene.name':
             setGene(columnFilter(extra.currentDataSource, 1));
             break;
-          case "drug.name":
+          case 'drug.name':
             setDrug(columnFilter(extra.currentDataSource, 2));
             break;
-          case "drug.approved":
+          case 'drug.approved':
             setApprovalStatus(columnFilter(extra.currentDataSource, 3));
             break;
             //TODO: fix this case
-          case "drug.drugAttributes[0].name;":
+          case 'drug.drugAttributes[0].name;':
             setIndication(columnFilter(extra.currentDataSource, 4));
             break;
-          case "interactionScore":
+          case 'interactionScore':
             setIntScore(columnFilter(extra.currentDataSource, 5));
             break;
           default:
@@ -224,12 +224,12 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
     }
   }
   return interactionResults.length ? (
-    <Box className="interaction-table-container">
+    <Box className='interaction-table-container'>
       {
         displayHeader && 
         <span>
           <h3>Interaction Results</h3>
-          <span id="interaction-count">{interactionResults.length} total interactions</span>
+          <span id='interaction-count'>{interactionResults.length} total interactions</span>
         </span>
       }
       <Table
@@ -241,7 +241,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
         />
     </Box>
   ) : 
-  <Box display="flex" mt="10px" alignItems="center"><h3>Loading interaction results...</h3>
-    <Icon component={CircularProgress} baseClassName="loading-spinner" fontSize="small"></Icon>
+  <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
+    <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
   </Box>
 };
