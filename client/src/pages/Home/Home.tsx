@@ -19,6 +19,7 @@ export const Home: React.FC = () => {
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const handleSubmit = async () => {
+    dispatch({type: ActionTypes.ContentPage})
     if (state.interactionMode === 'categories') {
       navigate('/categories');
     } else {
@@ -64,6 +65,26 @@ export const Home: React.FC = () => {
     dispatch({type: ActionTypes.DeleteAllTerms})
   }, [state.interactionMode])
 
+  useEffect(() => {
+    dispatch({type: ActionTypes.BrandPage})
+  }, [])
+
+  const handleDemoClick = () => {
+    switch(state.interactionMode) {
+      case 'gene':
+        dispatch({type: ActionTypes.AddGeneDemoTerms});
+        break;
+      case 'drug':
+        dispatch({type: ActionTypes.AddDrugDemoTerms});
+        break;
+      case 'categories':
+        dispatch({type: ActionTypes.AddCategoryDemoTerms});
+        break;
+      default:
+        return
+    }
+  }
+
   return (
     <div className="home-page-container" >
 
@@ -74,12 +95,16 @@ export const Home: React.FC = () => {
         THE DRUG GENE INTERACTION DATABASE
       </div> */}
 
-
       <SearchBar handleSubmit={handleSubmit} />
 
       <div className="home-buttons">
-        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-primary)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
-        <Button style={{margin: 20, color: 'var(--text-primary)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}} type="primary">Demo</Button>
+        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
+        <Button
+          onClick={() => handleDemoClick()}
+          style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}}
+          type="primary">
+            Demo
+        </Button>
       </div>
       <div className="home-blurb">
         An open-source search engine for drug-gene interactions and the druggable genome.
@@ -89,10 +114,10 @@ export const Home: React.FC = () => {
           API
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
-          Downloads
+          <a href='/downloads'>Downloads</a>
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
-          Github
+          <a href="https://github.com/dgidb/dgidb-v5">Github</a>
         </span>
       </div>
 

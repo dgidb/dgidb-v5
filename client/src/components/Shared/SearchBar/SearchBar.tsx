@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -7,19 +7,18 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './SearchBar.scss';
-import {FilterOutlined} from '@ant-design/icons'
 
 type SearchBarProps = {
   handleSubmit: () => void;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
+const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
 
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const [inputValue, setInputValue] = useState<any>('');
   const [options, setOptions] = useState<any>([]);
-  const [showFilters, setShowFilters] = useState(false);  
+  const [showFilters, setShowFilters] = useState(false);
   
   const { Option } = Select;
 
@@ -43,18 +42,18 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
     </div>
   )
 
-  function onKeyDown (value: any) {
+  const onKeyDown = (value: any) => {
 
-    let deleteTag = value.key === 'Backspace' && !inputValue.length
-    let saveTag = (value.key === 'Enter' || value.key === ' ' || value.key === ',') && inputValue.length
-    let search = value.key === 'Enter' && !inputValue.length && state.searchTerms.length
+    let deleteTag = value.key === 'Backspace' && !inputValue.length;
+    let saveTag = (value.key === 'Enter' || value.key === ' ' || value.key === ',') && inputValue.length;
+    let search = value.key === 'Enter' && !inputValue.length && state.searchTerms.length;
 
     if (deleteTag) {
-      dispatch({type: ActionTypes.DeleteTerm})
+      dispatch({type: ActionTypes.DeleteLastTerm});
     }
     else if (saveTag) {
       dispatch({type: ActionTypes.AddTerm, payload: inputValue})
-      setInputValue('')
+      setInputValue('');
     } 
     else if (search) {
       handleSubmit();
@@ -93,6 +92,7 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
       <div className="search-input">
         <Form.Item>
           <Select 
+            allowClear
             size="large" 
             placeholder="" 
             mode="tags"
@@ -100,27 +100,28 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit}) => {
             options={options}
             onInputKeyDown={onKeyDown}
             value={state.searchTerms}
+            onClear={() => state.searchTerms = []}
+            onDeselect={(val: any) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
             // onChange={value => setQueryParams(value)}
             onSearch={value => setInputValue(value)}
-          />
+          >
+            {state.searchTerms}
+          </Select>
         </Form.Item>
 
           <div className="search-filters">
-
             <Popover 
               content={content} 
               trigger="click" 
-              visible={showFilters} 
-              onVisibleChange={visible => setShowFilters(visible)} 
+              open={showFilters} 
+              onOpenChange={open => setShowFilters(open)} 
             >
-              <FilterOutlined 
+              {/* TODO: Reintroduce later
+              <FilterOutlined
                 style={{ fontSize: '150%', cursor: 'pointer'}}
-              />
-
+              /> */}
             </Popover>
-
           </div>
-
         </div>
       </div>
   </div>

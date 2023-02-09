@@ -8,8 +8,8 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // style
 import './MainLayout.scss';
-import {CloseCircleOutlined} from '@ant-design/icons';
-import { Menu } from 'antd';
+import {CloseCircleOutlined, DownOutlined} from '@ant-design/icons';
+import { Dropdown, Menu, Space } from 'antd';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -18,6 +18,16 @@ type MainLayoutProps = {
 const Header: React.FC = () => {
 
   const navigate = useNavigate();
+  const menu = (
+    <Menu>
+      <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
+        <li>Categories</li>
+      </Menu.Item>
+      <Menu.Item key="sources" onClick={() => navigate('/browse/sources')}>
+        <li>Sources</li>
+      </Menu.Item>
+    </Menu>
+  )
 
   return (
     <header>
@@ -26,23 +36,17 @@ const Header: React.FC = () => {
       </div>
       <nav>
         <ul>
-          <Menu mode="horizontal"  theme="dark">
-            <Menu.SubMenu key="SubMenu" title="Browse">
-              <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
-                Categories
-              </Menu.Item>
-              <Menu.Item key="sources" onClick={() => navigate('/browse/sources')}>
-                Sources
-              </Menu.Item>
-            </Menu.SubMenu>
-          </Menu>
-          {/* <li onClick={() => navigate('/browse')}>
-            Browse
-          </li> */}
+          <li>
+            <Dropdown overlay={menu}>
+              <Space>
+                Browse
+              </Space>
+            </Dropdown>
+          </li>
           <li onClick={() => navigate('/about')}>
             About
           </li>
-          <li onClick={() => navigate('/download')}>
+          <li onClick={() => navigate('/downloads')}>
             Downloads
           </li>
         </ul>
@@ -58,9 +62,9 @@ const Footer: React.FC = () => {
   return (
   <footer>
 
-    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice. 
-    <CloseCircleOutlined 
-    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}} 
+    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice.
+    <CloseCircleOutlined
+    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}}
     onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}
     />
   </footer>
@@ -71,7 +75,21 @@ export const MainLayout = ({children }: MainLayoutProps) => {
 
   const {state} = useContext(GlobalClientContext);
 
-  const theme = state.themeSettings.darkModeEnabled ? 'dark' : 'light';
+  let theme;
+
+  if (state.themeSettings.darkModeEnabled) {
+    if (state.themeSettings.brandTheme){
+      theme = 'dark-home';
+    } else {
+      theme = 'dark';
+    }
+  } else {
+    if (state.themeSettings.brandTheme){
+      theme = 'light-home';
+    } else {
+      theme = 'light';
+    }
+  }
 
   return(
     <div className={"layout-container"} data-theme={theme}>

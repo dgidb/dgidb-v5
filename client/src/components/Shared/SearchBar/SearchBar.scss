@@ -15,14 +15,16 @@
 
 			.ant-select-selector {
 				background-color: var(--background);
-				color: var(--text-primary);
+				color: var(--text-content);
+				border-radius: 0%;
+				border-left: none;
 			}
 
 			.ant-select-selector:focus {
-				border-color: var(--text-primary);
+				border-color: var(--text-content);
 			}
 			.ant-select-selector:hover {
-				border-color: var(--text-primary);
+				border-color: var(--text-content);
 			}
 
 			.ant-select-selection-item {
@@ -48,11 +50,11 @@
 
 			.ant-select-selector {
 				background-color: var(--background);
-				color: var(--text-primary);
+				color: var(--text-content);
 			}
 
 			.ant-select-arrow {
-				color: var(--text-primary);
+				color: var(--text-content);
 			}
 		}
 	}

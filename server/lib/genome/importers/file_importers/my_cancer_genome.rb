@@ -32,27 +32,23 @@ module Genome; module Importers; module FileImporters; module MyCancerGenome;
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene Symbol'], 'MyCancerGenome Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['Entrez Gene Id'], 'Entrez Gene Id')
-        create_gene_claim_alias(gene_claim, row['Gene Symbol'], 'MyCancerGenome Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['Reported Gene Name'], 'MyCancerGenome Reported Gene Name')
+        gene_claim = create_gene_claim(row['Gene Symbol'])
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['Entrez Gene Id']}", GeneNomenclature::NCBI_ID)
+        create_gene_claim_alias(gene_claim, row['Gene Symbol'], GeneNomenclature::SYMBOL)
+        create_gene_claim_alias(gene_claim, row['Reported Gene Name'], GeneNomenclature::NAME)
 
-        drug_claim = create_drug_claim(
-          row['Primary Drug Name'].upcase,
-          row['Primary Drug Name'].upcase,
-          'MyCancerGenome Drug Name'
-        )
+        drug_claim = create_drug_claim(row['Primary Drug Name'].upcase)
         unless row['Drug Development Name'].blank?
-          create_drug_claim_alias(drug_claim, row['Drug Development Name'].upcase, 'Development Name')
+          create_drug_claim_alias(drug_claim, row['Drug Development Name'].upcase, DrugNomenclature::DEVELOPMENT_NAME)
         end
         unless row['Drug Generic Name'].blank?
-          create_drug_claim_alias(drug_claim, row['Drug Generic Name'].upcase, 'Generic Name')
+          create_drug_claim_alias(drug_claim, row['Drug Generic Name'].upcase, DrugNomenclature::GENERIC_NAME)
         end
         unless row['Drug Trade Name'].blank?
-          create_drug_claim_alias(drug_claim, row['Drug Trade Name'].upcase, 'Trade Name')
+          create_drug_claim_alias(drug_claim, row['Drug Trade Name'].upcase, DrugNomenclature::TRADE_NAME)
         end
-        create_drug_claim_attribute(drug_claim, 'Drug Class', row['Drug Class'])
-        create_drug_claim_attribute(drug_claim, 'Notes', row['Notes']) unless row['Notes'].blank?
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug Class'])
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::NOTES, row['Notes']) unless row['Notes'].blank?
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['Interaction Type'])

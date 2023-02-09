@@ -1,5 +1,4 @@
 .interaction-table-container {
-  color: var(--text-primary);
   padding: 20px;
   width: 100%;
   display: flex;
@@ -8,7 +7,7 @@
 
   h3 {
     display: inline-block;
-    color: var(--text-primary);
+    color: var(--text-content);
     font-size: 2rem;
   }
 
@@ -18,19 +17,10 @@
 }
 
 .ant-table {
-  background-color: var(--background);
-  color: var(--text-primary);
-
-  &:hover {
-    background-color: var(--background);
-  }
+  color: var(--text-content);
 }
 
 .ant-table-thead tr th, .ant-table-tbody tr.ant-table-row:hover td {
   background-color: var(--background-light);
-  color: var(--text-primary);
-}
-
-.cursor-pointer {
-  cursor: pointer;
+  color: var(--text-content);
 }

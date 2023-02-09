@@ -27,6 +27,7 @@ interface Props {
 
 
 export const InteractionTypeDrug: React.FC<Props> = ({data}) => {
+
   const {state} = useContext(GlobalClientContext);
   // const { data } = useGetInteractionsByGenes(state.searchTerms);
 
@@ -60,8 +61,8 @@ export const InteractionTypeDrug: React.FC<Props> = ({data}) => {
   useEffect(() => {
     if (data?.length) {
       let dataArray = [0, 0, 0, 0]
-      data.forEach((gene: any) => {
-        gene.interactions.forEach((int: any) => {
+      data.forEach((drug: any) => {
+        drug.interactions.forEach((int: any) => {
           if(int.interactionTypes.length){
             switch(int.interactionTypes[0].type){
               case 'inhibitor':

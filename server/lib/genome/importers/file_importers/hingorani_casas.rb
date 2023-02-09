@@ -35,9 +35,9 @@ module Genome; module Importers; module FileImporters; module HingoraniCasas;
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         unless row['hgnc_names'].blank?
-          gene_claim = create_gene_claim(row['hgnc_names'], 'HingoraniCasas Gene Symbol')
-          create_gene_claim_alias(gene_claim, row['hgnc_names'].upcase, 'Gene Symbol')
-          create_gene_claim_alias(gene_claim, row['ensembl_gene_id'].upcase, 'Ensembl Id')
+          gene_claim = create_gene_claim(row['hgnc_names'], GeneNomenclature::NAME)
+          create_gene_claim_alias(gene_claim, row['hgnc_names'].upcase, GeneNomenclature::SYMBOL)
+          create_gene_claim_alias(gene_claim, "ensembl:#{row['ensembl_gene_id'].upcase}", GeneNomenclature::NCBI_ID)
           create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
         end
       end

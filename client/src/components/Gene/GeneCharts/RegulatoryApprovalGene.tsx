@@ -1,99 +1,80 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const RegulatoryApprovalGene: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
-  const { data } = useGetInteractionsByGenes(state.searchTerms);
+interface ApprovalRatings {
+  [key: string]: number
+}
 
+interface Props {
+  data: any;
+}
+
+export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
   const [chartData, setChartData] = useState<any>({
-    labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
+    labels: ['Activating', 'Inhibiting', 'N/A'],
     datasets: [
       {
-        label: '',
-        data: [0, 0, 0, 0],
+        label: 'Dataset 1',
+        data: [0, 0, 0],
         backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
       }
     ]
   });
 
+  useEffect(() => {
+    let newObj: ApprovalRatings = {};
+
+      data?.forEach((gene: any) => {
+        gene.interactions?.forEach((int: any) => {
+          int?.drug?.drugApprovalRatings.forEach((rating: any) => {
+            if (newObj[rating.rating]) {
+              ++newObj[rating.rating];
+            } else {
+              newObj[rating.rating] = 1;
+            }
+          })
+        })
+      })
+
+    let dataArray = [];
+    let labelArray = []
+
+    for (const key in newObj) {
+      dataArray.push(newObj[key])
+      labelArray.push(key)
+    }
+
+    setChartData({
+      datasets: [
+        {
+          data: dataArray,
+          backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
+        }
+      ],
+      labels: labelArray
+    });
+  }, [data])
+
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
-      },
-      title: {
         display: true,
-        text: 'Interaction Type (PDGFRA)',
-      },
-    },
-  };
-
-  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
-
-  useEffect(() => {
-    if (data?.genes?.length) {
-      data.genes.forEach((gene: any) => {
-        let dataArray = [0, 0, 0, 0]
-        gene.interactions.forEach((int: any) => {
-          if(int.interactionTypes.length){
-            switch(int.interactionTypes[0].type){
-              case 'inhibitor':
-                dataArray[0]++;
-                break;
-              case 'antagonist':
-                dataArray[1]++;
-                break;
-              case 'antibody':
-                dataArray[2]++;
-                break;
-              case 'agonist':
-                dataArray[3]++;
-                break;
-              default:
-                return;
-            }
-          }
-        })
-
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: '',
-              data: dataArray,
-              backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
-            }
-          ]
-        });
-      })
+        labels: {
+          boxWidth: 15,
+          padding: 8
+        }
+      }
     }
-  }, [data])
+  }
 
   return (
     <div className="approval-container">
-      <Bar options={options} data={chartData}/>
+      <Pie options={options} data={chartData} />
     </div>
   )
 }

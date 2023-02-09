@@ -1,18 +1,47 @@
 .about-page-container {
-  // background-color: white;
+
+  h3 {
+    font-size: 2rem;
+  }
+
+  background-color: var(--background);
   display: flex;
   color: var(--text-content);
-  font-size: 50px;
+  // font-size: 50px;
 
   font-weight: 300;
 
+  .table-of-contents-container {
+    min-width: 180px;
+  }
+
   .about-content-container {
-    padding: 0 40px;
-    background-color: var(--soft-background);
+    overflow: scroll;
+    color: var(--text-content);
+    padding: 20px 40px;
+    background-color: var(--background);
+
+
+    .doc-section {
+      font-size: .95rem;
+    }
+
+    .about-section-container {
+      .about-sub-header {
+        font-size: 20px;
+        font-weight: 400;
+      }
+
+      .about-citation {
+        color: #8075FF;
+        font-size: .8rem;
+        font-weight: 400;
+      }
+    }
   }
 
   .ant-anchor-link-title {
-    color: var(--text-primary) !important;
+    color: var(--text-content) !important;
   }
 
   span {
@@ -21,5 +50,43 @@
 
   .doc-section {
     font-size: .89rem;
+  }
+
+  .contact-section-container {
+      .left-section{
+        float: left;
+        min-height: 900px;
+        width: 40%;
+      }
+      .right-section{
+        width: 40%;
+        float:left;
+        min-height: 900px;
+      }
+      .spacing {
+        width:20%;
+        float:right;
+        min-height: 900px;
+      }
+  }
+
+  .faq-section-container {
+    .faq-item {
+      margin-bottom: 30px;
+
+      .faq-question {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .known-section-container {
+    li {
+      list-style-type: none;
+    }
+    a {
+      color: var(--text-accent);
+
+    }
   }
 }

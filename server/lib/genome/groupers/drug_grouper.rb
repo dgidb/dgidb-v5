@@ -28,19 +28,33 @@ module Genome
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
 
+        set_response_structure
         create_sources
 
-        claims.each do |drug_claim|
+        claims.tqdm.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
           if normalized_drug.is_a? String
             normalized_id = normalized_drug
           else
-            normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
-            create_new_drug(normalized_drug['therapy_descriptor']) if Drug.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_drug[@descriptor_name][@id_name]
+            create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
+        end
+      end
+
+      def set_response_structure
+        url = URI("#{@normalizer_url_root}search?q=")
+        body = fetch_json_response(url)
+        version = body['service_meta_']['version']
+        if version < '0.4.0'
+          @descriptor_name = 'therapy_descriptor'
+          @id_name = 'therapy_id'
+        else
+          @descriptor_name = 'therapeutic_descriptor'
+          @id_name = 'therapeutic'
         end
       end
 
@@ -134,15 +148,35 @@ module Genome
       end
 
       def get_concept_id(response)
-        response['therapy_descriptor']['therapy_id'] unless response['match_type'].zero?
+        response[@descriptor_name][@id_name] unless response['match_type'].zero?
+      end
+
+      def produce_concept_id_nomenclature(concept_id)
+        case concept_id
+        when /rxcui:/
+          DrugNomenclature::RXNORM_ID
+        when /ncit:/
+          DrugNomenclature::NCIT_ID
+        when /hemonc:/
+          DrugNomenclature::HEMONC_ID
+        when /drugsatfda/
+          DrugNomenclature::DRUGSATFDA_ID
+        when /chemidplus/
+          DrugNomenclature::CHEMIDPLUS_ID
+        when /wikidata/
+          DrugNomenclature::WIKIDATA_ID
+        else
+          DrugNomenclature::CONCEPT_ID
+        end
       end
 
       def create_drug_claim(record, source)
         # Drugs@FDA records don't have unique labels
         if record['label'].nil? || source.source_db_name == 'Drugs@FDA'
+          concept_id = record['concept_id']
           DrugClaim.where(
-            name: record['concept_id'],
-            nomenclature: 'Concept ID',
+            name: concept_id,
+            nomenclature: produce_concept_id_nomenclature(concept_id),
             source_id: source.id
           ).first_or_create
         else
@@ -185,14 +219,14 @@ module Genome
         end
 
         record.fetch('approval_year', []).to_set.each do |year|
-          DrugClaimAttribute.create(name: 'Year of Approval', value: year, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::APPROVAL_YEAR, value: year, drug_claim_id: claim.id)
         end
 
         indications = record.fetch('has_indication')
         return unless indications.nil?
 
         indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
-          DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::INDICATION, value: indication, drug_claim_id: claim.id)
         end
       end
 
@@ -212,28 +246,33 @@ module Genome
         claim_name = claim.name
 
         unless record['concept_id'] == claim_name
-          add_grouper_claim_alias(record['concept_id'], claim_name, claim.id, 'Concept ID')
+          add_grouper_claim_alias(
+            record['concept_id'],
+            claim_name,
+            claim.id,
+            produce_concept_id_nomenclature(record['concept_id'])
+          )
         end
 
         unless record['label'].nil? || record['label'] == claim_name
-          add_grouper_claim_alias(record['label'], claim_name, claim.id, 'Primary Drug Name')
+          add_grouper_claim_alias(record['label'], claim_name, claim.id, DrugNomenclature::PRIMARY_NAME)
         end
 
         prune_alias_list(record.fetch('aliases', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::ALIAS)
         end
 
         prune_alias_list(record.fetch('trade_names', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Trade Name')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::TRADE_NAME)
         end
 
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Xref')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::XREF)
         end
       end
 
       def add_grouper_data(drug, descriptor)
-        drug_data = retrieve_normalizer_data(descriptor['therapy_id'])
+        drug_data = retrieve_normalizer_data(descriptor[@id_name])
 
         drug_data.each do |source_name, source_data|
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
@@ -251,11 +290,11 @@ module Genome
 
       def create_new_drug(descriptor)
         name = if descriptor.fetch('label').blank?
-                 descriptor['therapy_id']
+                 descriptor[@id_name]
                else
                  descriptor['label']
                end
-        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name.upcase).first_or_create
+        drug = Drug.where(concept_id: descriptor[@id_name], name: name.upcase).first_or_create
 
         add_grouper_data(drug, descriptor)
       end

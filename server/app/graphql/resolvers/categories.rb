@@ -8,8 +8,11 @@ class Resolvers::Categories < GraphQL::Schema::Resolver
 
   scope { GeneClaimCategory.all }
 
-  option(:source_db_name, type: String, description: 'Filtering on source.') do |scope, value|
-    scope.joins(gene_claims: [:source]).where('sources.source_db_name = ?', value).distinct
+  option(:source_db_names, type: [String], description: 'Filtering on sources.') do |scope, value|
+    scope.joins(gene_claims: [:source]).where('sources.source_db_name': value).distinct
   end
 
+  option(:category_name, type: [String], description: 'Filtering on category name.') do |scope, value|
+    scope.where(name: value).distinct
+  end
 end

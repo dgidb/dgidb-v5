@@ -69,14 +69,11 @@ module Genome
         val = val.downcase.strip
 
         case val
-        when 'na', 'n/a'
-          'na'
         when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer',
-            'diffusing substance', 'vesciant', 'gene replacement', 'releasing agent', 'substrate',
-            'vaccine antigen'
+            'diffusing substance', 'vesciant', 'gene replacement', 'releasing agent', 'substrate', 'other/unknown'
           'other/unknown'
-        when 'moduator', 'cross-linking agent', 'neutralizer', 'reducer', 'metabolizer', 'acetylation',
-            'chelator', 'cross-linking/alkylation', 'regulator', 'stabiliser'
+        when 'modulator', 'cross-linking agent', 'neutralizer', 'reducer', 'metabolizer', 'acetylation',
+            'chelator', 'cross-linking/alkylation', 'regulator', 'stabiliser', 'allosteric modulator'
           'modulator'
         when 'positive modulator', 'positive allosteric modulator', 'regulator (upregulator)', 'enhancer',
             'modulator (allosteric modulator)'
@@ -89,9 +86,9 @@ module Genome
           'inhibitor'
         when 'blocker', 'channel blocker', 'blocker (channel blocker)', 'nucleotide exchange blocker'
           'blocker'
-        when 'antisense', 'sirna drug'
+        when 'antisense', 'antisense oligonucleotide', 'sirna drug'
           'antisense oligonucleotide'
-        when 'binding agent', 'binding', 'binder (minor groove binder)', 'breaker'
+        when 'binding agent', 'binding', 'binder (minor groove binder)', 'breaker', 'binder'
           'binder'
         when 'negative modulator', 'negative allosteric modulator', 'disrupting agent',
             'incorporation into and destabilization', 'intercalation', 'desensitize the target', 'disrupter',
@@ -99,13 +96,17 @@ module Genome
           'negative modulator'
         when 'inhibitory immune response', 'car-t-cell-therapy(dual specific)', 'immunomodulator',
             'immunomodulator (immunostimulant)', 'immune response agent', 'car-t-cell-therapy',
-            'immunostimulant', 'immunostimulator', 'Radioimmunotherapy'
+            'immunostimulant', 'immunostimulator', 'radioimmunotherapy', 'immunotherapy'
           'immunotherapy'
-        when 'component of'
+        when 'antibody'
+          'antibody'
+        when 'vaccine', 'vaccine antigen'
+          'vaccine'
+        when 'component of', 'product of'
           'product of'
-        when 'opener'  # TODO: duplicate w/ 'other/unknown' -- how to resolve?
+        when 'opener', 'potentiator'
           'potentiator'
-        when 'stablizer', 'stabilization', 'stabilizer'
+        when 'stablizer', 'stabilization', 'stabilizer', 'chaperone'
           'chaperone'
         when 'activator', 'reactivator'
           'activator'
@@ -113,9 +114,9 @@ module Genome
           'agonist'
         when 'inverse agonist', 'agonis; inverse agonist', 'inverse_agonist'
           'inverse agonist'
-        when 'cytotoxicity'
+        when 'cytotoxicity', 'cytotoxic'
           'cytotoxic'
-        when 'proteolytic enzyme', 'hydrolytic enzyme', 'degrader', 'degradation'
+        when 'proteolytic enzyme', 'hydrolytic enzyme', 'degrader', 'degradation', 'cleavage'
           'cleavage'
         end
       end

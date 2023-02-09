@@ -44,26 +44,23 @@ module Genome; module Importers; module FileImporters; module Cgi
           combination_drug_name = row['Drug']
           combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
             individual_drug_name = clean_drug_name(individual_drug_name)
-            drug_claim = create_drug_claim(individual_drug_name, 'CGI Drug Name')
+            drug_claim = create_drug_claim(individual_drug_name)
+            create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
             if row['Gene'].include?(';')
               row['Gene'].split(';').each do |indv_gene|
-                gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
+                gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
-                create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-                create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
+                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
+                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
                 add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
                 create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
               end
             else
-              gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
+              gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
-              create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-              create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
-              if row['Source'].include?('PMID')
-                add_interaction_claim_publications(interaction_claim, row['Source'])
-              end
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
+              add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
               create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
             end
           end
@@ -71,23 +68,22 @@ module Genome; module Importers; module FileImporters; module Cgi
             combination_drug_name = row['Drug']
             combination_drug_name.split(';').each do |individual_drug_name|
               individual_drug_name = clean_drug_name(individual_drug_name)
-              drug_claim = create_drug_claim(individual_drug_name, 'CGI Drug Name')
+              drug_claim = create_drug_claim(individual_drug_name)
+              create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
               if row['Gene'].include?(';')
                 row['Gene'].split(';').each do |indv_gene|
-                  gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
+                  gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
                   interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                  create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
-                  create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-                  create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
+                  create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
+                  create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
                   add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
                   create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
                 end
               else
-                gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
+                gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
                 interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, 'combination therapy', combination_drug_name)
-                create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-                create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
+                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
+                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
                 add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
                 create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
               end
@@ -95,21 +91,20 @@ module Genome; module Importers; module FileImporters; module Cgi
           end
         else
           drug_name = clean_drug_name(row['Drug'])
-          drug_claim = create_drug_claim(drug_name, 'CGI Drug Name')
+          drug_claim = create_drug_claim(drug_name)
+          create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
           if row['Gene'].include?(';')
             row['Gene'].split(';').each do |indv_gene|
-              gene_claim = create_gene_claim(indv_gene, 'CGI Gene Name')
+              gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
               interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-              create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
               add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
               create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
             end
           else
-            gene_claim = create_gene_claim(row['Gene'], 'CGI Gene Name')
+            gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-            create_interaction_claim_attribute(interaction_claim, 'Drug family', row['Drug family'])
-            create_interaction_claim_attribute(interaction_claim, 'Alteration', row['Alteration'])
+            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
             add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
             create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
           end

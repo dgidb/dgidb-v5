@@ -34,9 +34,9 @@ module Genome; module Importers; module FileImporters; module BaderLab;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Primary Name'], 'Entrez Gene Name')
-        create_gene_claim_attribute(gene_claim, 'Initial Gene Query', row['Initial Gene Query'])
-        create_gene_claim_attribute(gene_claim, 'Counted Citations from 1950-2009', row['1950-2009'])
+        gene_claim = create_gene_claim(row['Primary Name'], GeneNomenclature::NCBI_NAME)
+        create_gene_claim_attribute(gene_claim, GeneAttributeName::QUERY, row['Initial Gene Query'])
+        create_gene_claim_attribute(gene_claim, GeneAttributeName::CITES, row['1950-2009'])
         create_gene_claim_category(gene_claim, 'NUCLEAR HORMONE RECEPTOR')
       end
     end

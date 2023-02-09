@@ -21,7 +21,6 @@ ChartJS.register(
   Tooltip,
 );
 
-
 export const InteractionScoreGene: React.FC = () => {
   const {state} = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
@@ -54,8 +53,8 @@ export const InteractionScoreGene: React.FC = () => {
   const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
-    if (data?.genes?.length) {
-      data.genes.forEach((gene: any) => {
+    if (data?.genes?.nodes?.length) {
+      data.genes.nodes.forEach((gene: any) => {
         let dataArray = [0, 0, 0, 0]
         gene.interactions.forEach((int: any) => {
           if(int.interactionTypes.length){

@@ -37,13 +37,13 @@ module Genome; module Importers; module FileImporters; module Cosmic
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: ',') do |row|
-        drug_claim = create_drug_claim(row['Drug'], 'COSMIC Drug Name')
+        drug_claim = create_drug_claim(row['Drug'])
 
         row['Genes'].split(', ').each do |gene|
           next if gene.blank?
 
           gene_name, _rest = gene.split('_ENST')
-          gene_claim = create_gene_claim(gene_name, 'Gene Symbol')
+          gene_claim = create_gene_claim(gene_name)
           create_gene_claim_category(gene_claim, 'DRUG RESISTANCE')
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           gene_link, _rest = gene.split('(GRC')

@@ -28,18 +28,12 @@
     margin-top: 20px;
 
     .search-subcontainer {
-      // position: relative;
       display: flex;
 
       .search-input {
         max-height: 240px;
         overflow: scroll !important;
         position: relative;
-
-        .ant-select-selector {
-          // background-color: $primary-bg;
-          // color: white;
-        }
 
         .ant-select-selection-item {
           color: var(--theme-primary);
@@ -59,18 +53,6 @@
           z-index: 1;
         }
       }
-
-      .search-dropdown {
-
-        .ant-select-selector {
-          // background-color: $primary-bg;
-          // color: white;
-        }
-
-        .ant-select-arrow {
-          // color: white;
-        }
-      }
     }
   }
 
@@ -85,8 +67,6 @@
   }
   .home-footer {
     background-color: var(--theme-primary);
-    // position: absolute;
-    // bottom: 0;
     margin-top: auto;
     width: 100%;
     display: flex;
@@ -105,11 +85,8 @@
 
     .ant-switch {
       background-color: var(--theme-primary) !important;
-      color: var(--text-primary);
-      // border-color: white !important;
-      // outline: white !important;
+      color: var(--text-content);
     }
-
   }
 }
 
@@ -134,9 +111,18 @@
   text-decoration: underline !important;
 }
 
-// .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
-// 	height: 10px;
-// }
+.ant-menu-submenu-popup {
+  left: 1080px !important;
+}
+
+.ant-menu-sub {
+  background-color: var(--background-light) !important;
+}
+
+a {
+  color: var(--theme-primary);
+  text-decoration: underline;
+}
 
 @media screen and (max-width: var(--medium-screen)) {
   .home-footer {
