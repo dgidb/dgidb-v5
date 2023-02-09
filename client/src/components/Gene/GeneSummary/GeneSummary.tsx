@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext, SetStateAction} from 'react';
+import React, { useState, useEffect, useContext, SetStateAction } from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
@@ -18,6 +18,8 @@ import { DirectionalityGene } from 'components/Gene/GeneCharts';
 // styles
 import './GeneSummary.scss';
 import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
 
 ChartJS.register(
   CategoryScale,
@@ -29,18 +31,18 @@ ChartJS.register(
 );
 
 interface CountProps {
-  setChartData: React.Dispatch<SetStateAction<any[]>>
+  setChartData: React.Dispatch<SetStateAction<any[]>>;
 }
 
-const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
-  const {state} = useContext(GlobalClientContext);
+const InteractionCount: React.FC<CountProps> = ({ setChartData }) => {
+  const { state } = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByGenes(state.searchTerms);
-  const [filterBy, setFilterBy]= useState<string>('')
-  
-  let genes = data?.genes;
+  const [filterBy, setFilterBy] = useState<string>('');
+
+  let genes = data?.genes?.nodes;
 
   const toggleFilter = (geneName: string) => {
-    if (filterBy === geneName){
+    if (filterBy === geneName) {
       setChartData(genes);
       setFilterBy('');
     } else {
@@ -48,80 +50,115 @@ const InteractionCount: React.FC<CountProps> = ({setChartData}) => {
       setChartData([gene]);
       setFilterBy(geneName);
     }
-  }
+  };
 
   return (
-    <div className="interaction-count-container">
-      <div className="interaction-count-header">
-        <div className="interaction-count-gene"><b>Gene</b></div>
-        <div className="interaction-count"><b>Interactions</b></div>
+    <div className='interaction-count-container'>
+      <div className='interaction-count-header'>
+        <div className='interaction-count-gene'>
+          <h2>
+            <b>Gene</b>
+          </h2>
+        </div>
+        <div className='interaction-count'>
+          <h2>
+            <b>Interactions</b>
+          </h2>
+        </div>
       </div>
       {genes?.map((gene: any) => {
         return (
-          <div className={`interaction-count-row ${filterBy === gene.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(gene.name)}>
-            <div className="interaction-count-gene">{gene.name}</div>
-            <div className="interaction-count">{gene.interactions.length}</div>
+          <div
+            className={`interaction-count-row ${
+              filterBy === gene.name ? 'filtered-by' : null
+            }`}
+            onClick={() => toggleFilter(gene.name)}
+          >
+            <div className='interaction-count-gene'>{gene.name}</div>
+            <div className='interaction-count'>{gene.interactions.length}</div>
           </div>
-          )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 interface InfoProps {
-  chartData: any
+  chartData: any;
 }
 
-const SummaryInfo: React.FC<InfoProps> = ({chartData}) => {
+const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
+  const [windowSize, setWindowSize] = useState(getWindowSize());
 
-  const [chartType, setChartType] = useState('type')
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+    window.addEventListener('resize', handleWindowResize);
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
 
   return (
-    <div className="summary-infographic-container">
-      <h4>Infographics</h4>
-
-      <div className="chart-section">
-        {/* {chartType === 'score' && <InteractionTypeGene data={chartData} />} */}
-        {chartType === 'type' && <InteractionTypeGene data={chartData} />}
-        {chartType === 'directionality' && <DirectionalityGene data={chartData} />}
-        {chartType === 'approval' && <RegulatoryApprovalGene data={chartData}/>}
-      </div>
-
-      <div className="chart-selector">
-        {/* <div onClick={() => setChartType('score')}>Interaction Score</div> */}
-        <div onClick={() => setChartType('type')}>Interaction Types</div>
-        <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
-        <div onClick={() => setChartType('approval')}>Regulatory Approval</div>
-      </div>
+    <div className='summary-infographic-container'>
+      <h2>Infographics</h2>
+      {getWindowSize().innerWidth >= 1550 ? (
+        <div className='chart-section'>
+          <InteractionTypeGene data={chartData} />
+          <DirectionalityGene data={chartData} />
+          <RegulatoryApprovalGene data={chartData} />
+        </div>
+      ) : (
+        <div className='chart-section tabbed-view'>
+          <Tabs defaultActiveKey='1' type='card' tabPosition='left'>
+            <TabPane tab='Interaction Type' key='1'>
+              <InteractionTypeGene data={chartData} />
+            </TabPane>
+            <TabPane tab='Directionality' key='2'>
+              <DirectionalityGene data={chartData} />
+            </TabPane>
+            <TabPane tab='Regulatory Approval' key='3'>
+              <RegulatoryApprovalGene data={chartData} />
+            </TabPane>
+          </Tabs>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export const GeneSummary: React.FC = () => {
-
-  const {state} = useContext(GlobalClientContext);
-  const { data, isError, isLoading} = useGetInteractionsByGenes(state.searchTerms);
+  const { state } = useContext(GlobalClientContext);
+  const { data, isError, isLoading } = useGetInteractionsByGenes(
+    state.searchTerms
+  );
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.genes)
-  }, [data])
+    setChartData(data?.genes?.nodes);
+  }, [data]);
 
   if (isError || isLoading) {
     return (
-      <div className="gene-summary-container">
+      <div className='gene-summary-container'>
         {isError && <div>Error: Interactions not found!</div>}
         {isLoading && <div>Loading...</div>}
       </div>
-    )
+    );
   }
   return (
-    <div className="gene-summary-container">
-      <h3>Gene Summary</h3>
-      <div className="gene-summary-content">
-        <InteractionCount setChartData={setChartData}/>
+    <div className='gene-summary-container'>
+      <h1>Gene Summary</h1>
+      <div className='gene-summary-content'>
+        <InteractionCount setChartData={setChartData} />
         <SummaryInfo chartData={chartData} />
       </div>
     </div>
-  )
+  );
 };

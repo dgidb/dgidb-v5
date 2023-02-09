@@ -2,7 +2,7 @@ require 'csv'
 
 module Genome
   module Importers
-    class Base
+    class Base < Genome::DataImporter
       attr_reader :source, :source_db_name
 
       def import
@@ -59,7 +59,7 @@ module Genome
         raise StandardError, 'Must implement #create_claims in subclass'
       end
 
-      def create_gene_claim(gene_name, nomenclature)
+      def create_gene_claim(gene_name, nomenclature = GeneNomenclature::SYMBOL)
         GeneClaim.where(
           name: gene_name.strip.upcase,
           nomenclature: nomenclature.strip,
@@ -103,12 +103,12 @@ module Genome
         end
       end
 
-      def create_drug_claim(name, nomenclature, source=@source)
+      def create_drug_claim(name, nomenclature=DrugNomenclature::PRIMARY_NAME, source=@source)
         DrugClaim.where(
           name: name.strip,
           nomenclature: nomenclature.strip,
           source_id: source.id
-        ).first_or_create
+        ).first_or_create!
       end
 
       def create_drug_claim_alias(drug_claim, synonym, nomenclature)

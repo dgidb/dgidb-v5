@@ -1,49 +1,42 @@
-b {
-  font-size: 1.5rem;
-}
-
 .source-type-header {
   margin-bottom: 12px;
 }
 
 .sources-page-container {
-
   .sources-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 15px;
     grid-row-gap: 15px;
-    margin-bottom: 45px;
+    margin-bottom: 30px;
   }
 
-  .gene-source-item {
+  .source-item-card {
     background-color: var(--background-light) !important;
-    border: 1px solid white;
-    margin-bottom: 2rem;
-    max-width: 320px;
-    padding: 10px;
+    border: 5px solid var(--background-light);
+    border-radius: 5px;
 
     .source-item-name {
       font-size: 1.2rem;
       font-weight: 700;
+      padding: 10px;
+      border: 5px;
     }
-    .source-item-count {
-
-    }
-    .source-item-in-group {
-
-    }
-    .source-item-links {
-      display: flex;
-      justify-content: space-between;
-      .source-item-license {
-
-      }
-      .source-item-citation {
-
-      }
+    .source-section {
+      background-color: white;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
     }
   }
-
+  .filter-buttons {
+    .MuiButton-outlined {
+      color: var(--theme-primary) !important;
+      border-color: var(--theme-primary) !important;
+    }
+    .MuiButton-contained {
+      background-color: var(--theme-primary) !important;
+    }
+  }
 }

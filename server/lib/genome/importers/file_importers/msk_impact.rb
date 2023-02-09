@@ -34,7 +34,7 @@ module Genome; module Importers; module FileImporters; module MskImpact;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true) do |row|
-        gene_claim = create_gene_claim(row['gene_symbol'], 'Gene Symbol')
+        gene_claim = create_gene_claim(row['gene_symbol'])
         create_gene_claim_category(gene_claim, 'CLINICALLY ACTIONABLE')
       end
     end

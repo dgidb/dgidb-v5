@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module FoundationOneGenes
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Foundation One',
-          license: 'Unknown; data is no longer publicly available from site',
+          license: License::UNKNOWN_UNAVAILABLE,
           license_link: 'https://www.foundationmedicine.com/resource/legal-and-privacy'
         }
       )
@@ -33,7 +33,7 @@ module Genome; module Importers; module FileImporters; module FoundationOneGenes
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'Gene Symbol')
+        gene_claim = create_gene_claim(row['Gene'])
         create_gene_claim_category(gene_claim, 'CLINICALLY ACTIONABLE')
       end
     end

@@ -215,6 +215,7 @@ GEM
     strscan (3.0.3)
     thor (1.2.1)
     timeout (0.3.0)
+    tqdm (0.3.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     websocket-driver (0.7.5)
@@ -256,6 +257,7 @@ DEPENDENCIES
   search_object_graphql (= 0.3.1)
   spring
   sqlite3
+  tqdm
   tzinfo-data
 
 RUBY VERSION

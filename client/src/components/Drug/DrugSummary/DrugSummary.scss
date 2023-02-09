@@ -1,6 +1,5 @@
 .drug-summary-container {
   color: var(--text-content);
-  padding: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,14 +7,10 @@
 
   h3 {
     color: var(--text-content);
-    font-size: 2rem;
   }
 
   h4 {
-    // background-color: var(--box);
-    // padding: 10px;
     color: var(--text-content);
-    font-size: 1.4rem;
   }
 
   .drug-summary-content {
@@ -23,39 +18,30 @@
 
     .interaction-count-container {
       border: 1px var(--text-content) solid;
-      // background-color: var(--box);
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
+      width: 100px;
       flex-grow: 1;
 
       .interaction-count-header {
         display: flex;
         justify-content: space-between;
-        // background-color: var(--box);
         margin-bottom: 10px;
-        font-size: 1.2rem;
       }
 
       .interaction-count-row {
         display: flex;
         justify-content: space-between;
-        font-size: 1rem;
-        // background-color: var(--background-light);
-        // padding: 2px;
 
         &:hover {
           background-color: var(--background-light);
           cursor: pointer;
         }
+      }
 
-        .interaction-count-drug {
-          padding: 0 10px;
-        }
-
-        .interaction-count {
-          padding: 0 10px;
-        }
+      .interaction-count-drug {
+        margin-right: 1.5em;
       }
 
       .filtered-by {
@@ -66,52 +52,60 @@
     .summary-infographic-container {
       border: 1px var(--text-content) solid;
       padding: 10px;
-      // flex-grow: 4;
       width: 80%;
-      // width: 500px;
       justify-content: space-between;
       display: flex;
       flex-direction: column;
       height: 500px;
+
+      .tabbed-view {
+        align-items: flex-start !important;
+      }
 
       .chart-section {
         height: 100%;
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+
+        .ant-tabs {
+          width: 100%;
+        }
+
+        .ant-tabs-tabpane {
+          padding-left: 100px;
+          div {
+            canvas {
+              height: 500px !important;
+              width: 500px !important;
+            }
+          }
+        }
 
         .score-container {
-          height: 50%;
-          width: 50%;
+          padding-left: 10px;
         }
         .type-container {
-          height: 50%;
-          width: 50%;
-        }
-        .directionality-container {
-          // height: 25%;
-          // width: 25%;
+          padding-left: 10px;
         }
         .approval-container {
-          height: 50%;
-          width: 50%;
-        }
-
-        .gene-categories-container {
-          width: 40%;
+          padding-left: 10px;
         }
       }
-
-
 
       .chart-selector {
         display: flex;
         cursor: pointer;
         justify-content: space-between;
-        // padding: 10px;
       }
-
     }
   }
+}
+
+canvas {
+  max-height: 400px !important;
+  max-width: 400px !important;
+  min-height: 300px !important;
+  min-width: 150px !important;
 }

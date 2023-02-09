@@ -17,8 +17,8 @@
   --theme-primary: #480a77;
   --text-primary: white;
   --text-primary-low: #dedede;
-  --logo-gradient-1: #f7f7f8; 
-  --logo-gradient-2: #ada7bd; 
+  --logo-gradient-1: #f7f7f8;
+  --logo-gradient-2: #ada7bd;
   --medium-screen: 1200px;
   --small-screen: 740px;
   --chart-fill-1: #480a77;
@@ -32,12 +32,13 @@
 
 [data-theme='light'] {
   --background: white;
-  --soft-background: white;
-  --background-light: rgb(201, 204, 224);
+  --soft-background: #f3f1fb;
+  --background-light: #dfdde9;
   --text-content: #313635;
   --text-primary: #26282e;
-  --logo-gradient-1: #480a77; 
-  --logo-gradient-2: #180a20; 
+  --text-accent: #545454;
+  --logo-gradient-1: #480a77;
+  --logo-gradient-2: #180a20;
 }
 
 [data-theme='light-home'] {

@@ -2,7 +2,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -25,11 +24,9 @@ export const GeneIntTable: React.FC = () => {
   const [intScore, setIntScore] = useState<any>([]);
   const [queryScore, setQueryScore] = useState<any>([]);
 
-  const navigate = useNavigate();
-
   const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
-  
-  let genes = data?.genes;
+
+  let genes = data?.genes?.nodes;
 
   useEffect(() => {
     let interactionData: any = [];
@@ -41,16 +38,12 @@ export const GeneIntTable: React.FC = () => {
     setInteractionResults(interactionData)
   }, [genes])
 
-  const navToRecord = (gene: string) => {
-    navigate(`/genes/${gene}`);
-  }
-
   const columns: ColumnsType<any> = [
     {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span className="cursor-pointer" onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
+        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
       ),
       filters: gene.map((el: any) => {
         return {
@@ -64,7 +57,7 @@ export const GeneIntTable: React.FC = () => {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
       ),
       filters: drug.map((el: any) => {
         return {
@@ -75,18 +68,18 @@ export const GeneIntTable: React.FC = () => {
       onFilter: (value: any, record: any) => record?.drug.name.startsWith(value),
     },
     {
-      title: 'Approval Status',
+      title: 'Regulatory Approval',
       dataIndex: ['drug', 'approved'],
       render: (text: any, record: any) => (
         <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
       ),
       filters: approvalStatus.map((el: any) => {
         return {
-          text: el,
+          text: el ? "Approved" : "Not Approved",
           value: el,
         }
       }),
-      onFilter: (value: any, record: any) => record?.drug.approved.startsWith(value),
+      onFilter: (value: any, record: any) => record?.drug?.approved === value,
     },
     {
       title: 'Indication',
@@ -262,7 +255,7 @@ export const GeneIntTable: React.FC = () => {
         {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
       </span>
       <Skeleton loading={!interactionResults.length}>
-        <Table 
+        <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}

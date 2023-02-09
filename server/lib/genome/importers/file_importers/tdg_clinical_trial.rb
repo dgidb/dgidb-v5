@@ -40,7 +40,7 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
       else
         # add inferred approval if only given year
         create_drug_claim_approval_rating(drug_claim, 'Approved')
-        create_drug_claim_attribute(drug_claim, 'Year of Approval', approval_value)
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::APPROVAL_YEAR, approval_value)
       end
     end
 
@@ -53,28 +53,36 @@ module Genome; module Importers; module FileImporters; module TdgClinicalTrial;
       CSV.foreach(file_path, headers: true, col_sep: "\t", encoding: 'iso-8859-1:utf-8') do |row|
         next if skip_row(row)
 
-        gene_claim = create_gene_claim("uniprot:#{row['Uniprot Accession number']}", 'UniprotKB ID')
-        create_gene_claim_alias(gene_claim, row['Gene'], 'Gene Symbol')
-        unless row['Target main class'].blank?
-          create_gene_claim_attribute(gene_claim, 'Target Class', row['Target main class'])
+        gene_claim = create_gene_claim("uniprot:#{row['Uniprot Accession number']}", GeneNomenclature::UNIPROTKB_ID)
+        create_gene_claim_alias(gene_claim, row['Gene'], GeneNomenclature::SYMBOL)
+        unless row['Target main class'].blank? || %w[unknown Unknown_function Other Other_receptors Other_transporters OtherCD1].include?(row['Target main class'])
+          create_gene_claim_attribute(gene_claim, GeneAttributeName::CLASS, row['Target main class'])
         end
         unless row['Target class'].nil?
           row['Target class'].split(';').each do |subclass|
-            create_gene_claim_attribute(gene_claim, 'Target Subclass', subclass)
+            create_gene_claim_attribute(gene_claim, GeneAttributeName::SUBCLASS, subclass)
           end
         end
 
-        drug_claim = create_drug_claim(row['Drug Name'].upcase, 'Drug Name')
+        drug_claim = create_drug_claim(row['Drug Name'].upcase)
         row['Indication(s)'].gsub('"', '').split(',').each do |indication|
-          create_drug_claim_attribute(drug_claim, 'Drug Indications', indication)
+          create_drug_claim_attribute(drug_claim, DrugAttributeName::INDICATION, indication)
         end
 
-        create_drug_claim_attribute(drug_claim, 'Drug Class', row['Drug Class'])
+        create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug Class'])
         add_approval_data(drug_claim, row['Year of Approval (FDA)'])
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        create_interaction_claim_attribute(interaction_claim, 'Trial Name', row['Trial name'])
-        create_interaction_claim_attribute(interaction_claim, 'Novel drug target', row['Target_Novelty_VALIDATED'])
+        create_interaction_claim_attribute(
+          interaction_claim,
+          InteractionAttributeName::CLINICAL_TRIAL_NAME,
+          row['Trial name']
+        ) unless row['Trial name'] == '-'
+        create_interaction_claim_attribute(
+          interaction_claim,
+          InteractionAttributeName::NOVEL,
+          row['Target_Novelty_VALIDATED']
+        )
         create_interaction_claim_link(interaction_claim, source.citation, 'https://www.annualreviews.org/doi/10.1146/annurev-pharmtox-011613-135943')
       end
     end

@@ -11,9 +11,9 @@ module Genome
         @sources = {}
 
         @source_gene_type_names = {
-          Ensembl: 'Ensembl Biotype',
-          NCBI: 'NCBI Gene Type',
-          HGNC: 'HGNC Locus Type'
+          Ensembl: GeneAttributeName::ENSEMBL_TYPE,
+          NCBI: GeneAttributeName::NCBI_TYPE,
+          HGNC: GeneAttributeName::HGNC_TYPE
         }
       end
 
@@ -33,19 +33,33 @@ module Genome
           puts "Grouping #{claims.length} ungrouped gene claims from #{source_name}"
         end
 
+        set_response_structure
         create_sources
 
-        claims.each do |gene_claim|
+        claims.tqdm.each do |gene_claim|
           normalized_gene = normalize_claim(gene_claim.name, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?
 
           if normalized_gene.is_a? String
             normalized_id = normalized_gene
           else
-            normalized_id = normalized_gene['gene_descriptor']['gene_id']
-            create_new_gene normalized_gene['gene_descriptor'] if Gene.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_gene[@descriptor_name][@id_name]
+            create_new_gene normalized_gene[@descriptor_name] if Gene.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_gene(gene_claim, normalized_id)
+        end
+      end
+
+      def set_response_structure
+        @descriptor_name = 'gene_descriptor'
+
+        url = URI("#{@normalizer_url_root}search?q=")
+        body = fetch_json_response(url)
+        version = body['service_meta_']['version']
+        if version < '0.2.0'
+          @id_name = 'gene_id'
+        else
+          @id_name = 'gene'
         end
       end
 
@@ -102,13 +116,13 @@ module Genome
       end
 
       def get_concept_id(response)
-        response['gene_descriptor']['gene_id'] unless response['match_type'].zero?
+        response[@descriptor_name][@id_name] unless response['match_type'].zero?
       end
 
       def create_gene_claim(record, source)
         GeneClaim.where(
           name: record['symbol'],
-          nomenclature: 'Gene Symbol',
+          nomenclature: GeneNomenclature::SYMBOL,
           source_id: source.id
         ).first_or_create
       end
@@ -116,13 +130,13 @@ module Genome
       def get_nomenclature(concept_id)
         case concept_id
         when /hgnc:/
-          'HGNC ID'
+          GeneNomenclature::HGNC_ID
         when /ensembl:/
-          'Ensembl Gene ID'
+          GeneNomenclature::ENSEMBL_ID
         when /ncbigene:/
-          'NCBI Gene ID'
+          GeneNomenclature::NCBI_ID
         else
-          'Concept ID'
+          GeneNomenclature::CONCEPT_ID
         end
       end
 
@@ -137,7 +151,7 @@ module Genome
         unless record['label'].nil?
           GeneClaimAlias.where(
             alias: record['label'],
-            nomenclature: 'Gene Description',
+            nomenclature: GeneNomenclature::DESCRIPTION,
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -145,7 +159,7 @@ module Genome
         record.fetch('previous_symbols', []).each do |symbol|
           GeneClaimAlias.where(
             alias: symbol,
-            nomenclature: 'Previous Gene Symbol',
+            nomenclature: GeneNomenclature::PREVIOUS_SYMBOL,
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -153,7 +167,7 @@ module Genome
         record.fetch('aliases', []).each do |value|
           GeneClaimAlias.where(
             alias: value,
-            nomenclature: 'Gene Synonym',
+            nomenclature: GeneNomenclature::SYNONYM,
             gene_claim_id: claim.id
           ).first_or_create
         end
@@ -180,7 +194,7 @@ module Genome
       end
 
       def add_grouper_data(gene, descriptor)
-        gene_data = retrieve_normalizer_data(descriptor['gene_id'])
+        gene_data = retrieve_normalizer_data(descriptor[@id_name])
         gene_data.each do |source_name, source_data|
           source = @sources[source_name.to_sym]
 
@@ -196,12 +210,12 @@ module Genome
 
       def create_new_gene(descriptor)
         name = if descriptor.fetch('label').blank?
-                 descriptor['gene_id']
+                 descriptor[@id_name]
                else
                  descriptor['label']
                end
         gene = Gene.where(
-          concept_id: descriptor['gene_id'],
+          concept_id: descriptor[@id_name],
           name: name,
           long_name: retrieve_extension(descriptor, 'approved_name')
         ).first_or_create

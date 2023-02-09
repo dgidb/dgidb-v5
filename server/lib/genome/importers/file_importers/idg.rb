@@ -39,7 +39,7 @@ module Genome; module Importers; module FileImporters; module Idg;
     def create_gene_claims
       file = File.read(file_path)
       JSON.parse(file).each do |record|
-        gene_claim = create_gene_claim(record['Gene'], 'Gene Symbol')
+        gene_claim = create_gene_claim(record['Gene'])
         family_type = record['IDGFamily']
         case family_type
         when 'GPCR'
