@@ -7,15 +7,16 @@ import { truncateDecimals } from 'utils/format';
 
 // styles
 import './GeneIntTable.scss';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Icon } from '@mui/material';
 
 interface Props {
   searchTerms: string[];
+  displayHeader?: boolean;
 }
 
-export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
+export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   //filter options
@@ -222,31 +223,25 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms}) => {
       }
     }
   }
-
-  // if (isError || isLoading) {
-  //   return (
-  //     <div className="interaction-table--container">
-  //       {isError && <div>Error: Interactions not found!</div>}
-  //       {isLoading && <div>Loading...</div>}
-  //     </div>
-  //   )
-  // }
-
   return interactionResults.length ? (
-    <div className="interaction-table-container">
-      <span>
-        <h3>Interaction Results</h3>
-        {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
-      </span>
-      <Skeleton loading={!interactionResults.length}>
-        <Table
+    <Box className="interaction-table-container">
+      {
+        displayHeader && 
+        <span>
+          <h3>Interaction Results</h3>
+          <span id="interaction-count">{interactionResults.length} total interactions</span>
+        </span>
+      }
+      <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}
           rowKey={(record, index) => `${index}`}
-          pagination={{ pageSize: 20}}
+          pagination={{ pageSize: displayHeader ? 20 : 10}}
         />
-      </Skeleton>
-    </div>
-  ) : <CircularProgress />
+    </Box>
+  ) : 
+  <Box display="flex" mt="10px" alignItems="center"><h3>Loading interaction results...</h3>
+    <Icon component={CircularProgress} baseClassName="loading-spinner" fontSize="small"></Icon>
+  </Box>
 };

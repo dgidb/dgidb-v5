@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { GeneIntTable } from 'components/Gene/GeneIntTable';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import './AmbiguousTerms.scss';
 
 interface Props {
@@ -15,23 +16,22 @@ export const AmbiguousTermsSummary: React.FC<Props> = ({ambiguousTermData}) => {
   };
   
   return (
-    <Box className="ambiguous-record-container">
       <Box>
-        <Box display='flex'><h2><b>Search Term: "{ambiguousTermData.searchTerm}"</b></h2> -- 
-          <Select onChange={handleChange} value={selectedTerm[0]} variant="standard" label="Select...">
+        <Box display='flex' px="10px" className="ambiguous-term-header"><h3 style={{marginTop: "0.5em"}}><b>Search Term: "{ambiguousTermData.searchTerm}"</b></h3>
+          <Box px="2px" display="flex" alignItems="center"><ArrowRightIcon /></Box>
+          <Select onChange={handleChange} value={selectedTerm[0]} variant="standard" label="Select..." sx={{ m: 1, minWidth: 120 }}>
             {ambiguousTermData?.matches?.map((match: any) => 
             {
               return <MenuItem key={match.name} value={match.name}>{match.name}</MenuItem>
             })}
           </Select>
         </Box>
-        <Box className="gene-table-container">
-          {selectedTerm?.length > 0 ? <GeneIntTable searchTerms={selectedTerm} />
-          : <Box>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</Box>
+        <Box className="ambiguous-record-content">
+          {selectedTerm?.length > 0 ? <GeneIntTable searchTerms={selectedTerm} displayHeader={false} />
+          : <Box><em>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</em></Box>
           }
         </Box>
       </Box>
-    </Box>
   );
 };
 

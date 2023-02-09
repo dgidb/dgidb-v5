@@ -1,10 +1,15 @@
-.ambiguous-record-container {
+.ambiguous-record-content {
   background-color: var(--soft-background);
+  border: 2px solid var(--soft-background);
+  border-radius: 0 0 5px 5px;
+  border-top: 0;
+  padding: 10px;
 }
 
-.gene-table-container {
-  background-color: white;
-  overflow-y: scroll;
+.ambiguous-term-header {
+  background-color: var(--background-light);
+  border: 2px solid var(--background-light);
+  border-radius: 5px 5px 0 0;
 }
 
 .unmatched-terms {
