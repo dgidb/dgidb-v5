@@ -78,7 +78,7 @@ export function useGetInteractionsByGenes(names: string[]) {
       });
       return res;
     },
-    // { enabled: names !== [] }
+    { enabled: names !== [] }
   );
 }
 
@@ -91,6 +91,6 @@ export function useGetInteractionsByDrugs(names: string[]) {
       });
       return res;
     },
-    // { enabled: names !== [] }
+    { enabled: names !== [] }
   );
 }

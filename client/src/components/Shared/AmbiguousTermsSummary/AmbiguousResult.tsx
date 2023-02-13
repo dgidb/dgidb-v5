@@ -10,7 +10,7 @@ interface Props {
   ambiguousTermData: any;
 }
 
-export const AmbiguousTermsSummary: React.FC<Props> = ({ambiguousTermData}) => {
+export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData}) => {
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedTerm([event.target.value as string]);
@@ -55,4 +55,4 @@ export const AmbiguousTermsSummary: React.FC<Props> = ({ambiguousTermData}) => {
   );
 };
 
-export default AmbiguousTermsSummary;
+export default AmbiguousResult;

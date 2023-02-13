@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // components
 import { GeneSummary } from 'components/Gene/GeneSummary';
-import { GeneIntTable } from 'components/Gene/GeneIntTable';
 import { DrugSummary } from 'components/Drug/DrugSummary';
-import { DrugTable } from 'components/Drug/DrugTable';
 import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 import { AmbiguousTermsSummary } from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 
@@ -24,7 +22,6 @@ const GeneResults: React.FC = () => {
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Unique Matches" key="1">
           <GeneSummary />
-          <GeneIntTable searchTerms={state.searchTerms} />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
           <AmbiguousTermsSummary />
@@ -40,10 +37,9 @@ const DrugResults: React.FC = () => {
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Unique Matches" key="1">
           <DrugSummary />
-          <DrugTable />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          <AmbiguousTermsSummary />
+          {/* TODO: Add this back once drug ambiguous/unmatched is implemented <AmbiguousTermsSummary /> */}
         </TabPane>
       </Tabs>
     </>

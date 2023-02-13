@@ -19,6 +19,8 @@ import { GeneCategories } from 'components/Drug/DrugCharts';
 // styles
 import './DrugSummary.scss';
 import { Tabs } from 'antd';
+import { DrugTable } from 'components/Drug/DrugTable';
+import Box from '@mui/material/Box';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -141,10 +143,13 @@ export const DrugSummary: React.FC = () => {
   const { data, error, isError, isLoading } = useGetInteractionsByDrugs(
     state.searchTerms
   );
+
+  const drugs = data?.drugs?.nodes
+
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.drugs?.nodes);
+    setChartData(drugs);
   }, [data]);
 
   if (isError || isLoading) {
@@ -155,6 +160,11 @@ export const DrugSummary: React.FC = () => {
       </div>
     );
   }
+  if (!isLoading && drugs?.length === 0) {
+    return (
+      <Box><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
+    )
+  }
   return (
     <div className='drug-summary-container'>
       <h1>Drug Summary</h1>
@@ -162,6 +172,7 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
+      <DrugTable />
     </div>
   );
 };
