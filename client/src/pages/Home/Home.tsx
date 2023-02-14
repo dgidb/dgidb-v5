@@ -62,10 +62,6 @@ export const Home: React.FC = () => {
   }, [state.themeSettings.darkModeEnabled])
 
   useEffect(() => {
-    dispatch({type: ActionTypes.DeleteAllTerms})
-  }, [state.interactionMode])
-
-  useEffect(() => {
     dispatch({type: ActionTypes.BrandPage})
   }, [])
 

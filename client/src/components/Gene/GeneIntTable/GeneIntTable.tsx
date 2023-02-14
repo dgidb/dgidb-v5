@@ -26,7 +26,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
   const [indication, setIndication] = useState<any>([]);
   const [intScore, setIntScore] = useState<any>([]);
 
-  const { data } = useGetInteractionsByGenes(searchTerms)
+  const { data, isLoading } = useGetInteractionsByGenes(searchTerms)
 
   let genes = data?.genes?.nodes;
 
@@ -223,7 +223,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       }
     }
   }
-  return interactionResults.length ? (
+  return !isLoading ? (
     <Box className='interaction-table-container'>
       {
         displayHeader && 
