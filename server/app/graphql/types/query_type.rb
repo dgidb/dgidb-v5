@@ -5,11 +5,13 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     include Types::Queries::GeneLookupQuery
+    include Types::Queries::DrugLookupQuery
 
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
+    field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
 
 
     field :source, Types::SourceType, null: true do
@@ -94,12 +96,13 @@ module Types
     end
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
-      description "Category for a drug claim"
-      argument :source_db_name, String, required: true
+      description "Category for a gene claim"
+      argument :name, String, required: true
     end
 
-    def gene_claim_category(source_db_name: )
-      GeneClaimCategory.find_by(source: source)
+    def gene_claim_category(name: )
+      context.scoped_set!(:category_name, name)
+      GeneClaimCategory.find_by(name: name)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do

@@ -9,7 +9,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   scope { Drug.all }
 
-  option(:id, type: ID, description: 'Exact match filtering on the ID of the drug.') do |scope, value|
+  option(:ids, type: [String], description: 'Exact match filtering on a list of drug IDs') do |scope, value|
     scope.where(id: value)
   end
 

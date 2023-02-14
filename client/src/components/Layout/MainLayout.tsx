@@ -46,7 +46,7 @@ const Header: React.FC = () => {
           <li onClick={() => navigate('/about')}>
             About
           </li>
-          <li onClick={() => navigate('/download')}>
+          <li onClick={() => navigate('/downloads')}>
             Downloads
           </li>
         </ul>
@@ -62,9 +62,9 @@ const Footer: React.FC = () => {
   return (
   <footer>
 
-    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice. 
-    <CloseCircleOutlined 
-    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}} 
+    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice.
+    <CloseCircleOutlined
+    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}}
     onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}
     />
   </footer>

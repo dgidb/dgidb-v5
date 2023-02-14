@@ -63,6 +63,12 @@ const getInteractionsByDrugsQuery = gql`
             type
             directionality
           }
+          publications {
+            pmid
+          }
+          sources {
+            fullName
+          }
         }
       }
     }
@@ -78,7 +84,7 @@ export function useGetInteractionsByGenes(names: string[]) {
       });
       return res;
     },
-    // { enabled: names !== [] }
+    { enabled: names !== [] }
   );
 }
 
@@ -91,6 +97,6 @@ export function useGetInteractionsByDrugs(names: string[]) {
       });
       return res;
     },
-    // { enabled: names !== [] }
+    { enabled: names !== [] }
   );
 }
