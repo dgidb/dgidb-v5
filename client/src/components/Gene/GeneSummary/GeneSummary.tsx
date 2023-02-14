@@ -19,6 +19,8 @@ import { DirectionalityGene } from 'components/Gene/GeneCharts';
 import './GeneSummary.scss';
 import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 import { Tabs } from 'antd';
+import Box from '@mui/material/Box';
+import { GeneIntTable } from 'components/Gene/GeneIntTable';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -139,9 +141,10 @@ export const GeneSummary: React.FC = () => {
     state.searchTerms
   );
   const [chartData, setChartData] = useState<any>([]);
+  const genes = data?.genes?.nodes
 
   useEffect(() => {
-    setChartData(data?.genes?.nodes);
+    setChartData(genes);
   }, [data]);
 
   if (isError || isLoading) {
@@ -152,6 +155,12 @@ export const GeneSummary: React.FC = () => {
       </div>
     );
   }
+  if (!isLoading && genes?.length === 0) {
+    return (
+      <Box><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
+    )
+  }
+
   return (
     <div className='gene-summary-container'>
       <h1>Gene Summary</h1>
@@ -159,6 +168,7 @@ export const GeneSummary: React.FC = () => {
         <InteractionCount setChartData={setChartData} />
         <SummaryInfo chartData={chartData} />
       </div>
+      <GeneIntTable searchTerms={state.searchTerms}/>
     </div>
   );
 };
