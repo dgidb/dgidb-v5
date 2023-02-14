@@ -16,7 +16,6 @@ import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 const GeneResults: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
   return (
     <>
       <Tabs defaultActiveKey="1" type="card">
