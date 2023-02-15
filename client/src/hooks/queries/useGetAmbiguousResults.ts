@@ -26,11 +26,37 @@ const getGeneMatchesQuery = gql`
   }
 `;
 
-export function useGetMatchedResults(names: string[]) {
+const getDrugMatchesQuery = gql`
+  query drugMatches($names: [String!]!) {
+    drugMatches(searchTerms: $names) {
+      directMatches {
+        searchTerm
+        matches {
+          id
+          name
+        }
+      }
+      ambiguousMatches {
+        searchTerm
+        matches {
+          id
+          name
+        }
+      }
+      noMatches {
+        searchTerm
+      }
+    }
+  }
+`;
+
+export function useGetMatchedResults(names: string[], type: string) {
+  const key = type + names
+  const requestQuery = type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery
   return useQuery(
-    "gene_matches" + names,
+    key,
     async () => {
-      const res = await graphQLClient.request(getGeneMatchesQuery, {
+      const res = await graphQLClient.request(requestQuery, {
         names,
       });
       return res;

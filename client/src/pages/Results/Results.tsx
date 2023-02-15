@@ -23,7 +23,7 @@ const GeneResults: React.FC = () => {
           <GeneSummary />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          <AmbiguousTermsSummary />
+          <AmbiguousTermsSummary resultType="gene" />
         </TabPane>
       </Tabs>
     </>
@@ -38,7 +38,7 @@ const DrugResults: React.FC = () => {
           <DrugSummary />
         </TabPane>
         <TabPane tab="Ambiguous or Unmatched" key="2">
-          {/* TODO: Add this back once drug ambiguous/unmatched is implemented <AmbiguousTermsSummary /> */}
+          <AmbiguousTermsSummary resultType="drug"/>
         </TabPane>
       </Tabs>
     </>
