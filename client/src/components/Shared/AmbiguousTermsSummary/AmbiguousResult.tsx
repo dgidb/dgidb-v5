@@ -54,7 +54,7 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}
           backgroundColor: 'var(--soft-background)',
       }}>
         <Box>
-          {selectedTerm?.length > 0 ? <GeneIntTable searchTerms={selectedTerm} displayHeader={false} />
+          {selectedTerm?.length > 0 ? table
           : <Box><em>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</em></Box>
           }
         </Box>
