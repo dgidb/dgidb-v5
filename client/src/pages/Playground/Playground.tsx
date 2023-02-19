@@ -1,6 +1,21 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
+import './Playground.scss';
 
+// styles
+import { Button, Collapse } from 'antd';
+
+const { Panel } = Collapse;
+const buttonStyle = {
+  color: 'var(--text-content)', 
+  backgroundColor: 'var(--background-light)',
+  border: 'none'
+};
+const defaultStyle = {
+  backgroundColor: 'var(--background-light)'
+}
+
+// queries
 const query1 = `
 query targetDetails{
   target(q:{sym:"ACE2"}) {
@@ -12,6 +27,7 @@ query targetDetails{
     novelty
   }
 }`;
+
 const query2 = `
 query diseaseDetails{
   disease(name:"asthma"){
@@ -29,6 +45,7 @@ query diseaseDetails{
     }
   }
 }`;
+
 const query3 = `
 query ligandDetails{
   ligand(ligid: "haloperidol") {
@@ -52,12 +69,27 @@ query ligandDetails{
 
 export const Playground = () => {
   return(
-     <>
-      <iframe id="playground" src={"https://pharos-api.ncats.io/graphql"} height="700" width="1750" />
-      <button onClick={() => setQuery(query1)}>Example 1</button>
-      <button onClick={() => setQuery(query2)}>Example 2</button>
-      <button onClick={() => setQuery(query3)}>Example 3</button>
-     </>
+    <div className="playground-page-container" > 
+      <div className="collapse-group"> 
+        <Collapse accordion style={defaultStyle}>
+          <Panel header="Example Query 1" key="1" style={defaultStyle}>
+            <Button onClick={() => setQuery(query1)} style={buttonStyle}>Run Query</Button>
+            <pre><code>{query1}</code></pre>
+          </Panel>
+          <Panel header="Example Query 2" key="2" style={defaultStyle}>
+            <Button onClick={() => setQuery(query2)} style={buttonStyle}>Run Query</Button>
+            <pre><code>{query2}</code></pre>
+          </Panel>
+          <Panel header="Example Query 3" key="3" style={defaultStyle}>
+            <Button onClick={() => setQuery(query3)} style={buttonStyle}>Run Query</Button>
+            <pre><code>{query3}</code></pre>
+          </Panel>
+        </Collapse>
+      </div>
+      <div className="main">
+        <iframe id="playground" src={"https://pharos-api.ncats.io/graphql"} height="700" width="1500" />
+      </div>
+    </div>
   )
 }
 
@@ -66,3 +98,4 @@ function setQuery(newUrl: string) {
    const url = `https://pharos-api.ncats.io/graphql?query=${encodeURI(newUrl)}`;
    if(playgroundiframe != null) playgroundiframe.src = url;
 }
+

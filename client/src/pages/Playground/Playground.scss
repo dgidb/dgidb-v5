@@ -1,0 +1,17 @@
+.playground-page-container {
+  background-color: var(--background);
+  display: flex;
+  color: var(--text-content);
+
+  .main {
+    display: contents;
+    width: 1000px;
+  }
+}
+
+.collapse-group {
+  fontSize: 16;
+  width: 200px; 
+  height: 30px; 
+  display: block;
+}

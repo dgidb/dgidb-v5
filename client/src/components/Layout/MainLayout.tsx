@@ -49,6 +49,9 @@ const Header: React.FC = () => {
           <li onClick={() => navigate('/download')}>
             Downloads
           </li>
+          <li onClick={() => navigate('/playground')}>
+            Playground
+          </li>
         </ul>
       </nav>
     </header>
