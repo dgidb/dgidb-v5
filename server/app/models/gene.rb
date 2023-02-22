@@ -11,6 +11,8 @@ class Gene < ::ActiveRecord::Base
     :join_table => 'gene_categories_genes',
     :class_name => 'GeneClaimCategory'
 
+  validates :concept_id, presence: true, uniqueness: {case_sensitive: false}
+
   cache_query :all_gene_names, :all_gene_names
 
   def self.for_search

@@ -7,7 +7,7 @@ module Types::Queries
       end
 
       def drug_matches(search_terms: )
-        remaining_terms = Set.new(search_terms)
+        remaining_terms = Set.new(search_terms.map(&:upcase))
 
         results = {
           direct_matches: [],
@@ -15,7 +15,7 @@ module Types::Queries
           no_matches: []
         }
 
-        #find exact matches on drug name 
+        #find exact matches on drug name
         direct_symbol_matches = Drug.where(name: remaining_terms)
         direct_symbol_matches.each do |d|
           results[:direct_matches] << {
@@ -28,7 +28,7 @@ module Types::Queries
 
         #find exact matches on concept ID
         if remaining_terms.size.positive?
-          direct_id_matches = Drug.where(concept_id: remaining_terms)
+          direct_id_matches = Drug.where("upper(concept_id) IN (?)", remaining_terms)
           direct_id_matches.each do |d|
             results[:direct_matches] << {
               search_term: d.concept_id,

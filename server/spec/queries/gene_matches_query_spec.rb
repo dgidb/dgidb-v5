@@ -69,4 +69,19 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
     expect(no_matches.size).to eq 1
     expect(no_matches[0]['searchTerm']).to eq 'FAKE1'
   end
+
+  it 'search should be case insensitive' do
+    downcased_name = @braf.name.downcase
+    downcased_id = @alk.concept_id.downcase
+    downcased_alias = @stk1_cdk.alias.downcase
+    search_terms = [downcased_name, downcased_id, downcased_alias]
+
+    result = execute_graphql(query, variables: { searchTerms: search_terms })
+
+    direct_matches = result['data']['geneMatches']['directMatches']
+    expect(direct_matches.size).to eq 2
+
+    ambig_matches = result['data']['geneMatches']['ambiguousMatches']
+    expect(ambig_matches.size).to eq 1
+  end
 end
