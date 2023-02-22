@@ -21,7 +21,7 @@ module Genome; module Importers; module FileImporters; module Nci;
               source_db_version: '14-September-2017',
               source_db_name: @source_db_name,
               full_name: 'NCI Cancer Gene Index',
-              license: 'Public domain',
+              license: License::PUBLIC_DOMAIN,
               license_link: 'https://www.cancer.gov/policies/copyright-reuse',
           }
       )

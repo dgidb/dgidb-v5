@@ -35,7 +35,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
           source_db_name: 'DrugBank',
           full_name: 'DrugBank - Open Data Drug & Drug Target Database',
           license: License::CUSTOM_NON_COMMERCIAL,
-          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
+          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')

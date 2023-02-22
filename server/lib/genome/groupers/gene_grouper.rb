@@ -109,7 +109,7 @@ module Genome
           doi: '10.1093/nar/gkab1049',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'Ensembl',
-          license: 'Custom',
+          license: License::CUSTOM,
           license_link: 'https://useast.ensembl.org/info/about/legal/disclaimer.html'
         ).first_or_create
 
