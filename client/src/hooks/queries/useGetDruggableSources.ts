@@ -32,7 +32,7 @@ query sources($sourceType: SourceTypeFilter) {
 `
 
 export function useGetDruggableSources(sourceType: string) {
-  return useQuery('druggable-sources', async () => {
+  return useQuery('druggable-sources' + sourceType, async () => {
     const res = await graphQLClient.request(
       getDruggableSourcesQuery,
       { sourceType }
@@ -64,7 +64,7 @@ query sources($sourceType: SourceTypeFilter) {
 `
 
 export function useGetGeneSources(sourceType: string) {
-  return useQuery('gene-sources', async () => {
+  return useQuery('gene-sources' + sourceType, async () => {
     const res = await graphQLClient.request(
       getGeneSourcesQuery,
       { sourceType }
@@ -96,7 +96,7 @@ query sources($sourceType: SourceTypeFilter) {
 `
 
 export function useGetDrugSources(sourceType: string) {
-  return useQuery('drug-sources', async () => {
+  return useQuery('drug-sources' + sourceType, async () => {
     const res = await graphQLClient.request(
       getDrugSourcesQuery,
       { sourceType }
@@ -132,7 +132,7 @@ query sources($sourceType: SourceTypeFilter) {
 `
 
 export function useGetInteractionSources(sourceType: string) {
-  return useQuery('interaction-sources', async () => {
+  return useQuery('interaction-sources' + sourceType, async () => {
     const res = await graphQLClient.request(
       getInteractionSourcesQuery,
       { sourceType }

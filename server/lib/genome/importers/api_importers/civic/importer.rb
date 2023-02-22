@@ -82,7 +82,7 @@ module Genome
           def create_interaction_claims
             api_client = ApiClient.new
             api_client.enumerate_variants.each do |variant_edge|
-              mp_nodes = variant_edge.node.molecular_profiles.nodes
+              mp_nodes = variant_edge.node.molecular_profiles.nodes.select { |mp| mp.variants.size == 1 }
               ei_nodes = mp_nodes.reduce([]) { |tot, node| tot.concat(node.evidence_items.nodes) }
               ei_nodes = ei_nodes.select { |ei| importable_eid?(ei) }
               next if ei_nodes.length.zero?

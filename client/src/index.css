@@ -43,7 +43,7 @@
 
 [data-theme='light-home'] {
   --background: white;
-  --soft-background: white;
+  --soft-background: #f3f1fb;
   --background-light: rgb(201, 204, 224);
   --text-content: #313635;
   --text-primary: #26282e;

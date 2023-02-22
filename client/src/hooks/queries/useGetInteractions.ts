@@ -63,6 +63,12 @@ const getInteractionsByDrugsQuery = gql`
             type
             directionality
           }
+          publications {
+            pmid
+          }
+          sources {
+            fullName
+          }
         }
       }
     }
@@ -71,7 +77,7 @@ const getInteractionsByDrugsQuery = gql`
 
 export function useGetInteractionsByGenes(names: string[]) {
   return useQuery(
-    "interactions",
+    "interactions" + names,
     async () => {
       const res = await graphQLClient.request(getInteractionsByGenesQuery, {
         names,
@@ -84,7 +90,7 @@ export function useGetInteractionsByGenes(names: string[]) {
 
 export function useGetInteractionsByDrugs(names: string[]) {
   return useQuery(
-    "interactions",
+    "interactions" + names,
     async () => {
       const res = await graphQLClient.request(getInteractionsByDrugsQuery, {
         names,

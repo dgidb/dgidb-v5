@@ -52,6 +52,24 @@
     font-size: .89rem;
   }
 
+  .contact-section-container {
+      .left-section{
+        float: left;
+        min-height: 900px;
+        width: 40%;
+      }
+      .right-section{
+        width: 40%;
+        float:left;
+        min-height: 900px;
+      }
+      .spacing {
+        width:20%;
+        float:right;
+        min-height: 900px;
+      }
+  }
+
   .faq-section-container {
     .faq-item {
       margin-bottom: 30px;
