@@ -24,6 +24,10 @@ query sources($sourceType: SourceTypeFilter) {
       interactionClaimsCount
       interactionClaimsInGroupsCount
       citation
+      citationShort
+      pmid
+      pmcid
+      doi
       license
       licenseLink
     }
@@ -56,6 +60,10 @@ query sources($sourceType: SourceTypeFilter) {
       geneClaimsCount
       geneClaimsInGroupsCount
       citation
+      citationShort
+      pmid
+      pmcid
+      doi
       license
       licenseLink
     }
@@ -88,6 +96,10 @@ query sources($sourceType: SourceTypeFilter) {
       drugClaimsCount
       drugClaimsInGroupsCount
       citation
+      citationShort
+      pmid
+      pmcid
+      doi
       license
       licenseLink
     }
@@ -124,6 +136,10 @@ query sources($sourceType: SourceTypeFilter) {
       interactionClaimsCount
       interactionClaimsInGroupsCount
       citation
+      citationShort
+      pmid
+      pmcid
+      doi
       license
       licenseLink
     }

@@ -8,6 +8,10 @@ module Types
     field :source_db_name, String, null: false
     field :source_db_version, String, null: false
     field :citation, String, null: true
+    field :citation_short, String, null: true
+    field :pmid, String, null: true
+    field :pmcid, String, null: true
+    field :doi, String, null: true
     field :base_url, String, null: true
     field :site_url, String, null: true
     field :full_name, String, null: true
