@@ -2,7 +2,7 @@ module Types::Queries
   module DrugLookupQuery
     def self.included(klass)
       klass.field :drug_matches, Types::DrugMatchType, null: false do
-        description "Match Drug search terms to known drugs in the database."
+        description "Case-insensitively match Drug search terms to known drugs in the database."
         argument :search_terms, [GraphQL::Types::String], required: true
       end
 

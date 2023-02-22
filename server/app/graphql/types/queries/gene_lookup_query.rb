@@ -2,7 +2,7 @@ module Types::Queries
   module GeneLookupQuery
     def self.included(klass)
       klass.field :gene_matches, Types::GeneMatchType, null: false do
-        description "Match Gene search terms to known genes in the database."
+        description "Case-insensitively match Gene search terms to known genes in the database."
         argument :search_terms, [GraphQL::Types::String], required: true
       end
 
