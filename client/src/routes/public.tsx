@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
-import { Navigate, Outlet, useParams, useRoutes} from 'react-router-dom';
+import { Navigate, Outlet, useRoutes} from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
-import { Browse } from 'pages/Browse';
 import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 import { BrowseSources } from 'components/Browse/Sources';
 import { BrowseCategories } from 'components/Browse/Categories';

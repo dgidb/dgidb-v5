@@ -1,7 +1,7 @@
 // hooks/dependencies
 import React, {useContext, useEffect} from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 // components
 import { GeneSummary } from 'components/Gene/GeneSummary';
@@ -49,17 +49,16 @@ const DrugResults: React.FC = () => {
 export const Results: React.FC = () => {
   const {state, dispatch} = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get('searchTerms')); // 'name'
-  // const navigate = useNavigate();
 
   useEffect(() => {
+    // if there are no search terms in state, populate from the url search params
     if(searchParams && !state.searchTerms.length) {
-      const arr = searchParams.get('searchTerms')?.split(',')
-      arr?.forEach( term => 
+      const terms = searchParams.get('searchTerms')?.split(',')
+      terms?.forEach( term => 
         dispatch({type: ActionTypes.AddTerm, payload: term})
       )
     }
-  }, [searchParams])
+  }, [searchParams, dispatch, state])
 
   return (
     <div className="results-page-container">

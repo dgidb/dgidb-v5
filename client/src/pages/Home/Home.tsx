@@ -9,9 +9,10 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { queryClient } from 'providers/app';
 
 // styles
-import { Button, Switch } from 'antd';
-import SunIcon from 'components/Shared/SVG/SunIcon';
-import MoonIcon from 'components/Shared/SVG/MoonIcon';
+import { Button } from 'antd';
+// todo: introduce dark mode back later
+// import SunIcon from 'components/Shared/SVG/SunIcon';
+// import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
 
 export const Home: React.FC = () => {
@@ -119,7 +120,8 @@ export const Home: React.FC = () => {
         </span>
       </div>
 
-      {/* <div className="darkmode-toggle">
+      {/* todo: introduce at a later date 
+      <div className="darkmode-toggle">
         <Switch
           loading={isToggling}
           defaultChecked

@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -7,14 +7,12 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './SearchBar.scss';
-import { useSearchParams } from "react-router-dom";
 
 type SearchBarProps = {
   handleSubmit: () => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
-
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const [inputValue, setInputValue] = useState<any>('');
