@@ -157,7 +157,7 @@ export const GeneSummary: React.FC = () => {
   }
   if (!isLoading && genes?.length === 0) {
     return (
-      <Box><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
+      <Box className='no-results-message'><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
     )
   }
 

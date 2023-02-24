@@ -223,7 +223,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       }
     }
   }
-  return !isLoading ? (
+  return !isLoading ?
     <Box className='interaction-table-container'>
       {
         displayHeader && 
@@ -240,7 +240,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
           pagination={{ pageSize: displayHeader ? 20 : 10}}
         />
     </Box>
-  ) : 
+  : 
   <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
     <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
   </Box>

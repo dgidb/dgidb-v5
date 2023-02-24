@@ -162,7 +162,7 @@ export const DrugSummary: React.FC = () => {
   }
   if (!isLoading && drugs?.length === 0) {
     return (
-      <Box><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
+      <Box className='no-results-message'><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
     )
   }
   return (
@@ -172,7 +172,7 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
-      <DrugTable />
+      <DrugTable searchTerms={state.searchTerms} />
     </div>
   );
 };

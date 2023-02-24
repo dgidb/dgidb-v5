@@ -5,16 +5,20 @@ import { GeneIntTable } from 'components/Gene/GeneIntTable';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './AmbiguousTerms.scss';
+import { DrugTable } from 'components/Drug/DrugTable';
 
 interface Props {
   ambiguousTermData: any;
+  resultType: string;
 }
 
-export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData}) => {
+export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}) => {
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedTerm([event.target.value as string]);
   };
+
+  const table = resultType === 'gene' ? <GeneIntTable searchTerms={selectedTerm} displayHeader={false} /> : <DrugTable searchTerms={selectedTerm} displayHeader={false} />
 
   return (
     <Accordion defaultExpanded>
@@ -31,7 +35,11 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData}) => {
           <Box px='2px' display='flex' alignItems='center'><ArrowRightIcon /></Box>
           <Select onChange={handleChange} 
             onClick={(event) => event.stopPropagation()}
-            onFocus={(event) => event.stopPropagation()} value={selectedTerm[0]} variant='standard' label='Select...' sx={{ m: 1, minWidth: 120 }}
+            onFocus={(event) => event.stopPropagation()} 
+            value={selectedTerm[0]} 
+            variant='standard' 
+            label='Select...' 
+            sx={{ m: 1, minWidth: 120 }}
           >
             {ambiguousTermData?.matches?.map((match: any) => 
               {
@@ -46,7 +54,7 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData}) => {
           backgroundColor: 'var(--soft-background)',
       }}>
         <Box>
-          {selectedTerm?.length > 0 ? <GeneIntTable searchTerms={selectedTerm} displayHeader={false} />
+          {selectedTerm?.length > 0 ? table
           : <Box><em>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</em></Box>
           }
         </Box>

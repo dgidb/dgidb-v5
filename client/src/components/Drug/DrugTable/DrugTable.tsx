@@ -1,7 +1,6 @@
 // hooks/dependencies
 import React, {useState, useEffect, useContext} from 'react';
 import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -10,19 +9,17 @@ import { truncateDecimals } from 'utils/format';
 import './DrugTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { Box, CircularProgress, Icon } from '@mui/material';
 
-// TODO: Why is there a module exports error when removing this?
-export const test2: React.FC = () => {
-  return (
-    <></>
-  )
+interface Props {
+  searchTerms: string[];
+  displayHeader?: boolean;
 }
-export const DrugTable: React.FC = () => {
 
-  const {state} = useContext(GlobalClientContext);
+export const DrugTable: React.FC<Props> = ({searchTerms, displayHeader}) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
-  const { data } = useGetInteractionsByDrugs(state.searchTerms);
+  const { data, isLoading } = useGetInteractionsByDrugs(searchTerms);
 
   let drugs = data?.drugs?.nodes;
 
@@ -208,12 +205,14 @@ export const DrugTable: React.FC = () => {
     },
   ]
 
-  return (
+  return !isLoading ? (
     <div className="interaction-table-container">
-      <span>
-        <h3>Interaction Results</h3>
-        {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
-      </span>
+      { displayHeader &&
+        <span>
+          <h3>Interaction Results</h3>
+          {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
+        </span>
+      }
       <Skeleton loading={!interactionResults.length}>
         <Table
           dataSource={interactionResults}
@@ -224,5 +223,8 @@ export const DrugTable: React.FC = () => {
         />
       </Skeleton>
     </div>
-  )
+  ) :
+  <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
+    <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
+  </Box>
 };
