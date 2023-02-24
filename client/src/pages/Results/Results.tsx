@@ -58,7 +58,7 @@ export const Results: React.FC = () => {
         dispatch({type: ActionTypes.AddTerm, payload: term})
       )
     }
-  }, [searchParams, dispatch, state])
+  }, [])
 
   return (
     <div className="results-page-container">
