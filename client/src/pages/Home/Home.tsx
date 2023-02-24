@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
 import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -17,17 +17,19 @@ import './Home.scss';
 export const Home: React.FC = () => {
 
   const {state, dispatch} = useContext(GlobalClientContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     dispatch({type: ActionTypes.ContentPage})
     if (state.interactionMode === 'categories') {
       navigate('/categories');
     } else {
-      navigate('/results');
+      navigate({
+        pathname: '/results',
+        search: `?${createSearchParams({searchTerms: state.searchTerms.join(',')})}`,
+      });
     }
   };
-
-  const navigate = useNavigate();
 
   const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
   const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
@@ -117,7 +119,7 @@ export const Home: React.FC = () => {
         </span>
       </div>
 
-      <div className="darkmode-toggle">
+      {/* <div className="darkmode-toggle">
         <Switch
           loading={isToggling}
           defaultChecked
@@ -125,7 +127,7 @@ export const Home: React.FC = () => {
           unCheckedChildren={<MoonIcon />}
           onChange={() => setIsToggling(true)}
         />
-      </div>
+      </div> */}
     </div>
     )
 }

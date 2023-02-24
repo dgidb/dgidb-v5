@@ -1,13 +1,14 @@
 // hooks/dependencies
 import React, {useContext, useEffect} from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // components
 import { GeneSummary } from 'components/Gene/GeneSummary';
 import { DrugSummary } from 'components/Drug/DrugSummary';
 import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
 import { AmbiguousTermsSummary } from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
+import { ActionTypes } from 'stores/Global/reducers';
 
 // styles
 import './Results.scss';
@@ -46,14 +47,19 @@ const DrugResults: React.FC = () => {
 }
 
 export const Results: React.FC = () => {
-  const {state} = useContext(GlobalClientContext);
-  const navigate = useNavigate();
+  const {state, dispatch} = useContext(GlobalClientContext);
+  const [searchParams] = useSearchParams();
+  console.log(searchParams.get('searchTerms')); // 'name'
+  // const navigate = useNavigate();
 
   useEffect(() => {
-    if(!state.searchTerms.length) {
-      navigate('/home');
+    if(searchParams && !state.searchTerms.length) {
+      const arr = searchParams.get('searchTerms')?.split(',')
+      arr?.forEach( term => 
+        dispatch({type: ActionTypes.AddTerm, payload: term})
+      )
     }
-  }, [])
+  }, [searchParams])
 
   return (
     <div className="results-page-container">

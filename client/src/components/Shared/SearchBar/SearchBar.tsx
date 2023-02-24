@@ -7,6 +7,7 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { Button, Select, Form, Popover, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './SearchBar.scss';
+import { useSearchParams } from "react-router-dom";
 
 type SearchBarProps = {
   handleSubmit: () => void;
