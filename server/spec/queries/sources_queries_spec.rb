@@ -29,6 +29,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           drugClaimsCount
           drugClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -66,6 +70,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           geneClaimsCount
           geneClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -107,6 +115,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           interactionClaimsCount
           interactionClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -152,6 +164,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           interactionClaimsCount
           interactionClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }

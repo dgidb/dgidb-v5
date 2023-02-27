@@ -22,12 +22,16 @@ module Genome; module Importers; module FileImporters; module Dtc;
         {
           base_url: 'https://drugtargetcommons.fimm.fi/',
           site_url: 'https://drugtargetcommons.fimm.fi/',
-          citation: 'Drug Target Commons 2.0: a community platform for systematic analysis of drug–target interaction profiles. Tanoli Z, Alam Z, Vähä-Koskela M, Malyutina A, Jaiswal A, Tang J, Wennerberg K, Aittokallio T. Database. 2018. PMID: 30219839',
+          citation: 'Tanoli Z, Alam Z, Vähä-Koskela M, Ravikumar B, Malyutina A, Jaiswal A, Tang J, Wennerberg K, Aittokallio T. Drug Target Commons 2.0: a community platform for systematic analysis of drug-target interaction profiles. Database (Oxford). 2018 Jan 1;2018:1-13. doi: 10.1093/database/bay083. PMID: 30219839; PMCID: PMC6146131.',
+          citation_short: 'Tanoli Z, et al. Drug Target Commons 2.0: a community platform for systematic analysis of drug-target interaction profiles. Database (Oxford). 2018 Jan 1;2018:1-13.',
+          pmid: '30219839',
+          pmcid: 'PMC6146131',
+          doi: '10.1093/database/bay083',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Drug Target Commons',
-          license: License::CC_BY_NC_3_0,
-          license_link: 'https://academic.oup.com/database/article/doi/10.1093/database/bay083/5096727'
+          license: License::CC_BY_NC_SA_3_0,
+          license_link: 'https://academic.oup.com/database/article/doi/10.1093/database/bay083/5096727#129405854'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')

@@ -18,7 +18,10 @@ module Genome; module Importers; module FileImporters; module Tend;
         {
           base_url: 'http://www.uniprot.org/uniprot/',
           site_url: 'http://www.ncbi.nlm.nih.gov/pubmed/21804595/',
-          citation: 'Trends in the exploitation of novel drug targets. Rask-Andersen M, Almen MS, Schioth HB. Nat Rev Drug Discov. 2011 Aug 1;10(8):579-90. PMID: 21804595',
+          citation: 'Rask-Andersen M, Almén MS, Schiöth HB. Trends in the exploitation of novel drug targets. Nat Rev Drug Discov. 2011 Aug 1;10(8):579-90. doi: 10.1038/nrd3478. PMID: 21804595.',
+          citation_short: 'Rask-Andersen M, Almén MS, Schiöth HB. Trends in the exploitation of novel drug targets. Nat Rev Drug Discov. 2011 Aug 1;10(8):579-90.',
+          pmid: '21804595',
+          doi: '10.1038/nrd3478',
           source_db_version: '01-Aug-2011',
           source_db_name: source_db_name,
           full_name: 'Trends in the exploitation of novel drug targets (Rask-Andersen, et al., 2011)',

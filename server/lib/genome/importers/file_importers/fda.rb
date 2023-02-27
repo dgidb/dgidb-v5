@@ -18,7 +18,6 @@ module Genome; module Importers; module FileImporters; module Fda
         {
           base_url: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
           site_url: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
-          citation: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'FDA Pharmacogenomic Biomarkers',
