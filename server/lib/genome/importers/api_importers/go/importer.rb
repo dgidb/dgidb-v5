@@ -15,11 +15,15 @@ module Genome; module Importers; module ApiImporters; module Go;
         {
           base_url: 'http://amigo.geneontology.org/amigo/gene_product/UniProtKB:',
           site_url: 'http://www.geneontology.org/',
-          citation: 'Gene ontology: tool for the unification of biology. The unification of biology. The Gene Ontology Consortium. Ashburner M, Ball CA, ..., Rubin GM, Sherlock G. Nat Genet. 2000 May;25(1):25-9. PMID: 10802651.',
+          citation: 'Gene Ontology Consortium. The Gene Ontology resource: enriching a GOld mine. Nucleic Acids Res. 2021 Jan 8;49(D1):D325-D334. doi: 10.1093/nar/gkaa1113. PMID: 33290552; PMCID: PMC7779012.',
+          citation_short: 'Gene Ontology Consortium. The Gene Ontology resource: enriching a GOld mine. Nucleic Acids Res. 2021 Jan 8;49(D1):D325-D334.',
+          pmid: '33290552',
+          pmcid: 'PMC7779012',
+          doi: '10.1093/nar/gkaa1113',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'The Gene Ontology',
-          license: 'Creative Commons Attribution 4.0 Unported License',
+          license: License::CC_ATT_4_0,
           license_link: 'http://geneontology.org/docs/go-citation-policy/'
         }
       )

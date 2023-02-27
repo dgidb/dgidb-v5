@@ -18,7 +18,10 @@ module Genome; module Importers; module FileImporters; module RussLampel;
         {
           base_url: 'http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=',
           site_url: 'http://www.ncbi.nlm.nih.gov/pubmed/16376820/',
-          citation: 'The druggable genome: an update. Russ AP, Lampel S. Drug Discov Today. 2005 Dec;10(23-24):1607-10. PMID: 16376820',
+          citation: 'Russ AP, Lampel S. The druggable genome: an update. Drug Discov Today. 2005 Dec;10(23-24):1607-10. doi: 10.1016/S1359-6446(05)03666-4. PMID: 16376820.',
+          citation_short: 'Russ AP, Lampel S. The druggable genome: an update. Drug Discov Today. 2005 Dec;10(23-24):1607-10.',
+          pmid: '16376820',
+          doi: '10.1016/S1359-6446(05)03666-4',
           source_db_version: '26-Jul-2011',
           source_db_name: source_db_name,
           full_name: 'The druggable genome: an update (Russ & Lampel, 2005)',

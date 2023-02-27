@@ -17,9 +17,13 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
           source_db_version: set_current_date_version,
           base_url: 'https://ckb.jax.org/gene/show?geneId=',
           site_url: 'https://ckb.jax.org',
-          citation: 'Sara E. Patterson, Rangjiao Liu, Cara M. Statz, Daniel Durkin, Anuradha Lakshminarayana, and Susan M. Mockus. The Clinical Trial Landscape in Oncology and Connectivity of Somatic Mutational Profiles to Targeted Therapies. Human Genomics, 2016 Jan 16;10(1):4. PMID: 26772741',
+          citation: 'Patterson SE, Liu R, Statz CM, Durkin D, Lakshminarayana A, Mockus SM. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4. doi: 10.1186/s40246-016-0061-7. PMID: 26772741; PMCID: PMC4715272.',
+          citation_short: 'Patterson SE, et al. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4.',
+          pmid: '26772741',
+          pmcid: 'PMC4715272',
+          doi: '10.1186/s40246-016-0061-7',
           full_name: 'The Jackson Laboratory Clinical Knowledgebase',
-          license: 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License',
+          license: License::CC_BY_NC_SA_4_0,
           license_link: 'https://ckb.jax.org/about/index',
         }
       )

@@ -1,19 +1,22 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // methods
 import { truncateDecimals } from 'utils/format';
 
 // styles
 import './GeneIntTable.scss';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { Box, CircularProgress, Icon } from '@mui/material';
 
-export const GeneIntTable: React.FC = () => {
+interface Props {
+  searchTerms: string[];
+  displayHeader?: boolean;
+}
 
-  const {state} = useContext(GlobalClientContext);
+export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   //filter options
@@ -22,9 +25,8 @@ export const GeneIntTable: React.FC = () => {
   const [approvalStatus, setApprovalStatus] = useState<any>([]);
   const [indication, setIndication] = useState<any>([]);
   const [intScore, setIntScore] = useState<any>([]);
-  const [queryScore, setQueryScore] = useState<any>([]);
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
+  const { data, isLoading } = useGetInteractionsByGenes(searchTerms)
 
   let genes = data?.genes?.nodes;
 
@@ -36,7 +38,7 @@ export const GeneIntTable: React.FC = () => {
       })
     })
     setInteractionResults(interactionData)
-  }, [genes])
+  }, [genes, searchTerms])
 
   const columns: ColumnsType<any> = [
     {
@@ -75,7 +77,7 @@ export const GeneIntTable: React.FC = () => {
       ),
       filters: approvalStatus.map((el: any) => {
         return {
-          text: el ? "Approved" : "Not Approved",
+          text: el ? 'Approved' : 'Not Approved',
           value: el,
         }
       }),
@@ -113,19 +115,6 @@ export const GeneIntTable: React.FC = () => {
         <span>{truncateDecimals(record?.interactionScore, 2)}</span>
       ),
       filters: intScore.map((el: any) => {
-        return {
-          text: el,
-          value: el,
-        }
-      }),
-    },
-    {
-      title: 'Query Score',
-      dataIndex: ['queryScore'],
-      render: (text: any, record: any) => (
-        <span></span>
-      ),
-      filters: queryScore.map((el: any) => {
         return {
           text: el,
           value: el,
@@ -173,7 +162,6 @@ export const GeneIntTable: React.FC = () => {
     setApprovalStatus(duplicateApprovalStatus.filter(onlyUnique))
     setIndication(duplicateIndication.filter(onlyUnique))
     setIntScore(duplicateIntScore.filter(onlyUnique))
-    setQueryScore(duplicateQueryScore.filter(onlyUnique))
   }
 
   enum ColumnType {
@@ -213,24 +201,21 @@ export const GeneIntTable: React.FC = () => {
       // this prevents the filtered column from narrowing its own options + not being able to reset
       if (!filters[prop]){
         switch (prop) {
-          case "gene.name":
+          case 'gene.name':
             setGene(columnFilter(extra.currentDataSource, 1));
             break;
-          case "drug.name":
+          case 'drug.name':
             setDrug(columnFilter(extra.currentDataSource, 2));
             break;
-          case "drug.approved":
+          case 'drug.approved':
             setApprovalStatus(columnFilter(extra.currentDataSource, 3));
             break;
             //TODO: fix this case
-          case "drug.drugAttributes[0].name;":
+          case 'drug.drugAttributes[0].name;':
             setIndication(columnFilter(extra.currentDataSource, 4));
             break;
-          case "interactionScore":
+          case 'interactionScore':
             setIntScore(columnFilter(extra.currentDataSource, 5));
-            break;
-          case "queryScore":
-            setQueryScore(columnFilter(extra.currentDataSource, 6));
             break;
           default:
             break;
@@ -238,31 +223,25 @@ export const GeneIntTable: React.FC = () => {
       }
     }
   }
-
-  // if (isError || isLoading) {
-  //   return (
-  //     <div className="interaction-table--container">
-  //       {isError && <div>Error: Interactions not found!</div>}
-  //       {isLoading && <div>Loading...</div>}
-  //     </div>
-  //   )
-  // }
-
-  return (
-    <div className="interaction-table-container">
-      <span>
-        <h3>Interaction Results</h3>
-        {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
-      </span>
-      <Skeleton loading={!interactionResults.length}>
-        <Table
+  return !isLoading ?
+    <Box className='interaction-table-container'>
+      {
+        displayHeader && 
+        <span>
+          <h3>Interaction Results</h3>
+          <span id='interaction-count'>{interactionResults.length} total interactions</span>
+        </span>
+      }
+      <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}
           rowKey={(record, index) => `${index}`}
-          pagination={{ pageSize: 20}}
+          pagination={{ pageSize: displayHeader ? 20 : 10}}
         />
-      </Skeleton>
-    </div>
-  )
+    </Box>
+  : 
+  <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
+    <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
+  </Box>
 };

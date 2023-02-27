@@ -17,7 +17,6 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
       @source ||= Source.create(
         {
           base_url: 'https://www.clearityfoundation.org/form/findtrials.aspx',
-          citation: 'https://www.clearityfoundation.org/form/findtrials.aspx',
           site_url: 'https://www.clearityfoundation.org/form/findtrials.aspx',
           source_db_version: '15-June-2013',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,

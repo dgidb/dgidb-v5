@@ -18,7 +18,9 @@ module Genome; module Importers; module FileImporters; module CancerCommons;
         {
           base_url: 'http://www.cancercommons.org/researchers-clinicians/',
           site_url: 'http://www.cancercommons.org/',
-          citation: 'Cancer Commons: Biomedicine in the Internet Age. Shrager J, Tenenbaum JM, and Travers M. Collaborative Computational Technologies for Biomedical Research, (Sean Elkins, Maggie Hupcey, and Antony Williams Eds). Wiley, 2010.',
+          citation: 'Shrager J, Tenenbaum JM, Travers M: Cancer Commons: Biomedicine in the internet age. In Ekins/- Collaborative Computational Technologies for Biomedical Research.Wiley-Blackwell;2011;161–177.',
+          citation_short: 'Shrager J, et al. In Ekins/- Collaborative Computational Technologies for Biomedical Research.Wiley-Blackwell;2011;161–177.',
+          doi: '10.1002/9781118026038.ch11',
           source_db_version: '25-Jul-2013',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,

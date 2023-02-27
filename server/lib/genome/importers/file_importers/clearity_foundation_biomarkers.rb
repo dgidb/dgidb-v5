@@ -17,7 +17,6 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
       @source ||= Source.create(
         {
           base_url: 'http://www.clearityfoundation.org/healthcare-pros/drugs-and-biomarkers.aspx',
-          citation: 'http://www.clearityfoundation.org/healthcare-pros/drugs-and-biomarkers.aspx',
           site_url: 'https://www.clearityfoundation.org/healthcare-pros/drugs-and-biomarkers.aspx',
           source_db_version: '26-July-2013',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,

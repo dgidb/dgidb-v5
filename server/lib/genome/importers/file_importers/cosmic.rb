@@ -22,11 +22,15 @@ module Genome; module Importers; module FileImporters; module Cosmic
         {
           base_url: 'https://cancer.sanger.ac.uk/cosmic/drug_resistance',
           site_url: 'https://cancer.sanger.ac.uk/cosmic',
-          citation: 'Tate,J.G., Bamford,S., Jubb,H.C., Sondka,Z., Beare,D.M., Bindal,N., Boutselakis,H., Cole,C.G., Creatore,C., Dawson,E., et al. (2019) COSMIC: the Catalogue Of Somatic Mutations In Cancer. Nucleic Acids Res., 47, D941–D947. PMID: 30371878',
+          citation: 'Tate JG, Bamford S, Jubb HC, Sondka Z, Beare DM, Bindal N, Boutselakis H, Cole CG, Creatore C, Dawson E, Fish P, Harsha B, Hathaway C, Jupe SC, Kok CY, Noble K, Ponting L, Ramshaw CC, Rye CE, Speedy HE, Stefancsik R, Thompson SL, Wang S, Ward S, Campbell PJ, Forbes SA. COSMIC: the Catalogue Of Somatic Mutations In Cancer. Nucleic Acids Res. 2019 Jan 8;47(D1):D941-D947. doi: 10.1093/nar/gky1015. PMID: 30371878; PMCID: PMC6323903.',
+          citation_short: 'Tate JG, et al. COSMIC: the Catalogue Of Somatic Mutations In Cancer. Nucleic Acids Res. 2019 Jan 8;47(D1):D941-D947.',
+          pmid: '30371878',
+          pmcid: 'PMC6323903',
+          doi: '10.1093/nar/gky1015',
           source_db_version: '4-Sep-2020',
           source_db_name: source_db_name,
           full_name: 'Catalogue Of Somatic Mutations In Cancer',
-          license: 'Free for academic use',
+          license: 'Free for non-commercial use',
           license_link: 'https://cancer.sanger.ac.uk/cosmic/license'
         }
       )

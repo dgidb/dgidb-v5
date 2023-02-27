@@ -19,12 +19,16 @@ module Genome; module Importers; module FileImporters; module Dgene
         {
           base_url: 'http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067980',
           site_url: 'http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067980',
-          citation: 'Prioritizing Potentially Druggable Mutations with dGene: An Annotation Tool for Cancer Genome Sequencing Data. Kumar RD, Chang LW, Ellis MJ, Bose R. PLoS One. 2013 Jun 27;8(6):e67980. PMID: 23826350.',
+          citation: 'Kumar RD, Chang LW, Ellis MJ, Bose R. Prioritizing Potentially Druggable Mutations with dGene: An Annotation Tool for Cancer Genome Sequencing Data. PLoS One. 2013 Jun 27;8(6):e67980. doi: 10.1371/journal.pone.0067980. PMID: 23826350; PMCID: PMC3694871.',
+          citation_short: 'Kumar RD, et al. Prioritizing Potentially Druggable Mutations with dGene: An Annotation Tool for Cancer Genome Sequencing Data. PLoS One. 2013 Jun 27;8(6):e67980.',
+          pmid: '23826350',
+          pmcid: 'PMC3694871',
+          doi: '10.1371/journal.pone.0067980',
           source_db_version: '27-Jun-2013',
           source_db_name: source_db_name,
           full_name: 'dGENE - The Druggable Gene List',
+          license: 'Creative Commons Attribution License (Version not specified)',
           license_link: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067980#pone.0067980.s002',
-          license: 'Creative Commons Attribution License (Version not specified)'
         }
       )
       @source.source_types << SourceType.find_by(type: 'potentially_druggable')

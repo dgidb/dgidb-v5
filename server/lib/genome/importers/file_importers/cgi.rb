@@ -18,12 +18,16 @@ module Genome; module Importers; module FileImporters; module Cgi
         {
           base_url: 'https://www.cancergenomeinterpreter.org/biomarkers',
           site_url: 'https://www.cancergenomeinterpreter.org/',
-          citation: 'Tamborero, D., Rubio-Perez, C., Deu-Pons, J., Schroeder, M. P., Vivancos, A., Rovira, A., Tusquets, I., Albanell, J., Rodon, J., Tabernero, J., de Torres, C., Dienstmann, R., Gonzalez-Perez, A., & Lopez-Bigas, N. (2018). Cancer Genome Interpreter annotates the biological and clinical relevance of tumor alterations. Genome medicine, 10(1), 25. https://doi.org/10.1186/s13073-018-0531-8. PMID: 29592813',
+          citation: 'Tamborero D, Rubio-Perez C, Deu-Pons J, Schroeder MP, Vivancos A, Rovira A, Tusquets I, Albanell J, Rodon J, Tabernero J, de Torres C, Dienstmann R, Gonzalez-Perez A, Lopez-Bigas N. Cancer Genome Interpreter annotates the biological and clinical relevance of tumor alterations. Genome Med. 2018 Mar 28;10(1):25. doi: 10.1186/s13073-018-0531-8. PMID: 29592813; PMCID: PMC5875005.',
+          citation_short: 'Tamborero D, et al. Cancer Genome Interpreter annotates the biological and clinical relevance of tumor alterations. Genome Med. 2018 Mar 28;10(1):25.',
+          pmid: '29592813',
+          pmcid: 'PMC5875005',
+          doi: '10.1186/s13073-018-0531-8',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'Cancer Genome Interpreter',
-          license: 'Creative Commons Attribution-NonCommercial 4.0 (BY-NC)',
-          license_link: 'https://www.cancergenomeinterpreter.org/faq#q11c'
+          license: License::CC_BY_NC_4_0,
+          license_link: 'https://www.cancergenomeinterpreter.org/faq#q19'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')

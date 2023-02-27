@@ -23,7 +23,11 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     def create_new_source
       @source ||= Source.create(
         base_url: 'http://www.guidetopharmacology.org/DATA/',
-        citation: 'Armstrong,J.F., Faccenda,E., Harding,S.D., Pawson,A.J., Southan,C., Sharman,J.L., Campo,B., Cavanagh,D.R., Alexander,S.P.H., Davenport,A.P., et al. (2020) The IUPHAR/BPS Guide to PHARMACOLOGY in 2020: extending immunopharmacology content and introducing the IUPHAR/MMV Guide to MALARIA PHARMACOLOGY. Nucleic Acids Res., 48, D1006–D1021. PMID: 31691834',
+        citation: 'Armstrong JF, Faccenda E, Harding SD, Pawson AJ, Southan C, Sharman JL, Campo B, Cavanagh DR, Alexander SPH, Davenport AP, Spedding M, Davies JA; NC-IUPHAR. The IUPHAR/BPS Guide to PHARMACOLOGY in 2020: extending immunopharmacology content and introducing the IUPHAR/MMV Guide to MALARIA PHARMACOLOGY. Nucleic Acids Res. 2020 Jan 8;48(D1):D1006-D1021. doi: 10.1093/nar/gkz951. PMID: 31691834; PMCID: PMC7145572.',
+        citation_short: 'Armstrong JF, et al. The IUPHAR/BPS Guide to PHARMACOLOGY in 2020: extending immunopharmacology content and introducing the IUPHAR/MMV Guide to MALARIA PHARMACOLOGY. Nucleic Acids Res. 2020 Jan 8;48(D1):D1006-D1021.',
+        pmid: '31691834',
+        pmcid: 'PMC7145572',
+        doi: '10.1093/nar/gkz951',
         site_url: 'http://www.guidetopharmacology.org/',
         source_db_name: source_db_name,
         source_db_version: '2022.1',

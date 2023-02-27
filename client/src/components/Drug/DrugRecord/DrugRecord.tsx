@@ -21,6 +21,10 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 
+// components
+import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
+import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
+
 const DrugRecordTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
@@ -62,13 +66,13 @@ const DrugRecordTable: React.FC = () => {
       title: "PMIDs",
       dataIndex: ["publications"],
       render: (text: any, record: any) => (
-        <span>{record?.publications?.length}</span>
+        <span> <PublicationsTooltip displayText={record?.publications.length} hoverTexts={record?.publications}></PublicationsTooltip></span>
       ),
     },
     {
       title: "Sources",
       dataIndex: ["sources"],
-      render: (text: any, record: any) => <span>{record?.sources.length}</span>,
+      render: (text: any, record: any) => <span> <SourcesTooltip hoverTexts={record?.sources} displayText={record?.sources.length}></SourcesTooltip></span>,
     },
     {
       title: 'Interaction Score',

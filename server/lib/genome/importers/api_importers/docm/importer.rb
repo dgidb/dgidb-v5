@@ -77,12 +77,16 @@ module Genome; module Importers; module ApiImporters; module Docm
         {
           base_url: 'http://docm.info/',
           site_url: 'http://docm.info/',
-          citation: 'DoCM: a database of curated mutations in cancer. Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. Nat Methods. 2016;13(10):806-7. PMID: 27684579',
+          citation: 'Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. DoCM: a database of curated mutations in cancer. Nat Methods. 2016 Sep 29;13(10):806-7. doi: 10.1038/nmeth.4000. PMID: 27684579; PMCID: PMC5317181.',
+          citation_short: 'Ainscough BJ, et al. DoCM: a database of curated mutations in cancer. Nat Methods. 2016 Sep 29;13(10):806-7.',
+          pmid: '27684579',
+          pmcid: 'PMC5317181',
+          doi: '10.1038/nmeth.4000',
           source_db_version: set_current_date_version,
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Database of Curated Mutations',
-          license: 'Creative Commons Attribution 4.0 International License',
+          license: License::CC_BY_4_0,
           license_link: 'http://www.docm.info/about'
         }
       )
