@@ -1165,6 +1165,13 @@ CREATE UNIQUE INDEX index_drug_claims_on_name_and_nomenclature_and_source_id ON 
 
 
 --
+-- Name: index_drugs_on_concept_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_drugs_on_concept_id ON public.drugs USING btree (upper((concept_id)::text));
+
+
+--
 -- Name: index_drugs_on_name_and_concept_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1231,7 +1238,7 @@ CREATE UNIQUE INDEX index_gene_claims_on_name_and_nomenclature_and_source_id ON 
 -- Name: index_genes_on_concept_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_genes_on_concept_id ON public.genes USING btree (concept_id);
+CREATE UNIQUE INDEX index_genes_on_concept_id ON public.genes USING btree (upper((concept_id)::text));
 
 
 --
@@ -1870,6 +1877,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220523150744'),
 ('20220523183117'),
 ('20230104221712'),
-('20230110183235');
-
+('20230110183235'),
+('20230214150515');
 
