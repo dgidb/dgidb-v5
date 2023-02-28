@@ -22,14 +22,10 @@ export const Home: React.FC = () => {
 
   const handleSubmit = async () => {
     dispatch({type: ActionTypes.ContentPage})
-    if (state.interactionMode === 'categories') {
-      navigate('/categories');
-    } else {
-      navigate({
-        pathname: '/results',
-        search: `${createSearchParams({searchTerms: state.searchTerms.join(',')})}`,
-      });
-    }
+    navigate({
+      pathname: '/results',
+      search: `${createSearchParams({searchType: state.interactionMode, searchTerms: state.searchTerms.join(',')})}`,
+    });
   };
 
   const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
