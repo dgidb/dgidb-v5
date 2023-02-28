@@ -29,7 +29,7 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({res
     <Box display='flex' justifyContent='space-between'>
       <Box width={unmatchedTerms?.length > 0 ? '80%' : '100%'}>
         { ambiguousTerms?.length > 0 ? ambiguousTerms?.map((term: any) => {
-          return <AmbiguousResult ambiguousTermData={term} resultType={resultType}/>
+          return <AmbiguousResult key={term.searchTerm} ambiguousTermData={term} resultType={resultType}/>
         }) :
         <Box className='no-results-message'><h3>None of your search terms returned <em>ambiguous</em> matches.</h3></Box>
         }

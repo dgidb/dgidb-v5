@@ -27,7 +27,7 @@ export const Home: React.FC = () => {
     } else {
       navigate({
         pathname: '/results',
-        search: `?${createSearchParams({searchTerms: state.searchTerms.join(',')})}`,
+        search: `${createSearchParams({searchTerms: state.searchTerms.join(',')})}`,
       });
     }
   };
