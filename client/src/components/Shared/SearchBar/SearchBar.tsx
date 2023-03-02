@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -13,7 +13,6 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
-
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const [inputValue, setInputValue] = useState<any>('');

@@ -36,7 +36,7 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}
           <Select onChange={handleChange} 
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()} 
-            value={selectedTerm[0]} 
+            value={selectedTerm[0] || ''} 
             variant='standard' 
             label='Select...' 
             sx={{ m: 1, minWidth: 120 }}

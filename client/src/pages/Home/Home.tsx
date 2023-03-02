@@ -2,32 +2,31 @@
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
 import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
 import { queryClient } from 'providers/app';
 
 // styles
-import { Button, Switch } from 'antd';
-import SunIcon from 'components/Shared/SVG/SunIcon';
-import MoonIcon from 'components/Shared/SVG/MoonIcon';
+import { Button } from 'antd';
+// todo: introduce dark mode back later
+// import SunIcon from 'components/Shared/SVG/SunIcon';
+// import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
 
 export const Home: React.FC = () => {
 
   const {state, dispatch} = useContext(GlobalClientContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     dispatch({type: ActionTypes.ContentPage})
-    if (state.interactionMode === 'categories') {
-      navigate('/categories');
-    } else {
-      navigate('/results');
-    }
+    navigate({
+      pathname: '/results',
+      search: `${createSearchParams({searchType: state.interactionMode, searchTerms: state.searchTerms.join(',')})}`,
+    });
   };
-
-  const navigate = useNavigate();
 
   const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
   const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
@@ -117,6 +116,7 @@ export const Home: React.FC = () => {
         </span>
       </div>
 
+      {/* todo: introduce at a later date 
       <div className="darkmode-toggle">
         <Switch
           loading={isToggling}
@@ -125,7 +125,7 @@ export const Home: React.FC = () => {
           unCheckedChildren={<MoonIcon />}
           onChange={() => setIsToggling(true)}
         />
-      </div>
+      </div> */}
     </div>
     )
 }
