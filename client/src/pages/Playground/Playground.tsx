@@ -87,7 +87,7 @@ export const Playground = () => {
         </Collapse>
       </div>
       <div className="main">
-        <iframe id="playground" src={"https://pharos-api.ncats.io/graphql"} height="700" width="1500" />
+        <iframe id="playground" src={""} height="700" width="1500" />
       </div>
     </div>
   )
@@ -95,7 +95,8 @@ export const Playground = () => {
 
 function setQuery(newUrl: string) {
    var playgroundiframe = document.getElementById('playground') as HTMLImageElement | null;
-   const url = `https://pharos-api.ncats.io/graphql?query=${encodeURI(newUrl)}`;
+   //const url = `EXAMPLELINK/graphql?query=${encodeURI(newUrl)}`; // Link To be Replaced
+   const url = "";
    if(playgroundiframe != null) playgroundiframe.src = url;
 }
 
