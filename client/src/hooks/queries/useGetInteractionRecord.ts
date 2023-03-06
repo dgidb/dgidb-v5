@@ -3,7 +3,7 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from 'config';
 
 const getInteractionRecordQuery = gql`
-query interaction($id: String!) {
+query interaction($id: ID!) {
     interaction(id: $id) {
         gene {
             name
@@ -29,7 +29,7 @@ query interaction($id: String!) {
 `
 
 export function useGetInteractionRecord(id: string) {
-    return useQuery('interaction-record' + id, async () => {
+    return useQuery(id, async () => {
       const res = await graphQLClient.request(
         getInteractionRecordQuery,
         { id }
