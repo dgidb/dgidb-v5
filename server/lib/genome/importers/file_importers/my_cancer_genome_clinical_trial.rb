@@ -51,7 +51,7 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
           create_drug_claim_alias(drug_claim, row['Drug name'], DrugNomenclature::TRADE_NAME)
         end
         unless row['pubchem drug id'] == 'N/A'
-          create_drug_claim_alias(drug_claim, "pubchem.compound:{row['pubchem drug id']}",
+          create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['pubchem drug id']}",
                                   DrugNomenclature::PUBCHEM_COMPOUND_ID)
         end
         unless row['Other drug names'] == 'N/A'
