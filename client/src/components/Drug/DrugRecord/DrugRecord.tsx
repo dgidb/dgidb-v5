@@ -8,6 +8,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 // methods
 import { truncateDecimals } from 'utils/format';
@@ -24,6 +25,7 @@ import Table from '@mui/material/Table';
 // components
 import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
 import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
+import { Link } from '@mui/material';
 
 const DrugRecordTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
@@ -144,16 +146,16 @@ export const DrugRecord: React.FC = () => {
       ),
     },
     {
-      // TODO: THIS NEEDS IMPLEMENTED
-      name: "Active",
+      name: "Approval Ratings",
       sectionContent: (
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
+              {drugData?.drugApprovalRatings ? drugData?.drugApprovalRatings?.map((rating: any, i: number) => {
                 return (
-                  <TableRow key={category.name}>
-                    <TableCell className="attribute-name">{category.name}:</TableCell>
+                  <TableRow key={i}>
+                    <TableCell className="attribute-name">{rating.source.sourceDbName}</TableCell>
+                    <TableCell className="attribute-value">{rating.rating}</TableCell>
                   </TableRow>
                 )
                 }) : noData}
@@ -163,41 +165,29 @@ export const DrugRecord: React.FC = () => {
       ),
     },
     {
-      name: "Categories",
+      name: "FDA Applications",
       sectionContent: (
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
+              {drugData?.drugApplications ? drugData?.drugApplications?.map((app: any, i: number) => {
+                const appId = app.appNo.match(/\d+/)
+                const url = `https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=${appId}`
                 return (
-                  <TableRow key={category.name}>
-                    <TableCell className="attribute-name">{category.name}:</TableCell>
+                  <TableRow key={i}>
+                    <TableCell className="attribute-name">
+                      {
+                        <Link target="_blank" href={url}>{app.appNo} <LaunchIcon sx={{ fontSize: 13 }}/></Link>
+                      }
+                    </TableCell>
                   </TableRow>
                 )
-              }) : noData}
+                }) : noData}
             </TableBody>
           </Table>
         </Box>
       ),
-    },
-    {
-      name: "Publications",
-      sectionContent: (
-        <Box className="box-content publication-item">
-          <Table>
-            <TableBody>
-              {drugData?.geneClaims ? drugData?.geneClaims?.map((claim: any) => {
-                return (
-                  <TableRow key={claim?.source?.citation}>
-                    <TableCell className="attribute-name">{claim?.source?.citation}:</TableCell>
-                  </TableRow>
-                )
-              }) : noData}
-            </TableBody>
-          </Table>
-        </Box>
-      ),
-    },
+    }
   ]
 
   return drugData && (
