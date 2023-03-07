@@ -9,6 +9,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 // styles
 import { Tabs } from 'antd';
 import './CategoryResults.scss';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 
 export const CategoryResults: React.FC = () => {
 
@@ -27,6 +28,7 @@ export const CategoryResults: React.FC = () => {
     <div className="category-results-container">
       <Tabs defaultActiveKey="1" onChange={onChange}>
         <TabPane tab="Unique Matches" key="1">
+        <TableDownloader tableName='gene_category_results' vars={{names: state.searchTerms}}/>
         <div className="gene-categories">
             {genes?.map((gene: any) => {
               return (
