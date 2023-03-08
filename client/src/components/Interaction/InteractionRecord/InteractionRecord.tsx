@@ -25,80 +25,22 @@ export const InteractionRecord: React.FC = () => {
         </TableRow>
       );
 
-    // const sectionsMap = [
-    //     {
-    //       name: "Interaction Info",
-    //       sectionContent: (
-    //         <Box className="box-content">
-    //           <Table>
-    //             <TableBody>
-    //               {data?.geneAttributes.length
-    //                 ? data?.geneAttributes?.map((attribute: any) => {
-    //                     return (
-    //                       <TableRow key={attribute.name + " " + attribute.value}>
-    //                         <TableCell className="attribute-name">
-    //                           {attribute.name}:
-    //                         </TableCell>
-    //                         <TableCell className="attribute-value">
-    //                           {attribute.value}
-    //                         </TableCell>
-    //                       </TableRow>
-    //                     );
-    //                   })
-    //                 : noData}
-    //             </TableBody>
-    //           </Table>
-    //         </Box>
-    //       ),
-    //     },
-    //     {
-    //       name: "Categories",
-    //       sectionContent: (
-    //         <Box className="box-content">
-    //           <Table>
-    //             <TableBody>
-    //               {data?.geneCategories
-    //                 ? data?.geneCategories?.map((category: any) => {
-    //                     return (
-    //                       <TableRow key={category.name + " " + category.value}>
-    //                         <TableCell className="attribute-name">
-    //                           {category.name}
-    //                         </TableCell>
-    //                       </TableRow>
-    //                     );
-    //                   })
-    //                 : noData}
-    //             </TableBody>
-    //           </Table>
-    //         </Box>
-    //       ),
-    //     },
-    //     {
-    //       name: "Publications",
-    //       sectionContent: (
-    //         <Box className="box-content publication-item">
-    //           <Table>
-    //             <TableBody>
-    //               {data?.geneClaims
-    //                 ? data?.geneClaims?.map((claim: any, index: number) => {
-    //                     return (
-    //                       <TableRow key={index}>
-    //                         <TableCell className="attribute-name">
-    //                           {claim?.source?.citation}
-    //                         </TableCell>
-    //                       </TableRow>
-    //                     );
-    //                   })
-    //                 : noData}
-    //             </TableBody>
-    //           </Table>
-    //         </Box>
-    //       ),
-    //     },
-    //   ];
-
-
-    return(
-    <p>hello</p>
-    );
+    return (
+      <div>
+      <p>hello</p>
+      <Table>
+        <TableBody>
+          {noData}
+        </TableBody>
+      </Table>
+      </div>
+      );
 };
+
+export const InteractionRecordContainer: React.FC = () => {
+    return (
+      <>
+        <InteractionRecord />
+      </>
+    );
+  };
