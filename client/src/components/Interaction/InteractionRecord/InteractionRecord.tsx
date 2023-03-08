@@ -12,29 +12,146 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 
 
 
 export const InteractionRecord: React.FC = () => {
 
     const { data } = useGetInteractionRecord('f132437e-53e3-4ab3-98a2-b75608f43d4d');
-
     const noData = (
         <TableRow>
           <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
         </TableRow>
       );
 
-    return (
-      <div>
-      <p>hello</p>
-      <Table>
-        <TableBody>
-          {noData}
-        </TableBody>
-      </Table>
-      </div>
-      );
+    const sectionsMap = [
+      {
+        name: "Interaction Info",
+        sectionContent: (
+          <Box className="box-content">
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="attribute-name">
+                    Drug Name:
+                  </TableCell>
+                  <TableCell className="attribute-value">
+                    {data?.interaction?.drug?.name}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="attribute-name">
+                    Gene Name:
+                  </TableCell>
+                  <TableCell className="attribute-value">
+                    {data?.interaction?.gene?.name}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="attribute-name">
+                    Interaction Score:
+                  </TableCell>
+                  <TableCell className="attribute-value">
+                    {data?.interaction?.interactionScore}
+                  </TableCell>
+                </TableRow>
+
+                {data?.interaction?.interactionTypes.length
+                ? data?.interaction?.interactionTypes?.map((attribute: any) => {
+                    return (
+
+                      <TableRow key={"Directionality " + attribute.directionality}>
+                        <TableCell className="attribute-name">
+                          Type & Directionality:
+                        </TableCell>
+                        <TableCell className="attribute-value">
+                          {attribute.type} ({attribute.directionality})
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                : noData}
+              </TableBody>
+            </Table>
+          </Box>
+        ),
+      },
+      {
+        name: "Publications",
+        sectionContent: (
+          <Box className="box-content">
+            <Table>
+              <TableBody>
+                {data?.interaction?.publications
+                ? data?.interaction?.publications?.map((pmid: any, index: number) => {
+                  return(
+                    <TableRow key={index}>
+                      <TableCell className="attribute-name">
+                        {pmid?.citation} (PMID: {pmid?.pmid})
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              : noData}
+              </TableBody>
+            </Table>
+          </Box>
+        ),
+      },
+    ]
+
+    return data && (
+      <Box className="content gene-record-container">
+        <Box className="gene-record-header">
+          <Box className="symbol">{data?.interaction?.drug?.name} -{'>'} {data?.interaction?.gene?.name}</Box>
+          <Box className="concept-id">{data?.interaction?.drug?.conceptId} -{'>'} {data?.interaction?.gene?.conceptId}</Box>
+        </Box>
+        <Box display="flex">
+          <Box display="block" width="45%">
+            {sectionsMap.map((section) => {
+            return (
+              <Accordion key={section.name} defaultExpanded>
+                <AccordionSummary style={{padding: "0 10px", backgroundColor: "var(--background-light)",}} expandIcon={<ExpandMoreIcon />}>
+                  <h3><b>{section.name}</b></h3>
+                </AccordionSummary>
+                <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "5px",}}>
+                  {section.sectionContent}
+                </AccordionDetails>
+              </Accordion>
+            );
+            })}
+          </Box>
+          <Box ml={1} width="55%">
+            <Accordion defaultExpanded>
+              <AccordionSummary style={{padding: "0 10px", backgroundColor: "var(--background-light)",}} expandIcon={<ExpandMoreIcon/>}>
+                <h3><b>Interaction Attributes</b></h3>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Table>
+                  <TableBody>
+                    {data?.interaction?.interactionAttributes.length
+                    ? data?.interaction?.interactionAttributes?.map((attribute: any) => {
+                      return (
+                        <TableRow key={attribute.name + " " + attribute.value}>
+                          <TableCell className="attribute-name">
+                            {attribute.name}:
+                          </TableCell>
+                          <TableCell className="attribute-value">
+                            {attribute.value}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                    : noData}
+                  </TableBody>
+                </Table>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        </Box>
+      </Box>
+    );
 };
 
 export const InteractionRecordContainer: React.FC = () => {
