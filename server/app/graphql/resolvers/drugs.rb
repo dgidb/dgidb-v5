@@ -14,7 +14,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
   end
 
   option(:names, type: [String], description: 'Substring filtering on drug name.') do |scope, value|
-    scope.where(name: value)
+    scope.where(name: value.map(&:upcase))
   end
 
   option(:approved, type: Boolean, description: 'Filtering on approval status of drug.') do |scope, value|

@@ -77,4 +77,13 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
     expect(interaction['sources'].size).to eq 1
     expect(interaction['sources'][0]['fullName']).to eq @src.full_name
   end
+
+  it 'should search case insensitively' do
+    result = execute_graphql(query, variables: { names: [@drug.name.downcase] })
+    drugs = result['data']['drugs']['nodes']
+    expect(drugs.size).to eq 1
+
+    interactions = drugs[0]['interactions']
+    expect(interactions.size).to eq 1
+  end
 end
