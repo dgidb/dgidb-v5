@@ -22,7 +22,7 @@ import { ArrowRight } from "@mui/icons-material";
 
 export const InteractionRecord: React.FC = () => {
     const interactionId = useParams().id;
-    const { data } = useGetInteractionRecord(interactionId!); // TO DO: Replace testing ID with actual id f132437e-53e3-4ab3-98a2-b75608f43d4d
+    const { data } = useGetInteractionRecord(interactionId!);
     const noData = (
         <TableRow>
           <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
