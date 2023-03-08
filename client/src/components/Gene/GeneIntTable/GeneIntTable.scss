@@ -4,11 +4,15 @@
 }
 
 .table-header {
-  background-color: var(--soft-background);
+  background-color: var(--background-light);
   font-size: 16px;
 }
 
 .column-menu-button {
   visibility: visible !important;
   width: 35px !important;
+}
+
+.table-cell {
+  background-color: white;
 }
