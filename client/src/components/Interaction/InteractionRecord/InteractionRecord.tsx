@@ -106,8 +106,8 @@ export const InteractionRecord: React.FC = () => {
     ]
 
     return data && (
-      <Box className="content gene-record-container">
-        <Box className="gene-record-header">
+      <Box className="content interaction-record-container">
+        <Box className="interaction-record-header">
           <Box className="symbol">{data?.interaction?.drug?.name} <ArrowRightIcon/> {data?.interaction?.gene?.name}</Box>
         </Box>
         <Box display="flex">

@@ -1,7 +1,7 @@
-.gene-record-container {
+.interaction-record-container {
     padding: 20px;
 
-    .gene-record-header {
+    .interaction-record-header {
       display: flex;
       flex-direction: row;
       align-items: end; // isn't aligning name object correctly
@@ -59,19 +59,19 @@
 
     }
 
-    .gene-record-upper {
+    .interaction-record-upper {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       grid-column-gap: 15px;
       grid-row-gap: 0px;
       margin-bottom: 15px;
 
-      .gene-record-info {
+      .interaction-record-info {
         grid-area: 1 / 1 / 2 / 4;
         max-height: 400px;
         overflow: scroll;
       }
-      .gene-record-categories {
+      .interaction-record-categories {
         grid-area: 1 / 4 / 2 / 6;
         max-height: 400px;
         overflow: scroll;
@@ -79,24 +79,24 @@
 
     }
 
-    .gene-record-lower  {
+    .interaction-record-lower  {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       grid-template-rows: repeat(2, 1fr);
       grid-column-gap: 15px;
       grid-row-gap: 15px;
 
-      .gene-record-aliases {
+      .interaction-record-aliases {
         grid-area: 1 / 1 / 3 / 3;
         overflow: scroll;
         max-height: 500px;
       }
-      .gene-record-publications {
+      .interaction-record-publications {
         grid-area: 3 / 1 / 5 / 3;
         overflow: scroll;
         max-height: 500px;
       }
-      .gene-record-table {
+      .interaction-record-table {
         grid-area: 1 / 3 / 5 / 7;
       }
     }
