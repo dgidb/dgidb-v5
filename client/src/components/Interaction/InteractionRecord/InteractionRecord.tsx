@@ -13,7 +13,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { ArrowRight } from "@mui/icons-material";
 
@@ -21,7 +21,7 @@ import { ArrowRight } from "@mui/icons-material";
 
 export const InteractionRecord: React.FC = () => {
 
-    const { data } = useGetInteractionRecord('f132437e-53e3-4ab3-98a2-b75608f43d4d');
+    const { data } = useGetInteractionRecord('f132437e-53e3-4ab3-98a2-b75608f43d4d'); // TO DO: Replace testing ID with actual id
     const noData = (
         <TableRow>
           <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
@@ -40,15 +40,15 @@ export const InteractionRecord: React.FC = () => {
                     Drug Name:
                   </TableCell>
                   <TableCell className="attribute-value">
-                    {data?.interaction?.drug?.name}
+                    {data?.interaction?.drug?.name} ({data?.interaction?.drug?.conceptId})
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="attribute-name">
-                    Gene Name:
+                    Gene Symbol:
                   </TableCell>
                   <TableCell className="attribute-value">
-                    {data?.interaction?.gene?.name}
+                    {data?.interaction?.gene?.name} ({data?.interaction?.gene?.conceptId})
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -107,8 +107,7 @@ export const InteractionRecord: React.FC = () => {
     return data && (
       <Box className="content gene-record-container">
         <Box className="gene-record-header">
-          <Box className="symbol">{data?.interaction?.drug?.name} <ArrowRightAltIcon/> {data?.interaction?.gene?.name}</Box>
-          <Box className="concept-id">{data?.interaction?.drug?.conceptId} <ArrowRightAltIcon/> {data?.interaction?.gene?.conceptId}</Box>
+          <Box className="symbol">{data?.interaction?.drug?.name} <ArrowRightIcon/> {data?.interaction?.gene?.name}</Box>
         </Box>
         <Box display="flex">
           <Box display="block" width="45%">
