@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useGetInteractionRecord } from "hooks/queries/useGetInteractionRecord";
 
 // styles
+import "./InteractionRecord.scss";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
@@ -13,10 +14,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { ArrowRight } from "@mui/icons-material";
 
 
 
