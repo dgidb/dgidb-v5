@@ -2,3 +2,13 @@
   color: var(--logo-gradient-1) !important;
   margin-left: 10px;
 }
+
+.table-header {
+  background-color: var(--soft-background);
+  font-size: 16px;
+}
+
+.column-menu-button {
+  visibility: visible !important;
+  width: 35px !important;
+}

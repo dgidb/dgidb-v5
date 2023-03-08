@@ -86,6 +86,12 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
         columns={columns} 
         rows={rows} 
         density="comfortable"
+        pagination
+        pageSizeOptions={[25, 50, 100]}
+        classes={{columnHeader: 'table-header', row: 'table-row', menuIcon: 'column-menu-button'}}
+
+        rowSelection={false}
+        showColumnVerticalBorder
         />
         </Box>
     </Box>
