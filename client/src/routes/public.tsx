@@ -58,7 +58,15 @@ export const Routes = () => {
             }
           ]
         },
-        { path: '/interactions', element: <InteractionRecord />},
+        { path: '/interactions',
+          element: <InteractionRecord />,
+          children: [
+            {
+              path: ':id',
+              element: <InteractionRecord/>
+            }
+          ]
+        },
         { path: '/results', element: <Results /> },
         { path: '/categories', element: <CategoryResults /> },
         { path: '/browse/categories', element: <BrowseCategories /> },

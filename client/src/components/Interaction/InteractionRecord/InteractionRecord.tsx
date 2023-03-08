@@ -1,5 +1,6 @@
 // hooks / dependencies
 import React from "react";
+import { useParams } from "react-router-dom";
 import { useGetInteractionRecord } from "hooks/queries/useGetInteractionRecord";
 
 // styles
@@ -20,8 +21,8 @@ import { ArrowRight } from "@mui/icons-material";
 
 
 export const InteractionRecord: React.FC = () => {
-
-    const { data } = useGetInteractionRecord('f132437e-53e3-4ab3-98a2-b75608f43d4d'); // TO DO: Replace testing ID with actual id
+    const interactionId = useParams().id;
+    const { data } = useGetInteractionRecord(interactionId!); // TO DO: Replace testing ID with actual id f132437e-53e3-4ab3-98a2-b75608f43d4d
     const noData = (
         <TableRow>
           <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
@@ -60,7 +61,7 @@ export const InteractionRecord: React.FC = () => {
                   </TableCell>
                 </TableRow>
 
-                {data?.interaction?.interactionTypes.length
+                {data?.interaction?.interactionTypes
                 ? data?.interaction?.interactionTypes?.map((attribute: any) => {
                     return (
 
@@ -86,7 +87,7 @@ export const InteractionRecord: React.FC = () => {
           <Box className="box-content">
             <Table>
               <TableBody>
-                {data?.interaction?.publications
+                {data?.interaction?.publications.length
                 ? data?.interaction?.publications?.map((pmid: any, index: number) => {
                   return(
                     <TableRow key={index}>
