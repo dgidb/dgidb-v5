@@ -21,6 +21,7 @@ query interaction($id: ID!) {
         publications{
             id
             pmid
+            citation
         }
         interactionAttributes {
             name
