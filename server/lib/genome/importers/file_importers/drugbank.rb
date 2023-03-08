@@ -24,14 +24,18 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     def create_new_source
       @source ||= Source.create(
         {
-            base_url: 'https://go.drugbank.com/drugs',
-            site_url: 'https://go.drugbank.com/',
-            citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
-            source_db_version: '5.1.9',
-            source_db_name: 'DrugBank',
-            full_name: 'DrugBank - Open Data Drug & Drug Target Database',
-            license: 'Custom non-commercial',
-            license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
+          base_url: 'https://go.drugbank.com/drugs',
+          site_url: 'https://go.drugbank.com/',
+          citation: 'Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2018 Jan 4;46(D1):D1074-D1082. doi: 10.1093/nar/gkx1037. PMID: 29126136; PMCID: PMC5753335.',
+          citation_short: 'Wishart DS, et al. DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2018 Jan 4;46(D1):D1074-D1082.',
+          pmid: '29126136',
+          pmcid: 'PMC5753335',
+          doi: '10.1093/nar/gkx1037',
+          source_db_version: '5.1.9',
+          source_db_name: 'DrugBank',
+          full_name: 'DrugBank - Open Data Drug & Drug Target Database',
+          license: License::CUSTOM_NON_COMMERCIAL,
+          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -39,42 +43,52 @@ module Genome; module Importers; module FileImporters; module Drugbank;
     end
 
     def create_claims
-        run_parser
+      run_parser
 
-        @drug_filter.all_records.each do |record|
+      @drug_filter.all_records.each do |record|
+        # TODO: issue-142
+        next if record[1].strip == '' || !record[2].exclude?('n/a')
 
-            if record[2].exclude?"n/a"
-                gene_claim = create_gene_claim(record[2], 'DrugBank Gene Name')
+        unless record[2] == '' # TODO: issue-142
+          gene_claim = create_gene_claim(record[2], GeneNomenclature::NAME)
 
-                Hash[record[6].zip(record[5])].each do |nomen, syn|
-                  case nomen
-                  when 'UniProtKB'
-                    create_gene_claim_alias(gene_claim, "uniprot:#{syn}", 'UniProtKB ID')
-                  when 'UniProt Accession'
-                    create_gene_claim_alias(gene_claim, syn, 'UniProtKB Entry Name')
-                  when 'IUPHAR', 'Guide to Pharmacology'
-                    create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", 'GuideToPharmacology Target ID')
-                  when 'HUGO Gene Nomenclature Committee (HGNC)'
-                    create_gene_claim_alias(gene_claim, syn, 'HGNC ID')
-                  else
-                    create_gene_claim_alias(gene_claim, syn, nomen)
-                  end
-                end
-
-                drug_claim = create_drug_claim(record[1], 'DrugBank Drug Name')
-
-                create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", 'DrugBank ID')
-
-                interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-
-                create_interaction_claim_attribute(interaction_claim, 'Mechanism of Action', record[3])
-
-                record[4].each do |pmid|
-                    create_interaction_claim_publication(interaction_claim, pmid)
-                end
+          Hash[record[6].zip(record[5])].each do |nomen, syn|
+            case nomen
+            when 'UniProtKB'
+              create_gene_claim_alias(gene_claim, "uniprot:#{syn}", GeneNomenclature::UNIPROTKB_ID)
+            when 'UniProt Accession'
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::UNIPROTKB_NAME)
+            when 'IUPHAR', 'Guide to Pharmacology'
+              create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", GeneNomenclature::GTOP_ID)
+            when 'HUGO Gene Nomenclature Committee (HGNC)'
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::HGNC_ID)
+            else
+              case nomen
+              when 'GenAtlas'
+                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
+              when 'GenBank Protein Atlas'
+                create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
+              else
+                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
+              end
             end
+          end
         end
-        backfill_publication_information
+
+        drug_claim = create_drug_claim(record[1])
+        create_drug_claim_alias(drug_claim, "drugbank:#{record[0]}", DrugNomenclature::DRUGBANK_ID)
+        unless record[2] != ''
+          interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+          unless record[3] == 'n/a'
+            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::MOA, record[3])
+          end
+
+          record[4].each do |pmid|
+            create_interaction_claim_publication(interaction_claim, pmid)
+          end
+        end
+      end
+      backfill_publication_information
     end
   end
 
@@ -120,7 +134,9 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         when 'drugbank-id'
             if attrs['primary']
                 @drugbank_id_flag = true
-                @is_primary_drug = true
+                if @is_not_salts
+                    @is_primary_drug = true
+                end
             end
 
         when 'name'
@@ -185,14 +201,14 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         if @target_name_flag
             if @is_target
                 @target_name_flag = false
-                @current_target_name = string
+                @current_target_name = string unless string.strip == ""
             end
         end
 
         if target_action_flag
             if is_target
                 @target_action_flag = false
-                @current_target_action = string
+                @current_target_action = string unless string.strip == ""
             end
         end
 

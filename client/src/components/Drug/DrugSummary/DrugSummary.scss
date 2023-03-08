@@ -1,6 +1,5 @@
 .drug-summary-container {
   color: var(--text-content);
-  padding: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -22,6 +21,7 @@
       margin-right: 7px;
       padding: 10px;
       min-height: 400px;
+      width: 100px;
       flex-grow: 1;
 
       .interaction-count-header {
@@ -52,45 +52,60 @@
     .summary-infographic-container {
       border: 1px var(--text-content) solid;
       padding: 10px;
-      width: 70%;
+      width: 80%;
       justify-content: space-between;
       display: flex;
       flex-direction: column;
       height: 500px;
+
+      .tabbed-view {
+        align-items: flex-start !important;
+      }
 
       .chart-section {
         height: 100%;
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+
+        .ant-tabs {
+          width: 100%;
+        }
+
+        .ant-tabs-tabpane {
+          padding-left: 100px;
+          div {
+            canvas {
+              height: 500px !important;
+              width: 500px !important;
+            }
+          }
+        }
 
         .score-container {
-          height: 50%;
-          width: 50%;
+          padding-left: 10px;
         }
         .type-container {
-          height: 50%;
-          width: 50%;
+          padding-left: 10px;
         }
         .approval-container {
-          height: 50%;
-          width: 50%;
-        }
-
-        .gene-categories-container {
-          width: 40%;
+          padding-left: 10px;
         }
       }
-
-
 
       .chart-selector {
         display: flex;
         cursor: pointer;
         justify-content: space-between;
       }
-
     }
   }
+}
+
+canvas {
+  max-height: 400px !important;
+  max-width: 400px !important;
+  min-height: 300px !important;
+  min-width: 150px !important;
 }

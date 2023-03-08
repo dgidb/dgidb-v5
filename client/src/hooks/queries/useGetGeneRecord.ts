@@ -5,8 +5,8 @@ import { graphQLClient } from 'config';
 const getGeneRecordQuery = gql`
 query gene($name: String!) {
   gene(name: $name) {
+    conceptId
     geneAttributes {
-      geneId
       gene {
         longName
       }
@@ -29,7 +29,7 @@ query gene($name: String!) {
 `
 
 export function useGetGeneRecord(name: string) {
-  return useQuery('gene-record', async () => {
+  return useQuery('gene-record' + name, async () => {
     const res = await graphQLClient.request(
       getGeneRecordQuery,
       { name }

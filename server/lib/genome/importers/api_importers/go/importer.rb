@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Go;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'GO'
     end
 
@@ -16,11 +15,15 @@ module Genome; module Importers; module ApiImporters; module Go;
         {
           base_url: 'http://amigo.geneontology.org/amigo/gene_product/UniProtKB:',
           site_url: 'http://www.geneontology.org/',
-          citation: 'Gene ontology: tool for the unification of biology. The unification of biology. The Gene Ontology Consortium. Ashburner M, Ball CA, ..., Rubin GM, Sherlock G. Nat Genet. 2000 May;25(1):25-9. PMID: 10802651.',
-          source_db_version: @new_version,
+          citation: 'Gene Ontology Consortium. The Gene Ontology resource: enriching a GOld mine. Nucleic Acids Res. 2021 Jan 8;49(D1):D325-D334. doi: 10.1093/nar/gkaa1113. PMID: 33290552; PMCID: PMC7779012.',
+          citation_short: 'Gene Ontology Consortium. The Gene Ontology resource: enriching a GOld mine. Nucleic Acids Res. 2021 Jan 8;49(D1):D325-D334.',
+          pmid: '33290552',
+          pmcid: 'PMC7779012',
+          doi: '10.1093/nar/gkaa1113',
+          source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'The Gene Ontology',
-          license: 'Creative Commons Attribution 4.0 Unported License',
+          license: License::CC_ATT_4_0,
           license_link: 'http://geneontology.org/docs/go-citation-policy/'
         }
       )
@@ -45,16 +48,23 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def create_gene_claim_for_entry(gene, category)
-      gene_claim = create_gene_claim(gene['bioentity_label'], 'Gene Symbol')
+      return if gene['bioentity_label'].strip == ''
+
+      gene_claim = create_gene_claim(gene['bioentity_label'])
+      unless gene['bioentity_name'].include? 'Uncharacterized'
+        create_gene_claim_alias(gene_claim, gene['bioentity_name'], GeneNomenclature::NAME)
+      end
+
       unless gene['synonym'].nil?
         gene['synonym'].each do |synonym|
           if synonym.include? 'UniProtKB:'
-            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', 'uniprot'), 'UniProtKB ID')
+            create_gene_claim_alias(gene_claim, synonym.gsub('UniProtKB:', 'uniprot'), GeneNomenclature::UNIPROTKB_ID)
           else
-            create_gene_claim_alias(gene_claim, synonym, 'GO Gene Synonym')
+            create_gene_claim_alias(gene_claim, synonym, GeneNomenclature::SYNONYM)
           end
         end
       end
+
       create_gene_claim_category(gene_claim, category)
     end
 

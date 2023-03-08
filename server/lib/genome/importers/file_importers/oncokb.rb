@@ -23,7 +23,11 @@ module Genome; module Importers; module FileImporters; module Oncokb;
     def create_new_source
       @source ||= Source.create(
         base_url: 'https://www.oncokb.org',
-        citation: 'OncoKB: A Precision Oncology Knowledge Base. Chakravarty D, Gao J, Phillips S, et. al. JCO Precision Oncology 2017 :1, 1-16. PMID: 28890946',
+        citation: 'Chakravarty D, Gao J, Phillips SM, Kundra R, Zhang H, Wang J, Rudolph JE, Yaeger R, Soumerai T, Nissan MH, Chang MT, Chandarlapaty S, Traina TA, Paik PK, Ho AL, Hantash FM, Grupe A, Baxi SS, Callahan MK, Snyder A, Chi P, Danila D, Gounder M, Harding JJ, Hellmann MD, Iyer G, Janjigian Y, Kaley T, Levine DA, Lowery M, Omuro A, Postow MA, Rathkopf D, Shoushtari AN, Shukla N, Voss M, Paraiso E, Zehir A, Berger MF, Taylor BS, Saltz LB, Riely GJ, Ladanyi M, Hyman DM, Baselga J, Sabbatini P, Solit DB, Schultz N. OncoKB: A Precision Oncology Knowledge Base. JCO Precis Oncol. 2017 Jul;2017:PO.17.00011. doi: 10.1200/PO.17.00011. Epub 2017 May 16. PMID: 28890946; PMCID: PMC5586540.',
+        citation_short: 'Chakravarty D, et al. OncoKB: A Precision Oncology Knowledge Base. JCO Precis Oncol. 2017 Jul;2017:PO.17.00011.',
+        pmid: '28890946',
+        pmcid: 'PMC5586540',
+        doi: '10.1200/PO.17.00011',
         site_url: 'http://www.oncokb.org/',
         source_db_name: source_db_name,
         source_db_version: '23-July-2020',
@@ -38,7 +42,7 @@ module Genome; module Importers; module FileImporters; module Oncokb;
 
     def create_drug_claims
       CSV.foreach("#{@tsv_root}drug_claim.csv", headers: false, col_sep: ',') do |row|
-        dc = create_drug_claim(row[0], row[1])
+        dc = create_drug_claim(row[0])
         @drug_claims[row[0]] = dc
       end
     end
@@ -52,9 +56,11 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       end
       CSV.foreach("#{@tsv_root}gene_claim_aliases.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[0]]
+        next if gc.nil?
+
         case row[2]
         when 'OncoKB Entrez Id'
-          create_gene_claim_alias(gc, "ncbigene:#{row[1]}", 'NCBI Gene ID')
+          create_gene_claim_alias(gc, "ncbigene:#{row[1]}", GeneNomenclature::NCBI_ID)
         end
       end
     end
@@ -63,6 +69,8 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       CSV.foreach("#{@tsv_root}interaction_claim.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[1]]
         dc = @drug_claims[row[0]]
+        next if gc.nil? || dc.nil?
+
         ic = create_interaction_claim(gc, dc)
         @interaction_claims[[gc, dc]] = ic
 
@@ -70,12 +78,19 @@ module Genome; module Importers; module FileImporters; module Oncokb;
       CSV.foreach("#{@tsv_root}interaction_claim_attributes.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[3]]
         dc = @drug_claims[row[2]]
+        next if gc.nil? || dc.nil?
+
         ic = @interaction_claims[[gc, dc]]
-        create_interaction_claim_attribute(ic, row[0], row[1])
+
+        ica_name = row[0]
+        ica_name = InteractionAttributeName::COMBINATION if ica_name == 'combination therapy'
+        create_interaction_claim_attribute(ic, ica_name, row[1])
       end
       CSV.foreach("#{@tsv_root}interaction_claim_links.csv", headers: false, col_sep: ',') do |row|
         gc = @gene_claims[row[3]]
         dc = @drug_claims[row[2]]
+        next if gc.nil? || dc.nil?
+
         ic = @interaction_claims[[gc, dc]]
         create_interaction_claim_link(ic, row[0], row[1])
       end

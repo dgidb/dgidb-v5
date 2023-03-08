@@ -1,0 +1,23 @@
+.unmatched-terms {
+  height: fit-content;
+  background-color: var(--soft-background);
+  border: 2px solid var(--soft-background);
+  border-radius: 5px;
+  margin-left: 20px;
+  padding: 10px;
+}
+
+.unmatched-terms-list {
+  margin-left: 18px;
+}
+
+.accordion-summary {
+  margin: 0 !important;
+}
+
+.no-results-message {
+  padding: 10px;
+  background-color: var(--soft-background);
+  border: 2px solid var(--soft-background);
+  border-radius: 5px;
+}

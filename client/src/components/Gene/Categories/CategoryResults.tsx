@@ -17,7 +17,7 @@ export const CategoryResults: React.FC = () => {
   const { state } = useContext(GlobalClientContext);
   const { data } = useGetCategories(state.searchTerms);
 
-  const genes = data?.genes
+  const genes = data?.genes?.nodes
 
   const onChange = () => {
 

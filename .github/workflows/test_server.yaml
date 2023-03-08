@@ -1,0 +1,44 @@
+name: Backend checks
+on:
+  push:
+    branches: [ main, staging, dev ]
+  pull_request:
+    branches: [ main, staging, dev ]
+
+jobs:
+  tests:
+    name: Backend tests
+    runs-on: 'ubuntu-latest'
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: 'postgres'
+          POSTGRES_DB: 'dgidb_test'
+          POSTGRES_PASSWORD: 'ci'
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Set up Ruby'
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '3.1.2'
+          working-directory: ./server
+
+      - name: 'Set up DB'
+        env:
+          CI_BUILD: true
+          RAILS_ENV: test
+        run: bundle exec rails db:create db:structure:load
+        working-directory: ./server
+
+      - name: 'Run tests'
+        env:
+          CI_BUILD: true
+          RAILS_ENV: test
+        run: bundle exec rspec
+        working-directory: ./server

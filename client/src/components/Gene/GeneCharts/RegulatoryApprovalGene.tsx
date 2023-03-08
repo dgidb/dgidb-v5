@@ -61,7 +61,6 @@ export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
 
   const options = {
     responsive: true,
-    height: 500,
     plugins: {
       legend: {
         display: true,
