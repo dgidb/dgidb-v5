@@ -13,6 +13,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { ArrowRight } from "@mui/icons-material";
 
 
 
@@ -104,8 +107,8 @@ export const InteractionRecord: React.FC = () => {
     return data && (
       <Box className="content gene-record-container">
         <Box className="gene-record-header">
-          <Box className="symbol">{data?.interaction?.drug?.name} -{'>'} {data?.interaction?.gene?.name}</Box>
-          <Box className="concept-id">{data?.interaction?.drug?.conceptId} -{'>'} {data?.interaction?.gene?.conceptId}</Box>
+          <Box className="symbol">{data?.interaction?.drug?.name} <ArrowRightAltIcon/> {data?.interaction?.gene?.name}</Box>
+          <Box className="concept-id">{data?.interaction?.drug?.conceptId} <ArrowRightAltIcon/> {data?.interaction?.gene?.conceptId}</Box>
         </Box>
         <Box display="flex">
           <Box display="block" width="45%">
