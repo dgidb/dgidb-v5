@@ -7,9 +7,11 @@ query interaction($id: ID!) {
     interaction(id: $id) {
         gene {
             name
+            conceptId
         }
         drug {
             name
+            conceptId
         }
         interactionTypes{
             directionality
