@@ -17,53 +17,52 @@ const defaultStyle = {
 
 // queries
 const query1 = `
-query targetDetails{
-  target(q:{sym:"ACE2"}) {
-    name
-    tdl
-    fam
-    sym
-    description
-    novelty
+{
+  drugs(name: ["DOVITINIB"]) {
+    interactions {
+      gene {
+        name
+      }
+      drug {
+        name
+      }
+      interactionScore
+      interactionTypes {
+        type
+        directionality
+      }
+    }
   }
 }`;
 
 const query2 = `
-query diseaseDetails{
-  disease(name:"asthma"){
-    name
-    mondoDescription
-    uniprotDescription
-    doDescription
-    targetCounts {
-      name
-      value
-    }
-    children {
-      name
-      mondoDescription
+{
+  genes(name: ["INSR"]) {
+    interactions {
+      gene {
+        name
+      }
+      drug {
+        name
+      }
+      interactionScore
+      interactionTypes {
+        type
+        directionality
+      }
     }
   }
 }`;
 
 const query3 = `
-query ligandDetails{
-  ligand(ligid: "haloperidol") {
+{
+  drugs(name: ["DOVITINIB"]) {
     name
-    description
-    isdrug
-    synonyms {
-      name
-      value
-    }
-    smiles
-    activities {
-      target {
-        sym
-      }
-      type
-      value
-    }
+    id
+    conceptId
+    approved
+    immunotherapy
+    antiNeoplastic
   }
 }`;
 
