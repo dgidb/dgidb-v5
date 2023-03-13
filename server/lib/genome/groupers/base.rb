@@ -1,7 +1,7 @@
 module Genome
   module Groupers
     # Provides some shared methods for groupers, shouldn't be directly instantiated.
-    class Base
+    class Base < Genome::DataImporter
       # Sends an empty query to concept normalizer to retrieve the service's version
       def retrieve_normalizer_version
         response = retrieve_normalizer_response('')
@@ -61,7 +61,7 @@ module Genome
       end
 
       def retrieve_normalizer_response(term)
-        body = fetch_json_response("#{@normalizer_url_root}normalize?q=#{term}")
+        body = fetch_json_response("#{@normalizer_url_root}normalize?q=#{CGI.escape(term)}")
         @term_to_match_dict[term.upcase] = get_concept_id(body) unless term == '' || body.nil?
 
         body
@@ -72,7 +72,7 @@ module Genome
       end
 
       def retrieve_normalizer_data(term)
-        body = fetch_json_response("#{@normalizer_url_root}normalize_unmerged?q=#{term}")
+        body = fetch_json_response("#{@normalizer_url_root}normalize_unmerged?q=#{CGI.escape(term)}")
         body['source_matches']
       end
     end

@@ -28,19 +28,33 @@ module Genome
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
 
+        set_response_structure
         create_sources
 
-        claims.each do |drug_claim|
+        claims.tqdm.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
           if normalized_drug.is_a? String
             normalized_id = normalized_drug
           else
-            normalized_id = normalized_drug['therapy_descriptor']['therapy_id']
-            create_new_drug(normalized_drug['therapy_descriptor']) if Drug.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_drug[@descriptor_name][@id_name]
+            create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
+        end
+      end
+
+      def set_response_structure
+        url = URI("#{@normalizer_url_root}search?q=")
+        body = fetch_json_response(url)
+        version = body['service_meta_']['version']
+        if version < '0.4.0'
+          @descriptor_name = 'therapy_descriptor'
+          @id_name = 'therapy_id'
+        else
+          @descriptor_name = 'therapeutic_descriptor'
+          @id_name = 'therapeutic'
         end
       end
 
@@ -54,7 +68,11 @@ module Genome
           source_db_version: source_meta['RxNorm']['version'],
           base_url: 'https://rxnav.nlm.nih.gov/REST/rxcui/rxcui/allrelated.xml',
           site_url: 'https://www.nlm.nih.gov/research/umls/rxnorm/overview.html',
-          citation: 'Nelson SJ, Zeng K, Kilbourne J, Powell T, Moore R. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4)441-8. doi: 10.1136/amiajnl-2011-000116. Epub 2011 Apr 21. PubMed PMID: 21515544; PubMed Central PMCID: PMC3128404.',
+          citation: 'Nelson SJ, Zeng K, Kilbourne J, Powell T, Moore R. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4):441-8. doi: 10.1136/amiajnl-2011-000116. Epub 2011 Apr 21. PMID: 21515544; PMCID: PMC3128404.',
+          citation_short: 'Nelson SJ, et al. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4):441-8.',
+          pmid: '21515544',
+          pmcid: 'PMC3128404',
+          doi: '10.1136/amiajnl-2011-000116',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'RxNorm',
           license: 'Custom; UMLS Metathesaurus',
@@ -65,11 +83,14 @@ module Genome
           source_db_version: source_meta['NCIt']['version'],
           base_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=',
           site_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/pages/home.jsf',
-          citation: 'Nicholas Sioutos, Sherri de Coronado, Margaret W. Haber, Frank W. Hartel, Wen-Ling Shaiu, and Lawrence W. Wright. 2007. NCI Thesaurus: A semantic model integrating cancer-related clinical and molecular information. J. of Biomedical Informatics 40, 1 (February, 2007), 30–43. https://doi.org/10.1016/j.jbi.2006.02.013',
+          citation: 'Sioutos N, de Coronado S, Haber MW, Hartel FW, Shaiu WL, Wright LW. NCI Thesaurus: a semantic model integrating cancer-related clinical and molecular information. J Biomed Inform. 2007 Feb;40(1):30-43. doi: 10.1016/j.jbi.2006.02.013. Epub 2006 Mar 15. PMID: 16697710.',
+          citation_short: 'Sioutos N, et al. NCI Thesaurus: a semantic model integrating cancer-related clinical and molecular information. J Biomed Inform. 2007 Feb;40(1):30-43.',
+          pmid: '16697710',
+          doi: '10.1016/j.jbi.2006.02.013',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'National Cancer Institute Thesaurus',
-          license: source_meta['NCIt']['data_license'],
-          license_link: source_meta['NCIt']['data_license_url']
+          license: License::CC_BY_4_0,
+          license_link: 'https://evs.nci.nih.gov/license'
         ).first_or_create
         hemonc = Source.where(
           source_db_name: 'HemOnc',
@@ -77,10 +98,14 @@ module Genome
           base_url: 'https://hemonc.org',
           site_url: 'https://hemonc.org',
           citation: 'Warner JL, Dymshyts D, Reich CG, Gurley MJ, Hochheiser H, Moldwin ZH, Belenkaya R, Williams AE, Yang PC. HemOnc: A new standard vocabulary for chemotherapy regimen representation in the OMOP common data model. J Biomed Inform. 2019 Aug;96:103239. doi: 10.1016/j.jbi.2019.103239. Epub 2019 Jun 22. PMID: 31238109; PMCID: PMC6697579.',
+          citation_short: 'Warner JL, et al. HemOnc: A new standard vocabulary for chemotherapy regimen representation in the OMOP common data model. J Biomed Inform. 2019 Aug;96:103239.',
+          pmid: '31238109',
+          pmcid: 'PMC6697579',
+          doi: '10.1016/j.jbi.2019.103239',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'HemOnc.org - A Free Hematology/Oncology Reference',
-          license: source_meta['HemOnc']['data_license'],
-          license_link: source_meta['HemOnc']['data_license_url']
+          license: License::CC_BY_3_0,
+          license_link: 'https://hemonc.org/wiki/Help:Contents'
         ).first_or_create
         drugsatfda = Source.where(
           source_db_name: 'Drugs@FDA',
@@ -88,10 +113,11 @@ module Genome
           base_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
           site_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
           citation: 'Center for Drug Evaluation and Research (U.S.). 2004. Drugs@FDA. Washington D.C.: U.S. Food and Drug Administration, Center for Drug and Evaluation Research. http://www.accessdata.fda.gov/scripts/cder/drugsatfda/.',
+          citation_short: 'Center for Drug Evaluation and Research (U.S.). 2004. Drugs@FDA. Washington D.C.: U.S. Food and Drug Administration, Center for Drug and Evaluation Research. http://www.accessdata.fda.gov/scripts/cder/drugsatfda/.',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'Drugs@FDA',
-          license: source_meta['DrugsAtFDA']['data_license'],
-          license_link: source_meta['DrugsAtFDA']['data_license_url']
+          license: License::CC0_1_0,
+          license_link: 'https://open.fda.gov/license/'
         ).first_or_create
         chemidplus = Source.where(
           source_db_name: 'ChemIDplus',
@@ -109,11 +135,13 @@ module Genome
           source_db_version: source_meta['Wikidata']['version'],
           base_url: 'https://www.wikidata.org/wiki/',
           site_url: 'https://www.wikidata.org/',
-          citation: 'Denny Vrandečić and Markus Krötzsch. 2014. Wikidata: a free collaborative knowledgebase. Commun. ACM 57, 10 (October 2014), 78–85. https://doi.org/10.1145/2629489',
+          citation: 'Vrandečić D, Krötzsch M. Wikidata. Communications of the ACM. 2014;57(10):78–85.',
+          citation_short: 'Vrandečić D, Krötzsch M. Wikidata. Communications of the ACM. 2014;57(10):78–85.',
+          doi: '10.1145/2629489',
           source_trust_level_id: SourceTrustLevel.NON_CURATED,
           full_name: 'Wikidata',
-          license: source_meta['Wikidata']['data_license'],
-          license_link: source_meta['Wikidata']['data_license_url']
+          license: License::CC0_1_0,
+          license_link: 'https://www.wikidata.org/wiki/Wikidata:Licensing'
         ).first_or_create
 
         [rxnorm, ncit, hemonc, drugsatfda, chemidplus, wikidata].each do |source|
@@ -134,25 +162,25 @@ module Genome
       end
 
       def get_concept_id(response)
-        response['therapy_descriptor']['therapy_id'] unless response['match_type'].zero?
+        response[@descriptor_name][@id_name] unless response['match_type'].zero?
       end
 
       def produce_concept_id_nomenclature(concept_id)
         case concept_id
         when /rxcui:/
-          'RxNorm ID'
+          DrugNomenclature::RXNORM_ID
         when /ncit:/
-          'NCIt Drug ID'
+          DrugNomenclature::NCIT_ID
         when /hemonc:/
-          'HemOnc Drug ID'
+          DrugNomenclature::HEMONC_ID
         when /drugsatfda/
-          'Drugs@FDA ID'
+          DrugNomenclature::DRUGSATFDA_ID
         when /chemidplus/
-          'ChemIDplus ID'
+          DrugNomenclature::CHEMIDPLUS_ID
         when /wikidata/
-          'Wikidata Drug ID'
+          DrugNomenclature::WIKIDATA_ID
         else
-          'Concept ID'
+          DrugNomenclature::CONCEPT_ID
         end
       end
 
@@ -205,14 +233,14 @@ module Genome
         end
 
         record.fetch('approval_year', []).to_set.each do |year|
-          DrugClaimAttribute.create(name: 'Year of Approval', value: year, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::APPROVAL_YEAR, value: year, drug_claim_id: claim.id)
         end
 
         indications = record.fetch('has_indication')
         return unless indications.nil?
 
         indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
-          DrugClaimAttribute.create(name: 'Drug Indications', value: indication, drug_claim_id: claim.id)
+          DrugClaimAttribute.create(name: DrugAttributeName::INDICATION, value: indication, drug_claim_id: claim.id)
         end
       end
 
@@ -241,24 +269,24 @@ module Genome
         end
 
         unless record['label'].nil? || record['label'] == claim_name
-          add_grouper_claim_alias(record['label'], claim_name, claim.id, 'Primary Drug Name')
+          add_grouper_claim_alias(record['label'], claim_name, claim.id, DrugNomenclature::PRIMARY_NAME)
         end
 
         prune_alias_list(record.fetch('aliases', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Alias')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::ALIAS)
         end
 
         prune_alias_list(record.fetch('trade_names', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Trade Name')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::TRADE_NAME)
         end
 
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
-          add_grouper_claim_alias(value, claim_name, claim.id, 'Xref')
+          add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::XREF)
         end
       end
 
       def add_grouper_data(drug, descriptor)
-        drug_data = retrieve_normalizer_data(descriptor['therapy_id'])
+        drug_data = retrieve_normalizer_data(descriptor[@id_name])
 
         drug_data.each do |source_name, source_data|
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
@@ -276,11 +304,11 @@ module Genome
 
       def create_new_drug(descriptor)
         name = if descriptor.fetch('label').blank?
-                 descriptor['therapy_id']
+                 descriptor[@id_name]
                else
                  descriptor['label']
                end
-        drug = Drug.where(concept_id: descriptor['therapy_id'], name: name.upcase).first_or_create
+        drug = Drug.where(concept_id: descriptor[@id_name], name: name.upcase).first_or_create
 
         add_grouper_data(drug, descriptor)
       end

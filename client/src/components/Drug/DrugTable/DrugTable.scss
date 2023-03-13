@@ -1,6 +1,5 @@
 .interaction-table-container {
-  color: var(--text-content);
-  padding: 20px;
+  padding-top: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -18,19 +17,10 @@
 }
 
 .ant-table {
-  background-color: var(--background);
   color: var(--text-content);
-
-  &:hover {
-    background-color: var(--background);
-  }
 }
 
 .ant-table-thead tr th, .ant-table-tbody tr.ant-table-row:hover td {
   background-color: var(--background-light);
   color: var(--text-content);
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }

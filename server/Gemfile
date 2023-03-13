@@ -41,6 +41,7 @@ gem 'nokogiri', '>= 1.13.2'
 
 # Importer dependencies
 gem 'graphql-client'
+gem 'tqdm'
 
 # loading workaround until we update rails to 7
 gem 'net-smtp', require: false

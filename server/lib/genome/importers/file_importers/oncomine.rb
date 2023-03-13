@@ -17,6 +17,7 @@ module Genome; module Importers; module FileImporters; module Oncomine;
         {
           base_url: 'https://assets.thermofisher.com/TFS-Assets/LSG/brochures/oncomine-comprehensive-assay-v3-flyer.pdf',
           citation: '"Oncomine Comprehensive Assay v3.", Thermo Fisher Scientific Inc. Accessed 8 Sep 2020. https://assets.thermofisher.com/TFS-Assets/LSG/brochures/oncomine-comprehensive-assay-v3-flyer.pdf',
+          citation_short: '"Oncomine Comprehensive Assay v3.", Thermo Fisher Scientific Inc. Accessed 8 Sep 2020. https://assets.thermofisher.com/TFS-Assets/LSG/brochures/oncomine-comprehensive-assay-v3-flyer.pdf',
           site_url: 'https://www.thermofisher.com/us/en/home.html',
           source_db_version: 'v3',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
@@ -32,7 +33,7 @@ module Genome; module Importers; module FileImporters; module Oncomine;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['Gene'], 'Gene Symbol')
+        gene_claim = create_gene_claim(row['Gene'])
         create_gene_claim_category(gene_claim, 'CLINICALLY ACTIONABLE')
       end
     end

@@ -19,7 +19,11 @@ module Genome; module Importers; module FileImporters; module MskImpact;
         {
           base_url: 'http://www.ncbi.nlm.nih.gov/pubmed/25801821',
           site_url: 'https://www.mskcc.org/msk-impact',
-          citation: 'Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology. Cheng, Donavan T., et al. The Journal of Molecular Diagnostics 17.3 (2015): 251-264. PMID: 25801821',
+          citation: "Cheng DT, Mitchell TN, Zehir A, Shah RH, Benayed R, Syed A, Chandramohan R, Liu ZY, Won HH, Scott SN, Brannon AR, O'Reilly C, Sadowska J, Casanova J, Yannes A, Hechtman JF, Yao J, Song W, Ross DS, Oultache A, Dogan S, Borsu L, Hameed M, Nafa K, Arcila ME, Ladanyi M, Berger MF. Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology. J Mol Diagn. 2015 May;17(3):251-64. doi: 10.1016/j.jmoldx.2014.12.006. Epub 2015 Mar 20. PMID: 25801821; PMCID: PMC5808190.",
+          citation_short: "Cheng DT, et al. Memorial Sloan Kettering-Integrated Mutation Profiling of Actionable Cancer Targets (MSK-IMPACT): A Hybridization Capture-Based Next-Generation Sequencing Clinical Assay for Solid Tumor Molecular Oncology. J Mol Diagn. 2015 May;17(3):251-64.",
+          pmid: '25801821',
+          pmcid: 'PMC5808190',
+          doi: '10.1016/j.jmoldx.2014.12.006',
           source_db_version: 'May-2015',
           source_db_name: source_db_name,
           full_name: 'Memorial Sloan Kettering IMPACT',
@@ -34,7 +38,7 @@ module Genome; module Importers; module FileImporters; module MskImpact;
 
     def create_gene_claims
       CSV.foreach(file_path, headers: true) do |row|
-        gene_claim = create_gene_claim(row['gene_symbol'], 'Gene Symbol')
+        gene_claim = create_gene_claim(row['gene_symbol'])
         create_gene_claim_category(gene_claim, 'CLINICALLY ACTIONABLE')
       end
     end

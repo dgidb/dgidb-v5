@@ -9,6 +9,8 @@ class Drug < ::ActiveRecord::Base
   has_many :drug_applications
   has_many :drug_approval_ratings
 
+  validates :concept_id, presence: true, uniqueness: {case_sensitive: false}
+
   before_create :populate_flags
 
   cache_query :all_drug_names, :all_drug_names

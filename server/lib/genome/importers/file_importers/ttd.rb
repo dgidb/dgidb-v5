@@ -22,7 +22,11 @@ module Genome; module Importers; module FileImporters; module Ttd;
         {
           base_url: 'http://db.idrblab.net/ttd/',
           site_url: 'http://bidd.nus.edu.sg/group/cjttd/',
-          citation: 'Wang,Y., Zhang,S., Li,F., Zhou,Y., Zhang,Y., Wang,Z., Zhang,R., Zhu,J., Ren,Y., Tan,Y., et al. (2020) Therapeutic target database 2020: enriched resource for facilitating research and early development of targeted therapeutics. Nucleic Acids Res., 48, D1031–D1041. PMID: 31691823',
+          citation: 'Wang Y, Zhang S, Li F, Zhou Y, Zhang Y, Wang Z, Zhang R, Zhu J, Ren Y, Tan Y, Qin C, Li Y, Li X, Chen Y, Zhu F. Therapeutic target database 2020: enriched resource for facilitating research and early development of targeted therapeutics. Nucleic Acids Res. 2020 Jan 8;48(D1):D1031-D1041. doi: 10.1093/nar/gkz981. PMID: 31691823; PMCID: PMC7145558.',
+          citation_short: 'Wang Y, et al. Therapeutic target database 2020: enriched resource for facilitating research and early development of targeted therapeutics. Nucleic Acids Res. 2020 Jan 8;48(D1):D1031-D1041.',
+          pmid: '31691823',
+          pmcid: 'PMC7145558',
+          doi: '10.1093/nar/gkz981',
           source_db_version: '2020.06.01',
           source_db_name: source_db_name,
           full_name: 'Therapeutic Target Database',
@@ -43,12 +47,12 @@ module Genome; module Importers; module FileImporters; module Ttd;
 
         gene_name, gene_abbreviation = row['Target_Name'].split(' (', 2)
         gene_abbreviation.sub!(')', '')
-        gene_claim = create_gene_claim(gene_name, 'TTD Target Name')
-        create_gene_claim_alias(gene_claim, gene_abbreviation, 'TTD Gene Abbreviation')
-        create_gene_claim_alias(gene_claim, row['TargetID'], 'TTD Target ID')
+        gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
+        create_gene_claim_alias(gene_claim, gene_abbreviation, GeneNomenclature::SYMBOL)
+        create_gene_claim_alias(gene_claim, row['TargetID'], GeneNomenclature::TTD_ID)
 
-        drug_claim = create_drug_claim(row['Drug_Name'].gsub(/\A"|"\Z/, ''), 'TTD Drug Name')
-        create_drug_claim_alias(drug_claim, row['DrugID'], 'TTD Drug ID')
+        drug_claim = create_drug_claim(row['Drug_Name'].gsub(/\A"|"\Z/, ''), DrugNomenclature::PRIMARY_NAME)
+        create_drug_claim_alias(drug_claim, row['DrugID'], DrugNomenclature::TTD_ID)
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         if !row['MOA'].nil? && !row['MOA'] == '.'

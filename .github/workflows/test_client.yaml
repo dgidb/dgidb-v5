@@ -1,4 +1,4 @@
-name: Test build client
+name: Frontend checks
 on:
   push:
     branches-ignore:
@@ -7,13 +7,13 @@ on:
       - staging
 jobs:
   test_build:
-    name: test client build
+    name: Test client build
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./client
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install dependencies
         run: yarn install
       - name: build

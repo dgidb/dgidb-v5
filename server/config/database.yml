@@ -29,3 +29,7 @@ test:
   <<: *default
   database: dgidb_test
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+  <% if ENV['CI_BUILD'] %>
+  username: postgres
+  password: 'ci'
+  <% end %>

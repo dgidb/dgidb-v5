@@ -4,10 +4,15 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
+    include Types::Queries::GeneLookupQuery
+    include Types::Queries::DrugLookupQuery
+
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
+    field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
+
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -54,33 +59,6 @@ module Types
       Gene.find_by(name: name)
     end
 
-    field :drug, Types::DrugType, null: true do
-      description "A drug"
-      argument :name, String, required: true
-    end
-
-    def drug(name: )
-      Drug.find_by(name: name)
-    end
-
-    field :genes, [Types::GeneType], null: false do
-      description "A gene"
-      argument :name, [String], required: true
-    end
-
-    def genes(name: )
-      Gene.where(name: name)
-    end
-
-    field :drugs, [Types::DrugType], null: false do
-      description "Drugs"
-      argument :name, [String], required: true
-    end
-
-    def drugs(name: )
-      Drug.where(name: name)
-    end
-
     field :gene_alias, Types::GeneAliasType, null: true do
       description "Alias for a gene"
       argument :id, String, required: true
@@ -118,12 +96,13 @@ module Types
     end
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
-      description "Category for a drug claim"
-      argument :source_db_name, String, required: true
+      description "Category for a gene claim"
+      argument :name, String, required: true
     end
 
-    def gene_claim_category(source_db_name: )
-      GeneClaimCategory.find_by(source: source)
+    def gene_claim_category(name: )
+      context.scoped_set!(:category_name, name)
+      GeneClaimCategory.find_by(name: name)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do
@@ -171,13 +150,31 @@ module Types
       DrugClaim.find_by(id: id)
     end
 
-    field :drug, Types::DrugType, null: true do
-      description "A drug"
+    field :drug_application, Types::DrugApplicationType, null: true do
+      description "Drug application"
       argument :id, ID, required: true
     end
 
-    def drug(id:)
-      Drug.find_by(id: id)
+    def drug_application(id:)
+      DrugApplication.find_by(id: id)
+    end
+
+    field :drug_approval_rating, Types::DrugApprovalRatingType, null: true do
+      description "Drug approval rating"
+      argument :id, ID, required: true
+    end
+
+    def drug_approval_rating(id:)
+      DrugApprovalRating.find_by(id: id)
+    end
+
+    field :drug, Types::DrugType, null: true do
+      description "A drug"
+      argument :name, String, required: true
+    end
+
+    def drug(name: )
+      Drug.find_by(name: name)
     end
 
     field :interaction_attribute, Types::InteractionAttributeType, null: true do

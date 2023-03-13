@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext, SetStateAction} from 'react';
+import React, { useState, useEffect, useContext, SetStateAction } from 'react';
 import { useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import {
@@ -12,13 +12,16 @@ import {
   Legend,
 } from 'chart.js';
 
-import { InteractionTypeDrug } from 'components/Drug/DrugCharts'
+import { InteractionTypeDrug, RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
 import './DrugSummary.scss';
-import { RegulatoryApprovalDrug } from '../DrugCharts/RegulatoryApprovalDrug';
+import { Tabs } from 'antd';
+import { DrugTable } from 'components/Drug/DrugTable';
+import Box from '@mui/material/Box';
+const { TabPane } = Tabs;
 
 ChartJS.register(
   CategoryScale,
@@ -30,99 +33,146 @@ ChartJS.register(
 );
 
 interface CountProps {
-  setChartData: React.Dispatch<SetStateAction<any[]>>
+  setChartData: React.Dispatch<SetStateAction<any[]>>;
 }
 
-const InteractionCountDrug: React.FC<CountProps> = ({setChartData}) => {
+const InteractionCountDrug: React.FC<CountProps> = ({ setChartData }) => {
   const { state } = useContext(GlobalClientContext);
   const { data } = useGetInteractionsByDrugs(state.searchTerms);
-  const [filterBy, setFilterBy]= useState<string>('')
+  const [filterBy, setFilterBy] = useState<string>('');
 
-  let drugs = data?.drugs;
+  let drugs = data?.drugs?.nodes;
 
   const toggleFilter = (drugName: string) => {
-    if (filterBy === drugName){
-      setChartData(drugs)
-      setFilterBy('')
+    if (filterBy === drugName) {
+      setChartData(drugs);
+      setFilterBy('');
     } else {
-      let drug = drugs.find((drug: any) => drug.interactions[0]?.drug?.name === drugName);
+      let drug = drugs.find(
+        (drug: any) => drug.interactions[0]?.drug?.name === drugName
+      );
       setChartData([drug]);
-      setFilterBy(drugName)
+      setFilterBy(drugName);
     }
-  }
+  };
 
   return (
-    <div className="interaction-count-container">
-      <div className="interaction-count-header">
-        <div className="interaction-count-drug"><b>Drug</b></div>
-        <div className="interaction-count"><b>Interactions</b></div>
+    <div className='interaction-count-container'>
+      <div className='interaction-count-header'>
+        <div className='interaction-count-drug'>
+          <h2>
+            <b>Drug</b>
+          </h2>
+        </div>
+        <h2>
+          <b>Interactions</b>
+        </h2>
       </div>
       {drugs?.map((drug: any) => {
         return (
-          <div className={`interaction-count-row ${filterBy === drug.interactions[0]?.drug?.name ? 'filtered-by' : null}`} onClick={() => toggleFilter(drug.interactions[0]?.drug?.name)}>
-            <div className="interaction-count-drug">{drug.interactions[0].drug.name}</div>
-            <div className="interaction-count">{drug.interactions.length}</div>
+          <div
+            className={`interaction-count-row ${
+              filterBy === drug.interactions[0]?.drug?.name
+                ? 'filtered-by'
+                : null
+            }`}
+            onClick={() => toggleFilter(drug.interactions[0]?.drug?.name)}
+          >
+            <div className='interaction-count-drug'>
+              {drug.interactions[0].drug.name}
+            </div>
+            <div className='interaction-count'>{drug.interactions.length}</div>
           </div>
-          )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 interface InfoProps {
-  chartData: any
+  chartData: any;
 }
 
-const SummaryInfoDrug: React.FC<InfoProps> = ({chartData}) => {
+const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
+  const [windowSize, setWindowSize] = useState(getWindowSize());
 
-  const [chartType, setChartType] = useState('categories')
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+    window.addEventListener('resize', handleWindowResize);
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
 
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
   return (
-    <div className="summary-infographic-container">
-      <h4>Summary Infographics</h4>
+    <div className='summary-infographic-container'>
+      <h2>Infographics</h2>
+      {getWindowSize().innerWidth >= 1550 ? (
+      <div className='chart-section'>
+        <InteractionTypeDrug data={chartData} />
+        <DirectionalityDrug data={chartData} />
+        <GeneCategories data={chartData} />
+      </div> ) : (
+        <div className='chart-section tabbed-view'>
+          <Tabs defaultActiveKey='1' type='card' tabPosition='left'>
+          <TabPane tab='Interaction Type' key='1'>
+              <InteractionTypeDrug data={chartData} />
+            </TabPane>
+            <TabPane tab='Directionality' key='2'>
+              <DirectionalityDrug data={chartData} />
+            </TabPane>
+            <TabPane tab='Categories' key='3'>
+              <GeneCategories data={chartData} />
+            </TabPane>
+          </Tabs>
+        </div>
+      )}
 
-      <div className="chart-section">
-        {chartType === 'categories' && <GeneCategories data={chartData} />}
-        {chartType === 'type' && <InteractionTypeDrug data={chartData} />}
-        {chartType === 'directionality' && <DirectionalityDrug data={chartData} />}
-        {/* {chartType === 'approval' && <RegulatoryApprovalDrug data={chartData} />} */}
-      </div>
-
-      <div className="chart-selector">
-        <div onClick={() => setChartType('categories')}>Gene Categories</div>
-        <div onClick={() => setChartType('type')}>Interaction Types</div>
-        <div onClick={() => setChartType('directionality')}>Interaction Directionality</div>
-        {/* <div onClick={() => setChartType('approval')}>Regulatory Approval</div> */}
-      </div>
     </div>
-  )
-}
+  );
+};
 
 export const DrugSummary: React.FC = () => {
+  const { state } = useContext(GlobalClientContext);
+  const { data, error, isError, isLoading } = useGetInteractionsByDrugs(
+    state.searchTerms
+  );
 
-  const {state} = useContext(GlobalClientContext);
-  const { data, error, isError, isLoading} = useGetInteractionsByDrugs(state.searchTerms);
+  const drugs = data?.drugs?.nodes
+
   const [chartData, setChartData] = useState<any>([]);
 
   useEffect(() => {
-    setChartData(data?.drugs)
-  }, [data])
+    setChartData(drugs);
+  }, [data]);
 
   if (isError || isLoading) {
     return (
-      <div className="drug-summary-container">
+      <div className='drug-summary-container'>
         {isError && <div>Error: Interactions not found!</div>}
         {isLoading && <div>Loading...</div>}
       </div>
+    );
+  }
+  if (!isLoading && drugs?.length === 0) {
+    return (
+      <Box className='no-results-message'><h3>None of your search terms returned <em>unique</em> matches.</h3></Box>
     )
   }
   return (
-    <div className="drug-summary-container">
-      <h3>Drug Summary</h3>
-      <div className="drug-summary-content">
-        <InteractionCountDrug setChartData={setChartData}/>
+    <div className='drug-summary-container'>
+      <h1>Drug Summary</h1>
+      <div className='drug-summary-content'>
+        <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
+      <DrugTable searchTerms={state.searchTerms} />
     </div>
-  )
+  );
 };

@@ -1,20 +1,22 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useNavigate } from 'react-router-dom';
 
 // methods
 import { truncateDecimals } from 'utils/format';
 
 // styles
 import './GeneIntTable.scss';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { Box, CircularProgress, Icon } from '@mui/material';
 
-export const GeneIntTable: React.FC = () => {
+interface Props {
+  searchTerms: string[];
+  displayHeader?: boolean;
+}
 
-  const {state} = useContext(GlobalClientContext);
+export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   //filter options
@@ -23,13 +25,10 @@ export const GeneIntTable: React.FC = () => {
   const [approvalStatus, setApprovalStatus] = useState<any>([]);
   const [indication, setIndication] = useState<any>([]);
   const [intScore, setIntScore] = useState<any>([]);
-  const [queryScore, setQueryScore] = useState<any>([]);
 
-  const navigate = useNavigate();
+  const { data, isLoading } = useGetInteractionsByGenes(searchTerms)
 
-  const { data, isError, isLoading } = useGetInteractionsByGenes(state.searchTerms);
-  
-  let genes = data?.genes;
+  let genes = data?.genes?.nodes;
 
   useEffect(() => {
     let interactionData: any = [];
@@ -39,18 +38,14 @@ export const GeneIntTable: React.FC = () => {
       })
     })
     setInteractionResults(interactionData)
-  }, [genes])
-
-  const navToRecord = (gene: string) => {
-    navigate(`/genes/${gene}`);
-  }
+  }, [genes, searchTerms])
 
   const columns: ColumnsType<any> = [
     {
       title: 'Gene',
       dataIndex: ['gene', 'name'],
       render: (text: any, record: any) => (
-        <span className="cursor-pointer" onClick={() => navToRecord(record?.gene?.name)}>{record?.gene?.name}</span>
+        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
       ),
       filters: gene.map((el: any) => {
         return {
@@ -58,12 +53,13 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.gene.name.startsWith(value),
     },
     {
       title: 'Drug',
       dataIndex: ['drug', 'name'],
       render: (text: any, record: any) => (
-        <span>{record?.drug?.name}</span>
+        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
       ),
       filters: drug.map((el: any) => {
         return {
@@ -71,19 +67,21 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.drug.name.startsWith(value),
     },
     {
-      title: 'Approval Status',
+      title: 'Regulatory Approval',
       dataIndex: ['drug', 'approved'],
       render: (text: any, record: any) => (
         <span>{record?.drug?.approved ? 'Approved' : 'Not Approved'}</span>
       ),
       filters: approvalStatus.map((el: any) => {
         return {
-          text: el,
+          text: el ? 'Approved' : 'Not Approved',
           value: el,
         }
       }),
+      onFilter: (value: any, record: any) => record?.drug?.approved === value,
     },
     {
       title: 'Indication',
@@ -106,6 +104,9 @@ export const GeneIntTable: React.FC = () => {
           value: el,
         }
       }),
+      //TODO: fix this
+      onFilter: (value: any, record: any) => record?.drug.drugAttributes.startsWith(value),
+
     },
     {
       title: 'Interaction Score',
@@ -114,19 +115,6 @@ export const GeneIntTable: React.FC = () => {
         <span>{truncateDecimals(record?.interactionScore, 2)}</span>
       ),
       filters: intScore.map((el: any) => {
-        return {
-          text: el,
-          value: el,
-        }
-      }),
-    },
-    {
-      title: 'Query Score',
-      dataIndex: ['queryScore'],
-      render: (text: any, record: any) => (
-        <span></span>
-      ),
-      filters: queryScore.map((el: any) => {
         return {
           text: el,
           value: el,
@@ -174,7 +162,6 @@ export const GeneIntTable: React.FC = () => {
     setApprovalStatus(duplicateApprovalStatus.filter(onlyUnique))
     setIndication(duplicateIndication.filter(onlyUnique))
     setIntScore(duplicateIntScore.filter(onlyUnique))
-    setQueryScore(duplicateQueryScore.filter(onlyUnique))
   }
 
   enum ColumnType {
@@ -214,23 +201,21 @@ export const GeneIntTable: React.FC = () => {
       // this prevents the filtered column from narrowing its own options + not being able to reset
       if (!filters[prop]){
         switch (prop) {
-          case "variation.source_label":
+          case 'gene.name':
             setGene(columnFilter(extra.currentDataSource, 1));
             break;
-          case "evidence_level.normalized_evidence_level":
+          case 'drug.name':
             setDrug(columnFilter(extra.currentDataSource, 2));
             break;
-          case "disease.normalized_label":
+          case 'drug.approved':
             setApprovalStatus(columnFilter(extra.currentDataSource, 3));
             break;
-          case "therapy.normalized_label":
+            //TODO: fix this case
+          case 'drug.drugAttributes[0].name;':
             setIndication(columnFilter(extra.currentDataSource, 4));
             break;
-          case "source":
+          case 'interactionScore':
             setIntScore(columnFilter(extra.currentDataSource, 5));
-            break;
-          case "clinical_significance":
-            setQueryScore(columnFilter(extra.currentDataSource, 6));
             break;
           default:
             break;
@@ -238,31 +223,25 @@ export const GeneIntTable: React.FC = () => {
       }
     }
   }
-
-  // if (isError || isLoading) {
-  //   return (
-  //     <div className="interaction-table--container">
-  //       {isError && <div>Error: Interactions not found!</div>}
-  //       {isLoading && <div>Loading...</div>}
-  //     </div>
-  //   )
-  // }
-
-  return (
-    <div className="interaction-table-container">
-      <span>
-        <h3>Interaction Results</h3>
-        {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
-      </span>
-      <Skeleton loading={!interactionResults.length}>
-        <Table 
+  return !isLoading ?
+    <Box className='interaction-table-container'>
+      {
+        displayHeader && 
+        <span>
+          <h3>Interaction Results</h3>
+          <span id='interaction-count'>{interactionResults.length} total interactions</span>
+        </span>
+      }
+      <Table
           dataSource={interactionResults}
           columns={columns}
           onChange={onFilterChange}
           rowKey={(record, index) => `${index}`}
-          pagination={{ pageSize: 20}}
+          pagination={{ pageSize: displayHeader ? 20 : 10}}
         />
-      </Skeleton>
-    </div>
-  )
+    </Box>
+  : 
+  <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
+    <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
+  </Box>
 };

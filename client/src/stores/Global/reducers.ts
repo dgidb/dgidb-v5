@@ -54,7 +54,7 @@ export const searchTermsReducer = (
     case ActionTypes.AddGeneDemoTerms:
       return ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1'];
     case ActionTypes.AddDrugDemoTerms:
-      return ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'PHLORETIN', 'NOTREAL'];
+      return ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL'];
     case ActionTypes.AddCategoryDemoTerms:
       return ['HER2', 'ERBB2', 'PTGDR', 'EGFR', 'RECK', 'KCNMA1', 'MM1'];
     case ActionTypes.DeleteLastTerm:
