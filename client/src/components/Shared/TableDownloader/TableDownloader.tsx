@@ -18,10 +18,8 @@ export function TableDownloader<FV>(props: React.PropsWithChildren<Props<FV>>) {
   const [hasError, setHasError] = useState(false);
 
   const onDownloadClick = () => {
-    console.log(process.env)
     setIsLoading(true)
     setHasError(false);
-    console.log(props.vars)
     const options = {
       method: 'POST',
       headers: {
