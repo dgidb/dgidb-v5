@@ -3,51 +3,62 @@ import React, {useState, useEffect} from 'react';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 
 // styles
-import './GeneIntTable.scss';
+import './InteractionTable.scss';
 import { Box, CircularProgress, Icon } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { truncateDecimals } from 'utils/format';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   searchTerms: string[];
   displayHeader?: boolean;
 }
 
-export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
+export const InteractionTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const { data, isLoading } = useGetInteractionsByGenes(searchTerms)
+  const [searchParams] = useSearchParams();
 
   let genes = data?.genes?.nodes;
-
-  console.log(interactionResults)
+  let drugs = data?.drugs?.nodes
 
   useEffect(() => {
     let interactionData: any = [];
-    genes?.forEach((gene: any) => {
-      gene.interactions.forEach((int: any) => {
-        interactionData.push(int)
-      })
-    })
+    if (searchParams.get('searchType') === 'gene') {
+      genes?.forEach((gene: any) => {
+        gene.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      }) 
+    }
+    else if (searchParams.get('searchType') === 'drug') {
+      drugs?.forEach((drug: any) => {
+        drug.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      }) 
+    }
     setInteractionResults(interactionData)
-  }, [genes, searchTerms])
+  }, [genes, drugs, searchTerms, searchParams])
 
   const columns = [
     { 
       field: 'gene', 
       headerName: 'Gene', 
-      flex: 1, 
+      flex: 0.5, 
       renderCell: (params: any) => 
         <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
     },
     { 
       field: 'drug', 
       headerName: 'Drug', 
-      flex: 1,
+      flex: 1.3,
       renderCell: (params: any) => 
         <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
     },
     {
       field: 'regulatoryApproval',
-      headerName: 'Regulatory Approval', flex: 1,
+      headerName: 'Regulatory Approval', flex: 0.8,
     },
     {
       field: 'indication',
@@ -55,7 +66,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
     },
     {
       field: 'interactionScore',
-      headerName: 'Interaction Score', flex: 1,
+      headerName: 'Interaction Score', flex: 0.6,
     },
   ];
 
@@ -68,7 +79,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       indication: interaction?.drug?.drugAttributes?.filter((attribute: any) => {
         return attribute.name === 'Drug Indications'
       })?.[0]?.value,
-      interactionScore: interaction?.interactionScore,
+      interactionScore: truncateDecimals(interaction?.interactionScore, 2),
     }
   })
 
@@ -85,11 +96,9 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
       <DataGrid
         columns={columns} 
         rows={rows} 
-        density="comfortable"
         pagination
         pageSizeOptions={[25, 50, 100]}
         classes={{columnHeader: 'table-header', row: 'table-row', menuIcon: 'column-menu-button', cell: 'table-cell', footerContainer: 'table-cell'}}
-
         rowSelection={false}
         showColumnVerticalBorder
         />
@@ -100,3 +109,5 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
     <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
   </Box>
 };
+
+export default InteractionTable;

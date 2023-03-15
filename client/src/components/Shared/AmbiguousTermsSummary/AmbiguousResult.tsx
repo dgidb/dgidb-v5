@@ -1,11 +1,10 @@
 // hooks/dependencies
 import React, { useState } from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { GeneIntTable } from 'components/Gene/GeneIntTable';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './AmbiguousTerms.scss';
-import { DrugTable } from 'components/Drug/DrugTable';
+import InteractionTable from '../InteractionTable/InteractionTable';
 
 interface Props {
   ambiguousTermData: any;
@@ -17,8 +16,6 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedTerm([event.target.value as string]);
   };
-
-  const table = resultType === 'gene' ? <GeneIntTable searchTerms={selectedTerm} displayHeader={false} /> : <DrugTable searchTerms={selectedTerm} displayHeader={false} />
 
   return (
     <Accordion defaultExpanded>
@@ -54,7 +51,7 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}
           backgroundColor: 'var(--soft-background)',
       }}>
         <Box>
-          {selectedTerm?.length > 0 ? table
+          {selectedTerm?.length > 0 ? <InteractionTable searchTerms={selectedTerm} displayHeader={false} />
           : <Box><em>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</em></Box>
           }
         </Box>

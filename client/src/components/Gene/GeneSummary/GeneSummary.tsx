@@ -20,7 +20,7 @@ import './GeneSummary.scss';
 import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 import { Tabs } from 'antd';
 import Box from '@mui/material/Box';
-import { GeneIntTable } from 'components/Gene/GeneIntTable';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -168,7 +168,7 @@ export const GeneSummary: React.FC = () => {
         <InteractionCount setChartData={setChartData} />
         <SummaryInfo chartData={chartData} />
       </div>
-      <GeneIntTable searchTerms={state.searchTerms}/>
+      <InteractionTable searchTerms={state.searchTerms}/>
     </div>
   );
 };

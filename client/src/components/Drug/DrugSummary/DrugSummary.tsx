@@ -12,15 +12,15 @@ import {
   Legend,
 } from 'chart.js';
 
-import { InteractionTypeDrug, RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
+import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
 import './DrugSummary.scss';
 import { Tabs } from 'antd';
-import { DrugTable } from 'components/Drug/DrugTable';
 import Box from '@mui/material/Box';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -172,7 +172,7 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
-      <DrugTable searchTerms={state.searchTerms} />
+      <InteractionTable searchTerms={state.searchTerms} />
     </div>
   );
 };
