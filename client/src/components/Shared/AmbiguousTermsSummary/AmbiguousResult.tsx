@@ -1,10 +1,11 @@
 // hooks/dependencies
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './AmbiguousTerms.scss';
 import InteractionTable from '../InteractionTable/InteractionTable';
+import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
 
 interface Props {
   ambiguousTermData: any;
@@ -13,9 +14,26 @@ interface Props {
 
 export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}) => {
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedTerm([event.target.value as string]);
   };
+  // this is hardcoded for genes since drugs cannot have ambiguous terms at the moment
+  const { data, isLoading } = useGetInteractionsByGenes(
+    selectedTerm
+  );
+
+  const genes = data?.genes?.nodes
+
+  useEffect(() => {
+    let interactionData: any = [];
+      genes?.forEach((gene: any) => {
+        gene.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      })
+    setInteractionResults(interactionData)
+  }, [genes])
 
   return (
     <Accordion defaultExpanded>
@@ -51,7 +69,7 @@ export const AmbiguousResult: React.FC<Props> = ({ambiguousTermData, resultType}
           backgroundColor: 'var(--soft-background)',
       }}>
         <Box>
-          {selectedTerm?.length > 0 ? <InteractionTable searchTerms={selectedTerm} displayHeader={false} />
+          {selectedTerm?.length > 0 ? <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
           : <Box><em>{ambiguousTermData.searchTerm} is ambiguous. Please select context from drop down.</em></Box>
           }
         </Box>

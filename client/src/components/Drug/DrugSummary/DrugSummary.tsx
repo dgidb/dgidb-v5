@@ -147,6 +147,17 @@ export const DrugSummary: React.FC = () => {
   const drugs = data?.drugs?.nodes
 
   const [chartData, setChartData] = useState<any>([]);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    let interactionData: any = [];
+    drugs?.forEach((drug: any) => {
+      drug.interactions.forEach((int: any) => {
+        interactionData.push(int)
+      })
+    }) 
+    setInteractionResults(interactionData)
+  }, [drugs])
 
   useEffect(() => {
     setChartData(drugs);
@@ -172,7 +183,11 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
-      <InteractionTable searchTerms={state.searchTerms} />
+      <Box display='flex' alignItems='center' mt={2}>
+        <h1>Interaction Results</h1>
+        <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+      </Box>
+      <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
     </div>
   );
 };

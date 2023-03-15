@@ -10,42 +10,20 @@ import { truncateDecimals } from 'utils/format';
 import { useSearchParams } from 'react-router-dom';
 
 interface Props {
-  searchTerms: string[];
-  displayHeader?: boolean;
+  isLoading: boolean;
+  interactionResults: any;
 }
 
-export const InteractionTable: React.FC<Props> = ({searchTerms, displayHeader=true}) => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const { data, isLoading } = useGetInteractionsByGenes(searchTerms)
+export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading}) => {
   const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType')
 
-  let genes = data?.genes?.nodes;
-  let drugs = data?.drugs?.nodes
-
-  useEffect(() => {
-    let interactionData: any = [];
-    if (searchParams.get('searchType') === 'gene') {
-      genes?.forEach((gene: any) => {
-        gene.interactions.forEach((int: any) => {
-          interactionData.push(int)
-        })
-      }) 
-    }
-    else if (searchParams.get('searchType') === 'drug') {
-      drugs?.forEach((drug: any) => {
-        drug.interactions.forEach((int: any) => {
-          interactionData.push(int)
-        })
-      }) 
-    }
-    setInteractionResults(interactionData)
-  }, [genes, drugs, searchTerms, searchParams])
-
-  const columns = [
+  const geneColumns = [
     { 
       field: 'gene', 
       headerName: 'Gene', 
       flex: 0.5, 
+      minWidth: 0,
       renderCell: (params: any) => 
         <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
     },
@@ -53,22 +31,47 @@ export const InteractionTable: React.FC<Props> = ({searchTerms, displayHeader=tr
       field: 'drug', 
       headerName: 'Drug', 
       flex: 1.3,
+      minWidth: 0,
       renderCell: (params: any) => 
         <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
     },
+  ]
+
+  const drugColumns = [
+    { 
+      field: 'drug', 
+      headerName: 'Drug', 
+      flex: 1.3,
+      minWidth: 0,
+      renderCell: (params: any) => 
+        <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
+    },
+    { 
+      field: 'gene', 
+      headerName: 'Gene', 
+      flex: 0.5, 
+      minWidth: 0,
+      renderCell: (params: any) => 
+        <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
+    },
+  ]
+
+  const commonColumns = [
     {
       field: 'regulatoryApproval',
-      headerName: 'Regulatory Approval', flex: 0.8,
+      headerName: 'Regulatory Approval', flex: 0.8, minWidth: 0,
     },
     {
       field: 'indication',
-      headerName: 'Indication', flex: 1,
+      headerName: 'Indication', flex: 1, minWidth: 0,
     },
     {
       field: 'interactionScore',
-      headerName: 'Interaction Score', flex: 0.6,
+      headerName: 'Interaction Score', flex: 0.6, minWidth: 0,
     },
   ];
+
+  const columns = searchType === 'gene' ? [...geneColumns, ...commonColumns] : [...drugColumns, ...commonColumns]
 
   const rows = interactionResults?.map((interaction: any, index: number) => {
     return {
@@ -85,19 +88,13 @@ export const InteractionTable: React.FC<Props> = ({searchTerms, displayHeader=tr
 
   return !isLoading ?
     <Box className='interaction-table-container'>
-      {
-        displayHeader && 
-        <span>
-          <h3>Interaction Results</h3>
-          <span id='interaction-count'>{interactionResults.length} total interactions</span>
-        </span>
-      }
       <Box width="100%" height="500px" display="flex">
       <DataGrid
         columns={columns} 
         rows={rows} 
         pagination
         pageSizeOptions={[25, 50, 100]}
+        className='data-grid'
         classes={{columnHeader: 'table-header', row: 'table-row', menuIcon: 'column-menu-button', cell: 'table-cell', footerContainer: 'table-cell'}}
         rowSelection={false}
         showColumnVerticalBorder

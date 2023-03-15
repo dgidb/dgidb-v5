@@ -20,7 +20,7 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({res
   if (resultType === 'gene') {
     unmatchedTerms = data?.geneMatches?.noMatches
     ambiguousTerms = data?.geneMatches?.ambiguousMatches
-  } else {
+  } else if (resultType === 'drug') {
     unmatchedTerms = data?.drugMatches?.noMatches
     ambiguousTerms = data?.drugMatches?.ambiguousMatches
   }

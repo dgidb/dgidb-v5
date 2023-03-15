@@ -140,8 +140,19 @@ export const GeneSummary: React.FC = () => {
   const { data, isError, isLoading } = useGetInteractionsByGenes(
     state.searchTerms
   );
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [chartData, setChartData] = useState<any>([]);
   const genes = data?.genes?.nodes
+
+  useEffect(() => {
+    let interactionData: any = [];
+      genes?.forEach((gene: any) => {
+        gene.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      })
+    setInteractionResults(interactionData)
+  }, [genes])
 
   useEffect(() => {
     setChartData(genes);
@@ -168,7 +179,11 @@ export const GeneSummary: React.FC = () => {
         <InteractionCount setChartData={setChartData} />
         <SummaryInfo chartData={chartData} />
       </div>
-      <InteractionTable searchTerms={state.searchTerms}/>
+      <Box display='flex' alignItems='center' mt={2}>
+        <h1>Interaction Results</h1>
+        <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+      </Box>
+      <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
     </div>
   );
 };
