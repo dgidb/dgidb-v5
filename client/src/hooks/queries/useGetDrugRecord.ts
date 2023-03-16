@@ -14,6 +14,15 @@ query drug($name: String!) {
       name
       value
     }
+    drugApprovalRatings {
+      rating
+      source{
+        sourceDbName
+      }
+    }
+    drugApplications {
+      appNo
+    }
   }
 }
 `
