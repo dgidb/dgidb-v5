@@ -2,19 +2,21 @@ require 'rails_helper'
 
 RSpec.describe 'Interaction Record Query', type: :graphql do
     before(:example) do
-    #  Create data types needed here
 
         @gene = create(:gene)
         @drug = create(:drug)
+        @publication = create(:publication)
+        @int_attr = create(:interaction_attribute)
+        @int_type = create(:type)
+        @int_directionality = create(:directionality)
 
-        # @interaction_attributes = create(:interaction_attribute) TO DO: Interaction must exist
-
-        # @drug = create(:drug, drug_aliases: [@drug_alias], drug_attributes: [@drug_attr], drug_applications: [@drug_app])
-        # @interaction_type = create(:interactionTypes) TODO: Implement factory correctly
-        @publications = create(:publication)
-
-        @interaction = create(:interaction)
-        # interaction_attributes: [@interaction_attributes])
+        @interaction = create(:interaction,
+                            interaction_attributes: [@int_attr],
+                            publications: [@publication],
+                            drug: @drug,
+                            gene: @gene,
+                            type: @int_type,
+                            directionality: @int_directionality)
 
     end
 
@@ -59,13 +61,15 @@ RSpec.describe 'Interaction Record Query', type: :graphql do
         expect(interaction['drug']['conceptId']).to eq @interaction.drug.concept_id
         expect(interaction['drug']['name']).to eq @interaction.drug.name
 
-        # expect(interaction['interactionAttributes'][0]['name']).to eq @interaction.interaction_attribute.name TO DO: add interaction attributes factory
+        expect(interaction['publications'][0]['pmid']).to eq @interaction.publications[0].pmid
+        expect(interaction['publications'][0]['id']).to eq @interaction.publications[0].id
+        expect(interaction['publications'][0]['citation']).to eq @interaction.publications[0].citation
 
-        # expect(interaction['interactionTypes']['directionality']).to eq @interaction.interaction_types.directionality TO DO: add interaction types factory
+        expect(interaction['interactionAttributes'][0]['name']).to eq @interaction.interaction_attributes[0].name
+        expect(interaction['interactionAttributes'][0]['value']).to eq @interaction.interaction_attributes[0].value
 
-        # expect(interaction['publications']['id']).to eq @interaction.publications.id TO DO: add publications
-
-
+        expect(interaction['interactionTypes'][0]['directionality']).to eq @interaction.interaction_types[0].directionality
+        expect(interaction['interactionTypes'][0]['type']).to eq @interaction.interaction_types[0].type
     end
 end
 
