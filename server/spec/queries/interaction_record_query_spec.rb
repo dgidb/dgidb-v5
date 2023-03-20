@@ -66,8 +66,8 @@ RSpec.describe 'Interaction Record Query', type: :graphql do
         expect(interaction['interactionAttributes'][0]['name']).to eq @interaction.interaction_attributes[0].name
         expect(interaction['interactionAttributes'][0]['value']).to eq @interaction.interaction_attributes[0].value
 
-        expect(interaction['interactionTypes'][0]['directionality']).to match(/#{@interaction.interaction_types[0].directionality}/i) # Case insensitive regex
-        expect(interaction['interactionTypes'][0]['type']).to eq @interaction.interaction_types[0].type # Change this after food
+        expect(interaction['interactionTypes'][0]['directionality']).to match(/#{@interaction.interaction_types[0].directionality}/i)
+        expect(interaction['interactionTypes'][0]['type']).to eq @interaction.interaction_types[0].type
     end
 end
 
