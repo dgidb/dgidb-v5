@@ -23,6 +23,13 @@
       padding: 10px;
       border: 5px;
     }
+    .source-versioning {
+      float: right;
+      // font-size: 0.6rem;
+      font-weight: 350;
+      margin-left:0.75em;
+      color: var(--text-accent)
+    }
     .source-section {
       background-color: white;
       margin: 10px;
