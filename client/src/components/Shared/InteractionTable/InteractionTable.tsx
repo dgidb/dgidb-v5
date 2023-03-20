@@ -1,6 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
+import React from 'react';
 
 // styles
 import './InteractionTable.scss';
@@ -12,13 +11,14 @@ import { useSearchParams } from 'react-router-dom';
 interface Props {
   isLoading: boolean;
   interactionResults: any;
+  recordType?: string;
 }
 
-export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading}) => {
+export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading, recordType=''}) => {
   const [searchParams] = useSearchParams();
   const searchType = searchParams.get('searchType')
 
-  const geneColumns = [
+  const geneColumn = 
     { 
       field: 'gene', 
       headerName: 'Gene', 
@@ -26,7 +26,9 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
       minWidth: 0,
       renderCell: (params: any) => 
         <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
-    },
+    }
+
+  const drugColumn = 
     { 
       field: 'drug', 
       headerName: 'Drug', 
@@ -34,29 +36,9 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
       minWidth: 0,
       renderCell: (params: any) => 
         <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
-    },
-  ]
+    }
 
-  const drugColumns = [
-    { 
-      field: 'drug', 
-      headerName: 'Drug', 
-      flex: 1.3,
-      minWidth: 0,
-      renderCell: (params: any) => 
-        <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
-    },
-    { 
-      field: 'gene', 
-      headerName: 'Gene', 
-      flex: 0.5, 
-      minWidth: 0,
-      renderCell: (params: any) => 
-        <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
-    },
-  ]
-
-  const commonColumns = [
+  const searchColumns = [
     {
       field: 'regulatoryApproval',
       headerName: 'Regulatory Approval', flex: 0.8, minWidth: 0,
@@ -71,9 +53,42 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     },
   ];
 
-  const columns = searchType === 'gene' ? [...geneColumns, ...commonColumns] : [...drugColumns, ...commonColumns]
+  const recordColumns = [
+    {
+      field: 'interactionTypes',
+      headerName: 'Interaction Types', flex: 1, minWidth: 0,
+    },
+    {
+      field: 'pmids',
+      headerName: 'PMIDs', flex: 0.5, minWidth: 0, renderCell: (params: any) => 
+      params.row?.interactionTypes?.map((int: any) => {
+        return <span>{int?.type}</span>;
+      }),
+    },
+    {
+      field: 'sources',
+      headerName: 'Sources', flex: 0.5, minWidth: 0,
+    },
+    {
+      field: 'interactionScore',
+      headerName: 'Interaction Score', flex: 0.6, minWidth: 0,
+    },
+  ]
+
+  let columns: any = []
+
+  if (searchType === 'gene') {
+    columns = [geneColumn, drugColumn, ...searchColumns]
+  } else if (searchType === 'drug') {
+    columns = [drugColumn, geneColumn, ...searchColumns]
+  } else if (recordType === 'gene') {
+    columns = [drugColumn, ...recordColumns]
+  } else if (recordType === 'drug') {
+    columns = [geneColumn, ...recordColumns]
+  }
 
   const rows = interactionResults?.map((interaction: any, index: number) => {
+    console.log(interaction)
     return {
       id: index, 
       gene: interaction?.gene?.name,
@@ -83,6 +98,8 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
         return attribute.name === 'Drug Indications'
       })?.[0]?.value,
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
+      pmids: interaction?.interactionTypes,
+
     }
   })
 

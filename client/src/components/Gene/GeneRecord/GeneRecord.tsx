@@ -24,13 +24,14 @@ import TableCell from "@mui/material/TableCell";
 // components
 import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
 import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
+import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
 
 const GeneRecordTable: React.FC = () => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
-
   const geneSymbol: any = useParams().gene;
-
   const { data } = useGetInteractionsByGenes([geneSymbol]);
+
+  console.log(data)
 
   let genes = data?.genes?.nodes;
 
@@ -92,10 +93,22 @@ const GeneRecordTable: React.FC = () => {
 };
 
 export const GeneRecord: React.FC = () => {
-  const geneSymbol = useParams().gene;
-
-  const { data } = useGetGeneRecord(geneSymbol!);
+  const geneSymbol: any = useParams().gene;
+  const { data, isLoading } = useGetGeneRecord(geneSymbol!);
+  const geneInteractions = useGetInteractionsByGenes([geneSymbol]).data;
+  const geneInteractionData = geneInteractions?.genes?.nodes
   const geneData = data?.gene;
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    let interactionData: any = [];
+    geneInteractionData?.forEach((gene: any) => {
+        gene.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      })
+    setInteractionResults(interactionData)
+  }, [geneInteractionData])
 
   const noData = (
     <TableRow>
@@ -247,7 +260,8 @@ export const GeneRecord: React.FC = () => {
                 </h3>
               </AccordionSummary>
               <AccordionDetails>
-                <GeneRecordTable />
+                {/* <GeneRecordTable /> */}
+                <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='gene' />
               </AccordionDetails>
             </Accordion>
           </Box>

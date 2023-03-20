@@ -96,7 +96,7 @@ const DrugRecordTable: React.FC = () => {
 
 export const DrugRecord: React.FC = () => {
   const drug = useParams().drug as string;
-  const data = useGetDrugRecord(drug).data;
+  const { data, isLoading } = useGetDrugRecord(drug);
   let drugData = data?.drug;
 
   const noData = (
@@ -233,7 +233,8 @@ export const DrugRecord: React.FC = () => {
               <h3><b>Interactions</b></h3>
           </AccordionSummary>
           <AccordionDetails>
-            <DrugRecordTable />
+            {/* <DrugRecordTable /> */}
+            {/* <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='drug' /> */}
           </AccordionDetails>
         </Accordion>
         </Box>
