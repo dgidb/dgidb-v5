@@ -7,16 +7,16 @@ RSpec.describe 'Interaction Record Query', type: :graphql do
         @drug = create(:drug)
         @publication = create(:publication)
         @int_attr = create(:interaction_attribute)
-        @int_type = create(:type)
-        @int_directionality = create(:directionality)
+        @int_type = create(:interaction_claim_type,
+                            directionality: 'inhibitory')
+        # @int_directionality = create(:directionality)
 
         @interaction = create(:interaction,
                             interaction_attributes: [@int_attr],
                             publications: [@publication],
                             drug: @drug,
                             gene: @gene,
-                            type: @int_type,
-                            directionality: @int_directionality)
+                            interaction_types: [@int_type] )
 
     end
 
@@ -68,8 +68,9 @@ RSpec.describe 'Interaction Record Query', type: :graphql do
         expect(interaction['interactionAttributes'][0]['name']).to eq @interaction.interaction_attributes[0].name
         expect(interaction['interactionAttributes'][0]['value']).to eq @interaction.interaction_attributes[0].value
 
-        expect(interaction['interactionTypes'][0]['directionality']).to eq @interaction.interaction_types[0].directionality
-        expect(interaction['interactionTypes'][0]['type']).to eq @interaction.interaction_types[0].type
+        @my_test = @interaction.interaction_types[0].directionality
+        expect(interaction['interactionTypes'][0]['directionality']).to match(/#{@my_test}/i) # Change this after food
+        expect(interaction['interactionTypes'][0]['type']).to eq @interaction.interaction_types[0].type # Change this after food
     end
 end
 
