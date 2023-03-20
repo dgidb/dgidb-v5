@@ -72,7 +72,7 @@ export const BrowseSources = () => {
     return (
       <>
         <Box className="source-item-name">{src.sourceDbName}
-          <Box className="source-versioning">text text text</Box>
+          <Box className="source-versioning">Version: {src.sourceDbVersion}</Box>
         </Box>
         <Box className="source-item-rows">
           <Box className="source-section" hidden={!(geneClaimsCountExists && geneClaimsInGroupExists)}>

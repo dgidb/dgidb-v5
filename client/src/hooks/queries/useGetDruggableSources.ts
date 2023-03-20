@@ -13,6 +13,7 @@ query sources($sourceType: SourceTypeFilter) {
     }
     nodes {
       sourceDbName
+      sourceDbVersion
       categoriesInSource {
         name
         geneCount
@@ -57,6 +58,7 @@ query sources($sourceType: SourceTypeFilter) {
     }
     nodes {
       sourceDbName
+      sourceDbVersion
       geneClaimsCount
       geneClaimsInGroupsCount
       citation
@@ -93,6 +95,7 @@ query sources($sourceType: SourceTypeFilter) {
     }
     nodes {
       sourceDbName
+      sourceDbVersion
       drugClaimsCount
       drugClaimsInGroupsCount
       citation
@@ -129,6 +132,7 @@ query sources($sourceType: SourceTypeFilter) {
     }
     nodes {
       sourceDbName
+      sourceDbVersion
       drugClaimsCount
       drugClaimsInGroupsCount
       geneClaimsCount
