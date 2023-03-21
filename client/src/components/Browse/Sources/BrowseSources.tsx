@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 // hooks/dependencies
 import {
   useGetDruggableSources,
@@ -71,7 +71,7 @@ export const BrowseSources = () => {
 
     return (
       <>
-        <Box className="source-item-name">{src.sourceDbName}
+        <Box className="source-item-name"><a href={src.baseUrl}>{src.sourceDbName}</a>
           <Box className="source-versioning">Version: {src.sourceDbVersion}</Box>
         </Box>
         <Box className="source-item-rows">
