@@ -8,6 +8,7 @@ import { createGraphiQLFetcher } from '@graphiql/toolkit'
 
 // styles
 import { Button, Collapse } from 'antd';
+import 'graphiql/graphiql.min.css';
 
 const { Panel } = Collapse;
 const buttonStyle = {
