@@ -26,6 +26,7 @@
     "create-react-app": "^5.0.0",
     "css-loader": "^6.7.1",
     "env-cmd": "^10.1.0",
+    "graphiql": "^2.4.0",
     "graphql": "^15.5.1",
     "graphql-playground-react": "^1.7.28",
     "graphql-request": "^3.7.0",

@@ -2,12 +2,16 @@
 import React, { useState, useContext, useEffect} from 'react';
 import './Playground.scss';
 
+// graphiql
+import { GraphiQL } from 'graphiql';
+import { createGraphiQLFetcher } from '@graphiql/toolkit'
+
 // styles
 import { Button, Collapse } from 'antd';
 
 const { Panel } = Collapse;
 const buttonStyle = {
-  color: 'var(--text-content)', 
+  color: 'var(--text-content)',
   backgroundColor: 'var(--background-light)',
   border: 'none'
 };
@@ -66,10 +70,12 @@ const query3 = `
   }
 }`;
 
+const fetcher = createGraphiQLFetcher({ url: 'http://localhost:3000/api/graphql'})
+
 export const Playground = () => {
   return(
-    <div className="playground-page-container" > 
-      <div className="collapse-group"> 
+    <div className="playground-page-container" >
+      <div className="collapse-group">
         <Collapse accordion style={defaultStyle}>
           <Panel header="Example Query 1" key="1" style={defaultStyle}>
             <Button onClick={() => setQuery(query1)} style={buttonStyle}>Run Query</Button>
@@ -86,7 +92,8 @@ export const Playground = () => {
         </Collapse>
       </div>
       <div className="main">
-        <iframe id="playground" src={""} height="700" width="1500" />
+        <GraphiQL fetcher={fetcher}/>
+        {/* <iframe id="playground" src={""} height="700" width="1500" /> */}
       </div>
     </div>
   )
