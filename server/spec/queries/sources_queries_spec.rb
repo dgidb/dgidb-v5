@@ -26,6 +26,7 @@ RSpec.describe 'Sources queries', type: :graphql do
         }
         nodes {
           sourceDbName
+          baseUrl
           drugClaimsCount
           drugClaimsInGroupsCount
           citation
@@ -46,6 +47,7 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(result['data']['sources']['nodes'].size).to eq 1
     source = result['data']['sources']['nodes'][0]
     expect(source['sourceDbName']).to eq @src.source_db_name
+    expect(source['baseUrl']).to eq @src.base_url
 
     expect(source['drugClaimsCount']).to eq 1
     expect(source['drugClaimsInGroupsCount']).to eq 1
