@@ -76,7 +76,7 @@ export const FAQ = () => {
       </div>
       <div className="faq-item">
         <div className="faq-question">How is DGIdb implemented?</div>
-        <p className="faq-answer">The web interface uses Ruby on Rails and Twitter bootstrap. The backend is a Postgres database. The importers that process data from each source and populate this database are written in Ruby with occasional forays into Python.</p>
+        <p className="faq-answer">The web interface uses Ruby on Rails and React. The backend is a Postgres database. The importers that process data from each source and populate this database are written in Ruby with occasional forays into Python.</p>
       </div>
       <div className="faq-item">
         <div className="faq-question">How is versioning handled in DGIdb?</div>
