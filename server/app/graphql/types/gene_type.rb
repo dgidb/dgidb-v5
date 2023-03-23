@@ -19,16 +19,7 @@ module Types
     end
 
     def gene_categories_with_sources (category_name: nil)
-      if category_name
-        GeneClaimCategory.joins(gene_claims: [:source, :gene]).where("genes.id =? ", object.id)
-        .where('gene_claim_categories.name =?', category_name)
-        .select("gene_claim_categories.name, array_agg(distinct(sources.source_db_name)) AS source_names")
-        .group("gene_claim_categories.name")
-      else
-        GeneClaimCategory.joins(gene_claims: [:source, :gene]).where("genes.id =? ", object.id)
-        .select("gene_claim_categories.name, array_agg(distinct(sources.source_db_name)) AS source_names")
-        .group("gene_claim_categories.name")
-      end
+      object.gene_categories_with_sources(category_name: category_name)
     end
 
     def gene_claims
