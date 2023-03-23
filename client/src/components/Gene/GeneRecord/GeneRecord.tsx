@@ -9,88 +9,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-// methods
-import { truncateDecimals } from "utils/format";
-
 // styles
 import "./GeneRecord.scss";
-import { Table as AntTable } from "antd";
-import { ColumnsType } from "antd/es/table";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
-// components
-import { PublicationsTooltip } from 'components/Shared/Tooltip/Tooltip'
-import { SourcesTooltip } from 'components/Shared/Tooltip/Tooltip'
 import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-
-const GeneRecordTable: React.FC = () => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const geneSymbol: any = useParams().gene;
-  const { data } = useGetInteractionsByGenes([geneSymbol]);
-
-  console.log(data)
-
-  let genes = data?.genes?.nodes;
-
-  useEffect(() => {
-    let interactionData = genes?.find((gene: any) => {
-      return gene.name === geneSymbol;
-    });
-
-    setInteractionResults(interactionData?.interactions);
-  }, [genes, geneSymbol]);
-
-  const columns: ColumnsType<any> = [
-    {
-      title: "Drug",
-      dataIndex: ["drug", "name"],
-      render: (text: any, record: any) => (
-        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
-      ),
-    },
-    {
-      title: "Interaction Types",
-      dataIndex: ["interactionTypes"],
-      render: (text: any, record: any) => {
-        return record?.interactionTypes.map((int: any) => {
-          return <span>{int?.type}</span>;
-        });
-      },
-    },
-    {
-      title: "PMIDs",
-      dataIndex: ["publications"],
-      render: (text: any, record: any) => (
-        <span> <PublicationsTooltip displayText={record?.publications.length} hoverTexts={record?.publications}></PublicationsTooltip></span>
-      ),
-    },
-    {
-      title: "Sources",
-      dataIndex: ["sources"],
-      render: (text: any, record: any) => <span> <SourcesTooltip hoverTexts={record?.sources} displayText={record?.sources.length}></SourcesTooltip></span>,
-    },
-    {
-      title: "Interaction Score",
-      dataIndex: ["interactionScore"],
-      render: (text: any, record: any) => (
-        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
-      ),
-    },
-  ];
-
-  return (
-    <Box className="gene-record-interactions">
-      <AntTable
-        dataSource={interactionResults}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
-    </Box>
-  );
-};
 
 export const GeneRecord: React.FC = () => {
   const geneSymbol: any = useParams().gene;
@@ -260,7 +186,6 @@ export const GeneRecord: React.FC = () => {
                 </h3>
               </AccordionSummary>
               <AccordionDetails>
-                {/* <GeneRecordTable /> */}
                 <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='gene' />
               </AccordionDetails>
             </Accordion>

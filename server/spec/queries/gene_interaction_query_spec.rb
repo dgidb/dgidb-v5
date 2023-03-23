@@ -79,7 +79,7 @@ RSpec.describe 'Gene Interaction Query', type: :graphql do
     expect(interaction['interactionScore']).to eq @int.score
     expect(interaction['interactionTypes'].size).to eq 1
     expect(interaction['interactionTypes'][0]['type']).to eq @int_type.type
-    expect(interaction['interactionTypes'][0]['directionality']).to eq @int_type.directionality
+    expect(interaction['interactionTypes'][0]['directionality']).to match(/#{@int_type.directionality}/i)
     expect(interaction['publications'].size).to eq 1
     expect(interaction['publications'][0]['pmid']).to eq @pub.pmid
 

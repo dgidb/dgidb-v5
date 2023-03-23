@@ -7,6 +7,7 @@ import { Box, CircularProgress, Icon } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { truncateDecimals } from 'utils/format';
 import { useSearchParams } from 'react-router-dom';
+import { PublicationsTooltip, SourcesTooltip } from '../Tooltip/Tooltip';
 
 interface Props {
   isLoading: boolean;
@@ -32,7 +33,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     { 
       field: 'drug', 
       headerName: 'Drug', 
-      flex: 1.3,
+      flex: 1,
       minWidth: 0,
       renderCell: (params: any) => 
         <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
@@ -60,14 +61,15 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     },
     {
       field: 'pmids',
-      headerName: 'PMIDs', flex: 0.5, minWidth: 0, renderCell: (params: any) => 
-      params.row?.interactionTypes?.map((int: any) => {
-        return <span>{int?.type}</span>;
-      }),
+      headerName: 'PMIDs', flex: 0.4, minWidth: 0,
+      renderCell: (params: any) => 
+      <PublicationsTooltip displayText={params.row.pmids?.length} hoverTexts={params.row.pmids}></PublicationsTooltip>,
     },
     {
       field: 'sources',
-      headerName: 'Sources', flex: 0.5, minWidth: 0,
+      headerName: 'Sources', flex: 0.4, minWidth: 0,
+      renderCell: (params: any) =>
+        <SourcesTooltip hoverTexts={params.row.sources} displayText={params.row.sources?.length}></SourcesTooltip>
     },
     {
       field: 'interactionScore',
@@ -88,7 +90,6 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
   }
 
   const rows = interactionResults?.map((interaction: any, index: number) => {
-    console.log(interaction)
     return {
       id: index, 
       gene: interaction?.gene?.name,
@@ -98,8 +99,9 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
         return attribute.name === 'Drug Indications'
       })?.[0]?.value,
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
-      pmids: interaction?.interactionTypes,
-
+      interactionTypes: interaction?.interactionTypes.map((interaction: any) => {return interaction.type}).join(', '),
+      pmids: interaction?.publications,
+      sources: interaction?.sources
     }
   })
 
