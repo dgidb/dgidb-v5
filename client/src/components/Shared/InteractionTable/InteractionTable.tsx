@@ -118,7 +118,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
         rowSelection={false}
         showColumnVerticalBorder
         />
-        </Box>
+      </Box>
     </Box>
   : 
   <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
