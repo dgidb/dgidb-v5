@@ -10,6 +10,8 @@ import { createGraphiQLFetcher } from '@graphiql/toolkit'
 import { Button, Collapse } from 'antd';
 import 'graphiql/graphiql.min.css';
 
+const CopyToClipboard = require('react-copy-to-clipboard')
+
 const { Panel } = Collapse;
 const buttonStyle = {
   color: 'var(--text-content)',
@@ -122,45 +124,61 @@ const query4 = `
 const fetcher = createGraphiQLFetcher({ url: 'http://localhost:3000/api/graphql'})
 
 export const Playground = () => {
+
+  const [isCopied, setIsCopied] = useState(false);
+
+  const onCopyText = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
+
   return(
+
     <div className="playground-page-container" >
       <div className="collapse-group">
         <Collapse accordion style={defaultStyle}>
           <Panel header="Find Interactions (by Drug)" key="1" style={defaultStyle}>
             Identify drug-gene interactions across 40 aggregate sources per <i>n</i> drug inputs. <br/><br/>
-            <Button onClick={() => setQuery(query1)} style={buttonStyle}>Copy Query to Clipboard</Button>
+            <CopyToClipboard text={query1} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
             <pre><code>{query1}</code></pre>
           </Panel>
           <Panel header="Find Interactions (by Gene)" key="2" style={defaultStyle}>
           Identify drug-gene interactions across 40 aggregate sources per <i>n</i> gene inputs. <br/><br/>
-            <Button onClick={() => setQuery(query2)} style={buttonStyle}>Copy Query to Clipboard</Button>
+            <CopyToClipboard text={query2} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
             <pre><code>{query2}</code></pre>
           </Panel>
           <Panel header="Drug Attributes and Approval Enums" key="3" style={defaultStyle}>
           Identify drug attributes, approval values, and active ANDA/NDA applications per <i>n</i> drug inputs <br/> <br/>
-            <Button onClick={() => setQuery(query3)} style={buttonStyle}>Copy Query to Clipboard</Button>
+            <CopyToClipboard text={query3} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
+
             <pre><code>{query3}</code></pre>
           </Panel>
           <Panel header="Gene Category Annotations" key="4" style={defaultStyle}>
           Identify annotations for druggability and clinical actionability per <i>n</i> gene inputs <br/> <br/>
-            <Button onClick={() => setQuery(query3)} style={buttonStyle}>Copy Query to Clipboard</Button>
-            <pre><code>{query3}</code></pre>
+            <CopyToClipboard text={query4} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
+            <pre><code>{query4}</code></pre>
           </Panel>
 
         </Collapse>
       </div>
       <div className="main">
         <GraphiQL fetcher={fetcher}/>
-        {/* <iframe id="playground" src={""} height="700" width="1500" /> */}
       </div>
     </div>
   )
-}
-
-function setQuery(newUrl: string) {
-   var playgroundiframe = document.getElementById('playground') as HTMLImageElement | null;
-   //const url = `EXAMPLELINK/graphql?query=${encodeURI(newUrl)}`; // Link To be Replaced
-   const url = "";
-   if(playgroundiframe != null) playgroundiframe.src = url;
 }
 
