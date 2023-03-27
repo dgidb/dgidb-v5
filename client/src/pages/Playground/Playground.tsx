@@ -38,6 +38,10 @@ const query1 = `
           type
           directionality
         }
+        interactionAttributes {
+          name
+          value
+        }
         publications {
           pmid
         }
@@ -63,6 +67,10 @@ const query2 = `
         interactionTypes {
           type
           directionality
+        }
+        interactionAttributes {
+          name
+          value
         }
         publications {
           pmid
