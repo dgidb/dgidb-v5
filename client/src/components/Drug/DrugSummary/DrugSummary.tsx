@@ -21,6 +21,7 @@ import './DrugSummary.scss';
 import { Tabs } from 'antd';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -183,9 +184,12 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
-      <Box display='flex' alignItems='center' mt={2}>
-        <h1>Interaction Results</h1>
-        <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+      <Box display='flex' mt={2} alignItems='center' justifyContent='space-between'>
+        <Box display='flex' alignItems='center'>
+          <h1>Interaction Results</h1>
+          <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+        </Box>
+        <TableDownloader tableName='drug_interaction_results' vars={{names: state.searchTerms}}/>
       </Box>
       <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
     </div>
