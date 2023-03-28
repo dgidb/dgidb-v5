@@ -111,7 +111,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
   })
 
   return !isLoading ?
-    <Box className='interaction-table-container'>
+    <Box className='interaction-table-container'> 
       <Box width="100%" height="500px" display="flex">
       <DataGrid
         onRowClick={handleEvent}
@@ -120,7 +120,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
         pagination
         pageSizeOptions={[25, 50, 100]}
         className='data-grid'
-        classes={{columnHeader: 'table-header', row: 'table-row', menuIcon: 'column-menu-button', cell: 'table-cell', footerContainer: 'table-cell'}}
+        classes={{columnHeader: 'table-header', menuIcon: 'column-menu-button', cell: 'table-cell', toolbarContainer: 'footer'}}
         rowSelection={false}
         showColumnVerticalBorder
         />
