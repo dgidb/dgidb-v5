@@ -106,7 +106,7 @@ export const Home: React.FC = () => {
       </div>
       <div className="home-links">
         <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
-          API
+          <a href='/api'>API</a>
         </span>
         <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
           <a href='/downloads'>Downloads</a>
@@ -116,7 +116,7 @@ export const Home: React.FC = () => {
         </span>
       </div>
 
-      {/* todo: introduce at a later date 
+      {/* todo: introduce at a later date
       <div className="darkmode-toggle">
         <Switch
           loading={isToggling}
