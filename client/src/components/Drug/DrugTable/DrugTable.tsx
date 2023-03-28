@@ -10,6 +10,7 @@ import './DrugTable.scss';
 import { Skeleton, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Box, CircularProgress, Icon } from '@mui/material';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 
 interface Props {
   searchTerms: string[];
@@ -213,6 +214,7 @@ export const DrugTable: React.FC<Props> = ({searchTerms, displayHeader}) => {
           {interactionResults ? <span id="interaction-count">{interactionResults.length} total interactions</span> : null}
         </span>
       }
+      <TableDownloader tableName='drug_interaction_results' vars={{names: searchTerms}}/>
       <Skeleton loading={!interactionResults.length}>
         <Table
           dataSource={interactionResults}

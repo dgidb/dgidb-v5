@@ -10,6 +10,7 @@ const getInteractionsByGenesQuery = gql`
         name
         conceptId
         interactions {
+          id
           drug {
             name
             approved
@@ -48,6 +49,7 @@ const getInteractionsByDrugsQuery = gql`
     drugs(names: $names) {
       nodes {
         interactions {
+          id
           gene {
             name
             geneCategories {

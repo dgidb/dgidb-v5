@@ -13,6 +13,7 @@ import { MainLayout } from 'components/Layout';
 import { About } from 'pages/About';
 import { Downloads } from 'pages/Downloads'
 import { Playground } from 'pages/Playground'
+import { InteractionRecord } from 'components/Interaction/InteractionRecord';
 
 const App = () => {
 
@@ -55,6 +56,15 @@ export const Routes = () => {
             {
               path: ':drug',
               element: <DrugRecord />,
+            }
+          ]
+        },
+        { path: '/interactions',
+          element: <InteractionRecord />,
+          children: [
+            {
+              path: ':id',
+              element: <InteractionRecord/>
             }
           ]
         },

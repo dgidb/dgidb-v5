@@ -10,6 +10,8 @@ import './GeneIntTable.scss';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Box, CircularProgress, Icon } from '@mui/material';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
+
 
 interface Props {
   searchTerms: string[];
@@ -232,6 +234,7 @@ export const GeneIntTable: React.FC<Props> = ({searchTerms, displayHeader=true})
           <span id='interaction-count'>{interactionResults.length} total interactions</span>
         </span>
       }
+      <TableDownloader tableName='gene_interaction_results' vars={{names: searchTerms}}/>
       <Table
           dataSource={interactionResults}
           columns={columns}
