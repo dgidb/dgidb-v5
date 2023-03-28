@@ -1,6 +1,7 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import './Playground.scss';
+import { API_URL } from 'config';
 
 // graphiql
 import { GraphiQL } from 'graphiql';
@@ -128,8 +129,7 @@ const query4 = `
   }
 }
 `
-
-const fetcher = createGraphiQLFetcher({ url: 'http://localhost:3000/api/graphql'})
+const fetcher = createGraphiQLFetcher({ url: API_URL ?? ''})
 
 export const Playground = () => {
 
