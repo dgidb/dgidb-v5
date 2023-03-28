@@ -4,7 +4,7 @@ export const Contact = () => {
     <div className="contact-section-container doc-section">
       <div>
         <p>DGIdb was developed at The McDonnell Genome Institute, Washington University School of Medicine. If you have a source of information related to the druggable genome you would like us to incorporate, please contact us at <a href="mailto:help@dgidb.org">help@dgidb.org.</a></p>
-        <p>Citation: Integration of the Drug–Gene Interaction Database (DGIdb 4.0) with open crowdsource efforts. Freshour SL, Kiwala S, Cotto KC, Coffman AC, McMichael JF, Song JJ, Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2021 Jan 8. doi:https://doi.org/10.1093/nar/gkaa1084.</p>
+        <p>Citation: Integration of the Drug–Gene Interaction Database (DGIdb 4.0) with open crowdsource efforts. Freshour SL*, Kiwala S*, Cotto KC*, Coffman AC, McMichael JF, Song JJ, Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2021 Jan 8. doi:https://doi.org/10.1093/nar/gkaa1084.</p>
         <h3 id="current-contributors">Current Contributors</h3>
       </div>
 
@@ -66,6 +66,8 @@ export const Contact = () => {
         <a href="https://jsstevenson.github.io/">Github.io</a><br/>
         <a href="mailto:James.Stevenson@nationwidechildrens.org">Email</a></p>
       </div>
+      <div className="contact-section-container spacing"></div>
+      <div className="contact-section-container spacing"></div>
       <div className="contact-section-container spacing"></div>
 
       <div className="contact-session-container">
