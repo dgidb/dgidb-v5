@@ -16,8 +16,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-
-
 export const InteractionRecord: React.FC = () => {
     const interactionId = useParams().id;
     const { data } = useGetInteractionRecord(interactionId!);
@@ -62,7 +60,6 @@ export const InteractionRecord: React.FC = () => {
                 {data?.interaction?.interactionTypes
                 ? data?.interaction?.interactionTypes?.map((attribute: any) => {
                     return (
-
                       <TableRow key={"Directionality " + attribute.directionality}>
                         <TableCell className="attribute-name">
                           Type & Directionality:

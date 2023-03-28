@@ -6,7 +6,7 @@ import './InteractionTable.scss';
 import { Box, CircularProgress, Icon } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { truncateDecimals } from 'utils/format';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PublicationsTooltip, SourcesTooltip } from '../Tooltip/Tooltip';
 
 interface Props {
@@ -17,6 +17,7 @@ interface Props {
 
 export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading, recordType=''}) => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const searchType = searchParams.get('searchType')
 
   const geneColumn = 
@@ -26,7 +27,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
       flex: 0.5, 
       minWidth: 0,
       renderCell: (params: any) => 
-        <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
+        <a href={`/genes/${params.row.gene}`} onClick={(event) => event.stopPropagation()}>{params.row.gene}</a>,
     }
 
   const drugColumn = 
@@ -36,7 +37,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
       flex: 1,
       minWidth: 0,
       renderCell: (params: any) => 
-        <a href={`/drugs/${params.row.drug}`}>{params.row.drug}</a>,
+        <a href={`/drugs/${params.row.drug}`} onClick={(event) => event.stopPropagation()}>{params.row.drug}</a>,
     }
 
   const searchColumns = [
@@ -89,9 +90,13 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     columns = [geneColumn, ...recordColumns]
   }
 
+  const handleEvent = (event: any) => {
+    navigate('/interactions/' + event.row.id)
+  }
+
   const rows = interactionResults?.map((interaction: any, index: number) => {
     return {
-      id: index, 
+      id: interaction.id, 
       gene: interaction?.gene?.name,
       drug: interaction?.drug?.name,
       regulatoryApproval: interaction?.drug?.approved ? 'Approved' : 'Not Approved',
@@ -109,6 +114,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     <Box className='interaction-table-container'>
       <Box width="100%" height="500px" display="flex">
       <DataGrid
+        onRowClick={handleEvent}
         columns={columns} 
         rows={rows} 
         pagination
