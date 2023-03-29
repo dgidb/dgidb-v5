@@ -1,6 +1,7 @@
 .gene-summary-container {
   color: var(--text-content);
-  width: 100%;
+  margin: 15px;
+  background-color: var(--background);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,6 +16,7 @@
 
   .gene-summary-content {
     display: flex;
+    background-color: var(--background);
 
     .interaction-count-container {
       border: 1px var(--text-content) solid;

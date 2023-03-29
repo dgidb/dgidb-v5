@@ -15,6 +15,7 @@ html, body {
   min-height: 100vh;
 
   .content-container {
+    background-color: var(--soft-background);
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -24,6 +25,7 @@ html, body {
 
 header {
   display: flex;
+  background: -webkit-linear-gradient(var(--header-gradient-1), var(--header-gradient-2));
 
   .header-logo {
     font-family: 'Fira Sans', sans-serif;
@@ -39,7 +41,6 @@ header {
   }
 
   nav {
-    background-color: var(--background);
     flex-grow: 1;
     display: flex;
     align-self: flex-end;
@@ -48,6 +49,7 @@ header {
     height: 80px;
 
     ul {
+      color: white;
       display: flex;
       justify-content: flex-end;
       list-style: none;
@@ -87,4 +89,8 @@ footer {
   font-size: 20px;
   font-family: 'Work Sans';
   font-weight: 300;
+}
+
+.ant-tabs {
+  background-color: var(--background);
 }

@@ -26,7 +26,7 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({res
   }
 
   return !isLoading ? (
-    <Box display='flex' justifyContent='space-between'>
+    <Box display='flex' justifyContent='space-between' minHeight='50px' m='15px'>
       <Box width={unmatchedTerms?.length > 0 ? '80%' : '100%'}>
         { ambiguousTerms?.length > 0 ? ambiguousTerms?.map((term: any) => {
           return <AmbiguousResult key={term.searchTerm} ambiguousTermData={term} resultType={resultType}/>
