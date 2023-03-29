@@ -10,110 +10,34 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-// methods
-import { truncateDecimals } from "utils/format";
-
 // styles
 import "./DrugRecord.scss";
-import { Table as AntTable } from "antd";
-import { ColumnsType } from "antd/es/table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Table from "@mui/material/Table";
 
 // components
-import { PublicationsTooltip } from "components/Shared/Tooltip/Tooltip";
-import { SourcesTooltip } from "components/Shared/Tooltip/Tooltip";
 import { Link } from "@mui/material";
-
-const DrugRecordTable: React.FC = () => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
-
-  const drugName = useParams().drug;
-
-  const { data } = useGetInteractionsByDrugs([drugName!]);
-
-  let drugs = data?.drugs?.nodes?.[0]?.interactions;
-
-  useEffect(() => {
-    setInteractionResults(drugs);
-  }, [drugs]);
-
-  const columns: ColumnsType<any> = [
-    {
-      title: "Gene",
-      dataIndex: ["drug", "name"],
-      render: (text: any, record: any) => (
-        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
-      ),
-    },
-    {
-      title: "Type",
-      dataIndex: ["interactionTypes"],
-      render: (text: any, record: any) => {
-        return record?.interactionTypes.map((interaction: any, i: number) => {
-          return <span key={i}>{interaction?.type}</span>;
-        });
-      },
-    },
-    // {
-    //   title: 'Interaction Info',
-    //   dataIndex: ['publications'],
-    //   render: (text: any, record: any) => (
-    //     <span>{record?.publications?.length}</span>
-    //   )
-    // },
-    {
-      title: "PMIDs",
-      dataIndex: ["publications"],
-      render: (text: any, record: any) => (
-        <span>
-          {" "}
-          <PublicationsTooltip
-            displayText={record?.publications.length}
-            hoverTexts={record?.publications}
-          ></PublicationsTooltip>
-        </span>
-      ),
-    },
-    {
-      title: "Sources",
-      dataIndex: ["sources"],
-      render: (text: any, record: any) => (
-        <span>
-          {" "}
-          <SourcesTooltip
-            hoverTexts={record?.sources}
-            displayText={record?.sources.length}
-          ></SourcesTooltip>
-        </span>
-      ),
-    },
-    {
-      title: "Interaction Score",
-      dataIndex: ["interactionScore"],
-      render: (text: any, record: any) => (
-        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
-      ),
-    },
-  ];
-
-  return (
-    <Box className="gene-record-interactions">
-      <AntTable
-        dataSource={interactionResults}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
-    </Box>
-  );
-};
+import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
 
 export const DrugRecord: React.FC = () => {
   const drug = useParams().drug as string;
-  const data = useGetDrugRecord(drug).data;
+  const { data, isLoading } = useGetDrugRecord(drug);
+  const drugInteractions = useGetInteractionsByDrugs([drug]).data;
   let drugData = data?.drug;
+  const drugInteractionData = drugInteractions?.drugs?.nodes
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    let interactionData: any = [];
+    drugInteractionData?.forEach((drug: any) => {
+        drug.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      })
+    setInteractionResults(interactionData)
+  }, [drugInteractionData])
 
   const noData = (
     <TableRow>
@@ -278,7 +202,7 @@ export const DrugRecord: React.FC = () => {
                 </h3>
               </AccordionSummary>
               <AccordionDetails>
-                <DrugRecordTable />
+                <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='drug' />
               </AccordionDetails>
             </Accordion>
           </Box>

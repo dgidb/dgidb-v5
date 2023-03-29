@@ -12,15 +12,16 @@ import {
   Legend,
 } from 'chart.js';
 
-import { InteractionTypeDrug, RegulatoryApprovalDrug } from 'components/Drug/DrugCharts';
+import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
 
 // styles
 import './DrugSummary.scss';
 import { Tabs } from 'antd';
-import { DrugTable } from 'components/Drug/DrugTable';
 import Box from '@mui/material/Box';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -147,6 +148,17 @@ export const DrugSummary: React.FC = () => {
   const drugs = data?.drugs?.nodes
 
   const [chartData, setChartData] = useState<any>([]);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    let interactionData: any = [];
+    drugs?.forEach((drug: any) => {
+      drug.interactions.forEach((int: any) => {
+        interactionData.push(int)
+      })
+    }) 
+    setInteractionResults(interactionData)
+  }, [drugs])
 
   useEffect(() => {
     setChartData(drugs);
@@ -172,7 +184,14 @@ export const DrugSummary: React.FC = () => {
         <InteractionCountDrug setChartData={setChartData} />
         <SummaryInfoDrug chartData={chartData} />
       </div>
-      <DrugTable searchTerms={state.searchTerms} />
+      <Box display='flex' mt={2} alignItems='center' justifyContent='space-between'>
+        <Box display='flex' alignItems='center'>
+          <h1>Interaction Results</h1>
+          <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+        </Box>
+        <TableDownloader tableName='drug_interaction_results' vars={{names: state.searchTerms}}/>
+      </Box>
+      <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
     </div>
   );
 };

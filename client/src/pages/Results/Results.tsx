@@ -64,8 +64,8 @@ export const Results: React.FC = () => {
         dispatch({type: ActionTypes.SetGeneCategories})
       }
     }
-    // if there are no search terms in state, populate from the url search params
-    if (searchParams && !state.searchTerms.length) {
+    // populate search terms based on search params
+    if (searchParams) {
       const terms = searchParams.get('searchTerms')?.split(',')
       terms?.forEach( term => 
         dispatch({type: ActionTypes.AddTerm, payload: term})

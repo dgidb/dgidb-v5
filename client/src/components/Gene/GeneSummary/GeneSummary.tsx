@@ -20,7 +20,8 @@ import './GeneSummary.scss';
 import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 import { Tabs } from 'antd';
 import Box from '@mui/material/Box';
-import { GeneIntTable } from 'components/Gene/GeneIntTable';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 const { TabPane } = Tabs;
 
 ChartJS.register(
@@ -140,8 +141,19 @@ export const GeneSummary: React.FC = () => {
   const { data, isError, isLoading } = useGetInteractionsByGenes(
     state.searchTerms
   );
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [chartData, setChartData] = useState<any>([]);
   const genes = data?.genes?.nodes
+
+  useEffect(() => {
+    let interactionData: any = [];
+      genes?.forEach((gene: any) => {
+        gene.interactions.forEach((int: any) => {
+          interactionData.push(int)
+        })
+      })
+    setInteractionResults(interactionData)
+  }, [genes])
 
   useEffect(() => {
     setChartData(genes);
@@ -168,7 +180,14 @@ export const GeneSummary: React.FC = () => {
         <InteractionCount setChartData={setChartData} />
         <SummaryInfo chartData={chartData} />
       </div>
-      <GeneIntTable searchTerms={state.searchTerms}/>
+      <Box display='flex' mt={2} alignItems='center' justifyContent='space-between'>
+        <Box display='flex' alignItems='center'>
+          <h1>Interaction Results</h1>
+          <Box id='interaction-count' ml={2}>{interactionResults.length} total interactions</Box>
+        </Box>
+        <TableDownloader tableName='gene_interaction_results' vars={{names: state.searchTerms}}/>
+      </Box>
+      <InteractionTable interactionResults={interactionResults} isLoading={isLoading} />
     </div>
   );
 };
