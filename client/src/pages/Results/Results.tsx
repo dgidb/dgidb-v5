@@ -49,6 +49,7 @@ const DrugResults: React.FC = () => {
 export const Results: React.FC = () => {
   const {state, dispatch} = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
+  const searchTerms = searchParams.get('searchTerms')?.split(',')
 
   useEffect(() => {
     // update search type based on search params
@@ -64,8 +65,9 @@ export const Results: React.FC = () => {
         dispatch({type: ActionTypes.SetGeneCategories})
       }
     }
-    // populate search terms based on search params
-    if (searchParams) {
+    // populate search terms based on search params if the params don't match what's in the state
+    if (searchParams && searchTerms?.toString() !== state?.searchTerms?.toString()) {
+      state.searchTerms = []
       const terms = searchParams.get('searchTerms')?.split(',')
       terms?.forEach( term => 
         dispatch({type: ActionTypes.AddTerm, payload: term})

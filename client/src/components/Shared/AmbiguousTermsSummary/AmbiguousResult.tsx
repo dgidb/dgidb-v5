@@ -4,8 +4,8 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, MenuItem, Select, S
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './AmbiguousTerms.scss';
-import InteractionTable from '../InteractionTable/InteractionTable';
 import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
+import InteractionTable from '../InteractionTable/InteractionTable';
 
 interface Props {
   ambiguousTermData: any;
