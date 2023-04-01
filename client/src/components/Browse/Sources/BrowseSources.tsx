@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 // hooks/dependencies
 import {
   useGetDruggableSources,
@@ -68,10 +68,12 @@ export const BrowseSources = () => {
 
     const interactionClaimsCountExists = src.interactionClaimsCount ? true : false
     const interactionClaimsInGroupExists = src.interactionClaimsInGroupsCount ? true : false
-    
+
     return (
       <>
-        <Box className="source-item-name">{src.sourceDbName}</Box>
+        <Box className="source-item-name"><a href={src.baseUrl}>{src.sourceDbName}</a>
+          <Box className="source-versioning">Version: {src.sourceDbVersion}</Box>
+        </Box>
         <Box className="source-item-rows">
           <Box className="source-section" hidden={!(geneClaimsCountExists && geneClaimsInGroupExists)}>
             <Box><b>Gene Claims Count:</b> {src.geneClaimsCount}</Box>
@@ -117,7 +119,7 @@ export const BrowseSources = () => {
           {
             sectionsMap.map((section: any) => {
               return (
-                <Button variant={filter === section.value ? "outlined" : "contained"} 
+                <Button variant={filter === section.value ? "outlined" : "contained"}
                 value={section.value}
                 key={section.value}>
                   {section.value}
@@ -143,7 +145,7 @@ export const BrowseSources = () => {
               </Box>
             </Box>
           ) : <></>
-        }) 
+        })
       }
     </Box>
   )

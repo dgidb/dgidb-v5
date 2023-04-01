@@ -24,6 +24,7 @@
 
     .doc-section {
       font-size: .95rem;
+      padding-bottom: 20px;
     }
 
     .about-section-container {
@@ -55,18 +56,18 @@
   .contact-section-container {
       .left-section{
         float: left;
-        min-height: 900px;
+        min-height: 975px;
         width: 40%;
       }
       .right-section{
         width: 40%;
         float:left;
-        min-height: 900px;
+        min-height: 975px;
       }
       .spacing {
         width:20%;
         float:right;
-        min-height: 900px;
+        min-height: 975px;
       }
   }
 
