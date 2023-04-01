@@ -4,7 +4,8 @@ RSpec.describe 'Drugs Query', type: :graphql do
   before(:example) do
     @drug_alias = create(:drug_alias)
     @drug_attr = create(:drug_attribute)
-    @drug = create(:drug, drug_aliases: [@drug_alias], drug_attributes: [@drug_attr])
+    @drug_app = create(:drug_application)
+    @drug = create(:drug, drug_aliases: [@drug_alias], drug_attributes: [@drug_attr], drug_applications: [@drug_app])
   end
 
   let :query do
@@ -20,7 +21,15 @@ RSpec.describe 'Drugs Query', type: :graphql do
           name
           value
         }
-
+        drugApprovalRatings {
+          rating
+          source{
+            sourceDbName
+          }
+        }
+        drugApplications {
+          appNo
+        }
       }
     }
     GRAPHQL
@@ -39,5 +48,8 @@ RSpec.describe 'Drugs Query', type: :graphql do
     expect(drug['drugAttributes'][0]['id']).to eq @drug_attr.id
     expect(drug['drugAttributes'][0]['name']).to eq @drug_attr.name
     expect(drug['drugAttributes'][0]['value']).to eq @drug_attr.value
+
+    expect(drug['drugApplications'].size).to eq 1
+    expect(drug['drugApplications'][0]['appNo']).to eq @drug_app.app_no
   end
 end

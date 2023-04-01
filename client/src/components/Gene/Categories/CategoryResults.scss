@@ -30,6 +30,7 @@
           .category-name {
             width: 400px;
             padding: 3px 8px;
+            color: var(--text-primary)
             // background-color: var(--background-light);
           }
 
@@ -38,6 +39,7 @@
             border-left: var(--text-content) 1px solid;
             flex: 1;
             padding: 3px 8px;
+            color: var(--text-primary)
           }
         }
 

@@ -32,23 +32,27 @@
 
 [data-theme='light'] {
   --background: white;
-  --soft-background: #f3f1fb;
+  --soft-background: #f7f5ff;
   --background-light: #dfdde9;
   --text-content: #313635;
   --text-primary: #26282e;
   --text-accent: #545454;
-  --logo-gradient-1: #480a77;
-  --logo-gradient-2: #180a20;
+  --header-gradient-1: #480a77;
+  --header-gradient-2: #180a20;
+  --logo-gradient-1: #f7f7f8;
+  --logo-gradient-2: #ada7bd;
 }
 
 [data-theme='light-home'] {
   --background: white;
-  --soft-background: #f3f1fb;
-  --background-light: rgb(201, 204, 224);
+  --soft-background: #f7f5ff;
+  --background-light: #dfdde9;
   --text-content: #313635;
   --text-primary: #26282e;
-  --logo-gradient-1: #480a77;
-  --logo-gradient-2: #180a20;
+  --header-gradient-1: #480a77;
+  --header-gradient-2: #180a20;
+  --logo-gradient-1: #f7f7f8;
+  --logo-gradient-2: #ada7bd;
 }
 
 [data-theme='dark'] {

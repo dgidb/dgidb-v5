@@ -12,6 +12,8 @@ import { DrugRecord } from 'components/Drug/DrugRecord';
 import { MainLayout } from 'components/Layout';
 import { About } from 'pages/About';
 import { Downloads } from 'pages/Downloads'
+import { Playground } from 'pages/Playground'
+import { InteractionRecord } from 'components/Interaction/InteractionRecord';
 
 const App = () => {
 
@@ -57,12 +59,22 @@ export const Routes = () => {
             }
           ]
         },
+        { path: '/interactions',
+          element: <InteractionRecord />,
+          children: [
+            {
+              path: ':id',
+              element: <InteractionRecord/>
+            }
+          ]
+        },
         { path: '/results', element: <Results /> },
         { path: '/categories', element: <CategoryResults /> },
         { path: '/browse/categories', element: <BrowseCategories /> },
         { path: '/browse/sources', element: <BrowseSources /> },
         { path: '/about', element: <About /> },
         { path: '/downloads', element: <Downloads />},
+        { path: '/api', element: <Playground />},
         { path: '/', element: <Home /> },
         { path: '*', element: <Navigate to="." /> },
       ],
