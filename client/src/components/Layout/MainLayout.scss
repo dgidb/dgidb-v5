@@ -10,16 +10,20 @@ html, body {
 }
 
 .layout-container {
-  background-color: var(--background-light);;
+  background-color: var(--background-light);
   color: var(--text-content);
   min-height: 100vh;
 
   .content-container {
-    background-color: var(--background-light);;
+    background-color: var(--background-light);
     display: flex;
     flex-direction: column;
     align-items: stretch;
     padding: 20px;
+  }
+
+  .content {
+    background-color: var(--background);
   }
 }
 

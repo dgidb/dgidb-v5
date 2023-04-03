@@ -10,6 +10,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import './MainLayout.scss';
 import {CloseCircleOutlined, DownOutlined} from '@ant-design/icons';
 import { Dropdown, Menu, Space } from 'antd';
+import { Box } from '@mui/material';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -95,7 +96,9 @@ export const MainLayout = ({children }: MainLayoutProps) => {
     <div className={"layout-container"} data-theme={theme}>
       <Header />
       <div className="content-container">
-        {children}
+        <Box className='content'>
+          {children}
+        </Box>
       </div>
       {state.themeSettings.showDisclaimer && <Footer />}
     </div>
