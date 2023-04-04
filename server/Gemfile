@@ -26,6 +26,7 @@ gem "graphql", "~> 1.12.15"
 gem "graphql-batch", "~> 0.4.3"
 gem "graphiql-rails", "~> 1.7.0"
 gem "search_object_graphql", "0.3.1"
+gem "sidekiq-cron"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
