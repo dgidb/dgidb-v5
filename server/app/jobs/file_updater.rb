@@ -27,7 +27,6 @@ class FileUpdater < Updater
     end
 
     def import
-        # Download the file
         # Create importer from updater class
         # run import methods
     end
