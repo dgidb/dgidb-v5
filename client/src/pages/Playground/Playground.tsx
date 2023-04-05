@@ -134,7 +134,7 @@ const query4 = `
 
 const query5 = `
 {
-  drugs(first:50 after:"NTE") {
+  drugs(first:100 after:"NTA") {
     pageInfo {
       startCursor
       endCursor
@@ -148,6 +148,31 @@ const query5 = `
         name
         conceptId
         approved
+      }
+    }
+  }
+}
+`
+
+const query6 = `
+{
+  genes(first:100 after:"NTA") {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    pageCount
+    edges {
+      cursor
+      node {
+        name
+        conceptId
+        longName
+        geneCategories {
+          name
+        }
       }
     }
   }
@@ -208,7 +233,7 @@ export const Playground = () => {
 
           <Panel header="Pagination Example (all Drugs)" key="5" style={defaultStyle}>
           An example of cursor-based approach to paginating through all available drug records in DGIdb (in increments of 100 records).<br/><br/>
-          Use cursor location to paginate through an additional records.<br/><br/>
+          Use cursor location in conjunction with <i>before</i> and <i>after</i> keywords to paginate through additional records.<br/><br/>
             <CopyToClipboard text={query5} onCopy={onCopyText}>
               <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
                               : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
@@ -216,6 +241,15 @@ export const Playground = () => {
             <pre><code>{query5}</code></pre>
           </Panel>
 
+          <Panel header="Pagination Example (all Genes)" key="6" style={defaultStyle}>
+          An example of cursor-based approach to paginating through all available gene records in DGIdb (in increments of 100 records).<br/><br/>
+          Use cursor location in conjunction with <i>before</i> and <i>after</i> keywords to paginate through additional records.<br/><br/>
+            <CopyToClipboard text={query6} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
+            <pre><code>{query6}</code></pre>
+          </Panel>
 
 
         </Collapse>
