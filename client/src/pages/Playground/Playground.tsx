@@ -131,6 +131,29 @@ const query4 = `
   }
 }
 `
+
+const query5 = `
+{
+  drugs(first:50 after:"NTE") {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    pageCount
+    edges {
+      cursor
+      node {
+        name
+        conceptId
+        approved
+      }
+    }
+  }
+}
+`
+
 const fetcher = createGraphiQLFetcher({ url: API_URL ?? ''})
 
 export const Playground = () => {
@@ -182,6 +205,18 @@ export const Playground = () => {
             </CopyToClipboard>
             <pre><code>{query4}</code></pre>
           </Panel>
+
+          <Panel header="Pagination Example (all Drugs)" key="5" style={defaultStyle}>
+          An example of cursor-based approach to paginating through all available drug records in DGIdb (in increments of 100 records).<br/><br/>
+          Use cursor location to paginate through an additional records.<br/><br/>
+            <CopyToClipboard text={query5} onCopy={onCopyText}>
+              <span>{isCopied ? <Button style={buttonStyle}>Copied!</Button>
+                              : <Button style={buttonStyle}>Copy Query to Clipboard</Button>}</span>
+            </CopyToClipboard>
+            <pre><code>{query5}</code></pre>
+          </Panel>
+
+
 
         </Collapse>
       </div>
