@@ -10,7 +10,6 @@ import { createGraphiQLFetcher } from '@graphiql/toolkit'
 // styles
 import { Button, Collapse } from 'antd';
 import 'graphiql/graphiql.min.css';
-import { purple } from '@mui/material/colors';
 
 const CopyToClipboard = require('react-copy-to-clipboard')
 
@@ -21,7 +20,6 @@ const buttonStyle = {
   border: 'none'
 };
 const defaultStyle = {
-  // backgroundColor: 'var(--background-light)'
   backgroundColor: '#f3e5f5'
 }
 
