@@ -21,6 +21,15 @@ module Genome; module Importers; module FileImporters; module Chembl
       create_interaction_claims
     end
 
+    def get_version
+      db = SQLite3::Database.open file_path
+      db.results_as_hash = true
+      version = db.execute("SELECT name FROM version;")[0][0]
+      db.close
+
+      version.match(/(\d+)$/)[0].to_i
+    end
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -31,7 +40,7 @@ module Genome; module Importers; module FileImporters; module Chembl
           pmid: '30398643',
           pmcid: 'PMC6323927',
           doi: '10.1093/nar/gky1075',
-          source_db_version: '15-Aug-2022',
+          source_db_version: get_version,
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'The ChEMBL Bioactivity Database',
