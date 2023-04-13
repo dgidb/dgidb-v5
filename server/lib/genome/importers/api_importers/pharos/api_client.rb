@@ -27,25 +27,35 @@ module Genome; module Importers; module ApiImporters; module Pharos;
         end
       end
 
-      Schema = GraphQL::Client.load_schema(HTTP)
-      Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+      begin
+        Schema = GraphQL::Client.load_schema(HTTP)
+        Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+
+        Query = PharosApi::Client.parse <<-GRAPHQL
+          query($filter: IFilter, $skip: Int, $top: Int) {
+            targets(filter: $filter) {
+              targets(skip: $skip, top: $top) {
+                uniprot
+                name
+                sym
+                fam
+                preferredSymbol
+              }
+            }
+          }
+        GRAPHQL
+      rescue KeyError => e
+        puts "Error initializing Pharos GraphQL client: #{e.message}"
+        Schema = nil
+        Client = nil
+        Query = nil
+      end
     end
 
-    Query = PharosApi::Client.parse <<-GRAPHQL
-      query($filter: IFilter, $skip: Int, $top: Int) {
-        targets(filter: $filter) {
-          targets(skip: $skip, top: $top) {
-            uniprot
-            name
-            sym
-            fam
-            preferredSymbol
-          }
-        }
-      }
-    GRAPHQL
 
     def send_query(category, skip, top)
+      return [] unless PharosApi::Schema && PharosApi::Client && PharosApi::Query
+
       response = PharosApi::Client.query(Query, variables: {
         'filter': {
           'term': category
