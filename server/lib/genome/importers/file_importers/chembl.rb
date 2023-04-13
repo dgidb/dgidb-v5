@@ -27,7 +27,7 @@ module Genome; module Importers; module FileImporters; module Chembl
       version = db.execute("SELECT name FROM version;")[0][0]
       db.close
 
-      version.match(/(\d+)$/)[0].to_i
+      version.match(/(\d+)$/)[0]
     end
 
     def create_new_source
