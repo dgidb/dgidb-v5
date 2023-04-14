@@ -45,7 +45,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
           }
         GRAPHQL
       rescue KeyError => e
-        puts "Error initializing Pharos GraphQL client: #{e.message}"
+        Rails.logger.warn("Error initializing Pharos GraphQL client: #{e.message}")
         Schema = nil
         Client = nil
         Query = nil
@@ -56,7 +56,7 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     def send_query(category, skip, top)
       return [] unless PharosApi::Schema && PharosApi::Client && PharosApi::Query
 
-      response = PharosApi::Client.query(Query, variables: {
+      response = PharosApi::Client.query(PharosApi::Query, variables: {
         'filter': {
           'term': category
         },
@@ -67,3 +67,4 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     end
   end
 end; end; end; end
+
