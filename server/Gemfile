@@ -43,6 +43,7 @@ gem "ruby-progressbar"
 gem "sqlite3", require: false
 gem "zlib", require: false
 gem "net-ftp", require: false
+gem "rubyzip", require: false
 
 # loading workaround until we update rails to 7
 gem "net-smtp", require: false

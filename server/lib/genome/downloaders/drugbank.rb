@@ -1,5 +1,6 @@
 require 'json'
 require 'rubygems/version'
+require 'zip'
 
 module Genome
   module Downloaders
@@ -33,9 +34,8 @@ module Genome
 
       def download_latest
         version_url = @latest_version.gsub('.', '-')
-        download_uri = URI("https://go.drugbank.com/releases/#{version_url}/downloads-all-full-database")
-        outfile = 'lib/data/drugbank/claims.xml'
-        request = Net::HTTP::Get.new(download_uri)
+        download_uri = "https://go.drugbank.com/releases/#{version_url}/downloads/all-full-database"
+        outfile = 'lib/data/drugbank/claims.zip'
         email = ENV['DRUGBANK_EMAIL']
         password = ENV['DRUGBANK_PASSWORD']
         if email.nil? or password.nil?
@@ -43,8 +43,17 @@ module Genome
             "Couldn't find drugbank email or password -- set with env vars DRUGBANK_EMAIL and DRUGBANK_PASSWORD"
           )
         end
-        request.basic_auth(email, password)
-        http_download(download_uri, outfile, request)
+        # couldn't get net::http to handle the Drugbank redirect so this is a temp solution
+        system("curl -Lfv -o #{outfile} -u #{email}:#{password} #{download_uri}")
+
+        Zip::File.open(outfile) do |zipfile|
+          zipfile.each do |file|
+            file_path = 'lib/data/drugbank/claims.xml'
+            FileUtils.mkdir_p(File.dirname(file_path))
+            zipfile.extract(file, file_path) { true }
+          end
+        end
+        FileUtils.rm(outfile)
       end
     end
   end
