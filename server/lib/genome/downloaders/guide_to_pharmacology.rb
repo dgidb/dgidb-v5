@@ -5,10 +5,10 @@ module Genome
   module Downloaders
     class GuideToPharmacologyDownloader < Genome::Downloaders::Base
       def initialize
-        @current_version = get_current_version
+        @latest_version = get_latest_version
       end
 
-      def get_current_version
+      def get_latest_version
         url = URI('https://www.guidetopharmacology.org/download.jsp')
 
         response = Net::HTTP.get(url)
@@ -29,19 +29,12 @@ module Genome
       end
 
       def is_up_to_date
-        if current_version.nil?
+        if @latest_version.nil?
           return true
         end
-        db_version = Source.where(source_db_name: 'GuideToPharmacology').first.source_db_version
+        local_version = Source.where(source_db_name: 'GuideToPharmacology').first.source_db_version
 
-        db_version >= current_version
-      end
-
-      def remove_header(file_path)
-        # GToP files all include headers at the top, we want to remove them
-        lines = File.readlines(file_path)
-        lines.shift
-        File.write(file_path, lines.join)
+        local_version >= @latest_version
       end
 
       def download_latest
@@ -50,12 +43,10 @@ module Genome
         targets_and_families_uri = URI('https://www.guidetopharmacology.org/DATA/targets_and_families.csv')
         targets_and_families_outfile = "#{gtop_dir}#{File.basename(targets_and_families_uri.path)}"
         http_download(targets_and_families_uri, targets_and_families_outfile)
-        remove_header(targets_and_families_outfile)
 
         interactions_uri = URI('https://www.guidetopharmacology.org/DATA/interactions.csv')
         interactions_outfile = "#{gtop_dir}#{File.basename(interactions_uri.path)}"
         http_download(interactions_uri, interactions_outfile)
-        remove_header(interactions_outfile)
       end
     end
   end

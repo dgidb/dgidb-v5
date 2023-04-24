@@ -46,7 +46,10 @@ module Genome
             http.request(request) do |response|
               response.read_body do |chunk|
                 file.write(chunk)
-                pbar.progress += chunk.size
+                begin
+                  pbar.progress += chunk.size
+                rescue ProgressBar::InvalidProgressError
+                  Rails.logger.info("Object located at #{uri} larger than expected")
               end
             end
 
