@@ -50,6 +50,7 @@ module Genome
                   pbar.progress += chunk.size
                 rescue ProgressBar::InvalidProgressError
                   Rails.logger.info("Object located at #{uri} larger than expected")
+                end
               end
             end
 
