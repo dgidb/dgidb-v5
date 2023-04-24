@@ -44,7 +44,7 @@ module Genome
           )
         end
         # couldn't get net::http to handle the Drugbank redirect so this is a temp solution
-        system("curl -Lfv -o #{outfile} -u #{email}:#{password} #{download_uri}")
+        system("curl -Lf -o #{outfile} -u #{email}:#{password} #{download_uri}")
 
         Zip::File.open(outfile) do |zipfile|
           zipfile.each do |file|
