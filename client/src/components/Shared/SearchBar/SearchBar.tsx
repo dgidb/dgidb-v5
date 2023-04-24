@@ -159,7 +159,6 @@ const Listbox = styled('ul')(
 );
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [searchType, setSearchType] = React.useState('gene');
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('')
   const { state } = useContext(GlobalClientContext);
