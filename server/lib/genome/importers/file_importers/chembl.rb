@@ -1,3 +1,5 @@
+require 'sqlite3'
+
 module Genome; module Importers; module FileImporters; module Chembl
   class Importer < Genome::Importers::Base
     attr_reader :file_path
