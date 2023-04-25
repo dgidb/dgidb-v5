@@ -17,6 +17,10 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(name: value.map(&:upcase))
   end
 
+  option(:name, type: String, description: 'Left anchored string search on drug name') do |scope, value|
+    scope.where('drugs.name ILIKE ?', "#{value}%")
+  end
+
   option(:approved, type: Boolean, description: 'Filtering on approval status of drug.') do |scope, value|
     scope.where(approved: value)
   end
