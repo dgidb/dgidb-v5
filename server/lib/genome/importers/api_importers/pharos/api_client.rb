@@ -27,26 +27,36 @@ module Genome; module Importers; module ApiImporters; module Pharos;
         end
       end
 
-      Schema = GraphQL::Client.load_schema(HTTP)
-      Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+      begin
+        Schema = GraphQL::Client.load_schema(HTTP)
+        Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+
+        Query = PharosApi::Client.parse <<-GRAPHQL
+          query($filter: IFilter, $skip: Int, $top: Int) {
+            targets(filter: $filter) {
+              targets(skip: $skip, top: $top) {
+                uniprot
+                name
+                sym
+                fam
+                preferredSymbol
+              }
+            }
+          }
+        GRAPHQL
+      rescue KeyError => e
+        Rails.logger.warn("Error initializing Pharos GraphQL client: #{e.message}")
+        Schema = nil
+        Client = nil
+        Query = nil
+      end
     end
 
-    Query = PharosApi::Client.parse <<-GRAPHQL
-      query($filter: IFilter, $skip: Int, $top: Int) {
-        targets(filter: $filter) {
-          targets(skip: $skip, top: $top) {
-            uniprot
-            name
-            sym
-            fam
-            preferredSymbol
-          }
-        }
-      }
-    GRAPHQL
 
     def send_query(category, skip, top)
-      response = PharosApi::Client.query(Query, variables: {
+      return [] unless PharosApi::Schema && PharosApi::Client && PharosApi::Query
+
+      response = PharosApi::Client.query(PharosApi::Query, variables: {
         'filter': {
           'term': category
         },
@@ -57,3 +67,4 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     end
   end
 end; end; end; end
+
