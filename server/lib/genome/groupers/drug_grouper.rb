@@ -31,7 +31,9 @@ module Genome
         set_response_structure
         create_sources
 
-        claims.tqdm.each do |drug_claim|
+
+        pbar = ProgressBar.create(title: 'Grouping drugs', total: claims.size, format: "%t: %p%% %a |%B|")
+        claims.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
@@ -42,6 +44,8 @@ module Genome
             create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
+
+          pbar.progress += 1
         end
       end
 

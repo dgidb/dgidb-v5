@@ -20,6 +20,19 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
 
     private
 
+    def get_version
+      version = ''
+      File.open(@interaction_file_path, 'r') do |file|
+        header = file.readline.strip
+        match = header.match(/^"# GtoPdb Version: (\d+\.\d+)/)
+        version = match[1] if match
+      end
+      if version.empty?
+        Rails.logger.error("Could not extract version number from GtoP interactions file")
+      end
+      version
+    end
+
     def create_new_source
       @source ||= Source.create(
         base_url: 'http://www.guidetopharmacology.org/DATA/',
@@ -30,7 +43,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         doi: '10.1093/nar/gkz951',
         site_url: 'http://www.guidetopharmacology.org/',
         source_db_name: source_db_name,
-        source_db_version: '2022.1',
+        source_db_version: get_version,
         source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
         full_name: 'Guide to Pharmacology',
         license: License::CC_BY_SA_4_0,
