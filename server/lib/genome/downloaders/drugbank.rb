@@ -49,7 +49,7 @@ module Genome
           return_value = system(system_call)
           unless return_value == true
             masked_call = system_call.sub(password, "<PASSWORD>")
-            raise Exception("cURL system call failed executing: #{masked_call}")
+            raise Exception("cURL system call failed executing: #{masked_call}; error: #{return_value}")
           end
           Zip::File.open(tempfile.path) do |zipfile|
             zipfile.each do |file|
