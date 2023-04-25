@@ -6,7 +6,7 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   type Types::GeneType.connection_type, null: false
 
-  scope { Gene.all }
+  scope { Gene.all.distinct }
 
   option(:ids, type: [String]) { |scope, value| scope.where(id: value)}
   option(:names, type: [String]) { |scope, value| scope.where(name: value.map(&:upcase)) }
