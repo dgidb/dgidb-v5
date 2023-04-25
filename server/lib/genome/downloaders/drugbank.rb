@@ -1,6 +1,7 @@
 require 'json'
 require 'rubygems/version'
 require 'zip'
+require 'tempfile'
 
 module Genome
   module Downloaders
@@ -35,7 +36,6 @@ module Genome
       def download_latest
         version_url = @latest_version.gsub('.', '-')
         download_uri = "https://go.drugbank.com/releases/#{version_url}/downloads/all-full-database"
-        outfile = 'lib/data/drugbank/claims.zip'
         email = ENV['DRUGBANK_EMAIL']
         password = ENV['DRUGBANK_PASSWORD']
         if email.nil? or password.nil?
@@ -43,17 +43,22 @@ module Genome
             "Couldn't find drugbank email or password -- set with env vars DRUGBANK_EMAIL and DRUGBANK_PASSWORD"
           )
         end
-        # couldn't get net::http to handle the Drugbank redirect so this is a temp solution
-        system("curl -Lf -o #{outfile} -u #{email}:#{password} #{download_uri}")
-
-        Zip::File.open(outfile) do |zipfile|
-          zipfile.each do |file|
-            file_path = 'lib/data/drugbank/claims.xml'
-            FileUtils.mkdir_p(File.dirname(file_path))
-            zipfile.extract(file, file_path) { true }
+        Tempfile.create(['claims', '.zip']) do |tempfile|
+          # couldn't get net::http to handle the Drugbank redirect so this is a temp solution
+          system_call = "curl -Lf -o #{tempfile.path} -u #{email}:#{password} #{download_uri}"
+          return_value = system(system_call)
+          unless return_value == true
+            masked_call = system_call.sub(password, "<PASSWORD>")
+            raise Exception("cURL system call failed executing: #{masked_call}")
+          end
+          Zip::File.open(tempfile.path) do |zipfile|
+            zipfile.each do |file|
+              file_path = 'lib/data/drugbank/claims.xml'
+              FileUtils.mkdir_p(File.dirname(file_path))
+              zipfile.extract(file, file_path) { true }
+            end
           end
         end
-        FileUtils.rm(outfile)
       end
     end
   end
