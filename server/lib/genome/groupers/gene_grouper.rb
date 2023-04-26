@@ -36,7 +36,8 @@ module Genome
         set_response_structure
         create_sources
 
-        claims.tqdm.each do |gene_claim|
+        pbar = ProgressBar.create(title: 'Grouping genes', total: claims.size, format: "%t: %p%% %a |%B|")
+        claims.each do |gene_claim|
           normalized_gene = normalize_claim(gene_claim.name, gene_claim.gene_claim_aliases)
           next if normalized_gene.nil?
 
@@ -47,6 +48,8 @@ module Genome
             create_new_gene normalized_gene[@descriptor_name] if Gene.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_gene(gene_claim, normalized_id)
+
+          pbar.progress += 1
         end
       end
 

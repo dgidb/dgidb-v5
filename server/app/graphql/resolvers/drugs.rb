@@ -7,7 +7,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   type Types::DrugType.connection_type, null: false
 
-  scope { Drug.all }
+  scope { Drug.all.distinct }
 
   option(:ids, type: [String], description: 'Exact match filtering on a list of drug IDs') do |scope, value|
     scope.where(id: value)
