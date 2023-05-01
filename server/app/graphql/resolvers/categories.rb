@@ -15,4 +15,8 @@ class Resolvers::Categories < GraphQL::Schema::Resolver
   option(:category_name, type: [String], description: 'Filtering on category name.') do |scope, value|
     scope.where(name: value).distinct
   end
+
+  option(:name, type: String, description: 'Left anchored string search on category name') do |scope, value|
+    scope.where('gene_claim_categories.name ILIKE ?', "#{value}%").distinct
+  end
 end
