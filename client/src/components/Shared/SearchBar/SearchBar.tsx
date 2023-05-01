@@ -5,28 +5,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import { autocompleteClasses } from '@mui/material/Autocomplete';
 import { AutocompleteGetTagProps, Box, MenuItem, Select, SelectChangeEvent, useAutocomplete } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import React from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ActionTypes } from 'stores/Global/reducers';
 
-const Root = styled('div')(
-  ({ theme }) => `
-  color: ${
-    theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,.85)'
-  };
-  font-size: 14px;
-`,
-);
-
-const Label = styled('label')`
-  padding: 0 0 4px;
-  line-height: 1.5;
-  display: block;
-`;
-
+// todo: this should be reactive and not a hardcoded width. The colors will also need adjusted if/when dark mode is implemented
 const InputWrapper = styled('div')(
   ({ theme }) => `
-  width: 300px;
+  width: 600px;
+  min-width: 200px;
   border: 1px solid ${theme.palette.mode === 'dark' ? '#434343' : '#d9d9d9'};
   background-color: ${theme.palette.mode === 'dark' ? '#141414' : '#fff'};
   border-radius: 4px;
@@ -35,19 +23,17 @@ const InputWrapper = styled('div')(
   flex-wrap: wrap;
 
   &:hover {
-    border-color: ${theme.palette.mode === 'dark' ? '#177ddc' : '#40a9ff'};
+    border-color: var(--theme-primary);
   }
 
   &.focused {
-    border-color: ${theme.palette.mode === 'dark' ? '#177ddc' : '#40a9ff'};
+    border-color: var(--theme-primary);
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
 
   & input {
-    background-color: ${theme.palette.mode === 'dark' ? '#141414' : '#fff'};
-    color: ${
-      theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,.85)'
-    };
+    background-color: var(--background);
+    color: var(--soft-background);
     height: 30px;
     box-sizing: border-box;
     padding: 4px 6px;
@@ -66,11 +52,15 @@ interface TagProps extends ReturnType<AutocompleteGetTagProps> {
 }
 
 function Tag(props: TagProps) {
+  const { dispatch } = useContext(GlobalClientContext);
   const { label, onDelete, ...other } = props;
+  const handleDelete = () => {
+    dispatch({type: ActionTypes.DeleteTerm, payload: label})
+  }
   return (
     <div {...other}>
       <span>{label}</span>
-      <CloseIcon onClick={onDelete} />
+      <CloseIcon onClick={(e) => {onDelete(e); handleDelete();}} />
     </div>
   );
 }
@@ -82,19 +72,15 @@ const StyledTag = styled(Tag)<TagProps>(
   height: 24px;
   margin: 2px;
   line-height: 22px;
-  background-color: ${
-    theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : '#fafafa'
-  };
-  border: 1px solid ${theme.palette.mode === 'dark' ? '#303030' : '#e8e8e8'};
-  border-radius: 2px;
+  background-color: var(--soft-background);
   box-sizing: content-box;
   padding: 0 4px 0 10px;
   outline: 0;
   overflow: hidden;
 
   &:focus {
-    border-color: ${theme.palette.mode === 'dark' ? '#177ddc' : '#40a9ff'};
-    background-color: ${theme.palette.mode === 'dark' ? '#003b57' : '#e6f7ff'};
+    border-color: var(--theme-primary);
+    background-color: var(--logo-gradient-2);
   }
 
   & span {
@@ -104,7 +90,7 @@ const StyledTag = styled(Tag)<TagProps>(
   }
 
   & svg {
-    font-size: 12px;
+    font-size: 18px;
     cursor: pointer;
     padding: 4px;
   }
@@ -113,12 +99,11 @@ const StyledTag = styled(Tag)<TagProps>(
 
 const Listbox = styled('ul')(
   ({ theme }) => `
-  width: 300px;
   margin: 2px 0 0;
   padding: 0;
   position: absolute;
   list-style: none;
-  background-color: ${theme.palette.mode === 'dark' ? '#141414' : '#fff'};
+  background-color: var(--background);
   overflow: auto;
   max-height: 250px;
   border-radius: 4px;
@@ -139,7 +124,7 @@ const Listbox = styled('ul')(
   }
 
   & li[aria-selected='true'] {
-    background-color: ${theme.palette.mode === 'dark' ? '#2b2b2b' : '#fafafa'};
+    background-color: var(--soft-background);
     font-weight: 600;
 
     & svg {
@@ -148,7 +133,7 @@ const Listbox = styled('ul')(
   }
 
   & li.${autocompleteClasses.focused} {
-    background-color: ${theme.palette.mode === 'dark' ? '#003b57' : '#e6f7ff'};
+    background-color: var(--soft-background);
     cursor: pointer;
 
     & svg {
@@ -159,25 +144,29 @@ const Listbox = styled('ul')(
 );
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
+  const { state, dispatch } = useContext(GlobalClientContext);
   const [searchType, setSearchType] = React.useState('gene');
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('')
-  const { state } = useContext(GlobalClientContext);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSearchType(event.target.value as string);
+    const value = event.target.value as string
+    setSearchType(value);
+    if(value === 'gene'){
+      dispatch({type: ActionTypes.SetByGene})
+    } else if (value === 'drug'){
+      dispatch({type: ActionTypes.SetByDrug})
+    } else if (value === 'categories'){
+      dispatch({type: ActionTypes.SetGeneCategories})
+    }
   };
 
   const handleInputChange = (event: any) => {
-    console.log(event)
     setTypedSearchTerm(event.target.value as string);
   };
 
   const isValidSearch = typedSearchTerm && typedSearchTerm !== '' && typedSearchTerm !== ' '
 
-  // get options + add whatever the user is typing
   const {
-    getRootProps,
-    getInputLabelProps,
     getInputProps,
     getTagProps,
     getListboxProps,
@@ -187,20 +176,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: 'customized-hook-demo',
+    id: 'search-autocomplete',
     multiple: true,
+    // get options + add whatever the user is typing
     options: isValidSearch ? [{title: typedSearchTerm}, ...testOptions] : testOptions,
     getOptionLabel: option => typeof option === 'string' ? option : option.title,
-    freeSolo: true
+    freeSolo: true,
+    value: state.searchTerms.map(term => { return {title: term}})
   });
 
   let allOptions = [...groupedOptions]
-
-  console.log(value)
-
-  useEffect(() => {
-    state.searchTerms = value.map(option => typeof option === 'string' ? option : option.title)
-  }, [value])
 
   return (
     <Box display='flex'>
@@ -214,13 +199,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
           {value.map((option: any, index: number) => (
             <StyledTag label={option?.title || option} {...getTagProps({ index })} />
           ))}
-          <input {...getInputProps()} />
+          <input {...getInputProps()}/>
         </InputWrapper>
       {allOptions.length > 0 ? (
         <Listbox {...getListboxProps()}>
           {(allOptions as typeof testOptions).map((option, index) => (
             <li {...getOptionProps({ option, index })}>
-              <span onClick={() => setTypedSearchTerm(' ')}>{option.title}</span>
+              <span onClick={() => {setTypedSearchTerm(' '); dispatch({type: ActionTypes.AddTerm, payload: option.title})}}>{option.title}</span>
               <CheckIcon fontSize="small" />
             </li>
           ))}
@@ -235,10 +220,6 @@ type SearchBarProps = {
   handleSubmit: () => void;
 };
 
-interface MenuOptionType {
-  title: string;
-}
-
 const testOptions = [
   { title: 'BRAF' },
   { title: 'MLL' },
@@ -246,120 +227,5 @@ const testOptions = [
   { title: 'FLT3' },
   { title: 'ERBB2' },
 ]
-
-// const OldSearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
-//   const {state, dispatch} = useContext(GlobalClientContext);
-
-//   const [inputValue, setInputValue] = useState<any>('');
-//   const [options, setOptions] = useState<any>([]);
-//   const [showFilters, setShowFilters] = useState(false);
-  
-//   const { Option } = Select;
-
-//   let content = (
-//     <div>
-//       <div className="filter-options ">
-//         <h5>Preset Filters</h5>
-//         <Checkbox>Approved</Checkbox>
-//         <Checkbox>Antineoplastic</Checkbox>
-//         <Checkbox>Immunotherapies</Checkbox>
-//       </div>
-//       <div className="filter-options ">
-//         <h5>Advanced Filters</h5>
-//         <span>Source Databases</span>
-//         <Button style={{ width: 80}}>22 of 22</Button>
-//         <span>Gene Categories</span>
-//         <Button style={{ width: 80}}>43 of 43</Button>
-//         <span>Interaction Types</span>
-//         <Button style={{ width: 80}}>31 of 31</Button>
-//       </div>
-//     </div>
-//   )
-
-//   const onKeyDown = (value: any) => {
-
-//     let deleteTag = value.key === 'Backspace' && !inputValue.length;
-//     let saveTag = (value.key === 'Enter' || value.key === ' ' || value.key === ',') && inputValue.length;
-//     let search = value.key === 'Enter' && !inputValue.length && state.searchTerms.length;
-
-//     if (deleteTag) {
-//       dispatch({type: ActionTypes.DeleteLastTerm});
-//     }
-//     else if (saveTag) {
-//       dispatch({type: ActionTypes.AddTerm, payload: inputValue})
-//       setInputValue('');
-//     } 
-//     else if (search) {
-//       handleSubmit();
-//     }
-//     return;
-//   }
-  
-//   return (
-//   <div className="search-container"> 
-//     <div className="search-subcontainer">
-//       <div className="search-dropdown">
-//         <Select 
-//           value={state.interactionMode}
-//           style={{ width: 200 }} 
-//           size="large"
-//           onChange={(value) => {
-//             if(value === 'gene'){
-//               dispatch({type: ActionTypes.SetByGene})
-//             } else if (value === 'drug'){
-//               dispatch({type: ActionTypes.SetByDrug})
-//             } else if (value === 'categories'){
-//               dispatch({type: ActionTypes.SetGeneCategories})
-//             }
-//           }}
-//           dropdownRender={(menu: any) => (
-//             <div>
-//               {menu}
-//             </div>
-//           )} 
-//         >
-//           <Option className="hi4" value="gene">Interactions by Gene</Option>
-//           <Option value="drug">Interactions by Drug</Option>
-//           <Option value="categories">Gene Categories</Option>
-//         </Select>
-//       </div>
-//       <div className="search-input">
-//         <Form.Item>
-//           <Select 
-//             allowClear
-//             size="large" 
-//             placeholder="" 
-//             mode="tags"
-//             tokenSeparators={[',', ' ']}
-//             options={options}
-//             onInputKeyDown={onKeyDown}
-//             value={state.searchTerms}
-//             onClear={() => state.searchTerms = []}
-//             onDeselect={(val: any) => dispatch({type: ActionTypes.DeleteTerm, payload: val})}
-//             // onChange={value => setQueryParams(value)}
-//             onSearch={value => setInputValue(value)}
-//           >
-//             {state.searchTerms}
-//           </Select>
-//         </Form.Item>
-
-//           <div className="search-filters">
-//             <Popover 
-//               content={content} 
-//               trigger="click" 
-//               open={showFilters} 
-//               onOpenChange={open => setShowFilters(open)} 
-//             >
-//               {/* TODO: Reintroduce later
-//               <FilterOutlined
-//                 style={{ fontSize: '150%', cursor: 'pointer'}}
-//               /> */}
-//             </Popover>
-//           </div>
-//         </div>
-//       </div>
-//   </div>
-//   )
-// }
 
 export default SearchBar;
