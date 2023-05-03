@@ -82,6 +82,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   return (
     <>
+    <Box>
     <Box display='flex'>
       <Select value={searchType} defaultValue={state.interactionMode || 'gene'} onChange={handleChange} classes={{select: 'search-type-select'}}>
         <MenuItem value='gene'>Interactions by Gene</MenuItem>
@@ -110,9 +111,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       />
       </Box>
     </Box>
-    <Box display='flex'>
-      <Button variant='contained' color='secondary' onClick={handleDemoClick}>Demo</Button>
-      <Button variant='contained' color='secondary' onClick={handleSearchClick}>Search</Button>
+    <Box display='flex' justifyContent='end'>
+      <Box mt={1}>
+        <Button variant='contained' color='secondary' onClick={handleDemoClick}>Demo</Button>
+        <Button variant='contained' color='secondary' onClick={handleSearchClick}>Search</Button>
+      </Box>
+    </Box>
     </Box>
     </>
   );
