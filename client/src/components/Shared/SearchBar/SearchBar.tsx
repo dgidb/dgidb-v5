@@ -9,7 +9,7 @@ import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const { state, dispatch } = useContext(GlobalClientContext);
-  const [searchType, setSearchType] = React.useState('gene');
+  const [searchType, setSearchType] = React.useState(state.interactionMode);
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('')
   const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType)  
   let autocompleteOptions = typeAheadQuery?.data?.genes?.nodes || []
@@ -77,14 +77,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       selectedOptions.map(option => {
         dispatch({type: ActionTypes.AddTerm, payload: option.name})
       });
-    } 
+    // populate 
+    } else if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
+      setSelectedOptions(state.searchTerms.map(option => {return {name: option}}))
+    }
   }, [selectedOptions]);
 
   return (
     <>
     <Box>
     <Box display='flex'>
-      <Select value={searchType} defaultValue={state.interactionMode || 'gene'} onChange={handleChange} classes={{select: 'search-type-select'}}>
+      <Select value={state.interactionMode || searchType} defaultValue={state.interactionMode || 'gene'} onChange={handleChange} classes={{select: 'search-type-select'}}>
         <MenuItem value='gene'>Interactions by Gene</MenuItem>
         <MenuItem value='drug'>Interactions by Drug</MenuItem>
         <MenuItem value='categories'>Gene Categories</MenuItem>
