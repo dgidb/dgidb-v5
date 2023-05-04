@@ -1,6 +1,6 @@
 import './SearchBar.scss';
 import Autocomplete from '@mui/material/Autocomplete';
-import { AutocompleteGetTagProps, Box, Button, MenuItem, Select, SelectChangeEvent, TextField, useAutocomplete } from '@mui/material';
+import { Box, Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import React from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
@@ -87,11 +87,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     <>
     <Box>
     <Box display='flex'>
+      <Box>
       <Select value={state.interactionMode || searchType} defaultValue={state.interactionMode || 'gene'} onChange={handleChange} classes={{select: 'search-type-select'}}>
         <MenuItem value='gene'>Interactions by Gene</MenuItem>
         <MenuItem value='drug'>Interactions by Drug</MenuItem>
         <MenuItem value='categories'>Gene Categories</MenuItem>
       </Select>
+      </Box>
       <Box display='block' ml={1}>
       <Autocomplete
         multiple
@@ -116,8 +118,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     </Box>
     <Box display='flex' justifyContent='end'>
       <Box mt={1}>
-        <Button variant='contained' color='secondary' onClick={handleDemoClick} style={{marginRight: '10px'}}>Demo</Button>
-        <Button variant='contained' color='secondary' onClick={handleSearchClick}>Search</Button>
+        <Button className='search-buttons' variant='contained' onClick={handleDemoClick} style={{marginRight: '10px'}}>Demo</Button>
+        <Button className='search-buttons' variant='contained' onClick={handleSearchClick}>Search</Button>
       </Box>
     </Box>
     </Box>
