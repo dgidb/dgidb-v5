@@ -53,16 +53,20 @@ export const Results: React.FC = () => {
 
   return (
     <div className="results-page-container">
-      <Tabs value={value} onChange={handleChange} textColor='secondary' indicatorColor='secondary'>
-        <Tab label="Unique Matches" />
-        <Tab label="Ambiguous or Unmatched" />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        { searchType === 'gene' ? <GeneSummary /> : <DrugSummary /> }
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <AmbiguousTermsSummary resultType={searchType || 'drug'} />
-      </TabPanel>
+      { searchType !== 'categories' ? 
+      <>
+        <Tabs value={value} onChange={handleChange} textColor='secondary' indicatorColor='secondary'>
+          <Tab label="Unique Matches" />
+          <Tab label="Ambiguous or Unmatched" />
+        </Tabs> 
+        <TabPanel value={value} index={0}>
+          { searchType === 'gene' ? <GeneSummary /> : <DrugSummary /> }
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <AmbiguousTermsSummary resultType={searchType || 'drug'} />
+        </TabPanel>
+      </>: ''
+      }
       {searchType === 'categories' && <CategoryResults />}
     </div>
   )

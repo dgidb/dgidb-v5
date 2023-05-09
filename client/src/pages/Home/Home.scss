@@ -132,3 +132,11 @@ a {
 @media screen and (max-width: var(--small-screen)) {
 
 }
+
+.MuiButton-outlined {
+  color: var(--theme-primary) !important;
+  border-color: var(--theme-primary) !important;
+}
+.MuiButton-contained {
+  background-color: var(--theme-primary) !important;
+}
