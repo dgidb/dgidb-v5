@@ -118,8 +118,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     </Box>
     <Box display='flex' justifyContent='end'>
       <Box mt={1}>
-        <Button className='search-buttons' variant='contained' onClick={handleDemoClick} style={{marginRight: '10px'}}>Demo</Button>
-        <Button className='search-buttons' variant='contained' onClick={handleSearchClick}>Search</Button>
+        <Button className='search-buttons' variant='contained' color="primary" onClick={handleDemoClick} style={{marginRight: '10px'}}>Demo</Button>
+        <Button className='search-buttons' variant='contained' color="primary" onClick={handleSearchClick}>Search</Button>
       </Box>
     </Box>
     </Box>

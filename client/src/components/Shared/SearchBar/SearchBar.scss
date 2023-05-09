@@ -1,3 +1,11 @@
 .search-buttons {
   background-color: var(--header-gradient-1);
 }
+
+.MuiButton-outlined {
+  color: var(--theme-primary) !important;
+  border-color: var(--theme-primary) !important;
+}
+.MuiButton-contained {
+  background-color: var(--theme-primary) !important;
+}
