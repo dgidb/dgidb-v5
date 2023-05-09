@@ -17,7 +17,8 @@ const CopyToClipboard = require('react-copy-to-clipboard')
 const buttonStyle = {
   color: 'var(--text-content)',
   backgroundColor: 'var(--background-light)',
-  border: 'none'
+  border: 'none',
+  fontSize: '10px'
 };
 const defaultStyle = {
   backgroundColor: '#f3e5f5'
