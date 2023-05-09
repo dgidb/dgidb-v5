@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // client state
@@ -8,27 +8,27 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // style
 import './MainLayout.scss';
-import {CloseCircleOutlined, DownOutlined} from '@ant-design/icons';
-import { Dropdown, Menu, Space } from 'antd';
-import { Box } from '@mui/material';
+import {CloseCircleOutlined} from '@ant-design/icons';
+import { Box, Button, Menu, MenuItem } from '@mui/material';
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 const Header: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
-  const menu = (
-    <Menu>
-      <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
-        <li>Categories</li>
-      </Menu.Item>
-      <Menu.Item key="sources" onClick={() => navigate('/browse/sources')}>
-        <li>Sources</li>
-      </Menu.Item>
-    </Menu>
-  )
 
   return (
     <header>
@@ -37,12 +37,25 @@ const Header: React.FC = () => {
       </div>
       <nav>
         <ul>
-          <li>
-            <Dropdown overlay={menu}>
-              <Space>
-                Browse
-              </Space>
-            </Dropdown>
+          <li onMouseLeave={handleClose}>
+            <Button style={{textTransform: 'none', fontSize: '18px', color: 'white', zIndex: 1301}}
+            onMouseOver={handleOpen}>Browse</Button>
+            <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          open={open}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center"
+          }}
+        >
+          <MenuItem onClick={() => navigate('/categories')}>Categories</MenuItem>
+          <MenuItem onClick={() => navigate('/sources')}>Sources</MenuItem>
+        </Menu>
           </li>
           <li onClick={() => navigate('/about')}>
             About

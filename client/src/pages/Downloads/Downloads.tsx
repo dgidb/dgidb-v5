@@ -7,9 +7,6 @@ import { Files } from './SubSections/Files';
 
 // styles
 import './Downloads.scss';
-import { Anchor } from 'antd';
-
-const { Link } = Anchor;
 
 export const Downloads = () => {
 

@@ -9,7 +9,6 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { queryClient } from 'providers/app';
 
 // styles
-import { Button } from 'antd';
 // todo: introduce dark mode back later
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
