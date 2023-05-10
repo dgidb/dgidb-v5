@@ -25,7 +25,7 @@ export function useGetGenesForCategory(
   sourceDbNames: String[]
 ) {
   return useQuery(
-    "genes-for-category",
+    `genes-for-category-${categoryName}-db-${sourceDbNames}`,
     async () => {
       const res = await graphQLClient.request(getGenesForCategoryQuery, {
         categoryName: categoryName,
