@@ -1,7 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useGetInteractionsByDrugs } from "hooks/queries/useGetInteractions";
 import { useGetDrugRecord } from "hooks/queries/useGetDrugRecord";
 import Box from "@mui/material/Box";
 import Accordion from "@mui/material/Accordion";
@@ -22,22 +21,20 @@ import { Link } from "@mui/material";
 import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
 
 export const DrugRecord: React.FC = () => {
-  const drug = useParams().drug as string;
-  const { data, isLoading } = useGetDrugRecord(drug);
-  const drugInteractions = useGetInteractionsByDrugs([drug]).data;
+  const drugId = useParams().drug as string;
+  const { data, isLoading } = useGetDrugRecord(drugId);
+  // const drugInteractions = useGetInteractionsByDrugId(drugId).data;
   let drugData = data?.drug;
-  const drugInteractionData = drugInteractions?.drugs?.nodes
+  // const drugInteractionData = drugInteractions?.drugs?.nodes
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   useEffect(() => {
     let interactionData: any = [];
-    drugInteractionData?.forEach((drug: any) => {
-        drug.interactions.forEach((int: any) => {
-          interactionData.push(int)
-        })
-      })
-    setInteractionResults(interactionData)
-  }, [drugInteractionData])
+    drugData?.interactions?.forEach((int: any) => {
+      interactionData.push(int);
+    });
+    setInteractionResults(interactionData);
+  }, [drugData]);
 
   const noData = (
     <TableRow>
@@ -156,7 +153,7 @@ export const DrugRecord: React.FC = () => {
     drugData && (
       <Box className="drug-record-container">
         <Box className="drug-record-header">
-          <Box className="name">{drug}</Box>
+          <Box className="name">{drugData.name}</Box>
           <Box className="concept-id">{drugData.conceptId}</Box>
         </Box>
         <Box display="flex">
@@ -202,7 +199,11 @@ export const DrugRecord: React.FC = () => {
                 </h3>
               </AccordionSummary>
               <AccordionDetails>
-                <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='drug' />
+                <InteractionTable
+                  interactionResults={interactionResults}
+                  isLoading={isLoading}
+                  recordType="drug"
+                />
               </AccordionDetails>
             </Accordion>
           </Box>

@@ -1,7 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useGetInteractionsByGenes } from "hooks/queries/useGetInteractions";
 import { useGetGeneRecord } from "hooks/queries/useGetGeneRecord";
 import Box from "@mui/material/Box";
 import Accordion from "@mui/material/Accordion";
@@ -19,22 +18,18 @@ import TableCell from "@mui/material/TableCell";
 import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
 
 export const GeneRecord: React.FC = () => {
-  const geneSymbol: any = useParams().gene;
-  const { data, isLoading } = useGetGeneRecord(geneSymbol!);
-  const geneInteractions = useGetInteractionsByGenes([geneSymbol]).data;
-  const geneInteractionData = geneInteractions?.genes?.nodes
+  const geneId: any = useParams().gene;
+  const { data, isLoading } = useGetGeneRecord(geneId);
   const geneData = data?.gene;
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
 
   useEffect(() => {
     let interactionData: any = [];
-    geneInteractionData?.forEach((gene: any) => {
-        gene.interactions.forEach((int: any) => {
-          interactionData.push(int)
-        })
-      })
-    setInteractionResults(interactionData)
-  }, [geneInteractionData])
+    geneData?.interactions?.forEach((int: any) => {
+      interactionData.push(int);
+    });
+    setInteractionResults(interactionData);
+  }, [geneData]);
 
   const noData = (
     <TableRow>
@@ -99,7 +94,7 @@ export const GeneRecord: React.FC = () => {
               {geneData?.geneCategories
                 ? geneData?.geneCategories?.map((category: any) => {
                     return (
-                      <TableRow key={category.name + " " + category.value}>
+                      <TableRow key={category.name}>
                         <TableCell className="attribute-name">
                           {category.name}
                         </TableCell>
@@ -119,15 +114,17 @@ export const GeneRecord: React.FC = () => {
           <Table>
             <TableBody>
               {geneData?.geneClaims
-                ? geneData?.geneClaims?.map((claim: any, index: number) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell className="attribute-name">
-                          {claim?.source?.citation}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
+                ? geneData?.geneClaims
+                    ?.filter((claim: any) => claim.source?.citation !== null)
+                    .map((claim: any, index: number) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell className="attribute-name">
+                            {claim?.source?.citation}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
                 : noData}
             </TableBody>
           </Table>
@@ -140,7 +137,7 @@ export const GeneRecord: React.FC = () => {
     geneData && (
       <Box className="content gene-record-container">
         <Box className="gene-record-header">
-          <Box className="symbol">{geneSymbol}</Box>
+          <Box className="symbol">{geneData.name}</Box>
           <Box className="concept-id">{geneData.conceptId}</Box>
         </Box>
         <Box display="flex">
@@ -186,7 +183,11 @@ export const GeneRecord: React.FC = () => {
                 </h3>
               </AccordionSummary>
               <AccordionDetails>
-                <InteractionTable interactionResults={interactionResults} isLoading={isLoading} recordType='gene' />
+                <InteractionTable
+                  interactionResults={interactionResults}
+                  isLoading={isLoading}
+                  recordType="gene"
+                />
               </AccordionDetails>
             </Accordion>
           </Box>

@@ -1,39 +1,58 @@
-import { useQuery } from 'react-query';
-import { gql } from 'graphql-request';
-import { graphQLClient } from 'config';
+import { useQuery } from "react-query";
+import { gql } from "graphql-request";
+import { graphQLClient } from "config";
 
 const getDrugRecordQuery = gql`
-query drug($name: String!) {
-  drug(name: $name) {
-    conceptId
-    drugAliases {
-      alias
-    }
-    drugAttributes {
-      id
+  query drug($conceptId: String!) {
+    drug(conceptId: $conceptId) {
+      conceptId
       name
-      value
-    }
-    drugApprovalRatings {
-      rating
-      source{
-        sourceDbName
+      drugAliases {
+        alias
+      }
+      drugAttributes {
+        name
+        value
+      }
+      drugApprovalRatings {
+        rating
+        source {
+          sourceDbName
+        }
+      }
+      drugApplications {
+        appNo
+      }
+      interactions {
+        id
+        interactionTypes {
+          type
+        }
+        gene {
+          name
+          conceptId
+        }
+        interactionScore
+        publications {
+          pmid
+        }
+        sources {
+          fullName
+        }
       }
     }
-    drugApplications {
-      appNo
-    }
   }
-}
-`
+`;
 
-export function useGetDrugRecord(name: string) {
-  return useQuery('drug-record' + name, async () => {
-    const res = await graphQLClient.request(
-      getDrugRecordQuery,
-      { name }
-    );
-    return res;
-  },
-  {enabled: name !== ""});
+export function useGetDrugRecord(conceptId: string) {
+  return useQuery(
+    "drug-record" + conceptId,
+    async () => {
+      const res = await graphQLClient.request(getDrugRecordQuery, {
+        conceptId,
+      });
+      return res;
+    },
+    { enabled: conceptId !== "" }
+  );
 }

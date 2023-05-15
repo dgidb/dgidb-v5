@@ -10,6 +10,7 @@ const getGeneMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       ambiguousMatches {
@@ -17,6 +18,7 @@ const getGeneMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {
@@ -34,6 +36,7 @@ const getDrugMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       ambiguousMatches {
@@ -41,6 +44,7 @@ const getDrugMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {
@@ -51,6 +55,7 @@ const getDrugMatchesQuery = gql`
 `;
 
 export function useGetMatchedResults(names: string[], type: string) {
+  console.log(`useGetAmbiguousResults: ${names}`)
   const key = type + names
   const requestQuery = type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery
   return useQuery(

@@ -20,24 +20,24 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
   const navigate = useNavigate();
   const searchType = searchParams.get('searchType')
 
-  const geneColumn = 
-    { 
-      field: 'gene', 
-      headerName: 'Gene', 
-      flex: 0.5, 
+  const geneColumn =
+    {
+      field: 'gene',
+      headerName: 'Gene',
+      flex: 0.5,
       minWidth: 0,
-      renderCell: (params: any) => 
-        <a href={`/genes/${params.row.gene}`} onClick={(event) => event.stopPropagation()}>{params.row.gene}</a>,
+      renderCell: (params: any) =>
+        <a href={`/genes/${params.row.geneId}`} onClick={(event) => event.stopPropagation()}>{params.row.gene}</a>,
     }
 
-  const drugColumn = 
-    { 
-      field: 'drug', 
-      headerName: 'Drug', 
+  const drugColumn =
+    {
+      field: 'drug',
+      headerName: 'Drug',
       flex: 1,
       minWidth: 0,
-      renderCell: (params: any) => 
-        <a href={`/drugs/${params.row.drug}`} onClick={(event) => event.stopPropagation()}>{params.row.drug}</a>,
+      renderCell: (params: any) =>
+        <a href={`/drugs/${params.row.drugId}`} onClick={(event) => event.stopPropagation()}>{params.row.drug}</a>,
     }
 
   const searchColumns = [
@@ -63,7 +63,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
     {
       field: 'pmids',
       headerName: 'PMIDs', flex: 0.4, minWidth: 0,
-      renderCell: (params: any) => 
+      renderCell: (params: any) =>
       <PublicationsTooltip displayText={params.row.pmids?.length} hoverTexts={params.row.pmids}></PublicationsTooltip>,
     },
     {
@@ -96,27 +96,29 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
 
   const rows = interactionResults?.map((interaction: any, index: number) => {
     return {
-      id: interaction.id, 
+      id: interaction.id,
       gene: interaction?.gene?.name,
+      geneId: interaction?.gene?.conceptId,
       drug: interaction?.drug?.name,
+      drugId: interaction?.drug?.conceptId,
       regulatoryApproval: interaction?.drug?.approved ? 'Approved' : 'Not Approved',
       indication: interaction?.drug?.drugAttributes?.filter((attribute: any) => {
         return attribute.name === 'Drug Indications'
       })?.[0]?.value,
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
-      interactionTypes: interaction?.interactionTypes.map((interaction: any) => {return interaction.type}).join(', '),
+      interactionTypes: interaction?.interactionTypes?.map((interactionType: any) => {return interactionType.type}).join(', '),
       pmids: interaction?.publications,
       sources: interaction?.sources
     }
   })
 
   return !isLoading ?
-    <Box className='interaction-table-container'> 
+    <Box className='interaction-table-container'>
       <Box width="100%" height="500px" display="flex">
       <DataGrid
         onRowClick={handleEvent}
-        columns={columns} 
-        rows={rows} 
+        columns={columns}
+        rows={rows}
         pagination
         pageSizeOptions={[25, 50, 100]}
         className='data-grid'
@@ -126,7 +128,7 @@ export const InteractionTable: React.FC<Props> = ({interactionResults, isLoading
         />
       </Box>
     </Box>
-  : 
+  :
   <Box display='flex' mt='10px' alignItems='center'><h3>Loading interaction results...</h3>
     <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small'></Icon>
   </Box>

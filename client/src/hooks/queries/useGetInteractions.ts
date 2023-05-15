@@ -14,6 +14,7 @@ const getInteractionsByGenesQuery = gql`
           drug {
             name
             approved
+            conceptId
             drugApprovalRatings {
               rating
             }
@@ -24,6 +25,7 @@ const getInteractionsByGenesQuery = gql`
           }
           gene {
             name
+            conceptId
           }
           interactionScore
           interactionTypes {
@@ -43,6 +45,19 @@ const getInteractionsByGenesQuery = gql`
   }
 `;
 
+export function useGetInteractionsByGenes(names: string[]) {
+  return useQuery(
+    "interactions" + names,
+    async () => {
+      const res = await graphQLClient.request(getInteractionsByGenesQuery, {
+        names,
+      });
+      return res;
+    },
+    { enabled: names.length > 0 }
+  );
+}
+
 // by drugs
 const getInteractionsByDrugsQuery = gql`
   query drugs($names: [String!]!) {
@@ -52,12 +67,14 @@ const getInteractionsByDrugsQuery = gql`
           id
           gene {
             name
+            conceptId
             geneCategories {
               name
             }
           }
           drug {
             name
+            conceptId
             approved
           }
           interactionScore
@@ -77,19 +94,6 @@ const getInteractionsByDrugsQuery = gql`
   }
 `;
 
-export function useGetInteractionsByGenes(names: string[]) {
-  return useQuery(
-    "interactions" + names,
-    async () => {
-      const res = await graphQLClient.request(getInteractionsByGenesQuery, {
-        names,
-      });
-      return res;
-    },
-    { enabled: names !== [] }
-  );
-}
-
 export function useGetInteractionsByDrugs(names: string[]) {
   return useQuery(
     "interactions" + names,
@@ -99,6 +103,6 @@ export function useGetInteractionsByDrugs(names: string[]) {
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }
