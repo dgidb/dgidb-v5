@@ -23,12 +23,14 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
             id
             gene {
               name
+              conceptId
               geneCategories {
                 name
               }
             }
             drug {
               name
+              conceptId
               approved
             }
             interactionScore
@@ -60,11 +62,13 @@ RSpec.describe 'Drug Interaction Query', type: :graphql do
 
     gene = interaction['gene']
     expect(gene['name']).to eq @gene.name
+    expect(gene['conceptId']).to eq @gene.concept_id
     expect(gene['geneCategories'].size).to eq 1
     expect(gene['geneCategories'][0]['name']).to eq @cat.name
 
     drug = interaction['drug']
     expect(drug['name']).to eq @drug.name
+    expect(drug['conceptId']).to eq @drug.concept_id
     # expect(drug['approved']).to be true
 
     expect(interaction['id']).to eq @int.id
