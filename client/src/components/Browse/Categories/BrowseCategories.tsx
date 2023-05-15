@@ -24,8 +24,6 @@ export const BrowseCategories: React.FC = () => {
 
   const [renderedCategories, setRenderedCategories] = useState<any>([]);
 
-  console.log(checkedList.includes('BaderLab'))
-
   const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE");
 
   useEffect(() => {
@@ -82,19 +80,10 @@ export const BrowseCategories: React.FC = () => {
   }, [checkedList]);
 
   const onChange = (event: any) => {
-    console.log(event.target.id)
-    // setCheckedList(list);
-    // setIndeterminate(!!list.length && list.length < plainOptions.length);
-    // setCheckAll(list.length === plainOptions.length);
-    console.log(checkedList)
-    console.log(checkedList.includes(event.target.id))
     if (checkedList.includes(event.target.id)) {
       const newList = checkedList.filter((selectedOption: any) => { return selectedOption !== event.target.id as string })
-      console.log(newList)
       setCheckedList(newList)
     } else {
-      console.log('adding item')
-      console.log([...checkedList, event.target.id])
       setCheckedList([...checkedList, event.target.id])
     }
   };

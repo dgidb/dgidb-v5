@@ -42,7 +42,6 @@ export const Results: React.FC = () => {
     }
     // populate search terms based on search params if the params don't match what's in the state
     if (searchParams && searchTerms?.toString() !== state?.searchTerms?.toString()) {
-      console.log('idk if this should run')
       state.searchTerms = []
       const terms = searchParams.get('searchTerms')?.split(',')
       terms?.forEach( term => 
