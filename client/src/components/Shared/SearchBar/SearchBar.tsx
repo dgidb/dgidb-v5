@@ -22,6 +22,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     autocompleteOptions = categoryAutocompleteOptions
   }
 
+  // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
+  if (autocompleteOptions.filter((option: { name: string; }) => option.name === typedSearchTerm).length === 0) {
+    autocompleteOptions = [{name: typedSearchTerm}, ...autocompleteOptions]
+  }
+
   const [selectedOptions, setSelectedOptions] = React.useState<any[]>([]);
   const isValidSearch = typedSearchTerm && typedSearchTerm !== '' && typedSearchTerm !== ' '
 
@@ -99,7 +104,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         multiple
         filterSelectedOptions
         id="tags-standard"
-        options={isValidSearch ? [{name: typedSearchTerm}, ...autocompleteOptions] : autocompleteOptions}
+        options={autocompleteOptions}
         getOptionLabel={(option: any) => option.name}
         renderInput={(params) => (
           <Box width={650}>
