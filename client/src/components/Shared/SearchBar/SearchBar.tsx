@@ -28,8 +28,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   }
 
   const [selectedOptions, setSelectedOptions] = React.useState<any[]>([]);
-  const isValidSearch = typedSearchTerm && typedSearchTerm !== '' && typedSearchTerm !== ' '
-
 
   const handleAutocompleteChange = (event: any, value: any) => {
     if (value.length === 0) {
