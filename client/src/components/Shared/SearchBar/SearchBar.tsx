@@ -113,6 +113,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         value={selectedOptions}
         onInputChange={handleInputChange}
         onChange={handleAutocompleteChange}
+        isOptionEqualToValue={(option, value) => option.name === value.name}
       />
       </Box>
     </Box>
