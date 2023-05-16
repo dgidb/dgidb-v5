@@ -18,21 +18,6 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       import_interaction_claims
     end
 
-    private
-
-    def get_version
-      version = ''
-      File.open(@interaction_file_path, 'r') do |file|
-        header = file.readline.strip
-        match = header.match(/^"# GtoPdb Version: (\d+\.\d+)/)
-        version = match[1] if match
-      end
-      if version.empty?
-        Rails.logger.error("Could not extract version number from GtoP interactions file")
-      end
-      version
-    end
-
     def create_new_source
       @source ||= Source.create(
         base_url: 'http://www.guidetopharmacology.org/DATA/',
@@ -53,6 +38,21 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.source_types << SourceType.find_by(type: 'potentially_druggable')
       @source.save
+    end
+
+    private
+
+    def get_version
+      version = ''
+      File.open(@interaction_file_path, 'r') do |file|
+        header = file.readline.strip
+        match = header.match(/^"# GtoPdb Version: (\d+\.\d+)/)
+        version = match[1] if match
+      end
+      if version.empty?
+        Rails.logger.error("Could not extract version number from GtoP interactions file")
+      end
+      version
     end
 
     def import_gene_claims
