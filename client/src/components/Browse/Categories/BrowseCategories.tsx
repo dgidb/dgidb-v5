@@ -1,17 +1,14 @@
 // hooks/dependencies
 import React, { useState, useEffect } from "react";
 import { useGetDruggableSources } from "hooks/queries/useGetDruggableSources";
-import { Collapse } from "antd";
 
 // components
 import { BrowseCategoriesGenesTable } from "components/Browse/Categories/BrowseCategoriesGenesTable";
 
 // styles
 import "./BrowseCategories.scss";
-import { Checkbox } from "antd";
-
-const CheckboxGroup = Checkbox.Group;
-const { Panel } = Collapse;
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface Categories {
   [key: string]: number;
@@ -82,10 +79,13 @@ export const BrowseCategories: React.FC = () => {
     setRenderedCategories(categoriesArray);
   }, [checkedList]);
 
-  const onChange = (list: any) => {
-    setCheckedList(list);
-    setIndeterminate(!!list.length && list.length < plainOptions.length);
-    setCheckAll(list.length === plainOptions.length);
+  const onChange = (event: any) => {
+    if (checkedList.includes(event.target.id)) {
+      const newList = checkedList.filter((selectedOption: any) => { return selectedOption !== event.target.id as string })
+      setCheckedList(newList)
+    } else {
+      setCheckedList([...checkedList, event.target.id])
+    }
   };
 
   const onCheckAllChange = (e: any) => {
@@ -97,27 +97,36 @@ export const BrowseCategories: React.FC = () => {
   return (
     <div className="browse-categories-container">
       <div className="source-checklist">
-        <CheckboxGroup
-          options={plainOptions}
-          value={checkedList}
-          onChange={onChange}
-        />
-        <Checkbox
-          indeterminate={indeterminate}
-          onChange={onCheckAllChange}
-          checked={checkAll}
-        >
-          Select/Deselect All
-        </Checkbox>
+      <FormControlLabel
+        label="Select/Deselect All"
+        control={
+          <Checkbox
+            checked={checkAll}
+            indeterminate={indeterminate}
+            onChange={onCheckAllChange}
+          />
+        }
+      />
+      {plainOptions.map(option => {
+        return <Box><FormControlLabel
+        label={option}
+        control={<Checkbox checked={checkedList.includes(option)} onChange={onChange} id={option} />}
+      /></Box>})}
       </div>
 
       <div className="category-list">
-        <Collapse accordion>
           {renderedCategories?.map((cat: any, index: number) => {
             if (cat.geneCount) {
               return (
-                <Panel header={`${cat.name} ${cat.geneCount}`} key={index}>
-                  <BrowseCategoriesGenesTable
+                <Accordion>
+                  <AccordionSummary
+                    style={{padding: "0 10px"}}
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                  {`${cat.name} ${cat.geneCount}`}
+                </AccordionSummary>
+                <AccordionDetails style={{overflow: "scroll", padding: "0 10px 10px"}}>
+                <BrowseCategoriesGenesTable
                     categoryName={cat.name}
                     sourceDbNames={
                       plainOptions.length === checkedList.length
@@ -125,13 +134,13 @@ export const BrowseCategories: React.FC = () => {
                         : checkedList
                     }
                   />
-                </Panel>
+                </AccordionDetails>
+              </Accordion>
               );
             } else {
               return null;
             }
           })}
-        </Collapse>
       </div>
     </div>
   );

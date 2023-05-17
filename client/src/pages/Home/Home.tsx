@@ -9,7 +9,6 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { queryClient } from 'providers/app';
 
 // styles
-import { Button } from 'antd';
 // todo: introduce dark mode back later
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
@@ -91,16 +90,6 @@ export const Home: React.FC = () => {
       </div> */}
 
       <SearchBar handleSubmit={handleSubmit} />
-
-      <div className="home-buttons">
-        <Button onClick={() => handleSubmit()} style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px', fontSize: 16,}}type="primary">Search</Button>
-        <Button
-          onClick={() => handleDemoClick()}
-          style={{margin: 20, color: 'var(--text-content)', backgroundColor: 'var(--background-light)', border: 'none', width: '120px', height: '35px',  fontSize: 16,}}
-          type="primary">
-            Demo
-        </Button>
-      </div>
       <div className="home-blurb">
         An open-source search engine for drug-gene interactions and the druggable genome.
       </div>

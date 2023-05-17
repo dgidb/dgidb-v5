@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
-import { Navigate, Outlet, useRoutes} from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
+import { Navigate, Outlet, useLocation, useRoutes} from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
@@ -16,6 +16,24 @@ import { Playground } from 'pages/Playground'
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
 
 const App = () => {
+  const { pathname, hash, key } = useLocation();
+
+  useEffect(() => {
+    // if not a hash link, scroll to top
+    if (hash === '') {
+      window.scrollTo(0, 0);
+    }
+    // else scroll to id
+    else {
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 0);
+    }
+  }, [pathname, hash, key]);
 
   return (
     <MainLayout>

@@ -1,33 +1,37 @@
 // hooks/dependencies
-import React, {useState, useContext, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext} from 'react';
 import { useGetCategories} from 'hooks/queries/useGetCategories';
 
 // components
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // styles
-import { Tabs } from 'antd';
 import './CategoryResults.scss';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
+import { useSearchParams } from 'react-router-dom';
+import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 
 export const CategoryResults: React.FC = () => {
-
-  const { TabPane } = Tabs;
-
   const { state } = useContext(GlobalClientContext);
+  const [searchParams] = useSearchParams();
+  const searchType = searchParams.get('searchType')
   const { data } = useGetCategories(state.searchTerms);
+  const [value, setValue] = React.useState(0);
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   const genes = data?.genes?.nodes
-
-  const onChange = () => {
-
-  }
-
+  
   return (
     <div className="category-results-container">
-      <Tabs defaultActiveKey="1" onChange={onChange}>
-        <TabPane tab="Unique Matches" key="1">
+      <Tabs value={value} onChange={handleChange} textColor='secondary' indicatorColor='secondary'>
+        <Tab label="Unique Matches" />
+        {/* TODO: fix/implement ambiguous matches for categories <Tab label="Ambiguous or Unmatched" /> */}
+      </Tabs>
+      <TabPanel value={value} index={0}>
         <TableDownloader tableName='gene_category_results' vars={{names: state.searchTerms}}/>
         <div className="gene-categories">
             {genes?.map((gene: any) => {
@@ -57,11 +61,10 @@ export const CategoryResults: React.FC = () => {
                 )
             })}
           </div>
-        </TabPane>
-        <TabPane tab="Ambiguous or Unmatched" key="2">
-        </TabPane>
-      </Tabs>
-
+          </TabPanel>
+          {/* TODO: implement/fix ambiguous terms for categories <TabPanel value={value} index={1}>
+            <AmbiguousTermsSummary resultType={searchType || 'drug'} />
+          </TabPanel> */}
     </div>
   )
 };
