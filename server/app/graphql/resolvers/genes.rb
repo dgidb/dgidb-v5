@@ -6,12 +6,16 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   type Types::GeneType.connection_type, null: false
 
-  scope { Gene.all }
+  scope { Gene.all.distinct }
 
   option(:ids, type: [String]) { |scope, value| scope.where(id: value)}
   option(:names, type: [String]) { |scope, value| scope.where(name: value.map(&:upcase)) }
   option(:long_name, type: String) { |scope, value| scope.where("long_name ILIKE?", "#{value}%")}
   option(:concept_id, type: Int) { |scope, value| scope.where(concept_id: value)}
+
+  option(:name, type: String, description: 'Left anchored string search on gene symbol') do |scope, value|
+    scope.where('name ILIKE ?', "#{value.upcase}%")
+  end
 
   # TODO: search filters (Clinically Actionable, Druggable Genome, Drug Resistance)
 

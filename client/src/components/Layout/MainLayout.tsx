@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // client state
@@ -8,27 +8,25 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // style
 import './MainLayout.scss';
-import {CloseCircleOutlined, DownOutlined} from '@ant-design/icons';
-import { Dropdown, Menu, Space } from 'antd';
-import { Box } from '@mui/material';
+import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 const Header: React.FC = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const navigate = useNavigate();
-  const menu = (
-    <Menu>
-      <Menu.Item key="categories" onClick={() => navigate('/browse/categories')}>
-        <li>Categories</li>
-      </Menu.Item>
-      <Menu.Item key="sources" onClick={() => navigate('/browse/sources')}>
-        <li>Sources</li>
-      </Menu.Item>
-    </Menu>
-  )
 
   return (
     <header>
@@ -38,11 +36,24 @@ const Header: React.FC = () => {
       <nav>
         <ul>
           <li>
-            <Dropdown overlay={menu}>
-              <Space>
-                Browse
-              </Space>
-            </Dropdown>
+            <Button className='browse-button'
+            onClick={handleOpen}>Browse</Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center"
+              }}>
+              <MenuItem onClick={() => {handleClose(); navigate('/browse/categories')}}>Categories</MenuItem>
+              <MenuItem onClick={() => {handleClose(); navigate('/browse/sources')}}>Sources</MenuItem>
+            </Menu>
           </li>
           <li onClick={() => navigate('/about')}>
             About
@@ -62,12 +73,10 @@ const Footer: React.FC = () => {
 
   return (
   <footer>
-
     Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice.
-    <CloseCircleOutlined
+    <IconButton
     style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}}
-    onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}
-    />
+    onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}><HighlightOffIcon /></IconButton>
   </footer>
   )
 }

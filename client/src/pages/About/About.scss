@@ -2,6 +2,12 @@
 
   h3 {
     font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin-bottom: 15px;
+    line-height: 1.5em;
   }
 
   background-color: var(--background);
@@ -13,6 +19,7 @@
 
   .table-of-contents-container {
     min-width: 180px;
+    margin-left: 10px;
   }
 
   .about-content-container {

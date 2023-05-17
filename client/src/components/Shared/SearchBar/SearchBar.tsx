@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 
@@ -13,6 +13,7 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
+
   const {state, dispatch} = useContext(GlobalClientContext);
 
   const [inputValue, setInputValue] = useState<any>('');
@@ -112,8 +113,8 @@ const SearchBar: React.FC<SearchBarProps> = ({handleSubmit }) => {
             <Popover 
               content={content} 
               trigger="click" 
-              //open={showFilters} 
-              //onOpenChange={open => setShowFilters(open)} 
+              open={showFilters} 
+              onOpenChange={open => setShowFilters(open)} 
             >
               {/* TODO: Reintroduce later
               <FilterOutlined

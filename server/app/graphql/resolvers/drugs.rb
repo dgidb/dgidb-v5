@@ -7,7 +7,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   type Types::DrugType.connection_type, null: false
 
-  scope { Drug.all }
+  scope { Drug.all.distinct }
 
   option(:ids, type: [String], description: 'Exact match filtering on a list of drug IDs') do |scope, value|
     scope.where(id: value)
@@ -15,6 +15,10 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   option(:names, type: [String], description: 'Substring filtering on drug name.') do |scope, value|
     scope.where(name: value.map(&:upcase))
+  end
+
+  option(:name, type: String, description: 'Left anchored string search on drug name') do |scope, value|
+    scope.where('drugs.name ILIKE ?', "#{value}%")
   end
 
   option(:approved, type: Boolean, description: 'Filtering on approval status of drug.') do |scope, value|
