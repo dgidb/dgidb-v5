@@ -50,6 +50,7 @@ export function TableDownloader<FV>(props: React.PropsWithChildren<Props<FV>>) {
   return (
     <Box sx={{ display: 'flex' }}>
       <Button variant="outlined" 
+        color='secondary'
         endIcon={<DownloadIcon />}
         disabled={isLoading}
         onClick={onDownloadClick}>

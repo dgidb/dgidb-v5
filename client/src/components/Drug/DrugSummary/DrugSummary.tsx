@@ -15,14 +15,14 @@ import {
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
 import './DrugSummary.scss';
-import { Tabs } from 'antd';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
-const { TabPane } = Tabs;
 
 ChartJS.register(
   CategoryScale,
@@ -96,6 +96,11 @@ interface InfoProps {
 
 const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     function handleWindowResize() {
@@ -121,17 +126,20 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
         <GeneCategories data={chartData} />
       </div> ) : (
         <div className='chart-section tabbed-view'>
-          <Tabs defaultActiveKey='1' type='card' tabPosition='left'>
-          <TabPane tab='Interaction Type' key='1'>
-              <InteractionTypeDrug data={chartData} />
-            </TabPane>
-            <TabPane tab='Directionality' key='2'>
-              <DirectionalityDrug data={chartData} />
-            </TabPane>
-            <TabPane tab='Categories' key='3'>
-              <GeneCategories data={chartData} />
-            </TabPane>
+          <Tabs value={value} onChange={handleChange} orientation='vertical' textColor='secondary' indicatorColor='secondary'>
+            <Tab label="Interaction Type" />
+            <Tab label="Directionality" />
+            <Tab label="Categories" />
           </Tabs>
+          <TabPanel value={value} index={0}>
+            <InteractionTypeDrug data={chartData} />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <DirectionalityDrug data={chartData} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <GeneCategories data={chartData} />
+          </TabPanel>
         </div>
       )}
 

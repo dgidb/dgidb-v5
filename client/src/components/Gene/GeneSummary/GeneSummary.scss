@@ -68,23 +68,10 @@
       .chart-section {
         height: 100%;
         width: 100%;
+        margin-top: 15px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-
-        .ant-tabs {
-          min-width: 500px;
-        }
-
-        .ant-tabs-tabpane {
-          padding-left: 100px;
-          div {
-            canvas {
-              height: 500px !important;
-              width: 500px !important;
-            }
-          }
-        }
+        justify-content: left;
 
         .score-container {
           padding-left: 10px;
@@ -106,8 +93,8 @@
 }
 
 canvas {
-  max-height: 400px !important;
-  max-width: 400px !important;
-  min-height: 300px !important;
-  min-width: 150px !important;
+  max-height: 500px !important;
+  max-width: 500px !important;
+  min-height: 500px !important;
+  min-width: 550px !important;
 }
