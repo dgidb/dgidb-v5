@@ -27,7 +27,7 @@ module Genome
       end
 
       def self.add_members(group_from_scratch)
-        InteractionClaim.eager_load(
+        claims = InteractionClaim.eager_load(
           :interaction_claim_types,
           :source,
           :interaction_claim_attributes,
@@ -36,7 +36,11 @@ module Genome
           drug_claim:
           [:drug],
           gene_claim: [:gene]
-        ).where(interaction_id: nil).in_batches do |interaction_claims|
+        ).where(interaction_id: nil)
+
+        pbar = ProgressBar.create(title: 'Grouping interactions', total: claims.size, format: "%t: %p%% %a |%B|")
+        claims.in_batches do |interaction_claims|
+          batch_size = interaction_claims.size
           interaction_claims.each do |interaction_claim|
             if group_from_scratch
               add_member(interaction_claim)
@@ -46,6 +50,7 @@ module Genome
               end
             end
           end
+          pbar.progress += batch_size
         end
         # these actions might be unnecessary if we create interaction types and publications directly
         InteractionAttribute.where(name: 'PMID').destroy_all

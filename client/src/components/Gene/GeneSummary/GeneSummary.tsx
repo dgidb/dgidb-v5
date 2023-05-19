@@ -18,11 +18,11 @@ import { DirectionalityGene } from 'components/Gene/GeneCharts';
 // styles
 import './GeneSummary.scss';
 import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
-import { Tabs } from 'antd';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
-const { TabPane } = Tabs;
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 ChartJS.register(
   CategoryScale,
@@ -93,6 +93,11 @@ interface InfoProps {
 
 const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     function handleWindowResize() {
@@ -120,17 +125,20 @@ const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
         </div>
       ) : (
         <div className='chart-section tabbed-view'>
-          <Tabs defaultActiveKey='1' type='card' tabPosition='left'>
-            <TabPane tab='Interaction Type' key='1'>
-              <InteractionTypeGene data={chartData} />
-            </TabPane>
-            <TabPane tab='Directionality' key='2'>
-              <DirectionalityGene data={chartData} />
-            </TabPane>
-            <TabPane tab='Regulatory Approval' key='3'>
-              <RegulatoryApprovalGene data={chartData} />
-            </TabPane>
+          <Tabs value={value} onChange={handleChange} orientation='vertical' textColor='secondary' indicatorColor='secondary'>
+            <Tab label="Interaction Type" />
+            <Tab label="Directionality" />
+            <Tab label="Regulatory Approval" />
           </Tabs>
+          <TabPanel value={value} index={0}>
+            <InteractionTypeGene data={chartData} />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <DirectionalityGene data={chartData} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <RegulatoryApprovalGene data={chartData} />
+          </TabPanel>
         </div>
       )}
     </div>

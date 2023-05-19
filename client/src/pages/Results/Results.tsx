@@ -12,49 +12,24 @@ import { ActionTypes } from 'stores/Global/reducers';
 
 // styles
 import './Results.scss';
-import { Tabs } from 'antd';
-
-const { TabPane } = Tabs;
-
-const GeneResults: React.FC = () => {
-  return (
-    <>
-      <Tabs defaultActiveKey="1" type="card">
-        <TabPane tab="Unique Matches" key="1">
-          <GeneSummary />
-        </TabPane>
-        <TabPane tab="Ambiguous or Unmatched" key="2">
-          <AmbiguousTermsSummary resultType="gene" />
-        </TabPane>
-      </Tabs>
-    </>
-  )
-}
-
-const DrugResults: React.FC = () => {
-  return (
-    <>
-      <Tabs defaultActiveKey="1" type="card">
-        <TabPane tab="Unique Matches" key="1">
-          <DrugSummary />
-        </TabPane>
-        <TabPane tab="Ambiguous or Unmatched" key="2">
-          <AmbiguousTermsSummary resultType="drug"/>
-        </TabPane>
-      </Tabs>
-    </>
-  )
-}
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 export const Results: React.FC = () => {
   const {state, dispatch} = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
   const searchTerms = searchParams.get('searchTerms')?.split(',')
+  const searchType = searchParams.get('searchType')
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     // update search type based on search params
     if (searchParams) {
-      const searchType = searchParams.get('searchType')
       if (searchType === 'gene') {
         dispatch({type: ActionTypes.SetByGene});
       }
@@ -77,9 +52,21 @@ export const Results: React.FC = () => {
 
   return (
     <div className="results-page-container">
-      {state.interactionMode === 'gene' && <GeneResults />}
-      {state.interactionMode === 'drug' && <DrugResults />}
-      {state.interactionMode === 'categories' && <CategoryResults />}
+      { searchType !== 'categories' ? 
+      <>
+        <Tabs value={value} onChange={handleChange} textColor='secondary' indicatorColor='secondary'>
+          <Tab label="Unique Matches" />
+          <Tab label="Ambiguous or Unmatched" />
+        </Tabs> 
+        <TabPanel value={value} index={0}>
+          { searchType === 'gene' ? <GeneSummary /> : <DrugSummary /> }
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <AmbiguousTermsSummary resultType={searchType || 'drug'} />
+        </TabPanel>
+      </>: ''
+      }
+      {searchType === 'categories' && <CategoryResults />}
     </div>
   )
 };

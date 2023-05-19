@@ -58,6 +58,7 @@ module Utils
 
       if source_id
         sql = <<-SQL
+        delete from drugs d join drug_claims dc on d.id = dc.drug_id group by dc.drug_id having count(dc.drug_id) = 1 where source_id = '#{source_id}';
           delete from interaction_claims_publications where interaction_claim_id in (select id from interaction_claims where source_id = '#{source_id}');
           delete from interaction_claim_attributes where interaction_claim_id in (select id from interaction_claims where source_id = '#{source_id}');
           delete from interaction_claim_links where interaction_claim_id in (select id from interaction_claims where source_id = '#{source_id}');
