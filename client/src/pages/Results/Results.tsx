@@ -11,10 +11,8 @@ import { AmbiguousTermsSummary } from "components/Shared/AmbiguousTermsSummary/A
 import { ActionTypes } from "stores/Global/reducers";
 
 // styles
-import "./Results.scss";
-import { Tab, Tabs } from "@mui/material";
-import TabPanel from "components/Shared/TabPanel/TabPanel";
-import { GeneSearchResult } from "components/Gene/GeneSearchResult/GeneSearchResult";
+import { GeneSearchResults } from "components/Gene/GeneSearchResults/GeneSearchResults";
+import { DrugSearchResults } from "components/Drug/DrugSearchResults/DrugSearchResults";
 
 export const Results: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
@@ -23,7 +21,6 @@ export const Results: React.FC = () => {
   const searchType = searchParams.get("searchType");
 
   const [value, setValue] = React.useState(0);
-  console.log(`value: ${value}`);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -59,9 +56,9 @@ export const Results: React.FC = () => {
       {searchType !== "categories" ? (
         <>
           {searchType === "gene" ? (
-            <GeneSearchResult value={value} handleChange={handleChange} />
+            <GeneSearchResults value={value} handleChange={handleChange} />
           ) : (
-            <></>
+            <DrugSearchResults value={value} handleChange={handleChange} />
           )}
         </>
       ) : (
