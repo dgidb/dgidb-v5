@@ -28,7 +28,9 @@ module Types::Queries
 
         #find exact matches on concept ID
         if remaining_terms.size.positive?
-          direct_id_matches = Gene.where("upper(concept_id) IN (?)", remaining_terms)
+          direct_id_matches = Gene.where("concept_id IN (?)", remaining_terms)
+          # TODO case insensitive index
+          # direct_id_matches = Gene.where("upper(concept_id) IN (?)", remaining_terms)
           direct_id_matches.each do |g|
             results[:direct_matches] << {
               search_term: g.concept_id,

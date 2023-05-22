@@ -145,7 +145,11 @@ const SummaryInfo: React.FC<InfoProps> = ({ chartData }) => {
   );
 };
 
-export const GeneSummary: React.FC = () => {
+interface SummaryProps {
+  conceptIds: string[]
+}
+
+export const GeneSummary: React.FC<SummaryProps> = ({ conceptIds }) => {
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetInteractionsByGenes(
     state.searchTerms

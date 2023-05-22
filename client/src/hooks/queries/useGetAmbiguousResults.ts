@@ -55,6 +55,7 @@ const getDrugMatchesQuery = gql`
 `;
 
 export function useGetMatchedResults(names: string[], type: string) {
+  console.log(`get ambiguous: ${names}`)
   const key = type + names
   const requestQuery = type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery
   return useQuery(
