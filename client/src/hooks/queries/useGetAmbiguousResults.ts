@@ -8,9 +8,34 @@ const getGeneMatchesQuery = gql`
       directMatches {
         searchTerm
         matches {
-          id
           name
           conceptId
+          interactions {
+            id
+            drug {
+              name
+              conceptId
+              approved
+              drugApprovalRatings {
+                rating
+              }
+              drugAttributes {
+                name
+                value
+              }
+            }
+            interactionScore
+            interactionTypes {
+              type
+              directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              fullName
+            }
+          }
         }
       }
       ambiguousMatches {
@@ -55,9 +80,10 @@ const getDrugMatchesQuery = gql`
 `;
 
 export function useGetMatchedResults(names: string[], type: string) {
-  console.log(`get ambiguous: ${names}`)
-  const key = type + names
-  const requestQuery = type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery
+  // TODO constrain the type value better
+  const key = type + names;
+  const requestQuery =
+    type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery;
   return useQuery(
     key,
     async () => {
@@ -66,6 +92,6 @@ export function useGetMatchedResults(names: string[], type: string) {
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }

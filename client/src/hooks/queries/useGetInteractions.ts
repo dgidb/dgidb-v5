@@ -3,6 +3,8 @@ import { gql } from "graphql-request";
 import { graphQLClient } from "config";
 
 // by genes
+// TODO get indication
+// TODO update rspec
 const getInteractionsByGenesQuery = gql`
   query genes($names: [String!]!) {
     genes(names: $names) {
@@ -46,7 +48,6 @@ const getInteractionsByGenesQuery = gql`
 `;
 
 export function useGetInteractionsByGenes(names: string[]) {
-  console.log(`in get interactions by genes: ${names}`)
   return useQuery(
     "interactions" + names,
     async () => {
@@ -96,7 +97,6 @@ const getInteractionsByDrugsQuery = gql`
 `;
 
 export function useGetInteractionsByDrugs(names: string[]) {
-  console.log(`in get interactions by drugs: ${names}`)
   return useQuery(
     "interactions" + names,
     async () => {

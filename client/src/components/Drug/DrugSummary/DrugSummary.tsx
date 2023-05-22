@@ -147,7 +147,11 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({ chartData }) => {
   );
 };
 
-export const DrugSummary: React.FC = () => {
+interface SummaryProps {
+  conceptIds: string[]
+}
+
+export const DrugSummary: React.FC<SummaryProps> = ({ conceptIds }) => {
   const { state } = useContext(GlobalClientContext);
   const { data, error, isError, isLoading } = useGetInteractionsByDrugs(
     state.searchTerms
@@ -164,7 +168,7 @@ export const DrugSummary: React.FC = () => {
       drug.interactions.forEach((int: any) => {
         interactionData.push(int)
       })
-    }) 
+    })
     setInteractionResults(interactionData)
   }, [drugs])
 
