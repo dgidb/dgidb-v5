@@ -24,7 +24,7 @@ export const CategoryResults: React.FC = () => {
     setValue(newValue);
   };
   const genes = data?.genes?.nodes
-  
+
   return (
     <div className="category-results-container">
       <Tabs value={value} onChange={handleChange} textColor='secondary' indicatorColor='secondary'>

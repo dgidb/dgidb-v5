@@ -10,6 +10,7 @@ const getGeneMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       ambiguousMatches {
@@ -17,6 +18,7 @@ const getGeneMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {
@@ -34,6 +36,7 @@ const getDrugMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       ambiguousMatches {
@@ -41,6 +44,7 @@ const getDrugMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {

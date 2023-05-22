@@ -69,13 +69,14 @@ const InteractionCount: React.FC<CountProps> = ({ setChartData }) => {
           </h2>
         </div>
       </div>
-      {genes?.map((gene: any) => {
+      {genes?.map((gene: any, i: number) => {
         return (
           <div
             className={`interaction-count-row ${
               filterBy === gene.name ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(gene.name)}
+            key={i}
           >
             <div className='interaction-count-gene'>{gene.name}</div>
             <div className='interaction-count'>{gene.interactions.length}</div>
