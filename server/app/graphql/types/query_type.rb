@@ -52,11 +52,11 @@ module Types
 
     field :gene, Types::GeneType, null: true do
       description "A gene"
-      argument :conceptId, String, required: true
+      argument :concept_id, String, required: true
     end
 
-    def gene(conceptId: )
-      Gene.find_by(concept_id: conceptId)
+    def gene(concept_id: )
+      Gene.find_by(concept_id: concept_id)
     end
 
     field :gene_alias, Types::GeneAliasType, null: true do
@@ -170,11 +170,11 @@ module Types
 
     field :drug, Types::DrugType, null: true do
       description "A drug"
-      argument :conceptId, String, required: true
+      argument :concept_id, String, required: true
     end
 
-    def drug(conceptId: )
-      Drug.find_by(concept_id: conceptId)
+    def drug(concept_id: )
+      Drug.find_by(concept_id: concept_id)
     end
 
     field :interaction_attribute, Types::InteractionAttributeType, null: true do
