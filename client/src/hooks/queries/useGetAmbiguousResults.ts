@@ -59,9 +59,29 @@ const getDrugMatchesQuery = gql`
       directMatches {
         searchTerm
         matches {
-          id
           name
           conceptId
+          interactions {
+            id
+            gene {
+              name
+              conceptId
+              geneCategories {
+                name
+              }
+            }
+            interactionScore
+            interactionTypes {
+              type
+              directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              fullName
+            }
+          }
         }
       }
       ambiguousMatches {

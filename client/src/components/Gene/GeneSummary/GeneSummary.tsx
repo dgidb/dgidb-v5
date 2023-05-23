@@ -1,6 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect, useContext } from "react";
-import { GlobalClientContext } from "stores/Global/GlobalClient";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -159,7 +158,6 @@ interface SummaryProps {
 }
 
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
-  const { state } = useContext(GlobalClientContext);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedGene, setSelectedGene] = useState<string>("");
 
@@ -180,7 +178,6 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   }, [genes]);
 
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
-  console.log(geneMatches);
 
   return (
     <div className="gene-summary-container">
@@ -217,3 +214,4 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
     </div>
   );
 };
+// TODO move iserror/isloading back to original house

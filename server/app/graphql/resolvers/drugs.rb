@@ -13,7 +13,7 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(id: value)
   end
 
-  option(:names, type: [String], description: 'Substring filtering on drug name.') do |scope, value|
+  option(:names, type: [String], description: 'Substring filtering on a list of drug names.') do |scope, value|
     scope.where(name: value.map(&:upcase))
   end
 
@@ -35,6 +35,10 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   option(:concept_id, type: String, description: 'Exact match filtering on concept ID.') do |scope, value|
     scope.where(concept_id: value)
+  end
+
+  option(:concept_ids, type: String, description: 'Exact match filtering on concept IDs') do |scope, value|
+    scope.where('concept_id IN (?)', value)
   end
 
   option(:interaction_type, type: String, description: 'Exact filtering on interaction claim type.') do |scope, value|
