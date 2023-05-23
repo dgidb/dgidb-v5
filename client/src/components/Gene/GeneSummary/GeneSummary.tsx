@@ -180,6 +180,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   }, [genes]);
 
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
+  console.log(geneMatches);
 
   return (
     <div className="gene-summary-container">
@@ -206,7 +207,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
         </Box>
         <TableDownloader
           tableName="gene_interaction_results"
-          vars={{ names: state.searchTerms }}
+          vars={{ conceptIds: geneMatches?.map((gene: any) => gene.conceptId) }}
         />
       </Box>
       <InteractionTable

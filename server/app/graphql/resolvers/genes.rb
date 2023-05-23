@@ -12,6 +12,7 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
   option(:names, type: [String]) { |scope, value| scope.where(name: value.map(&:upcase)) }
   option(:long_name, type: String) { |scope, value| scope.where("long_name ILIKE?", "#{value}%")}
   option(:concept_id, type: String) { |scope, value| scope.where(concept_id: value)}
+  option(:concept_ids, type: [String]) { |scope, value| scope.where("concept_id IN (?)", value) }
 
   option(:name, type: String, description: 'Left anchored string search on gene symbol') do |scope, value|
     scope.where('name ILIKE ?', "#{value.upcase}%")
