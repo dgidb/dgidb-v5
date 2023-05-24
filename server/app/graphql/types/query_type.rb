@@ -29,6 +29,7 @@ module Types
           "suggestion_type": "NAME"
         }
       end
+      matches = matches.uniq { |d| d[:suggestion] }
 
       if matches.length < n
         matches += DrugAlias.includes(:drug)
@@ -43,6 +44,7 @@ module Types
           }
         end
       end
+      matches = matches.uniq { |d| d[:suggestion] }
 
       if matches.length < n
         matches += Drug.where("drugs.concept_id ILIKE ?", "#{term}%").limit(n).map do |drug|
@@ -55,7 +57,6 @@ module Types
         end
       end
 
-      # for now, drop redundant suggestions
       return matches.uniq { |d| d[:suggestion] }
     end
 
@@ -74,6 +75,7 @@ module Types
           "suggestion_type": "NAME"
         }
       end
+      matches = matches.uniq { |g| g[:suggestion] }
 
       if matches.length < n
         matches += GeneAlias.includes(:gene)
@@ -88,6 +90,7 @@ module Types
           }
         end
       end
+      matches = matches.uniq { |g| g[:suggestion] }
 
       if matches.length < n
         matches += Gene.where("genes.concept_id ILIKE ?", "#{term}%").limit(n).map do |gene|
@@ -100,7 +103,6 @@ module Types
         end
       end
 
-      # for now, drop redundant suggestions
       return matches.uniq { |g| g[:suggestion] }
     end
 
