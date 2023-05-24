@@ -21,6 +21,7 @@ RSpec.describe 'Gene Interaction Query', type: :graphql do
       genes(names: $names) {
         nodes {
           name
+          conceptId
           interactions {
             id
             drug {

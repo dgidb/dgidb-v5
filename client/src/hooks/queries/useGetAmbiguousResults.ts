@@ -4,8 +4,8 @@ import { graphQLClient } from "config";
 import { ResultTypes } from "types/types";
 
 const getGeneMatchesQuery = gql`
-  query geneMatches($names: [String!]!) {
-    geneMatches(searchTerms: $names) {
+  query geneMatches($searchTerms: [String!]!) {
+    geneMatches(searchTerms: $searchTerms) {
       directMatches {
         searchTerm
         matches {
@@ -52,8 +52,8 @@ const getGeneMatchesQuery = gql`
 `;
 
 const getDrugMatchesQuery = gql`
-  query drugMatches($names: [String!]!) {
-    drugMatches(searchTerms: $names) {
+  query drugMatches($searchTerms: [String!]!) {
+    drugMatches(searchTerms: $searchTerms) {
       directMatches {
         searchTerm
         matches {
@@ -106,7 +106,7 @@ export function useGetMatchedResults(names: string[], type: ResultTypes) {
     key,
     async () => {
       const res = await graphQLClient.request(requestQuery, {
-        names,
+        searchTerms: names,
       });
       return res;
     },

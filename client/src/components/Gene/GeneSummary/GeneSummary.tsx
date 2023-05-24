@@ -9,13 +9,12 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
 import { InteractionTypeGene } from "components/Gene/GeneCharts";
 import { DirectionalityGene } from "components/Gene/GeneCharts";
+import { RegulatoryApprovalGene } from "components/Gene/GeneCharts";
 
 // styles
 import "./GeneSummary.scss";
-import { RegulatoryApprovalGene } from "components/Gene/GeneCharts";
 import Box from "@mui/material/Box";
 import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
 import TableDownloader from "components/Shared/TableDownloader/TableDownloader";

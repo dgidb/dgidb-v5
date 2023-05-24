@@ -1,7 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect, useContext} from 'react';
-import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import React, {useState, useEffect} from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,7 +7,6 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -26,8 +23,6 @@ interface Props {
 }
 
 export const InteractionTypeGene: React.FC<Props> = ({data}) => {
-  const {state} = useContext(GlobalClientContext);
-  // const { data } = useGetInteractionsByGenes(state.searchTerms);
 
   const [chartData, setChartData] = useState<any>({
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],

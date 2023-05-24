@@ -18,9 +18,31 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
         directMatches {
           searchTerm
           matches {
-            id
             name
             conceptId
+            interactions {
+              id
+              drug {
+                name
+                conceptId
+                approved
+                drugAttributes {
+                  name
+                  value
+                }
+              }
+              interactionScore
+              interactionTypes {
+                type
+                directionality
+              }
+              publications {
+                pmid
+              }
+              sources {
+                fullName
+              }
+            }
           }
         }
         ambiguousMatches {
@@ -54,12 +76,10 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
     expect(braf_result['matches'].size).to eq 1
     expect(braf_result['matches'][0]['name']).to eq @braf.name
     expect(braf_result['matches'][0]['conceptId']).to eq @braf.concept_id
-    expect(braf_result['matches'][0]['id']).to eq @braf.id
     alk_result = direct_matches.select { |dm| dm['searchTerm'] == @alk1_alk.alias }[0]
     expect(alk_result['matches'].size).to eq 1
     expect(alk_result['matches'][0]['name']).to eq @alk.name
     expect(alk_result['matches'][0]['conceptId']).to eq @alk.concept_id
-    expect(alk_result['matches'][0]['id']).to eq @alk.id
 
     ambig_matches = result['data']['geneMatches']['ambiguousMatches']
     expect(ambig_matches.size).to eq 1
