@@ -28,7 +28,7 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
 
   const interactionResults =
     isError || isLoading ? (
-      <div className="gene-summary-container">
+      <div className="drug-summary-container">
         {isError && <div>Error: Interactions not found!</div>}
         {isLoading && <div>Loading...</div>}
       </div>
@@ -57,7 +57,7 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
         {interactionResults}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <AmbiguousTermsSummary resultType={"gene"} />
+        <AmbiguousTermsSummary resultType={"drug"} />
       </TabPanel>
     </>
   );

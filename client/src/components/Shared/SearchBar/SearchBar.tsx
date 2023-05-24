@@ -6,25 +6,23 @@ import React from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
+import { SearchTypes } from 'types/interfaces';
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const { state, dispatch } = useContext(GlobalClientContext);
-  const [searchType, setSearchType] = React.useState(state.interactionMode);
+  const [searchType, setSearchType] = React.useState<SearchTypes>(state.interactionMode);
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('')
-  const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType)  
-  let autocompleteOptions = typeAheadQuery?.data?.genes?.nodes || []
-  const drugAutocompleteOptions = typeAheadQuery?.data?.drugs?.nodes || []
-  const categoryAutocompleteOptions = typeAheadQuery?.data?.categories?.nodes || []
+  const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType)
+  let autocompleteOptions = typeAheadQuery?.data?.geneSuggestions || []
+  const drugAutocompleteOptions = typeAheadQuery?.data?.drugSuggestions || []
 
-  if (searchType === 'drug') {
+  if (searchType === SearchTypes.Drug) {
     autocompleteOptions = drugAutocompleteOptions
-  } else if (searchType === 'categories') {
-    autocompleteOptions = categoryAutocompleteOptions
   }
 
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
-  if (autocompleteOptions.filter((option: { name: string; }) => option.name === typedSearchTerm).length === 0) {
-    autocompleteOptions = [{name: typedSearchTerm}, ...autocompleteOptions]
+  if (autocompleteOptions.filter((option: { suggestion: string; }) => option.suggestion === typedSearchTerm).length === 0) {
+    autocompleteOptions = [{suggestion: typedSearchTerm}, ...autocompleteOptions]
   }
 
   const [selectedOptions, setSelectedOptions] = React.useState<any[]>([]);
@@ -39,13 +37,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   }
 
   const handleChange = (event: SelectChangeEvent) => {
-    const value = event.target.value as string
+    const value = event.target.value as SearchTypes
     setSearchType(value);
-    if(value === 'gene'){
+    if (value === SearchTypes.Gene){
       dispatch({type: ActionTypes.SetByGene})
-    } else if (value === 'drug'){
+    } else if (value === SearchTypes.Drug){
       dispatch({type: ActionTypes.SetByDrug})
-    } else if (value === 'categories'){
+    } else if (value === SearchTypes.Categories){
       dispatch({type: ActionTypes.SetGeneCategories})
     }
   };
@@ -55,22 +53,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   };
 
   const handleDemoClick = () => {
-    if (searchType === 'gene') {
+    if (searchType === SearchTypes.Gene) {
       setSelectedOptions(
-        [{name: 'FLT1'}, {name: 'FLT2'}, {name: 'FLT3'}, {name: 'STK1'}, {name: 'MM1'}, {name: 'AQP1'}, {name: 'LOC100508755'}, {name: 'FAKE1'}]
+        [{suggestion: 'FLT1'}, {suggestion: 'FLT2'}, {suggestion: 'FLT3'}, {suggestion: 'STK1'}, {suggestion: 'MM1'}, {suggestion: 'AQP1'}, {suggestion: 'LOC100508755'}, {suggestion: 'FAKE1'}]
       )
-    } else if (searchType === 'drug') {
+    } else if (searchType === SearchTypes.Drug) {
       setSelectedOptions(
-        [{name: 'SUNITINIB'}, {name: 'ZALCITABINE'}, {name: 'TRASTUZUMAB'}, {name: 'NOTREAL'}]
+        [{suggestion: 'SUNITINIB'}, {suggestion: 'ZALCITABINE'}, {suggestion: 'TRASTUZUMAB'}, {suggestion: 'NOTREAL'}]
       )
-    } else if (searchType === 'categories') {
+    } else if (searchType === SearchTypes.Categories) {
       setSelectedOptions(
-        [{name: 'HER2'}, {name: 'ERBB2'}, {name: 'PTGDR'}, {name: 'EGFR'}, {name: 'RECK'}, {name: 'KCNMA1'}, {name: 'MM1'}]
+        [{suggestion: 'HER2'}, {name: 'ERBB2'}, {suggestion: 'PTGDR'}, {suggestion: 'EGFR'}, {suggestion: 'RECK'}, {suggestion: 'KCNMA1'}, {suggestion: 'MM1'}]
       )
     }
   }
   const handleSearchClick = () => {
-    state.searchTerms = selectedOptions.map(option => option.name)
+    state.searchTerms = selectedOptions.map(option => option.suggestion)
     handleSubmit();
   }
 
@@ -78,11 +76,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     // populate tags from state if nothing entered
     if (selectedOptions?.length !== 0) {
       selectedOptions.map(option => {
-        dispatch({type: ActionTypes.AddTerm, payload: option.name})
+        dispatch({type: ActionTypes.AddTerm, payload: option.suggestion})
       });
-    // populate 
+    // populate
     } else if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
-      setSelectedOptions(state.searchTerms.map(option => {return {name: option}}))
+      setSelectedOptions(state.searchTerms.map(option => {return {suggestion: option}}))
     }
   }, [selectedOptions]);
 
@@ -91,10 +89,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     <Box>
     <Box display='flex'>
       <Box>
-      <Select value={state.interactionMode || searchType} defaultValue={state.interactionMode || 'gene'} onChange={handleChange} classes={{select: 'search-type-select'}}>
-        <MenuItem value='gene'>Interactions by Gene</MenuItem>
-        <MenuItem value='drug'>Interactions by Drug</MenuItem>
-        <MenuItem value='categories'>Gene Categories</MenuItem>
+      <Select value={state.interactionMode || searchType} defaultValue={state.interactionMode || SearchTypes.Gene} onChange={handleChange} classes={{select: 'search-type-select'}}>
+        <MenuItem value={SearchTypes.Gene}>Interactions by Gene</MenuItem>
+        <MenuItem value={SearchTypes.Drug}>Interactions by Drug</MenuItem>
+        <MenuItem value={SearchTypes.Categories}>Gene Categories</MenuItem>
       </Select>
       </Box>
       <Box display='block' ml={1}>
@@ -103,7 +101,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         filterSelectedOptions
         id="tags-standard"
         options={autocompleteOptions}
-        getOptionLabel={(option: any) => option.name}
+        getOptionLabel={(option: any) => option.suggestion}
         renderInput={(params) => (
           <Box width={650}>
           <TextField
@@ -116,7 +114,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         value={selectedOptions}
         onInputChange={handleInputChange}
         onChange={handleAutocompleteChange}
-        isOptionEqualToValue={(option, value) => option.name === value.name}
+        isOptionEqualToValue={(option, value) => option.suggestion === value.suggestion}
       />
       </Box>
     </Box>

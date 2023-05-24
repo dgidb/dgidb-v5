@@ -8,15 +8,16 @@ import {
   interactionModeReducer,
   InteractionModeActions,
 } from "./reducers";
+import { SearchTypes } from "types/interfaces";
 
 type InitialStateType = {
-  interactionMode: string;
+  interactionMode: SearchTypes;
   searchTerms: string[];
   themeSettings: themeSettingsType;
 };
 
 const initialState: InitialStateType = {
-  interactionMode: 'gene',
+  interactionMode: SearchTypes.Gene,
   searchTerms: [],
   themeSettings: {
     showDisclaimer: false,

@@ -28,9 +28,7 @@ module Types::Queries
 
         #find exact matches on concept ID
         if remaining_terms.size.positive?
-          direct_id_matches = Drug.where("concept_id IN (?)", remaining_terms)
-          # TODO case insensitive index
-          # direct_id_matches = Drug.where("upper(concept_id) IN (?)", remaining_terms)
+          direct_id_matches = Drug.where("upper(concept_id) IN (?)", remaining_terms)
           direct_id_matches.each do |d|
             results[:direct_matches] << {
               search_term: d.concept_id,

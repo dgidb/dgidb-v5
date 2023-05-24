@@ -166,6 +166,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
     genes?.forEach((gene: any) => {
       gene?.matches[0].interactions?.forEach((interaction: any) => {
         interactions.push({
+          term: gene.searchTerm,
           gene: {
             name: gene.matches[0].name,
             conceptId: gene.matches[0].conceptId,
@@ -178,7 +179,6 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   }, [genes]);
 
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
-
   return (
     <div className="gene-summary-container">
       <h1>Gene Summary</h1>
@@ -214,4 +214,3 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
     </div>
   );
 };
-// TODO move iserror/isloading back to original house

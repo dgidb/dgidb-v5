@@ -34,7 +34,7 @@ ChartJS.register(
 interface CountProps {
   drugMatches: any[];
   selectedDrug: string;
-  setSelectedDrug: any; // TODO
+  setSelectedDrug: any; // TODO type
 }
 
 const InteractionCountDrug: React.FC<CountProps> = ({
@@ -172,7 +172,9 @@ export const DrugSummary: React.FC<SummaryProps> = ({
     drugs?.forEach((drug: any) => {
       drug?.matches[0].interactions?.forEach((interaction: any) => {
         interactions.push({
+          term: drug.searchTerm,
           drug: {
+            approved: drug.matches[0].approved,
             name: drug.matches[0].name,
             conceptId: drug.matches[0].conceptId,
           },
@@ -184,7 +186,6 @@ export const DrugSummary: React.FC<SummaryProps> = ({
   }, [drugs]);
 
   const drugMatches = drugs?.map((drugMatch: any) => drugMatch.matches[0]);
-  console.log(drugMatches);
 
   return (
     <div className="drug-summary-container">

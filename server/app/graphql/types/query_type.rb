@@ -13,6 +13,96 @@ module Types
     field :categories, resolver: Resolvers::Categories
     field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
 
+    field :drug_suggestions, [Types::DrugSuggestionType], null: true do
+      description "A searchable drug name or alias that can be completed from the supplied term"
+      argument :term, String, required: true
+      argument :n, Int, required: false
+    end
+
+
+    def drug_suggestions(term:, n: 10)
+      matches = Drug.where("drugs.name ILIKE ?", "#{term}%").limit(n).map do |drug|
+        {
+          "drug_name": drug.name,
+          "concept_id": drug.concept_id,
+          "suggestion": drug.name,
+          "suggestion_type": "NAME"
+        }
+      end
+
+      if matches.length < n
+        matches += DrugAlias.includes(:drug)
+          .where("drug_aliases.alias ILIKE ?", "#{term}%")
+          .limit(n - matches.length)
+          .map do |drug_alias|
+          {
+            "drug_name": drug_alias.drug.name,
+            "concept_id": drug_alias.drug.concept_id,
+            "suggestion": drug_alias.alias,
+            "suggestion_type": "ALIAS"
+          }
+        end
+      end
+
+      if matches.length < n
+        matches += Drug.where("drugs.concept_id ILIKE ?", "#{term}%").limit(n).map do |drug|
+          {
+            "drug_name": drug.name,
+            "concept_id": drug.concept_id,
+            "suggestion": drug.concept_id,
+            "suggestion_type": "CONCEPT_ID"
+          }
+        end
+      end
+
+      # for now, drop redundant suggestions
+      return matches.uniq { |d| d[:suggestion] }
+    end
+
+    field :gene_suggestions, [Types::GeneSuggestionType], null: true do
+      description "A searchable gene name or alias that can be completed from the supplied term"
+      argument :term, String, required: true
+      argument :n, Int, required: false
+    end
+
+    def gene_suggestions(term:, n: 10)
+      matches = Gene.where("genes.name ILIKE ?", "#{term}%").limit(n).map do |gene|
+        {
+          "gene_name": gene.name,
+          "concept_id": gene.concept_id,
+          "suggestion": gene.name,
+          "suggestion_type": "NAME"
+        }
+      end
+
+      if matches.length < n
+        matches += GeneAlias.includes(:gene)
+          .where("gene_aliases.alias ILIKE ?", "#{term}%")
+          .limit(n - matches.length)
+          .map do |gene_alias|
+          {
+            "gene_name": gene_alias.gene.name,
+            "concept_id": gene_alias.gene.concept_id,
+            "suggestion": gene_alias.alias,
+            "suggestion_type": "ALIAS"
+          }
+        end
+      end
+
+      if matches.length < n
+        matches += Gene.where("genes.concept_id ILIKE ?", "#{term}%").limit(n).map do |gene|
+          {
+            "gene_name": gene.name,
+            "concept_id": gene.concept_id,
+            "suggestion": gene.concept_id,
+            "suggestion_type": "CONCEPT_ID"
+          }
+        end
+      end
+
+      # for now, drop redundant suggestions
+      return matches.uniq { |g| g[:suggestion] }
+    end
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -38,7 +128,7 @@ module Types
     end
 
     def source_type(id:)
-      ::SourceType.find_by(id: id)
+      SourceType.find_by(id: id)
     end
 
     field :gene_claim, Types::GeneClaimType, null: true do

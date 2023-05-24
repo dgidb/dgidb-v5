@@ -1,3 +1,5 @@
+import { SearchTypes } from "types/interfaces";
+
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
     ? {
@@ -80,16 +82,16 @@ InteractionModePayload
 >[keyof ActionMap<InteractionModePayload>];
 
 export const interactionModeReducer = (
-  state: string,
+  state: SearchTypes,
   action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
   switch (action.type) {
     case ActionTypes.SetByDrug:
-      return 'drug';
+      return SearchTypes.Drug;
     case ActionTypes.SetByGene:
-      return 'gene';
+      return SearchTypes.Gene;
     case ActionTypes.SetGeneCategories:
-      return 'categories';
+      return SearchTypes.Categories;
     default:
       return state;
   }

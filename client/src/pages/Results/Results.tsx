@@ -1,13 +1,10 @@
 // hooks/dependencies
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { GlobalClientContext } from "stores/Global/GlobalClient";
 import { useSearchParams } from "react-router-dom";
 
 // components
-import { GeneSummary } from "components/Gene/GeneSummary";
-import { DrugSummary } from "components/Drug/DrugSummary";
 import { CategoryResults } from "components/Gene/Categories/CategoryResults";
-import { AmbiguousTermsSummary } from "components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary";
 import { ActionTypes } from "stores/Global/reducers";
 
 // styles
