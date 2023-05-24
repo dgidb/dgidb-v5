@@ -6,6 +6,7 @@ import "./GeneSearchResults.scss";
 import { GlobalClientContext } from "stores/Global/GlobalClient";
 import { useContext } from "react";
 import { useGetMatchedResults } from "hooks/queries/useGetAmbiguousResults";
+import { ResultTypes } from "types/types";
 
 interface GeneSearchResultsProps {
   value: number;
@@ -21,9 +22,8 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    "gene"
+    ResultTypes.Gene
   );
-  // TODO this seems messy
   const geneMatches = data?.geneMatches?.directMatches;
 
   const interactionResults =
@@ -57,7 +57,12 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
         {interactionResults}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <AmbiguousTermsSummary resultType={"gene"} />
+        <AmbiguousTermsSummary
+          resultType={ResultTypes.Gene}
+          isLoading={isLoading}
+          ambiguousTerms={data?.geneMatches?.ambiguousMatches}
+          unmatchedTerms={data?.geneMatches?.noMatches}
+        />
       </TabPanel>
     </>
   );

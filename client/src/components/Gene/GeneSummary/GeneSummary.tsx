@@ -34,7 +34,7 @@ ChartJS.register(
 interface CountProps {
   geneMatches: any[];
   selectedGene: string;
-  setSelectedGene: any; // TODO
+  setSelectedGene: any;
 }
 
 const InteractionCount: React.FC<CountProps> = ({

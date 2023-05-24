@@ -8,7 +8,7 @@ import {
   interactionModeReducer,
   InteractionModeActions,
 } from "./reducers";
-import { SearchTypes } from "types/interfaces";
+import { SearchTypes } from "types/types";
 
 type InitialStateType = {
   interactionMode: SearchTypes;

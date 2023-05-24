@@ -1,4 +1,4 @@
-import { SearchTypes } from "types/interfaces";
+import { SearchTypes } from "types/types";
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined

@@ -3,8 +3,6 @@ import { gql } from "graphql-request";
 import { graphQLClient } from "config";
 
 // by genes
-// TODO get indication
-// TODO update rspec
 const getInteractionsByGenesQuery = gql`
   query genes($names: [String!]!) {
     genes(names: $names) {

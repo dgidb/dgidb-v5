@@ -6,6 +6,7 @@ import "./DrugSearchResults.scss";
 import { GlobalClientContext } from "stores/Global/GlobalClient";
 import { useContext } from "react";
 import { useGetMatchedResults } from "hooks/queries/useGetAmbiguousResults";
+import { ResultTypes } from "types/types";
 
 interface DrugSearchResultsProps {
   value: number;
@@ -21,7 +22,7 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    "drug"
+    ResultTypes.Drug
   );
 
   const drugMatches = data?.drugMatches?.directMatches;
@@ -57,7 +58,12 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
         {interactionResults}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <AmbiguousTermsSummary resultType={"drug"} />
+        <AmbiguousTermsSummary
+          resultType={ResultTypes.Drug}
+          isLoading={isLoading}
+          ambiguousTerms={data?.drugMatches?.ambiguousMatches}
+          unmatchedTerms={data?.drugMatches?.noMatches}
+        />
       </TabPanel>
     </>
   );

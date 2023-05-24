@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { gql } from "graphql-request";
 import { graphQLClient } from "config";
-import { SearchTypes } from "types/interfaces";
+import { SearchTypes } from "types/types";
 
 const getGeneNameSuggestionsQuery = gql`
   query geneNameSuggestions($term: String!) {

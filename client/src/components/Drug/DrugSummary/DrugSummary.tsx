@@ -34,7 +34,7 @@ ChartJS.register(
 interface CountProps {
   drugMatches: any[];
   selectedDrug: string;
-  setSelectedDrug: any; // TODO type
+  setSelectedDrug: any;
 }
 
 const InteractionCountDrug: React.FC<CountProps> = ({
@@ -71,9 +71,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
             onClick={() => toggleFilter(drug.name)}
             key={i}
           >
-            <div className="interaction-count-drug">
-              {drug.name}
-            </div>
+            <div className="interaction-count-drug">{drug.name}</div>
             <div className="interaction-count">{drug.interactions?.length}</div>
           </div>
         );
@@ -160,10 +158,7 @@ interface SummaryProps {
   isLoading: boolean;
 }
 
-export const DrugSummary: React.FC<SummaryProps> = ({
-  drugs,
-  isLoading,
-}) => {
+export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedDrug, setSelectedDrug] = useState<string>("");
 

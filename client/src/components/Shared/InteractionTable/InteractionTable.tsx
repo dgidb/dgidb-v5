@@ -8,21 +8,24 @@ import { DataGrid } from "@mui/x-data-grid";
 import { truncateDecimals } from "utils/format";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PublicationsTooltip, SourcesTooltip } from "../Tooltip/Tooltip";
+import { ResultTypes } from "types/types";
 
 interface Props {
   isLoading: boolean;
   interactionResults: any;
   recordType?: string;
+  ambiguous?: boolean;
 }
 
 export const InteractionTable: React.FC<Props> = ({
   interactionResults,
   isLoading,
   recordType = "",
+  ambiguous = false,
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const searchType = searchParams.get("searchType");
+  const resultType = searchParams.get("searchType") as ResultTypes;  // TODO use SearchType/ResultsType enum
 
   const termColumn = {
     field: "term",
@@ -123,14 +126,22 @@ export const InteractionTable: React.FC<Props> = ({
 
   let columns: any = [];
 
-  if (searchType === "gene") {
-    columns = [termColumn, geneColumn, drugColumn, ...searchColumns];
-  } else if (searchType === "drug") {
-    columns = [termColumn, drugColumn, geneColumn, ...searchColumns];
-  } else if (recordType === "gene") {
-    columns = [drugColumn, ...recordColumns];
-  } else if (recordType === "drug") {
-    columns = [geneColumn, ...recordColumns];
+  if (ambiguous) {
+    if (resultType === ResultTypes.Gene) {
+      columns = [geneColumn, drugColumn, ...searchColumns];
+    } else if (resultType === ResultTypes.Drug) {
+      columns = [drugColumn, geneColumn, ...searchColumns];
+    }
+  } else {
+    if (resultType === ResultTypes.Gene) {
+      columns = [termColumn, geneColumn, drugColumn, ...searchColumns];
+    } else if (resultType === ResultTypes.Drug) {
+      columns = [termColumn, drugColumn, geneColumn, ...searchColumns];
+    } else if (recordType === ResultTypes.Gene) {
+      columns = [drugColumn, ...recordColumns];
+    } else if (recordType === ResultTypes.Drug) {
+      columns = [geneColumn, ...recordColumns];
+    }
   }
 
   const handleEvent = (event: any) => {

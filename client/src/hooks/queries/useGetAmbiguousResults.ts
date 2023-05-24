@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { gql } from "graphql-request";
 import { graphQLClient } from "config";
+import { ResultTypes } from "types/types";
 
 const getGeneMatchesQuery = gql`
   query geneMatches($names: [String!]!) {
@@ -97,11 +98,10 @@ const getDrugMatchesQuery = gql`
   }
 `;
 
-export function useGetMatchedResults(names: string[], type: string) {
-  // TODO constrain the type value better
+export function useGetMatchedResults(names: string[], type: ResultTypes) {
   const key = type + names;
   const requestQuery =
-    type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery;
+    type === ResultTypes.Gene ? getGeneMatchesQuery : getDrugMatchesQuery;
   return useQuery(
     key,
     async () => {

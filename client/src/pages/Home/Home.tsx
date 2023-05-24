@@ -1,12 +1,9 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect} from 'react';
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
-import { useGetInteractionsByGenes, useGetInteractionsByDrugs } from 'hooks/queries/useGetInteractions';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
-
-import { queryClient } from 'providers/app';
 
 // styles
 // todo: introduce dark mode back later
@@ -27,22 +24,7 @@ export const Home: React.FC = () => {
     });
   };
 
-  const { refetch: refetchGenes } = useGetInteractionsByGenes(state.searchTerms);
-  const { refetch: refetchDrugs } = useGetInteractionsByDrugs(state.searchTerms);
-
   const [isToggling, setIsToggling] = useState<boolean>(false);
-
-  // refetch query as terms are added
-  useEffect(() => {
-    queryClient.clear();
-    if(state.searchTerms.length) {
-      if (state.interactionMode === 'gene'){
-        refetchGenes();
-      } else {
-        refetchDrugs();
-      }
-    }
-  }, [state.searchTerms])
 
   useEffect(() => {
     if (isToggling) {

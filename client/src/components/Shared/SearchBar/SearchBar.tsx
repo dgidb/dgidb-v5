@@ -6,7 +6,7 @@ import React from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
-import { SearchTypes } from 'types/interfaces';
+import { SearchTypes } from 'types/types';
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const { state, dispatch } = useContext(GlobalClientContext);
