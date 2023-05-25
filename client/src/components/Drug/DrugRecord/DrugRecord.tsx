@@ -35,7 +35,6 @@ export const DrugRecord: React.FC = () => {
 
   useEffect(() => {
     let interactionData: any = [];
-    console.log(fetchedInteractionData);
     fetchedInteractionData?.drug?.interactions?.forEach((int: any) => {
       interactionData.push(int);
     });

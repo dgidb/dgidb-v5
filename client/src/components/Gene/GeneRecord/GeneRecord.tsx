@@ -36,7 +36,6 @@ export const GeneRecord: React.FC = () => {
   useEffect(() => {
     const interactionData: any[] = [];
     const publications: any[] = [];
-    console.log(fetchedInteractionData);
     fetchedInteractionData?.gene?.interactions?.forEach((int: any) => {
       interactionData.push(int);
       int.publications.forEach((pub: any) => {
