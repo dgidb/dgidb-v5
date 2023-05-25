@@ -9,6 +9,18 @@
     align-items: end; // isn't aligning name object correctly
     margin-bottom: 0.5em;
 
+    .header-link {
+      font-weight: bold;
+      font-size: 36px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .header-link:hover,
+    .header-link:active {
+      text-decoration: underline;
+    }
+
     .symbol {
       font-weight: bold;
       font-size: 36px;
@@ -72,6 +84,7 @@
       max-height: 400px;
       overflow: scroll;
     }
+
     .interaction-record-categories {
       grid-area: 1 / 4 / 2 / 6;
       max-height: 400px;
@@ -102,6 +115,15 @@
   }
 }
 
+.info-link {
+  color: var(--header-gradient-1);
+  text-decoration: none;
+}
+
+.info-link:hover,
+.info-link:active {
+  text-decoration: underline;
+}
 .attributes-container {
   max-height: 855px;
   overflow: scroll;
