@@ -21,8 +21,9 @@ import InteractionTable from "components/Shared/InteractionTable/InteractionTabl
 import { dropRedundantCites } from "utils/dropRedundantCites";
 
 export const GeneRecord: React.FC = () => {
-  // get gene attributes
   const geneId: any = useParams().gene;
+
+  // get gene attributes
   const { data: fetchedGeneData, isLoading: geneDataIsloading } =
     useGetGeneRecord(geneId);
   const geneData = fetchedGeneData?.gene;

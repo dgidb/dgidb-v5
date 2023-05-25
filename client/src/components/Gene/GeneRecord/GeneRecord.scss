@@ -1,6 +1,7 @@
 .linear-bar {
   margin: 15px;
 }
+
 .gene-record-container {
   padding: 20px;
   background-color: var(--background);
@@ -113,5 +114,9 @@
 }
 
 .pub-link:hover {
-  color: var(--text-accent-color) !important;
+  text-decoration: underline !important;
+}
+
+.pub-link:active {
+  text-decoration: underline !important;
 }
