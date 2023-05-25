@@ -23,10 +23,10 @@ module Types
     def drug_suggestions(term:, n: 10)
       matches = Drug.where("drugs.name ILIKE ?", "#{term}%").limit(n).map do |drug|
         {
-          "drug_name": drug.name,
-          "concept_id": drug.concept_id,
-          "suggestion": drug.name,
-          "suggestion_type": "NAME"
+          drug_name: drug.name,
+          concept_id: drug.concept_id,
+          suggestion: drug.name,
+          suggestion_type: 'NAME'
         }
       end
       matches = matches.uniq { |d| d[:suggestion] }
@@ -37,10 +37,10 @@ module Types
           .limit(n - matches.length)
           .map do |drug_alias|
           {
-            "drug_name": drug_alias.drug.name,
-            "concept_id": drug_alias.drug.concept_id,
-            "suggestion": drug_alias.alias,
-            "suggestion_type": "ALIAS"
+            drug_name: drug_alias.drug.name,
+            concept_id: drug_alias.drug.concept_id,
+            suggestion: drug_alias.alias,
+            suggestion_type: 'ALIAS'
           }
         end
       end
@@ -49,10 +49,10 @@ module Types
       if matches.length < n
         matches += Drug.where("drugs.concept_id ILIKE ?", "#{term}%").limit(n).map do |drug|
           {
-            "drug_name": drug.name,
-            "concept_id": drug.concept_id,
-            "suggestion": drug.concept_id,
-            "suggestion_type": "CONCEPT_ID"
+            drug_name: drug.name,
+            concept_id: drug.concept_id,
+            suggestion: drug.concept_id,
+            suggestion_type: 'CONCEPT_ID'
           }
         end
       end
@@ -69,10 +69,10 @@ module Types
     def gene_suggestions(term:, n: 10)
       matches = Gene.where("genes.name ILIKE ?", "#{term}%").limit(n).map do |gene|
         {
-          "gene_name": gene.name,
-          "concept_id": gene.concept_id,
-          "suggestion": gene.name,
-          "suggestion_type": "NAME"
+          gene_name: gene.name,
+          concept_id: gene.concept_id,
+          suggestion: gene.name,
+          suggestion_type: 'NAME'
         }
       end
       matches = matches.uniq { |g| g[:suggestion] }
@@ -83,10 +83,10 @@ module Types
           .limit(n - matches.length)
           .map do |gene_alias|
           {
-            "gene_name": gene_alias.gene.name,
-            "concept_id": gene_alias.gene.concept_id,
-            "suggestion": gene_alias.alias,
-            "suggestion_type": "ALIAS"
+            gene_name: gene_alias.gene.name,
+            concept_id: gene_alias.gene.concept_id,
+            suggestion: gene_alias.alias,
+            suggestion_type: 'ALIAS'
           }
         end
       end
@@ -95,10 +95,10 @@ module Types
       if matches.length < n
         matches += Gene.where("genes.concept_id ILIKE ?", "#{term}%").limit(n).map do |gene|
           {
-            "gene_name": gene.name,
-            "concept_id": gene.concept_id,
-            "suggestion": gene.concept_id,
-            "suggestion_type": "CONCEPT_ID"
+            gene_name: gene.name,
+            concept_id: gene.concept_id,
+            suggestion: gene.concept_id,
+            suggestion_type: 'CONCEPT_ID'
           }
         end
       end

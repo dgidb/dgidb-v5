@@ -21,7 +21,7 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
     scope.where(concept_id: value)
   end
   option(:concept_ids, type: [String], description: 'Exact match filtering on a list of concept IDs') do  |scope, value|
-    scope.where("concept_id IN (?)", value)
+    scope.where(concept_id: value)
   end
 
   option(:name, type: String, description: 'Left anchored string search on gene symbol') do |scope, value|

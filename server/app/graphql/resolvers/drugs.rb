@@ -37,8 +37,8 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(concept_id: value)
   end
 
-  option(:concept_ids, type: String, description: 'Exact match filtering on concept IDs') do |scope, value|
-    scope.where('concept_id IN (?)', value)
+  option(:concept_ids, type: [String], description: 'Exact match filtering on a list of concept IDs') do |scope, value|
+    scope.where(concept_id: value)
   end
 
   option(:interaction_type, type: String, description: 'Exact filtering on interaction claim type.') do |scope, value|
