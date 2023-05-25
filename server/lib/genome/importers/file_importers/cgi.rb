@@ -40,6 +40,12 @@ module Genome; module Importers; module FileImporters; module Cgi
       drug_name.gsub(/[[:space:]]/, '').gsub(/\[(.*)\]/, '\1')
     end
 
+    def create_cgi_dca(drug_claim, attribute_name, attribute_value)
+      clean_drug_name(drug_name).split(';').each do |cleaned_value|
+        create_drug_claim_attribute(drug_claim, attribute_name, cleaned_value)
+      end
+    end
+
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         next if row['Drug'].nil? || row['Drug'] == '[]'
@@ -49,7 +55,7 @@ module Genome; module Importers; module FileImporters; module Cgi
           combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
             individual_drug_name = clean_drug_name(individual_drug_name)
             drug_claim = create_drug_claim(individual_drug_name)
-            create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
+            create_cgi_dca(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
             if row['Gene'].include?(';')
               row['Gene'].split(';').each do |indv_gene|
                 gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
@@ -73,7 +79,7 @@ module Genome; module Importers; module FileImporters; module Cgi
             combination_drug_name.split(';').each do |individual_drug_name|
               individual_drug_name = clean_drug_name(individual_drug_name)
               drug_claim = create_drug_claim(individual_drug_name)
-              create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
+              create_cgi_dca(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
               if row['Gene'].include?(';')
                 row['Gene'].split(';').each do |indv_gene|
                   gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
@@ -96,7 +102,7 @@ module Genome; module Importers; module FileImporters; module Cgi
         else
           drug_name = clean_drug_name(row['Drug'])
           drug_claim = create_drug_claim(drug_name)
-          create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
+          create_cgi_dca(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
           if row['Gene'].include?(';')
             row['Gene'].split(';').each do |indv_gene|
               gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
