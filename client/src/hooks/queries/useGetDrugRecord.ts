@@ -23,23 +23,6 @@ const getDrugRecordQuery = gql`
       drugApplications {
         appNo
       }
-      interactions {
-        id
-        interactionTypes {
-          type
-        }
-        gene {
-          name
-          conceptId
-        }
-        interactionScore
-        publications {
-          pmid
-        }
-        sources {
-          fullName
-        }
-      }
     }
   }
 `;
