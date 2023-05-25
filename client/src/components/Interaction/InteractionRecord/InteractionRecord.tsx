@@ -156,7 +156,7 @@ export const InteractionRecord: React.FC = () => {
                   </AccordionSummary>
                   <AccordionDetails
                     style={{
-                      maxHeight: "350px",
+                      maxHeight: "500px",
                       overflow: "scroll",
                       padding: "5px",
                     }}
@@ -180,7 +180,7 @@ export const InteractionRecord: React.FC = () => {
                   <b>Interaction Attributes</b>
                 </h3>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails className="attributes-container">
                 <Table>
                   <TableBody>
                     {data?.interaction?.interactionAttributes.length
