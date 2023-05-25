@@ -113,7 +113,7 @@ export const InteractionRecord: React.FC = () => {
                 <AccordionSummary style={{padding: "0 10px", backgroundColor: "var(--background-light)",}} expandIcon={<ExpandMoreIcon />}>
                   <h3><b>{section.name}</b></h3>
                 </AccordionSummary>
-                <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "5px",}}>
+                <AccordionDetails style={{maxHeight: "500px", overflow: "scroll", padding: "5px",}}>
                   {section.sectionContent}
                 </AccordionDetails>
               </Accordion>
@@ -125,7 +125,7 @@ export const InteractionRecord: React.FC = () => {
               <AccordionSummary style={{padding: "0 10px", backgroundColor: "var(--background-light)",}} expandIcon={<ExpandMoreIcon/>}>
                 <h3><b>Interaction Attributes</b></h3>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails className="attributes-container">
                 <Table>
                   <TableBody>
                     {data?.interaction?.interactionAttributes.length
