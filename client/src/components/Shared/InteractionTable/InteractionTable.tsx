@@ -15,7 +15,6 @@ interface Props {
   interactionResults: any;
   recordType?: string;
   ambiguous?: boolean;
-  title?: string;
 }
 
 export const InteractionTable: React.FC<Props> = ({
@@ -23,11 +22,10 @@ export const InteractionTable: React.FC<Props> = ({
   isLoading,
   recordType = "",
   ambiguous = false,
-  title = "",
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const resultType = searchParams.get("searchType") as ResultTypes; // TODO use SearchType/ResultsType enum
+  const resultType = searchParams.get("searchType") as ResultTypes;  // TODO use SearchType/ResultsType enum
 
   const termColumn = {
     field: "term",
