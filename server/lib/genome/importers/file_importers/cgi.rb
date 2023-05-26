@@ -40,9 +40,15 @@ module Genome; module Importers; module FileImporters; module Cgi
       drug_name.gsub(/[[:space:]]/, '').gsub(/\[(.*)\]/, '\1')
     end
 
+    def clean_drug_attribute(drug_attribute)
+      drug_attribute.gsub(/\[(.*)\]/, '\1')
+    end
+
     def create_cgi_dca(drug_claim, attribute_name, attribute_value)
-      clean_drug_name(drug_name).split(';').each do |cleaned_value|
-        create_drug_claim_attribute(drug_claim, attribute_name, cleaned_value)
+      clean_drug_attribute(attribute_value).split(';').each do |split_value|
+        split_value.split('&').each do |cleaned_value|
+          create_drug_claim_attribute(drug_claim, attribute_name, cleaned_value)
+        end
       end
     end
 
