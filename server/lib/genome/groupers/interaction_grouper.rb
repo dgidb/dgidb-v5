@@ -46,7 +46,7 @@ module Genome
                 add_member(interaction_claim)
               end
             end
-            pbar += 1
+            pbar.progress += 1
           end
         end
       end
@@ -95,6 +95,7 @@ module Genome
         Interaction.find_each do |interaction|
           interaction.score = interaction.calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
           interaction.save!
+          pbar.progress += 1
         end
       end
     end
