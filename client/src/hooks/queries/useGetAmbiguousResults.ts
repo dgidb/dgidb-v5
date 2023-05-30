@@ -60,6 +60,10 @@ const getDrugMatchesQuery = gql`
           name
           conceptId
           approved
+          drugAttributes {
+            name
+            value
+          }
           interactions {
             id
             gene {
