@@ -172,6 +172,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
             approved: drug.matches[0].approved,
             name: drug.matches[0].name,
             conceptId: drug.matches[0].conceptId,
+            drugAttributes: drug.matches[0].drugAttributes
           },
           ...interaction,
         });
