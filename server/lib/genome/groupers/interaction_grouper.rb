@@ -27,14 +27,15 @@ module Genome
       end
 
       def self.add_members(group_from_scratch)
+        count = InteractionClaim.count
+        pbar = ProgressBar.create(title: 'Grouping interactions', total: count, format: "%t: %p%% %a |%B|")
         InteractionClaim.eager_load(
           :interaction_claim_types,
           :source,
           :interaction_claim_attributes,
           :publications
         ).joins(
-          drug_claim:
-          [:drug],
+          drug_claim: [:drug],
           gene_claim: [:gene]
         ).where(interaction_id: nil).in_batches do |interaction_claims|
           interaction_claims.each do |interaction_claim|
@@ -45,12 +46,9 @@ module Genome
                 add_member(interaction_claim)
               end
             end
+            pbar.progress += 1
           end
         end
-        # these actions might be unnecessary if we create interaction types and publications directly
-        InteractionAttribute.where(name: 'PMID').destroy_all
-        InteractionAttribute.where(name: 'PubMed ID for Interaction').destroy_all
-        InteractionAttribute.where(name: 'Interaction Type').destroy_all
       end
 
       def self.add_member(interaction_claim)
@@ -89,9 +87,15 @@ module Genome
       end
 
       def self.cache_interaction_scores
+        count = Interaction.count
+
+        known_drug_partners_per_gene = Interaction.group(:gene_id).count
+        known_gene_partners_per_drug = Interaction.group(:drug_id).count
+        pbar = ProgressBar.create(title: 'Calculating interaction scores', total: count, format: "%t: %p%% %a |%B|")
         Interaction.find_each do |interaction|
-          interaction.score = interaction.calculate_interaction_score
+          interaction.score = interaction.calculate_interaction_score(known_drug_partners_per_gene, known_gene_partners_per_drug)
           interaction.save!
+          pbar.progress += 1
         end
       end
     end

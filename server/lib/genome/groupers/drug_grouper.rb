@@ -371,7 +371,8 @@ module Genome
           drug_claim_aliases.append(claim.name)
         end
         drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
-          DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
+          next if drug_aliases.member? claim_alias || claim_alias == drug.name || claim_alias == drug.concept_id.upcase
+          DrugAlias.create(alias: claim_alias, drug: drug)
         end
       end
 
