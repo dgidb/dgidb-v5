@@ -25,7 +25,7 @@ export const InteractionTable: React.FC<Props> = ({
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const resultType = searchParams.get("searchType") as ResultTypes;  // TODO use SearchType/ResultsType enum
+  const resultType = searchParams.get("searchType") as ResultTypes;
 
   const termColumn = {
     field: "term",
@@ -41,6 +41,7 @@ export const InteractionTable: React.FC<Props> = ({
     minWidth: 0,
     renderCell: (params: any) => (
       <a
+        className="gene-cell"
         href={`/genes/${params.row.geneId}`}
         onClick={(event) => event.stopPropagation()}
       >
@@ -56,6 +57,7 @@ export const InteractionTable: React.FC<Props> = ({
     minWidth: 0,
     renderCell: (params: any) => (
       <a
+        className="drug-cell"
         href={`/drugs/${params.row.drugId}`}
         onClick={(event) => event.stopPropagation()}
       >
@@ -76,6 +78,9 @@ export const InteractionTable: React.FC<Props> = ({
       headerName: "Indication",
       flex: 1,
       minWidth: 0,
+      renderCell: (params: any) => (
+        <>{params.row.indication?.join(", ")}</>
+      )
     },
     {
       field: "interactionScore",
@@ -160,10 +165,8 @@ export const InteractionTable: React.FC<Props> = ({
         ? "Approved"
         : "Not Approved",
       indication: interaction?.drug?.drugAttributes?.filter(
-        (attribute: any) => {
-          return attribute.name === "Drug Indications";
-        }
-      )?.[0]?.value,
+        (attribute: any) => (attribute.name === "Indication")
+      ).map((attribute: any) => (attribute.value)),
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
       interactionTypes: interaction?.interactionTypes
         ?.map((interactionType: any) => {
@@ -193,6 +196,7 @@ export const InteractionTable: React.FC<Props> = ({
           }}
           rowSelection={false}
           showColumnVerticalBorder
+          getRowHeight={() => 'auto'}
         />
       </Box>
     </Box>
