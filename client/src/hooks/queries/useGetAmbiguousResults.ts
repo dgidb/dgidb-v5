@@ -17,6 +17,9 @@ const getGeneMatchesQuery = gql`
               name
               conceptId
               approved
+              drugApprovalRatings {
+                rating
+              }
               drugAttributes {
                 name
                 value

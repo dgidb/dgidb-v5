@@ -30,7 +30,7 @@ export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
 
       data?.forEach((gene: any) => {
         gene.interactions?.forEach((int: any) => {
-          int?.drug?.drugApprovalRatings.forEach((rating: any) => {
+          int?.drug?.drugApprovalRatings?.forEach((rating: any) => {
             if (newObj[rating.rating]) {
               ++newObj[rating.rating];
             } else {
