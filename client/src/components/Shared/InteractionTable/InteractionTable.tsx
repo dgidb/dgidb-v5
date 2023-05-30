@@ -3,7 +3,7 @@ import React from "react";
 
 // styles
 import "./InteractionTable.scss";
-import { Box, CircularProgress, Icon } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { truncateDecimals } from "utils/format";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -31,8 +31,8 @@ export const InteractionTable: React.FC<Props> = ({
     field: "term",
     headerName: "Term",
     flex: 0.5,
-    minWidth: 0
-  }
+    minWidth: 0,
+  };
 
   const geneColumn = {
     field: "gene",
@@ -41,9 +41,9 @@ export const InteractionTable: React.FC<Props> = ({
     minWidth: 0,
     renderCell: (params: any) => (
       <a
-        className="gene-cell"
         href={`/genes/${params.row.geneId}`}
         onClick={(event) => event.stopPropagation()}
+        className="record-link gene-cell"
       >
         {params.row.gene}
       </a>
@@ -57,9 +57,9 @@ export const InteractionTable: React.FC<Props> = ({
     minWidth: 0,
     renderCell: (params: any) => (
       <a
-        className="drug-cell"
         href={`/drugs/${params.row.drugId}`}
         onClick={(event) => event.stopPropagation()}
+        className="record-link drug-cell"
       >
         {params.row.drug}
       </a>
@@ -201,14 +201,15 @@ export const InteractionTable: React.FC<Props> = ({
       </Box>
     </Box>
   ) : (
-    <Box display="flex" mt="10px" alignItems="center">
-      <h3>Loading interaction results...</h3>
-      <Icon
-        component={CircularProgress}
-        baseClassName="loading-spinner"
-        fontSize="small"
-      ></Icon>
-    </Box>
+      <LinearProgress
+        sx={{
+          backgroundColor: "white",
+          "& .MuiLinearProgress-bar": {
+            backgroundColor: "#480a77",
+          },
+        }}
+        className="linear-bar"
+      />
   );
 };
 

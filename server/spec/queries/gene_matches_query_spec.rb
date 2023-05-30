@@ -26,6 +26,9 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
                 name
                 conceptId
                 approved
+                drugApprovalRatings {
+                  rating
+                }
                 drugAttributes {
                   name
                   value
