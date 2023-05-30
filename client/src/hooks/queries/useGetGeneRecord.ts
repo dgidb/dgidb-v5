@@ -22,24 +22,6 @@ const getGeneRecordQuery = gql`
       geneCategories {
         name
       }
-      interactions {
-        id
-        interactionScore
-        interactionTypes {
-          type
-          directionality
-        }
-        publications {
-          pmid
-        }
-        sources {
-          fullName
-        }
-        drug {
-          name
-          conceptId
-        }
-      }
     }
   }
 `;

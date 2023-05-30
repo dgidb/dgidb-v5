@@ -1,7 +1,8 @@
 import TabPanel from "components/Shared/TabPanel/TabPanel";
 import { GeneSummary } from "../GeneSummary";
 import AmbiguousTermsSummary from "components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, CircularProgress, Icon, Tab, Tabs } from "@mui/material";
+import "./GeneSearchResults.scss";
 import { GlobalClientContext } from "stores/Global/GlobalClient";
 import { useContext } from "react";
 import { useGetMatchedResults } from "hooks/queries/useGetAmbiguousResults";
@@ -29,7 +30,7 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
     isError || isLoading ? (
       <div className="gene-summary-container">
         {isError && <div>Error: Interactions not found!</div>}
-        {isLoading && <div>Loading...</div>}
+        {isLoading && <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small' />}
       </div>
     ) : !isLoading && geneMatches?.length === 0 ? (
       <Box className="no-results-message">
