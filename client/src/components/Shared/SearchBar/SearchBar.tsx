@@ -8,6 +8,10 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
 
+type SearchBarProps = {
+  handleSubmit: () => void;
+};
+
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const { state, dispatch } = useContext(GlobalClientContext);
   const [searchType, setSearchType] = React.useState<SearchTypes>(state.interactionMode);
@@ -128,9 +132,5 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     </>
   );
 }
-
-type SearchBarProps = {
-  handleSubmit: () => void;
-};
 
 export default SearchBar;
