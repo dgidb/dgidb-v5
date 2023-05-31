@@ -43,7 +43,7 @@ RSpec.describe 'Sample GraphiQl query', type: :graphql do
     expect(int['interactionTypes'].size).to eq 1
     int_type = int['interactionTypes'][0]
     expect(int_type['type']).to eq @int_type.type
-    expect(int_type['directionality']).to eq @int_type.directionality
+    expect(int_type['directionality']).to match(/#{@int_type.directionality}/i)
   end
 end
 

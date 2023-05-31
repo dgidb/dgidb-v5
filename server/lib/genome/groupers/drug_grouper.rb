@@ -31,7 +31,9 @@ module Genome
         set_response_structure
         create_sources
 
-        claims.tqdm.each do |drug_claim|
+
+        pbar = ProgressBar.create(title: 'Grouping drugs', total: claims.size, format: "%t: %p%% %a |%B|")
+        claims.each do |drug_claim|
           normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
           next if normalized_drug.nil?
 
@@ -42,6 +44,8 @@ module Genome
             create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
+
+          pbar.progress += 1
         end
       end
 
@@ -68,7 +72,11 @@ module Genome
           source_db_version: source_meta['RxNorm']['version'],
           base_url: 'https://rxnav.nlm.nih.gov/REST/rxcui/rxcui/allrelated.xml',
           site_url: 'https://www.nlm.nih.gov/research/umls/rxnorm/overview.html',
-          citation: 'Nelson SJ, Zeng K, Kilbourne J, Powell T, Moore R. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4)441-8. doi: 10.1136/amiajnl-2011-000116. Epub 2011 Apr 21. PubMed PMID: 21515544; PubMed Central PMCID: PMC3128404.',
+          citation: 'Nelson SJ, Zeng K, Kilbourne J, Powell T, Moore R. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4):441-8. doi: 10.1136/amiajnl-2011-000116. Epub 2011 Apr 21. PMID: 21515544; PMCID: PMC3128404.',
+          citation_short: 'Nelson SJ, et al. Normalized names for clinical drugs: RxNorm at 6 years. J Am Med Inform Assoc. 2011 Jul-Aug;18(4):441-8.',
+          pmid: '21515544',
+          pmcid: 'PMC3128404',
+          doi: '10.1136/amiajnl-2011-000116',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'RxNorm',
           license: 'Custom; UMLS Metathesaurus',
@@ -79,11 +87,14 @@ module Genome
           source_db_version: source_meta['NCIt']['version'],
           base_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=',
           site_url: 'https://ncithesaurus.nci.nih.gov/ncitbrowser/pages/home.jsf',
-          citation: 'Nicholas Sioutos, Sherri de Coronado, Margaret W. Haber, Frank W. Hartel, Wen-Ling Shaiu, and Lawrence W. Wright. 2007. NCI Thesaurus: A semantic model integrating cancer-related clinical and molecular information. J. of Biomedical Informatics 40, 1 (February, 2007), 30–43. https://doi.org/10.1016/j.jbi.2006.02.013',
+          citation: 'Sioutos N, de Coronado S, Haber MW, Hartel FW, Shaiu WL, Wright LW. NCI Thesaurus: a semantic model integrating cancer-related clinical and molecular information. J Biomed Inform. 2007 Feb;40(1):30-43. doi: 10.1016/j.jbi.2006.02.013. Epub 2006 Mar 15. PMID: 16697710.',
+          citation_short: 'Sioutos N, et al. NCI Thesaurus: a semantic model integrating cancer-related clinical and molecular information. J Biomed Inform. 2007 Feb;40(1):30-43.',
+          pmid: '16697710',
+          doi: '10.1016/j.jbi.2006.02.013',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'National Cancer Institute Thesaurus',
-          license: source_meta['NCIt']['data_license'],
-          license_link: source_meta['NCIt']['data_license_url']
+          license: License::CC_BY_4_0,
+          license_link: 'https://evs.nci.nih.gov/license'
         ).first_or_create
         hemonc = Source.where(
           source_db_name: 'HemOnc',
@@ -91,10 +102,14 @@ module Genome
           base_url: 'https://hemonc.org',
           site_url: 'https://hemonc.org',
           citation: 'Warner JL, Dymshyts D, Reich CG, Gurley MJ, Hochheiser H, Moldwin ZH, Belenkaya R, Williams AE, Yang PC. HemOnc: A new standard vocabulary for chemotherapy regimen representation in the OMOP common data model. J Biomed Inform. 2019 Aug;96:103239. doi: 10.1016/j.jbi.2019.103239. Epub 2019 Jun 22. PMID: 31238109; PMCID: PMC6697579.',
+          citation_short: 'Warner JL, et al. HemOnc: A new standard vocabulary for chemotherapy regimen representation in the OMOP common data model. J Biomed Inform. 2019 Aug;96:103239.',
+          pmid: '31238109',
+          pmcid: 'PMC6697579',
+          doi: '10.1016/j.jbi.2019.103239',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'HemOnc.org - A Free Hematology/Oncology Reference',
-          license: source_meta['HemOnc']['data_license'],
-          license_link: source_meta['HemOnc']['data_license_url']
+          license: License::CC_BY_3_0,
+          license_link: 'https://hemonc.org/wiki/Help:Contents'
         ).first_or_create
         drugsatfda = Source.where(
           source_db_name: 'Drugs@FDA',
@@ -102,10 +117,11 @@ module Genome
           base_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
           site_url: 'https://www.accessdata.fda.gov/scripts/cder/daf/',
           citation: 'Center for Drug Evaluation and Research (U.S.). 2004. Drugs@FDA. Washington D.C.: U.S. Food and Drug Administration, Center for Drug and Evaluation Research. http://www.accessdata.fda.gov/scripts/cder/drugsatfda/.',
+          citation_short: 'Center for Drug Evaluation and Research (U.S.). 2004. Drugs@FDA. Washington D.C.: U.S. Food and Drug Administration, Center for Drug and Evaluation Research. http://www.accessdata.fda.gov/scripts/cder/drugsatfda/.',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           full_name: 'Drugs@FDA',
-          license: source_meta['DrugsAtFDA']['data_license'],
-          license_link: source_meta['DrugsAtFDA']['data_license_url']
+          license: License::CC0_1_0,
+          license_link: 'https://open.fda.gov/license/'
         ).first_or_create
         chemidplus = Source.where(
           source_db_name: 'ChemIDplus',
@@ -123,11 +139,13 @@ module Genome
           source_db_version: source_meta['Wikidata']['version'],
           base_url: 'https://www.wikidata.org/wiki/',
           site_url: 'https://www.wikidata.org/',
-          citation: 'Denny Vrandečić and Markus Krötzsch. 2014. Wikidata: a free collaborative knowledgebase. Commun. ACM 57, 10 (October 2014), 78–85. https://doi.org/10.1145/2629489',
+          citation: 'Vrandečić D, Krötzsch M. Wikidata. Communications of the ACM. 2014;57(10):78–85.',
+          citation_short: 'Vrandečić D, Krötzsch M. Wikidata. Communications of the ACM. 2014;57(10):78–85.',
+          doi: '10.1145/2629489',
           source_trust_level_id: SourceTrustLevel.NON_CURATED,
           full_name: 'Wikidata',
-          license: source_meta['Wikidata']['data_license'],
-          license_link: source_meta['Wikidata']['data_license_url']
+          license: License::CC0_1_0,
+          license_link: 'https://www.wikidata.org/wiki/Wikidata:Licensing'
         ).first_or_create
 
         [rxnorm, ncit, hemonc, drugsatfda, chemidplus, wikidata].each do |source|
@@ -353,7 +371,8 @@ module Genome
           drug_claim_aliases.append(claim.name)
         end
         drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
-          DrugAlias.create(alias: claim_alias, drug: drug) unless drug_aliases.member? claim_alias
+          next if drug_aliases.member? claim_alias || claim_alias == drug.name || claim_alias == drug.concept_id.upcase
+          DrugAlias.create(alias: claim_alias, drug: drug)
         end
       end
 

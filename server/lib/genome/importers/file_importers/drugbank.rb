@@ -26,12 +26,16 @@ module Genome; module Importers; module FileImporters; module Drugbank;
         {
           base_url: 'https://go.drugbank.com/drugs',
           site_url: 'https://go.drugbank.com/',
-          citation: "DrugBank 5.0: a major update to the DrugBank database for 2018. Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. Nucleic Acids Res. 2017 Nov 8. doi 10.1093/nar/gkx1037. PubMed ID: 29126136",
+          citation: 'Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2018 Jan 4;46(D1):D1074-D1082. doi: 10.1093/nar/gkx1037. PMID: 29126136; PMCID: PMC5753335.',
+          citation_short: 'Wishart DS, et al. DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2018 Jan 4;46(D1):D1074-D1082.',
+          pmid: '29126136',
+          pmcid: 'PMC5753335',
+          doi: '10.1093/nar/gkx1037',
           source_db_version: '5.1.9',
           source_db_name: 'DrugBank',
           full_name: 'DrugBank - Open Data Drug & Drug Target Database',
           license: License::CUSTOM_NON_COMMERCIAL,
-          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing?_ga=2.29505343.1251048939.1591976592-781844916.1591645816'
+          license_link: 'https://dev.drugbankplus.com/guides/drugbank/citing'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')

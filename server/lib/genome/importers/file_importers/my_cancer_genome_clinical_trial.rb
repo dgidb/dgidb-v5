@@ -16,7 +16,11 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
       @source ||= Source.create(
         {
           base_url: 'http://www.mycancergenome.org/',
-          citation: 'Jain,N., Mittendorf,K.F., Holt,M., Lenoue-Newton,M., Maurer,I., Miller,C., Stachowiak,M., Botyrius,M., Cole,J., Micheel,C., et al. (2020) The My Cancer Genome clinical trial data model and trial curation workflow. J. Am. Med. Inform. Assoc., 27, 1057–1066. PMID: 32483629',
+          citation: 'Jain N, Mittendorf KF, Holt M, Lenoue-Newton M, Maurer I, Miller C, Stachowiak M, Botyrius M, Cole J, Micheel C, Levy M. The My Cancer Genome clinical trial data model and trial curation workflow. J Am Med Inform Assoc. 2020 Jul 1;27(7):1057-1066. doi: 10.1093/jamia/ocaa066. PMID: 32483629; PMCID: PMC7647323.',
+          citation_short: 'Jain N, et al. The My Cancer Genome clinical trial data model and trial curation workflow. J Am Med Inform Assoc. 2020 Jul 1;27(7):1057-1066.',
+          pmid: '32483629',
+          pmcid: 'PMC7647323',
+          doi: '10.1093/jamia/ocaa066',
           site_url: 'http://www.mycancergenome.org/',
           source_db_version: '30-Feburary-2014',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
@@ -47,7 +51,7 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
           create_drug_claim_alias(drug_claim, row['Drug name'], DrugNomenclature::TRADE_NAME)
         end
         unless row['pubchem drug id'] == 'N/A'
-          create_drug_claim_alias(drug_claim, "pubchem.compound:{row['pubchem drug id']}",
+          create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['pubchem drug id']}",
                                   DrugNomenclature::PUBCHEM_COMPOUND_ID)
         end
         unless row['Other drug names'] == 'N/A'

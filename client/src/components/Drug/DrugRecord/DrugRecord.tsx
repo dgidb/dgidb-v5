@@ -1,105 +1,51 @@
 // hooks/dependencies
-import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
-import { useGetInteractionsByDrugs} from 'hooks/queries/useGetInteractions';
-import { useGetDrugRecord } from 'hooks/queries/useGetDrugRecord';
-import Box from '@mui/material/Box';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-// methods
-import { truncateDecimals } from 'utils/format';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useGetDrugRecord } from "hooks/queries/useGetDrugRecord";
+import Box from "@mui/material/Box";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LaunchIcon from "@mui/icons-material/Launch";
 
 // styles
-import './DrugRecord.scss';
-import { Table as AntTable } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import Table from '@mui/material/Table';
+import "./DrugRecord.scss";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import Table from "@mui/material/Table";
 
-const DrugRecordTable: React.FC = () => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
-
-  const drugName = useParams().drug
-
-  const { data } = useGetInteractionsByDrugs([drugName!]);
-
-  let drugs = data?.drugs?.nodes?.[0]?.interactions;
-
-  useEffect(() => {
-    setInteractionResults(drugs)
-  }, [drugs])
-
-  const columns: ColumnsType<any> = [
-    {
-      title: 'Gene',
-      dataIndex: ['drug', 'name'],
-      render: (text: any, record: any) => (
-        <a href={`/genes/${record?.gene?.name}`}>{record?.gene?.name}</a>
-      )
-    },
-    {
-      title: 'Type',
-      dataIndex: ['interactionTypes'],
-      render: (text: any, record: any) => {
-        return record?.interactionTypes.map((int: any) => {
-          return <span>{int?.type}</span>
-        })
-      }
-    },
-    // {
-    //   title: 'Interaction Info',
-    //   dataIndex: ['publications'],
-    //   render: (text: any, record: any) => (
-    //     <span>{record?.publications?.length}</span>
-    //   )
-    // },
-    {
-      title: "PMIDs",
-      dataIndex: ["publications"],
-      render: (text: any, record: any) => (
-        <span>{record?.publications?.length}</span>
-      ),
-    },
-    {
-      title: "Sources",
-      dataIndex: ["sources"],
-      render: (text: any, record: any) => <span>{record?.sources.length}</span>,
-    },
-    {
-      title: 'Interaction Score',
-      dataIndex: ['interactionScore'],
-      render: (text: any, record: any) => (
-        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
-      )
-    },
-  ]
-
-  return (
-    <Box className="gene-record-interactions">
-      <AntTable
-        dataSource={interactionResults}
-        columns={columns}
-        pagination={{ pageSize: 10}}
-      />
-    </Box>
-  )
-};
+// components
+import { LinearProgress, Link } from "@mui/material";
+import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
+import { useGetDrugInteractions } from "hooks/queries/useGetDrugInteractions";
 
 export const DrugRecord: React.FC = () => {
-  const drug = useParams().drug as string;
-  const data = useGetDrugRecord(drug).data;
-  let drugData = data?.drug;
+  const drugId = useParams().drug as string;
+
+  // get drug attributes
+  const { data: fetchedDrugData, isLoading: drugDataIsLoading } =
+    useGetDrugRecord(drugId);
+  const drugData = fetchedDrugData?.drug;
+
+  const { data: fetchedInteractionData, isLoading: interactionDataIsLoading } =
+    useGetDrugInteractions(drugId);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    let interactionData: any = [];
+    fetchedInteractionData?.drug?.interactions?.forEach((int: any) => {
+      interactionData.push(int);
+    });
+    setInteractionResults(interactionData);
+  }, [fetchedInteractionData]);
 
   const noData = (
     <TableRow>
-      <TableCell style={{borderBottom: "none"}}>No data available.</TableCell>
+      <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
     </TableRow>
-  )
+  );
 
   const sectionsMap = [
     {
@@ -108,14 +54,32 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.drugAttributes.length ? drugData?.drugAttributes?.map((attribute: any) => {
-                return (
-                  <TableRow key={attribute.name + " " + attribute.value}>
-                    <TableCell className="attribute-name">{attribute.name}:</TableCell>
-                    <TableCell className="attribute-value">{attribute.value}</TableCell>
-                  </TableRow>
-                )
-              }) : noData}
+              {drugData?.drugAttributes.length ? (
+                drugData?.drugAttributes?.map((attribute: any) => {
+                  return (
+                    <TableRow key={attribute.name + " " + attribute.value}>
+                      <TableCell className="attribute-name">
+                        {attribute.name}:
+                      </TableCell>
+                      <TableCell className="attribute-value">
+                        {attribute.value}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : drugDataIsLoading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -127,113 +91,173 @@ export const DrugRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.drugAliases ? drugData?.drugAliases?.map((alias: any) => {
-                return (
-                  <TableRow key={alias.alias}>
-                    <TableCell className="attribute-name">{alias.alias}</TableCell>
-                  </TableRow>
-                )
-              }) : noData}
+              {drugData?.drugAliases ? (
+                drugData?.drugAliases?.map((alias: any) => {
+                  return (
+                    <TableRow key={alias.alias}>
+                      <TableCell className="attribute-name">
+                        {alias.alias}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : drugDataIsLoading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
       ),
     },
     {
-      // TODO: THIS NEEDS IMPLEMENTED
-      name: "Active",
+      name: "Approval Ratings",
       sectionContent: (
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
-                return (
-                  <TableRow key={category.name}>
-                    <TableCell className="attribute-name">{category.name}:</TableCell>
-                  </TableRow>
-                )
-                }) : noData}
+              {drugData?.drugApprovalRatings &&
+              drugData.drugApprovalRatings.length > 0 ? (
+                drugData?.drugApprovalRatings?.map((rating: any, i: number) => {
+                  return (
+                    <TableRow key={i}>
+                      <TableCell className="attribute-name">
+                        {rating.source.sourceDbName}
+                      </TableCell>
+                      <TableCell className="attribute-value">
+                        {rating.rating}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : drugDataIsLoading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
       ),
     },
     {
-      name: "Categories",
+      name: "FDA Applications",
       sectionContent: (
         <Box className="box-content">
           <Table>
             <TableBody>
-              {drugData?.geneCategories ? drugData?.geneCategories?.map((category: any) => {
-                return (
-                  <TableRow key={category.name}>
-                    <TableCell className="attribute-name">{category.name}:</TableCell>
-                  </TableRow>
-                )
-              }) : noData}
+              {drugData?.drugApplications &&
+              drugData.drugApplications.length > 0 ? (
+                drugData?.drugApplications?.map((app: any, i: number) => {
+                  const appId = app.appNo.match(/\d+/);
+                  const url = `https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=${appId}`;
+                  return (
+                    <TableRow key={i}>
+                      <TableCell className="attribute-name">
+                        {
+                          <Link target="_blank" href={url}>
+                            {app.appNo} <LaunchIcon sx={{ fontSize: 13 }} />
+                          </Link>
+                        }
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : drugDataIsLoading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
       ),
     },
-    {
-      name: "Publications",
-      sectionContent: (
-        <Box className="box-content publication-item">
-          <Table>
-            <TableBody>
-              {drugData?.geneClaims ? drugData?.geneClaims?.map((claim: any) => {
-                return (
-                  <TableRow key={claim?.source?.citation}>
-                    <TableCell className="attribute-name">{claim?.source?.citation}:</TableCell>
-                  </TableRow>
-                )
-              }) : noData}
-            </TableBody>
-          </Table>
-        </Box>
-      ),
-    },
-  ]
+  ];
 
-  return drugData && (
+  return (
     <Box className="drug-record-container">
       <Box className="drug-record-header">
-        <Box className="name">{drug}</Box>
-        <Box className="concept-id">{drugData.conceptId}</Box>
+        <Box className="name">{drugData?.name}</Box>
+        <Box className="concept-id">{drugId}</Box>
       </Box>
       <Box display="flex">
         <Box display="block" width="35%">
-          {
-          sectionsMap.map((section) => {
+          {sectionsMap.map((section) => {
             return (
-            <Accordion key={section.name} defaultExpanded>
-              <AccordionSummary
-                style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
-                expandIcon={<ExpandMoreIcon />}>
-                <h3><b>{section.name}</b></h3>
-              </AccordionSummary>
-              <AccordionDetails style={{maxHeight: "350px", overflow: "scroll", padding: "5px"}}>
-                {section.sectionContent}
-              </AccordionDetails>
-            </Accordion>
-            )
-          })
-        }
+              <Accordion key={section.name} defaultExpanded>
+                <AccordionSummary
+                  style={{
+                    padding: "0 10px",
+                    backgroundColor: "var(--background-light)",
+                  }}
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <h3>
+                    <b>{section.name}</b>
+                  </h3>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    maxHeight: "350px",
+                    overflow: "scroll",
+                    padding: "5px",
+                  }}
+                >
+                  {section.sectionContent}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
         </Box>
         <Box ml={1} width="65%">
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            style={{padding: "0 10px", backgroundColor: 'var(--background-light)'}}
-            expandIcon={<ExpandMoreIcon />}>
-              <h3><b>Interactions</b></h3>
-          </AccordionSummary>
-          <AccordionDetails>
-            <DrugRecordTable />
-          </AccordionDetails>
-        </Accordion>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              style={{
+                padding: "0 10px",
+                backgroundColor: "var(--background-light)",
+              }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <h3>
+                <b>Interactions</b>
+              </h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <InteractionTable
+                interactionResults={interactionResults}
+                isLoading={interactionDataIsLoading}
+                recordType="drug"
+              />
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Box>
     </Box>
-  )
+  );
 };

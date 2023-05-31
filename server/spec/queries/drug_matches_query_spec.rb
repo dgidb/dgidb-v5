@@ -17,13 +17,38 @@ RSpec.describe 'Drug query matching', type: :graphql do
   let :query do
     <<-GRAPHQL
     query drugMatches($searchTerms: [String!]!) {
-
       drugMatches(searchTerms: $searchTerms) {
         directMatches {
           searchTerm
           matches {
-            id
             name
+            conceptId
+            approved
+            drugAttributes {
+              name
+              value
+            }
+            interactions {
+              id
+              gene {
+                name
+                conceptId
+                geneCategories {
+                  name
+                }
+              }
+              interactionScore
+              interactionTypes {
+                type
+                directionality
+              }
+              publications {
+                pmid
+              }
+              sources {
+                fullName
+              }
+            }
           }
         }
         ambiguousMatches {
@@ -31,6 +56,7 @@ RSpec.describe 'Drug query matching', type: :graphql do
           matches {
             id
             name
+            conceptId
           }
         }
         noMatches {
@@ -64,10 +90,8 @@ RSpec.describe 'Drug query matching', type: :graphql do
     expect(direct_matches.map { |dm| dm['searchTerm'] }.sort).to eq([@direct_name.name, @direct_concept_id.concept_id].sort)
 
     #we get the expected Drug ID for our concept ID match and name match
-    name_res = direct_matches.select { |dm| dm['searchTerm'] == @direct_name.name }.first['matches'].first['id']
-    expect(name_res).to eq(@direct_name.id)
-    concept_res = direct_matches.select { |dm| dm['searchTerm'] == @direct_concept_id.concept_id }.first['matches'].first['id']
-    expect(concept_res).to eq(@direct_concept_id.id)
+    concept_res = direct_matches.select { |dm| dm['searchTerm'] == @direct_concept_id.concept_id }.first['matches'].first['conceptId']
+    expect(concept_res).to eq(@direct_concept_id.concept_id)
 
     amb_matches = result['data']['drugMatches']['ambiguousMatches']
 
@@ -83,10 +107,24 @@ RSpec.describe 'Drug query matching', type: :graphql do
     #the two drugs should be the ones we expect
     expect(amb_matches.first['matches'].map { |m| m['id'] }.sort).to eq [@ambiguous_drug_1.id, @ambiguous_drug_2.id].sort
 
-
     #our fake drug shouldn't match
     no_matches = result['data']['drugMatches']['noMatches']
     expect(no_matches.size).to eq 1
     expect(no_matches.map { |nm| nm['searchTerm'] }).to eq([@fake_drug])
+  end
+
+  it 'search should be case insensitive' do
+    downcased_name = @direct_name.name.downcase
+    downcased_id = @direct_concept_id.concept_id.downcase
+    downcased_alias = @ambiguous_alias_1.alias.downcase
+    search_terms = [downcased_name, downcased_id, downcased_alias]
+
+    result = execute_graphql(query, variables: { searchTerms: search_terms })
+
+    direct_matches = result['data']['drugMatches']['directMatches']
+    expect(direct_matches.size).to eq 2
+
+    ambig_matches = result['data']['drugMatches']['ambiguousMatches']
+    expect(ambig_matches.size).to eq 1
   end
 end

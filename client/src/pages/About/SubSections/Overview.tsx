@@ -1,7 +1,9 @@
+import { Box } from "@mui/material"
+
 export const Overview = () => {
 
   return(
-    <div className="about-section-container doc-section">
+    <Box className="about-section-container doc-section">
       <p className="about-sub-header">
       Mining the Druggable Genome for Personalized Medicine
       </p>
@@ -28,6 +30,6 @@ export const Overview = () => {
       <p>
         Identifying clinically relevant genes using DGIdb has a number of limitations that should be acknowledged. DGIdb provides links between genes and their known or potential drug associations. It does not currently provide any information regarding the druggability of specific mutations, nor does it guarantee that any given drug-gene association represents an appropriate therapeutic intervention. DGIdb's concept of a drug-gene interaction or membership in a potentially druggable category is inclusive and largely driven by the underlying data sources and publications. It includes 42 potentially druggable categories and least 49 interaction types as defined by source datasets. These include inhibitors, activators, cofactors, ligands, vaccines, and in many cases, interactions of unknown type. Wherever possible we provide filtering by source, interaction type, and gene category to allow the user to quickly disregard possibly spurious candidates.
       </p>
-    </div>
+    </Box>
   )
 }

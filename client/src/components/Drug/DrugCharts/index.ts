@@ -1,6 +1,3 @@
 export * from './InteractionTypeDrug'
-export * from './InteractionScoreDrug'
 export * from './DirectionalityDrug'
-export * from './RegulatoryApprovalDrug'
-export * from './InteractionDrug'
 export * from './GeneCategories'

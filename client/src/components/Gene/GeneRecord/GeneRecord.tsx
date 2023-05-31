@@ -1,7 +1,6 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetInteractionsByGenes } from "hooks/queries/useGetInteractions";
 import { useGetGeneRecord } from "hooks/queries/useGetGeneRecord";
 import Box from "@mui/material/Box";
 import Accordion from "@mui/material/Accordion";
@@ -9,89 +8,43 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-// methods
-import { truncateDecimals } from "utils/format";
-
 // styles
 import "./GeneRecord.scss";
-import { Table as AntTable } from "antd";
-import { ColumnsType } from "antd/es/table";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
-const GeneRecordTable: React.FC = () => {
-  const [interactionResults, setInteractionResults] = useState<any[]>([]);
-
-  const geneSymbol: any = useParams().gene;
-
-  const { data } = useGetInteractionsByGenes([geneSymbol]);
-
-  let genes = data?.genes?.nodes;
-
-  useEffect(() => {
-    let interactionData = genes?.find((gene: any) => {
-      return gene.name === geneSymbol;
-    });
-
-    setInteractionResults(interactionData?.interactions);
-  }, [genes, geneSymbol]);
-
-  const columns: ColumnsType<any> = [
-    {
-      title: "Drug",
-      dataIndex: ["drug", "name"],
-      render: (text: any, record: any) => (
-        <a href={`/drugs/${record?.drug?.name}`}>{record?.drug?.name}</a>
-      ),
-    },
-    {
-      title: "Interaction Types",
-      dataIndex: ["interactionTypes"],
-      render: (text: any, record: any) => {
-        return record?.interactionTypes.map((int: any) => {
-          return <span>{int?.type}</span>;
-        });
-      },
-    },
-    {
-      title: "PMIDs",
-      dataIndex: ["publications"],
-      render: (text: any, record: any) => (
-        <span>{record?.publications?.length}</span>
-      ),
-    },
-    {
-      title: "Sources",
-      dataIndex: ["sources"],
-      render: (text: any, record: any) => <span>{record?.sources.length}</span>,
-    },
-    {
-      title: "Interaction Score",
-      dataIndex: ["interactionScore"],
-      render: (text: any, record: any) => (
-        <span>{truncateDecimals(record?.interactionScore, 2)}</span>
-      ),
-    },
-  ];
-
-  return (
-    <Box className="gene-record-interactions">
-      <AntTable
-        dataSource={interactionResults}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
-    </Box>
-  );
-};
+import { LinearProgress, Link } from "@mui/material";
+import { useGetGeneInteractions } from "hooks/queries/useGetGeneInteractions";
+import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
+import { dropRedundantCites } from "utils/dropRedundantCites";
 
 export const GeneRecord: React.FC = () => {
-  const geneSymbol = useParams().gene;
+  const geneId: any = useParams().gene;
 
-  const { data } = useGetGeneRecord(geneSymbol!);
-  const geneData = data?.gene;
+  // get gene attributes
+  const { data: fetchedGeneData, isLoading: geneDataIsloading } =
+    useGetGeneRecord(geneId);
+  const geneData = fetchedGeneData?.gene;
+
+  // get interaction data
+  const { data: fetchedInteractionData, isLoading: interactionDataIsLoading } =
+    useGetGeneInteractions(geneId);
+  const [interactionResults, setInteractionResults] = useState<any[]>([]);
+  const [publications, setPublications] = useState<any[]>([]);
+  useEffect(() => {
+    const interactionData: any[] = [];
+    const publications: any[] = [];
+    fetchedInteractionData?.gene?.interactions?.forEach((int: any) => {
+      interactionData.push(int);
+      int.publications.forEach((pub: any) => {
+        publications.push(pub)
+      })
+    });
+    setInteractionResults(interactionData);
+    setPublications(dropRedundantCites(publications));
+  }, [fetchedInteractionData]);
 
   const noData = (
     <TableRow>
@@ -106,20 +59,32 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {geneData?.geneAttributes.length
-                ? geneData?.geneAttributes?.map((attribute: any) => {
-                    return (
-                      <TableRow key={attribute.name + " " + attribute.value}>
-                        <TableCell className="attribute-name">
-                          {attribute.name}:
-                        </TableCell>
-                        <TableCell className="attribute-value">
-                          {attribute.value}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                : noData}
+              {geneData?.geneAttributes.length ? (
+                geneData?.geneAttributes?.map((attribute: any) => {
+                  return (
+                    <TableRow key={attribute.name + " " + attribute.value}>
+                      <TableCell className="attribute-name">
+                        {attribute.name}:
+                      </TableCell>
+                      <TableCell className="attribute-value">
+                        {attribute.value}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : geneDataIsloading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -131,17 +96,29 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {geneData?.geneAliases
-                ? geneData?.geneAliases?.map((alias: any) => {
-                    return (
-                      <TableRow key={alias.alias}>
-                        <TableCell className="attribute-name">
-                          {alias.alias}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                : noData}
+              {geneData?.geneAliases ? (
+                geneData?.geneAliases?.map((alias: any) => {
+                  return (
+                    <TableRow key={alias.alias}>
+                      <TableCell className="attribute-name">
+                        {alias.alias}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : geneDataIsloading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -153,17 +130,29 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {geneData?.geneCategories
-                ? geneData?.geneCategories?.map((category: any) => {
-                    return (
-                      <TableRow key={category.name + " " + category.value}>
-                        <TableCell className="attribute-name">
-                          {category.name}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                : noData}
+              {geneData?.geneCategories ? (
+                geneData?.geneCategories?.map((category: any) => {
+                  return (
+                    <TableRow key={category.name}>
+                      <TableCell className="attribute-name">
+                        {category.name}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : geneDataIsloading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -175,17 +164,25 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content publication-item">
           <Table>
             <TableBody>
-              {geneData?.geneClaims
-                ? geneData?.geneClaims?.map((claim: any, index: number) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell className="attribute-name">
-                          {claim?.source?.citation}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                : noData}
+              {publications.length > 0 ? publications.map((pub: any, index: number) => (
+                <TableRow key={index}>
+                  <TableCell className="attribute-name">
+                  <Link className="pub-link" href={'https://pubmed.ncbi.nlm.nih.gov/' + pub.pmid} target='_blank'>{pub.citation}</Link>
+                  </TableCell>
+                </TableRow>
+              )) : interactionDataIsLoading ? (
+                <LinearProgress
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#480a77",
+                    },
+                  }}
+                  className="linear-bar"
+                />
+              ) : (
+                noData
+              )}
             </TableBody>
           </Table>
         </Box>
@@ -194,62 +191,64 @@ export const GeneRecord: React.FC = () => {
   ];
 
   return (
-    geneData && (
-      <Box className="content gene-record-container">
-        <Box className="gene-record-header">
-          <Box className="symbol">{geneSymbol}</Box>
-          <Box className="concept-id">{geneData.conceptId}</Box>
+    <Box className="content gene-record-container">
+      <Box className="gene-record-header">
+        <Box className="symbol">{geneData?.name}</Box>
+        <Box className="concept-id">{geneId}</Box>
+      </Box>
+      <Box display="flex">
+        <Box display="block" width="35%">
+          {sectionsMap.map((section) => {
+            return (
+              <Accordion key={section.name} defaultExpanded>
+                <AccordionSummary
+                  style={{
+                    padding: "0 10px",
+                    backgroundColor: "var(--background-light)",
+                  }}
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <h3>
+                    <b>{section.name}</b>
+                  </h3>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    maxHeight: "350px",
+                    overflow: "scroll",
+                    padding: "5px",
+                  }}
+                >
+                  {section.sectionContent}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
         </Box>
-        <Box display="flex">
-          <Box display="block" width="35%">
-            {sectionsMap.map((section) => {
-              return (
-                <Accordion key={section.name} defaultExpanded>
-                  <AccordionSummary
-                    style={{
-                      padding: "0 10px",
-                      backgroundColor: "var(--background-light)",
-                    }}
-                    expandIcon={<ExpandMoreIcon />}
-                  >
-                    <h3>
-                      <b>{section.name}</b>
-                    </h3>
-                  </AccordionSummary>
-                  <AccordionDetails
-                    style={{
-                      maxHeight: "350px",
-                      overflow: "scroll",
-                      padding: "5px",
-                    }}
-                  >
-                    {section.sectionContent}
-                  </AccordionDetails>
-                </Accordion>
-              );
-            })}
-          </Box>
-          <Box ml={1} width="65%">
-            <Accordion defaultExpanded>
-              <AccordionSummary
-                style={{
-                  padding: "0 10px",
-                  backgroundColor: "var(--background-light)",
-                }}
-                expandIcon={<ExpandMoreIcon />}
-              >
-                <h3>
-                  <b>Interactions</b>
-                </h3>
-              </AccordionSummary>
-              <AccordionDetails>
-                <GeneRecordTable />
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+        <Box ml={1} width="65%">
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              style={{
+                padding: "0 10px",
+                backgroundColor: "var(--background-light)",
+              }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <h3>
+                <b>Interactions</b>
+              </h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <InteractionTable
+                interactionResults={interactionResults}
+                isLoading={interactionDataIsLoading}
+                recordType="gene"
+              />
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Box>
-    )
+    </Box>
   );
 };
 

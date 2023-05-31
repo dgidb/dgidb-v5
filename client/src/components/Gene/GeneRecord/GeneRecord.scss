@@ -1,5 +1,11 @@
+.linear-bar {
+  margin: 15px;
+}
+
 .gene-record-container {
   padding: 20px;
+  background-color: var(--background);
+  border-radius: 5px;
 
   .gene-record-header {
     display: flex;
@@ -24,6 +30,7 @@
   .data-box {
     padding: 1rem;
     border: solid white 1px;
+
 
     .box-title {
       color: var(--text-primary);
@@ -56,7 +63,6 @@
         margin-bottom: 10px;
       }
     }
-
   }
 
   .gene-record-upper {
@@ -100,4 +106,17 @@
       grid-area: 1 / 3 / 5 / 7;
     }
   }
+}
+
+.pub-link {
+  color: var(--header-gradient-1) !important;
+  text-decoration: none !important;
+}
+
+.pub-link:hover {
+  text-decoration: underline !important;
+}
+
+.pub-link:active {
+  text-decoration: underline !important;
 }

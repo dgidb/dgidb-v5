@@ -1,3 +1,5 @@
+import { Email, GitHub, Home, LinkedIn } from "@mui/icons-material"
+
 export const Contact = () => {
 
   return(
@@ -9,62 +11,60 @@ export const Contact = () => {
       </div>
 
       <div className="contact-section-container left-section">
-        <h4>The McDonnell Genome Institute</h4>
-        <p>Washington University<br/>
-        <a href="http://genome.wustl.edu/">http://genome.wustl.edu/</a></p>
+        <h4><a href="http://genome.wustl.edu/">The McDonnell Genome Institute</a></h4>
+        <p>Washington University</p>
 
         <h4>Malachi Griffith</h4>
         <p>Creator<br/>
-        <a href="https://griffithlab.org">Faculty profile</a><br/>
-        <a href="mailto:mgriffit@wustl.edu">Email</a></p>
+        <a href="https://griffithlab.org"><Home /></a>
+        <a href="mailto:mgriffit@wustl.edu"><Email /></a></p>
         <h4>Obi Griffith</h4>
         <p>Creator<br/>
-        <a href="https://griffithlab.org">Faculty profile</a><br/>
-        <a href="mailto:obigriffith@wustl.edu">Email</a></p>
+        <a href="https://griffithlab.org"><Home /></a>
+        <a href="mailto:obigriffith@wustl.edu"><Email /></a></p>
         <h4>Susanna Kiwala</h4>
         <p>Software developer<br/>
-        <a href="https://github.com/susannasiebert">Github profile</a><br/>
-        <a href="mailto:susanna.kiwala@wustl.edu">Email</a></p>
+        <a href="https://github.com/susannasiebert"><GitHub /></a>
+        <a href="mailto:susanna.kiwala@wustl.edu"><Email /></a></p>
         <h4>Kelsy Cotto</h4>
-        <p>Curator, developer<br/>
-        <a href="https://www.linkedin.com/in/kelsy-cotto-94b9018b/">LinkedIn profile</a><br/>
-        <a href="mailto:kelsy.cotto@wustl.edu">Email</a></p>
+        <p>Curator, software developer<br/>
+        <a href="https://www.linkedin.com/in/kelsy-cotto-94b9018b/"><LinkedIn /></a>
+        <a href="mailto:kelsy.cotto@wustl.edu"><Email /></a></p>
         <h4>Sharon Freshour</h4>
-        <p>Curator, developer<br/>
-        <a href="https://www.linkedin.com/in/sharonfreshour/">LinkedIn profile</a><br/>
-        <a href="mailto:sharonfreshour@wustl.edu">Email</a></p>
+        <p>Curator, software developer<br/>
+        <a href="https://www.linkedin.com/in/sharonfreshour/"><LinkedIn /></a>
+        <a href="mailto:sharonfreshour@wustl.edu"><Email /></a></p>
         <h4>Adam Coffman</h4>
         <p>Software developer
-        <br/><a href="https://github.com/acoffman">Github profile</a><br/>
-        <a href="mailto:acoffman@wustl.edu">Email</a></p>
+        <br/><a href="https://github.com/acoffman"><GitHub /></a>
+        <a href="mailto:acoffman@wustl.edu"><Email /></a></p>
         <h4>Josh McMichael</h4>
         <p>User experience (UX) developer<br/>
-        <a href="https://github.com/jmcmichael">Github profile</a><br/>
-        <a href="mailto:jmcmicha@wustl.edu">Email</a></p>
+        <a href="https://github.com/jmcmichael"><GitHub /></a>
+        <a href="mailto:jmcmicha@wustl.edu"><Email /></a></p>
       </div>
 
       <div className="contact-section-container right-section">
-        <h4>The Institute for Genomic Medicine</h4>
-        <p>Nationwide Children's Hospital<br/>
-        <a href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine">https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine</a></p>
+        <h4><a href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine">The Institute for Genomic Medicine</a></h4>
+        <p>Nationwide Children's Hospital</p>
+
         <h4>Alex Wagner</h4>
-        <p>Creator, developer<br/>
-        <a href="http://alexwagner.info">Academic profile</a><br/>
-        <a href="mailto:Alex.Wagner@nationwidechildrens.org">Email</a></p>
+        <p>Creator, software developer<br/>
+        <a href="http://alexwagner.info"><Home /></a>
+        <a href="mailto:Alex.Wagner@nationwidechildrens.org"><Email /></a></p>
         <h4>Matthew Cannon</h4>
-        <p>Developer<br/>
-        <a href="https://www.linkedin.com/in/matthew-cannon-b250a730/">LinkedIn Profile</a><br/>
-        <a href="mailto:Matthew.Cannon2@nationwidechildrens.org">Email</a></p>
+        <p>Software developer<br/>
+        <a href="https://www.linkedin.com/in/matthew-cannon-b250a730/"><LinkedIn /></a>
+        <a href="mailto:Matthew.Cannon2@nationwidechildrens.org"><Email /></a></p>
         <h4>Katie Stahl</h4>
-        <p>Developer<br/>
-        <a href="https://github.com/katiestahl">GitHub</a><br/>
-        <a href="https://www.linkedin.com/in/katie-stahl-05b81a126/">LinkedIn</a><br/>
-        <a href="mailto:Kathryn.Stahl@nationwidechildrens.org">Email</a></p>
+        <p>Software developer<br/>
+        <a href="https://github.com/katiestahl"><GitHub /></a>
+        <a href="https://www.linkedin.com/in/katie-stahl-05b81a126/"><LinkedIn /></a>
+        <a href="mailto:Kathryn.Stahl@nationwidechildrens.org"><Email /></a></p>
         <h4>James Stevenson</h4>
-        <p>Developer<br/>
-        <a href="https://www.linkedin.com/in/james-stevenson-00999482/">LinkedIn</a><br/>
-        <a href="https://jsstevenson.github.io/">Github.io</a><br/>
-        <a href="mailto:James.Stevenson@nationwidechildrens.org">Email</a></p>
+        <p>Software developer<br/>
+        <a href="https://jsstevenson.github.io/"><Home /></a>
+        <a href="mailto:James.Stevenson@nationwidechildrens.org"><Email /></a></p>
       </div>
       <div className="contact-section-container spacing"></div>
       <div className="contact-section-container spacing"></div>

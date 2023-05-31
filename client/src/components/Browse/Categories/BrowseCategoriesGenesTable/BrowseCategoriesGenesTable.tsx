@@ -1,13 +1,12 @@
 // hooks/dependencies
-import React, { useEffect, useState } from "react";
-import { useGetGenesForCategory } from "hooks/queries/useGetGenesForCategory";
+import React, { useEffect, useState } from 'react';
+import { useGetGenesForCategory } from 'hooks/queries/useGetGenesForCategory';
 
 // styles
-import "./BrowseCategoriesGenesTable.scss";
-import { Table } from "antd";
-import { ColumnsType } from "antd/es/table";
-import { Box } from "@mui/system";
-import { Skeleton } from "@mui/material";
+import './BrowseCategoriesGenesTable.scss';
+import { Box } from '@mui/system';
+import { Skeleton } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 
 interface BrowseCategoriesGenesTableProps {
   categoryName: String;
@@ -29,6 +28,7 @@ export const BrowseCategoriesGenesTable: React.FC<
           id: index,
           gene: {
             name: record?.node?.name,
+            conceptId: record?.node?.conceptId,
             description: record?.node?.longName,
             sources: record?.node?.sourceDbNames
           }
@@ -37,32 +37,42 @@ export const BrowseCategoriesGenesTable: React.FC<
     }
   }, [genes]);
 
-  const columns: ColumnsType<any> = [
+  const columns = [
     {
-      title: "Gene",
-      dataIndex: ["gene", "name"],
-      render: (text: any, record: any) => <a href={`/genes/${record?.gene?.name}`}>{record.gene.name}</a>,
+      field: 'gene',
+      headerName: 'Gene',
+      flex: 0.5,
+      minWidth: 0,
+      renderCell: (params: any) =>
+        <a href={`/genes/${params.row.geneId}`}>{params.row.gene}</a>,
     },
     {
-      title: "Gene Description",
-      dataIndex: ["gene", "description"],
-      render: (text: any, record: any) => (
-        <span>{record.gene.description}</span>
-      ),
+      field: 'geneDescription',
+      headerName: 'Gene Description',
+      flex: 1,
+      minWidth: 0,
     },
     {
-      title: "Sources",
-      dataIndex: ["gene", "sources"],
-      render: (text: any, record: any) =>
-        record.gene.sources.map((src: any, i: number) => {
-          return <span key={i}>{src}, </span>;
-        }),
+      field: 'sources',
+      headerName: 'Sources',
+      flex: 0.75,
+      minWidth: 0,
     },
-  ];
+  ]
+
+  const rows = genesInCategory?.map((geneInCategory: any) => {
+    return {
+      id: geneInCategory.id,
+      gene: geneInCategory.gene.name,
+      geneId: geneInCategory.gene.conceptId,
+      geneDescription: geneInCategory.gene.description,
+      sources: geneInCategory.gene.sources?.join(', ')
+    }
+  })
 
   if (isLoading) {
     return (
-      <Box className="loading">
+      <Box className='loading'>
         <Skeleton />
         <Skeleton />
         <Skeleton />
@@ -73,14 +83,19 @@ export const BrowseCategoriesGenesTable: React.FC<
     return (<Box>Error! Unable to complete request</Box>)
   }
   return (
-    <div className="gene-list-table-container">
-      <Table
-        dataSource={genesInCategory}
-        size="small"
+    <Box className='gene-list-table-container'>
+      <Box width='100%' height='500px' display='flex'>
+      <DataGrid
         columns={columns}
-        rowKey={(record) => record.id}
-        pagination={{ pageSize: 10 }}
-      />
-    </div>
+        rows={rows}
+        pagination
+        pageSizeOptions={[25, 50, 100]}
+        className='data-grid'
+        classes={{columnHeader: 'table-header', row: 'table-row', menuIcon: 'column-menu-button', cell: 'table-cell', footerContainer: 'table-cell'}}
+        rowSelection={false}
+        showColumnVerticalBorder
+        />
+        </Box>
+    </Box>
   );
 };

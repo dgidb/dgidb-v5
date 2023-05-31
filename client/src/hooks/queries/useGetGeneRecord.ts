@@ -1,40 +1,40 @@
-import { useQuery } from 'react-query';
-import { gql } from 'graphql-request';
-import { graphQLClient } from 'config';
+import { useQuery } from "react-query";
+import { gql } from "graphql-request";
+import { graphQLClient } from "config";
 
 const getGeneRecordQuery = gql`
-query gene($name: String!) {
-  gene(name: $name) {
-    conceptId
-    geneAttributes {
-      gene {
-        longName
-      }
+  query gene($conceptId: String!) {
+    gene(conceptId: $conceptId) {
+      conceptId
       name
-      value
-    }
-    geneAliases {
-      alias
-    }
-    geneClaims {
-      source {
-        citation
+      geneAttributes {
+        name
+        value
       }
-    }
-    geneCategories {
-      name
+      geneAliases {
+        alias
+      }
+      geneClaims {
+        source {
+          citation
+        }
+      }
+      geneCategories {
+        name
+      }
     }
   }
-}
-`
+`;
 
-export function useGetGeneRecord(name: string) {
-  return useQuery('gene-record', async () => {
-    const res = await graphQLClient.request(
-      getGeneRecordQuery,
-      { name }
-    );
-    return res;
-  },
-  {enabled: name !== ''});
+export function useGetGeneRecord(conceptId: string) {
+  return useQuery(
+    "gene-record" + conceptId,
+    async () => {
+      const res = await graphQLClient.request(getGeneRecordQuery, {
+        conceptId,
+      });
+      return res;
+    },
+    { enabled: conceptId !== "" }
+  );
 }

@@ -23,7 +23,11 @@ module Genome; module Importers; module FileImporters; module Idg;
         {
           base_url: 'https://druggablegenome.net/IDGProteinList/',
           site_url: 'https://druggablegenome.net/',
-          citation: 'Rodgers,G., Austin,C., Anderson,J., Pawlyk,A., Colvis,C., Margolis,R. and Baker,J. (2018) Glimmers in illuminating the druggable genome. Nat. Rev. Drug Discov., 17, 301–302. PMID: 29348682',
+          citation: 'Rodgers G, Austin C, Anderson J, Pawlyk A, Colvis C, Margolis R, Baker J. Glimmers in illuminating the druggable genome. Nat Rev Drug Discov. 2018 May;17(5):301-302. doi: 10.1038/nrd.2017.252. Epub 2018 Jan 19. PMID: 29348682; PMCID: PMC6309548.',
+          citation_short: 'Rodgers G, et al. Glimmers in illuminating the druggable genome. Nat Rev Drug Discov. 2018 May;17(5):301-302.',
+          pmid: '29348682',
+          pmcid: 'PMC6309548',
+          doi: '10.1038/nrd.2017.252',
           source_db_version: '15-July-2019',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,

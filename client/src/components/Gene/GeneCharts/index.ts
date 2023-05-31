@@ -1,5 +1,3 @@
 export * from './InteractionTypeGene'
-export * from './InteractionScoreGene'
 export * from './DirectionalityGene'
 export * from './RegulatoryApprovalGene'
-export * from './InteractionGene'

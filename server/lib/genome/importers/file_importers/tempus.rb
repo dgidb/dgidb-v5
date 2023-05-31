@@ -17,7 +17,11 @@ module Genome; module Importers; module FileImporters; module Tempus
         {
           base_url: 'https://www.tempus.com/clinical-validation-of-the-tempus-xt-next-generation-targeted-oncology-sequencing-assay/',
           site_url: 'https://www.tempus.com/',
-          citation: 'Beaubier, N, Tell, R, Lau, D, Parsons, JR, Bush, S, Perera, J, Sorrells, S, Baker, T, Chang, A, Michuda, J, Iguartua, C, MacNeil, S, Shah, K, Ellis, P, Yeatts, K, Mahon, B, Taxter, T, Bontrager, M, Khan, A, Huether, R, Lefkofsky, E, & White, KP. Clinical validation of the tempus xT next-generation targeted oncology sequencing assay. Oncotarget 2019 Mar 22;10(24):2384-2396. PMID: 31040929.',
+          citation: 'Beaubier N, Tell R, Lau D, Parsons JR, Bush S, Perera J, Sorrells S, Baker T, Chang A, Michuda J, Iguartua C, MacNeil S, Shah K, Ellis P, Yeatts K, Mahon B, Taxter T, Bontrager M, Khan A, Huether R, Lefkofsky E, White KP. Clinical validation of the tempus xT next-generation targeted oncology sequencing assay. Oncotarget. 2019 Mar 22;10(24):2384-2396. doi: 10.18632/oncotarget.26797. PMID: 31040929; PMCID: PMC6481324.',
+          citation_short: 'Beaubier N, et al. Clinical validation of the tempus xT next-generation targeted oncology sequencing assay. Oncotarget. 2019 Mar 22;10(24):2384-2396.',
+          pmid: '31040929',
+          pmcid: 'PMC6481324',
+          doi: '10.18632/oncotarget.26797',
           source_db_version: '11-November-2018',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,

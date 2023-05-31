@@ -18,11 +18,10 @@ module Genome; module Importers; module FileImporters; module Nci;
           {
               base_url: 'https://wiki.nci.nih.gov/display/cageneindex/The+Cancer+Gene+Index+Gene-Disease+and+Gene-Compound+XML+Documents',
               site_url: 'https://wiki.nci.nih.gov/display/cageneindex',
-              citation: 'https://wiki.nci.nih.gov/display/cageneindex',
               source_db_version: '14-September-2017',
               source_db_name: @source_db_name,
               full_name: 'NCI Cancer Gene Index',
-              license: 'Public domain',
+              license: License::PUBLIC_DOMAIN,
               license_link: 'https://www.cancer.gov/policies/copyright-reuse',
           }
       )

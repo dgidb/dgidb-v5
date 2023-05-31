@@ -17,12 +17,12 @@ const getCategoriesQuery = gql`
 `;
 export function useGetCategories(names: string[]) {
   return useQuery(
-    "categories",
+    "categories" + names,
     async () => {
       const res = await graphQLClient.request(getCategoriesQuery, { names });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }
 
@@ -40,13 +40,13 @@ const getCategoriesbySourceQuery = gql`
 
 export function useGetCategoriesBySource(names: string[]) {
   return useQuery(
-    "categories-by-source",
+    "categories-by-source" + names,
     async () => {
       const res = await graphQLClient.request(getCategoriesbySourceQuery, {
         names,
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }

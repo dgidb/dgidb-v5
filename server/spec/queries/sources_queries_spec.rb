@@ -26,9 +26,15 @@ RSpec.describe 'Sources queries', type: :graphql do
         }
         nodes {
           sourceDbName
+          sourceDbVersion
+          baseUrl
           drugClaimsCount
           drugClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -42,6 +48,8 @@ RSpec.describe 'Sources queries', type: :graphql do
     expect(result['data']['sources']['nodes'].size).to eq 1
     source = result['data']['sources']['nodes'][0]
     expect(source['sourceDbName']).to eq @src.source_db_name
+    expect(source['sourceDbVersion']).to eq @src.source_db_version
+    expect(source['baseUrl']).to eq @src.base_url
 
     expect(source['drugClaimsCount']).to eq 1
     expect(source['drugClaimsInGroupsCount']).to eq 1
@@ -66,6 +74,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           geneClaimsCount
           geneClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -107,6 +119,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           interactionClaimsCount
           interactionClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
@@ -152,6 +168,10 @@ RSpec.describe 'Sources queries', type: :graphql do
           interactionClaimsCount
           interactionClaimsInGroupsCount
           citation
+          citationShort
+          pmid
+          pmcid
+          doi
           license
           licenseLink
         }
