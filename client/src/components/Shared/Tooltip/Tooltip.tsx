@@ -1,7 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { Box } from '@mui/material';
 import './Tooltip.scss'
@@ -54,7 +53,7 @@ export const PublicationsTooltip: React.FC<Props> = ({displayText, hoverTexts}) 
                     <Box mb={1} key={index}><Link href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid} target='_blank'>{row.pmid}</Link></Box>
                 ))}
                 </Box>
-                <em>Full publications above</em>
+                <em>{displayText && ~~displayText > 0 ? "Full publications above" : "No supporting publications"}</em>
               </>
             }
           >

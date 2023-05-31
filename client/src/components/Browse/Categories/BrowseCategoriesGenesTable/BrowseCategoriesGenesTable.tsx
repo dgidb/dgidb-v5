@@ -28,6 +28,7 @@ export const BrowseCategoriesGenesTable: React.FC<
           id: index,
           gene: {
             name: record?.node?.name,
+            conceptId: record?.node?.conceptId,
             description: record?.node?.longName,
             sources: record?.node?.sourceDbNames
           }
@@ -36,25 +37,25 @@ export const BrowseCategoriesGenesTable: React.FC<
     }
   }, [genes]);
 
-  const columns = [ 
-    { 
-      field: 'gene', 
-      headerName: 'Gene', 
-      flex: 0.5, 
+  const columns = [
+    {
+      field: 'gene',
+      headerName: 'Gene',
+      flex: 0.5,
       minWidth: 0,
-      renderCell: (params: any) => 
-        <a href={`/genes/${params.row.gene}`}>{params.row.gene}</a>,
+      renderCell: (params: any) =>
+        <a href={`/genes/${params.row.geneId}`}>{params.row.gene}</a>,
     },
-    { 
-      field: 'geneDescription', 
-      headerName: 'Gene Description', 
-      flex: 1, 
+    {
+      field: 'geneDescription',
+      headerName: 'Gene Description',
+      flex: 1,
       minWidth: 0,
     },
-    { 
-      field: 'sources', 
-      headerName: 'Sources', 
-      flex: 0.75, 
+    {
+      field: 'sources',
+      headerName: 'Sources',
+      flex: 0.75,
       minWidth: 0,
     },
   ]
@@ -63,6 +64,7 @@ export const BrowseCategoriesGenesTable: React.FC<
     return {
       id: geneInCategory.id,
       gene: geneInCategory.gene.name,
+      geneId: geneInCategory.gene.conceptId,
       geneDescription: geneInCategory.gene.description,
       sources: geneInCategory.gene.sources?.join(', ')
     }
@@ -84,8 +86,8 @@ export const BrowseCategoriesGenesTable: React.FC<
     <Box className='gene-list-table-container'>
       <Box width='100%' height='500px' display='flex'>
       <DataGrid
-        columns={columns} 
-        rows={rows} 
+        columns={columns}
+        rows={rows}
         pagination
         pageSizeOptions={[25, 50, 100]}
         className='data-grid'

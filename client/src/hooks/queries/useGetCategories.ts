@@ -22,7 +22,7 @@ export function useGetCategories(names: string[]) {
       const res = await graphQLClient.request(getCategoriesQuery, { names });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }
 
@@ -47,6 +47,6 @@ export function useGetCategoriesBySource(names: string[]) {
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }

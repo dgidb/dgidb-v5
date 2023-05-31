@@ -68,6 +68,13 @@ namespace :dgidb do
       puts "Deleted gene groups in #{time.real}s"
     end
 
+    desc 'erase interaction groupings'
+    task erase_interactions: :environment do
+      puts 'Deleting interactions...'
+      time = Benchmark.measure { Utils::Database.delete_interactions }
+      puts "Deleted interaction groups in #{time.real}s"
+    end
+
     desc 'erase all groupings'
     task erase: :environment do
       Utils::Logging.without_sql do

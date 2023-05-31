@@ -12,14 +12,11 @@ RSpec.describe 'Genes Query', type: :graphql do
 
   let :query do
     <<-GRAPHQL
-    query gene($name: String!) {
-      gene(name: $name) {
+    query gene($conceptId: String!) {
+      gene(conceptId: $conceptId) {
         conceptId
+        name
         geneAttributes {
-          geneId
-          gene {
-            longName
-          }
           name
           value
         }
@@ -40,7 +37,7 @@ RSpec.describe 'Genes Query', type: :graphql do
   end
 
   it 'should execute getGeneRecordQuery correctly' do
-    result = execute_graphql(query, variables: { name: @gene.name })
+    result = execute_graphql(query, variables: { conceptId: @gene.concept_id })
     gene = result['data']['gene']
     expect(gene['conceptId']).to eq @gene.concept_id
     expect(gene['geneAttributes'].size).to eq 1

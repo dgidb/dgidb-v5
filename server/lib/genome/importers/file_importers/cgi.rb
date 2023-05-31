@@ -34,80 +34,27 @@ module Genome; module Importers; module FileImporters; module Cgi
       @source.save
     end
 
-    # at least 1 CGI entry includes a pesky nbsp character,
-    # and some names are surrounded with brackets
-    def clean_drug_name(drug_name)
-      drug_name.gsub(/[[:space:]]/, '').gsub(/\[(.*)\]/, '\1')
+    def create_cgi_dca(drug_claim, attribute_name, attribute_value)
+      attribute_value.gsub(/\[(.*)\]/, '\1').scan(/[a-zA-Z0-9\-\/ ]+/).each do |split_value|
+        create_drug_claim_attribute(drug_claim, attribute_name, split_value.strip)
+      end
     end
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        next if row['Drug'].nil? || row['Drug'] == '[]'
+        drug = row['Drug']
+        next if drug.nil? || drug.empty?
+        drug = drug.gsub(/\[(.*)\]/, '\1')
+        next if drug.nil? || drug.empty?
 
-        if row['Drug'].include?(',') || row['Drug'].include?(';')
-          combination_drug_name = row['Drug']
-          combination_drug_name.scan(/[a-zA-Z0-9]+/).each do |individual_drug_name|
-            individual_drug_name = clean_drug_name(individual_drug_name)
-            drug_claim = create_drug_claim(individual_drug_name)
-            create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
-            if row['Gene'].include?(';')
-              row['Gene'].split(';').each do |indv_gene|
-                gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
-                interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
-                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
-                add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
-                create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
-              end
-            else
-              gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
-              interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
-              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
-              add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
-              create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
-            end
-          end
-          if row['Drug'].include?(';')
-            combination_drug_name = row['Drug']
-            combination_drug_name.split(';').each do |individual_drug_name|
-              individual_drug_name = clean_drug_name(individual_drug_name)
-              drug_claim = create_drug_claim(individual_drug_name)
-              create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
-              if row['Gene'].include?(';')
-                row['Gene'].split(';').each do |indv_gene|
-                  gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
-                  interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                  create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
-                  create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
-                  add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
-                  create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
-                end
-              else
-                gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
-                interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
-                create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
-                add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
-                create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
-              end
-            end
-          end
-        else
-          drug_name = clean_drug_name(row['Drug'])
-          drug_claim = create_drug_claim(drug_name)
-          create_drug_claim_attribute(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
-          if row['Gene'].include?(';')
-            row['Gene'].split(';').each do |indv_gene|
-              gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
-              interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
-              add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
-              create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
-            end
-          else
-            gene_claim = create_gene_claim(row['Gene'], GeneNomenclature::NAME)
+        drug.scan(/[a-zA-Z0-9\- ]+/).uniq.each do |indv_drug|
+          drug_claim = create_drug_claim(indv_drug)
+          create_cgi_dca(drug_claim, DrugAttributeName::DRUG_CLASS, row['Drug family'])
+          gene = row['Gene']
+          gene.scan(/[a-zA-Z0-9\- ]+/).uniq.each do |indv_gene|
+            gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, drug) if drug != indv_drug
             create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ALTERATION, row['Alteration'])
             add_interaction_claim_publications(interaction_claim, row['Source']) if row['Source'].include?('PMID')
             create_interaction_claim_link(interaction_claim, 'Cancer Biomarkers database', 'https://www.cancergenomeinterpreter.org/biomarkers')
