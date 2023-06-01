@@ -28,18 +28,16 @@ export const RegulatoryApprovalGene: React.FC<Props> = ({data}) => {
   useEffect(() => {
     let newObj: ApprovalRatings = {};
 
-      data?.forEach((gene: any) => {
-        gene.interactions?.forEach((int: any) => {
-          int?.drug?.drugApprovalRatings?.forEach((rating: any) => {
-            if (newObj[rating.rating]) {
-              ++newObj[rating.rating];
-            } else {
-              newObj[rating.rating] = 1;
-            }
-          })
-        })
+    data?.forEach((gene: any) => {
+      gene.interactions?.forEach((int: any) => {
+        const rating = int?.drug?.approved ? "Approved" : "Not Approved";
+        if (newObj[rating]) {
+          ++newObj[rating];
+        } else {
+          newObj[rating] = 1;
+        }
       })
-
+    })
     let dataArray = [];
     let labelArray = []
 
