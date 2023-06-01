@@ -85,7 +85,7 @@ module Genome; module Importers; module FileImporters; module Chembl
         primary_drug_name = row['drug_name'].strip.upcase
         drug_claim = create_drug_claim(primary_drug_name)
         create_drug_claim_alias(drug_claim, "chembl:#{row['chembl_id']}", DrugNomenclature::CHEMBL_ID)
-        create_drug_claim_approval_rating(drug_claim, "Max Phase #{row['max_phase'].strip}") unless row[5].nil?
+        create_drug_claim_approval_rating(drug_claim, "Max Phase #{row['max_phase']}") unless row[5].nil?
         create_drug_claim_approval_rating(drug_claim, 'Withdrawn') if row[3] == 1
 
         next if row['chembl_id'].nil? || row['target_gene_symbol'].nil?
