@@ -1,30 +1,18 @@
 // hooks/dependencies
-import React, { useContext } from 'react';
-import { useGetMatchedResults } from 'hooks/queries/useGetAmbiguousResults';
-import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import React from 'react';
 import { Box, CircularProgress, Icon } from '@mui/material';
 import AmbiguousResult from './AmbiguousResult';
 import './AmbiguousTerms.scss';
+import { ResultTypes } from 'types/types';
 
 interface AmbiguousTermsSummaryProps {
-  resultType: string;
+  resultType: ResultTypes;
+  isLoading: boolean;
+  ambiguousTerms: any;
+  unmatchedTerms: any;
 }
 
-export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({resultType}) => {
-  const { state } = useContext(GlobalClientContext);
-  const { data, isLoading } = useGetMatchedResults(state.searchTerms, resultType);
-
-  let unmatchedTerms
-  let ambiguousTerms
-
-  if (resultType === 'gene') {
-    unmatchedTerms = data?.geneMatches?.noMatches
-    ambiguousTerms = data?.geneMatches?.ambiguousMatches
-  } else if (resultType === 'drug') {
-    unmatchedTerms = data?.drugMatches?.noMatches
-    ambiguousTerms = data?.drugMatches?.ambiguousMatches
-  }
-
+export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({resultType, isLoading, ambiguousTerms, unmatchedTerms}) => {
   return !isLoading ? (
     <Box display='flex' justifyContent='space-between' minHeight='50px'>
       <Box width={unmatchedTerms?.length > 0 ? '80%' : '100%'}>

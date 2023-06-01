@@ -10,20 +10,20 @@ RSpec.describe 'Drugs Query', type: :graphql do
 
   let :query do
     <<-GRAPHQL
-    query drug($name: String!) {
-      drug(name: $name) {
+    query drug($conceptId: String!) {
+      drug(conceptId: $conceptId) {
         conceptId
+        name
         drugAliases {
           alias
         }
         drugAttributes {
-          id
           name
           value
         }
         drugApprovalRatings {
           rating
-          source{
+          source {
             sourceDbName
           }
         }
@@ -36,7 +36,7 @@ RSpec.describe 'Drugs Query', type: :graphql do
   end
 
   it 'should execute getDrugRecordQuery correctly' do
-    result = execute_graphql(query, variables: { name: @drug.name })
+    result = execute_graphql(query, variables: { conceptId: @drug.concept_id })
     drug = result['data']['drug']
 
     expect(drug['conceptId']).to eq @drug.concept_id
@@ -45,7 +45,6 @@ RSpec.describe 'Drugs Query', type: :graphql do
     expect(drug['drugAliases'][0]['alias']).to eq @drug_alias.alias
 
     expect(drug['drugAttributes'].size).to eq 1
-    expect(drug['drugAttributes'][0]['id']).to eq @drug_attr.id
     expect(drug['drugAttributes'][0]['name']).to eq @drug_attr.name
     expect(drug['drugAttributes'][0]['value']).to eq @drug_attr.value
 
