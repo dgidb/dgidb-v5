@@ -1,18 +1,18 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 
 // components
-import { Overview } from "./SubSections/Overview";
-import { Publications } from "./SubSections/Publications";
-import { TypesAndDirectionalities } from "./SubSections/TypesAndDirectionalities";
-import { InteractionScoreQueryScore } from "./SubSections/InteractionScoreQueryScore";
-import { FAQ } from "./SubSections/FAQ";
-import { KnownDataClients } from "./SubSections/KnownDataClients";
-import { Contact } from "./SubSections/Contact";
-import { TypesTable } from "components/About/InteractionClaimTypes/TypesTable";
+import { Overview } from './SubSections/Overview';
+import { Publications } from './SubSections/Publications';
+import { TypesAndDirectionalities } from './SubSections/TypesAndDirectionalities';
+import { InteractionScoreQueryScore } from './SubSections/InteractionScoreQueryScore';
+import { FAQ } from './SubSections/FAQ';
+import { KnownDataClients } from './SubSections/KnownDataClients';
+import { Contact } from './SubSections/Contact';
+import { TypesTable } from 'components/About/InteractionClaimTypes/TypesTable';
 // styles
-import "./About.scss";
-import { Box, Link } from "@mui/material";
+import './About.scss';
+import { Box, Link } from '@mui/material';
 
 export const About = () => {
   return (

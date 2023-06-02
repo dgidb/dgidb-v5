@@ -1,9 +1,9 @@
 // hooks/dependencies
-import React from "react";
-import { Box, CircularProgress, Icon } from "@mui/material";
-import AmbiguousResult from "./AmbiguousResult";
-import "./AmbiguousTerms.scss";
-import { ResultTypes } from "types/types";
+import React from 'react';
+import { Box, CircularProgress, Icon } from '@mui/material';
+import AmbiguousResult from './AmbiguousResult';
+import './AmbiguousTerms.scss';
+import { ResultTypes } from 'types/types';
 
 interface AmbiguousTermsSummaryProps {
   resultType: ResultTypes;
@@ -20,7 +20,7 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({
 }) => {
   return !isLoading ? (
     <Box display="flex" justifyContent="space-between" minHeight="50px">
-      <Box width={unmatchedTerms?.length > 0 ? "80%" : "100%"}>
+      <Box width={unmatchedTerms?.length > 0 ? '80%' : '100%'}>
         {ambiguousTerms?.length > 0 ? (
           ambiguousTerms?.map((term: any) => {
             return (

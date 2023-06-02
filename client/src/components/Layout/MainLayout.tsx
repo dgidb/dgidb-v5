@@ -1,15 +1,15 @@
-import * as React from "react";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // client state
-import { ActionTypes } from "stores/Global/reducers";
-import { GlobalClientContext } from "stores/Global/GlobalClient";
+import { ActionTypes } from 'stores/Global/reducers';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // style
-import "./MainLayout.scss";
-import { Box, Button, IconButton, Menu, MenuItem } from "@mui/material";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import './MainLayout.scss';
+import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
   return (
     <header>
-      <div className="header-logo" onClick={() => navigate("/")}>
+      <div className="header-logo" onClick={() => navigate('/')}>
         DGIdb
       </div>
       <nav>
@@ -45,18 +45,18 @@ const Header: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
+                vertical: 'bottom',
+                horizontal: 'center',
               }}
               transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
+                vertical: 'top',
+                horizontal: 'center',
               }}
             >
               <MenuItem
                 onClick={() => {
                   handleClose();
-                  navigate("/browse/categories");
+                  navigate('/browse/categories');
                 }}
               >
                 Categories
@@ -64,15 +64,15 @@ const Header: React.FC = () => {
               <MenuItem
                 onClick={() => {
                   handleClose();
-                  navigate("/browse/sources");
+                  navigate('/browse/sources');
                 }}
               >
                 Sources
               </MenuItem>
             </Menu>
           </li>
-          <li onClick={() => navigate("/about")}>About</li>
-          <li onClick={() => navigate("/downloads")}>Downloads</li>
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/downloads')}>Downloads</li>
         </ul>
       </nav>
     </header>
@@ -88,11 +88,11 @@ const Footer: React.FC = () => {
       should not be used for emergencies or medical or professional advice.
       <IconButton
         style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          marginLeft: "10px",
-          fontSize: "25px",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          marginLeft: '10px',
+          fontSize: '25px',
         }}
         onClick={() => dispatch({ type: ActionTypes.HideDisclaimer })}
       >
@@ -109,20 +109,20 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
   if (state.themeSettings.darkModeEnabled) {
     if (state.themeSettings.brandTheme) {
-      theme = "dark-home";
+      theme = 'dark-home';
     } else {
-      theme = "dark";
+      theme = 'dark';
     }
   } else {
     if (state.themeSettings.brandTheme) {
-      theme = "light-home";
+      theme = 'light-home';
     } else {
-      theme = "light";
+      theme = 'light';
     }
   }
 
   return (
-    <div className={"layout-container"} data-theme={theme}>
+    <div className={'layout-container'} data-theme={theme}>
       <Header />
       <div className="content-container">
         <Box className="content">{children}</Box>

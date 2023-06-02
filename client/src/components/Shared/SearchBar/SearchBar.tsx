@@ -1,5 +1,5 @@
-import "./SearchBar.scss";
-import Autocomplete from "@mui/material/Autocomplete";
+import './SearchBar.scss';
+import Autocomplete from '@mui/material/Autocomplete';
 import {
   Box,
   Button,
@@ -7,13 +7,13 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-} from "@mui/material";
-import { useContext, useEffect } from "react";
-import React from "react";
-import { GlobalClientContext } from "stores/Global/GlobalClient";
-import { ActionTypes } from "stores/Global/reducers";
-import { useGetNameSuggestions } from "hooks/queries/useGetNameSuggestions";
-import { SearchTypes } from "types/types";
+} from '@mui/material';
+import { useContext, useEffect } from 'react';
+import React from 'react';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ActionTypes } from 'stores/Global/reducers';
+import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
+import { SearchTypes } from 'types/types';
 
 type SearchBarProps = {
   handleSubmit: () => void;
@@ -24,7 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const [searchType, setSearchType] = React.useState<SearchTypes>(
     state.interactionMode
   );
-  const [typedSearchTerm, setTypedSearchTerm] = React.useState("");
+  const [typedSearchTerm, setTypedSearchTerm] = React.useState('');
   const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType);
   let autocompleteOptions = typeAheadQuery?.data?.geneSuggestions || [];
   const drugAutocompleteOptions = typeAheadQuery?.data?.drugSuggestions || [];
@@ -75,31 +75,31 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const handleDemoClick = () => {
     if (searchType === SearchTypes.Gene) {
       setSelectedOptions([
-        { suggestion: "FLT1" },
-        { suggestion: "FLT2" },
-        { suggestion: "FLT3" },
-        { suggestion: "STK1" },
-        { suggestion: "MM1" },
-        { suggestion: "AQP1" },
-        { suggestion: "LOC100508755" },
-        { suggestion: "FAKE1" },
+        { suggestion: 'FLT1' },
+        { suggestion: 'FLT2' },
+        { suggestion: 'FLT3' },
+        { suggestion: 'STK1' },
+        { suggestion: 'MM1' },
+        { suggestion: 'AQP1' },
+        { suggestion: 'LOC100508755' },
+        { suggestion: 'FAKE1' },
       ]);
     } else if (searchType === SearchTypes.Drug) {
       setSelectedOptions([
-        { suggestion: "SUNITINIB" },
-        { suggestion: "ZALCITABINE" },
-        { suggestion: "TRASTUZUMAB" },
-        { suggestion: "NOTREAL" },
+        { suggestion: 'SUNITINIB' },
+        { suggestion: 'ZALCITABINE' },
+        { suggestion: 'TRASTUZUMAB' },
+        { suggestion: 'NOTREAL' },
       ]);
     } else if (searchType === SearchTypes.Categories) {
       setSelectedOptions([
-        { suggestion: "HER2" },
-        { name: "ERBB2" },
-        { suggestion: "PTGDR" },
-        { suggestion: "EGFR" },
-        { suggestion: "RECK" },
-        { suggestion: "KCNMA1" },
-        { suggestion: "MM1" },
+        { suggestion: 'HER2' },
+        { name: 'ERBB2' },
+        { suggestion: 'PTGDR' },
+        { suggestion: 'EGFR' },
+        { suggestion: 'RECK' },
+        { suggestion: 'KCNMA1' },
+        { suggestion: 'MM1' },
       ]);
     }
   };
@@ -133,7 +133,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               value={state.interactionMode || searchType}
               defaultValue={state.interactionMode || SearchTypes.Gene}
               onChange={handleChange}
-              classes={{ select: "search-type-select" }}
+              classes={{ select: 'search-type-select' }}
             >
               <MenuItem value={SearchTypes.Gene}>Interactions by Gene</MenuItem>
               <MenuItem value={SearchTypes.Drug}>Interactions by Drug</MenuItem>
@@ -174,7 +174,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               variant="contained"
               color="primary"
               onClick={handleDemoClick}
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: '10px' }}
             >
               Demo
             </Button>

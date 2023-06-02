@@ -1,32 +1,32 @@
 // hooks/dependencies
-import { useState } from "react";
-import "./Playground.scss";
-import { API_URL } from "config";
+import { useState } from 'react';
+import './Playground.scss';
+import { API_URL } from 'config';
 
 // graphiql
-import { GraphiQL } from "graphiql";
-import { createGraphiQLFetcher } from "@graphiql/toolkit";
+import { GraphiQL } from 'graphiql';
+import { createGraphiQLFetcher } from '@graphiql/toolkit';
 
 // styles
-import "graphiql/graphiql.min.css";
+import 'graphiql/graphiql.min.css';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Button,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const CopyToClipboard = require("react-copy-to-clipboard");
+const CopyToClipboard = require('react-copy-to-clipboard');
 
 const buttonStyle = {
-  color: "var(--text-content)",
-  backgroundColor: "var(--background-light)",
-  border: "none",
-  fontSize: "10px",
+  color: 'var(--text-content)',
+  backgroundColor: 'var(--background-light)',
+  border: 'none',
+  fontSize: '10px',
 };
 const defaultStyle = {
-  backgroundColor: "#f3e5f5",
+  backgroundColor: '#f3e5f5',
 };
 
 // queries
@@ -183,7 +183,7 @@ const query6 = `
 }
 `;
 
-const fetcher = createGraphiQLFetcher({ url: API_URL ?? "" });
+const fetcher = createGraphiQLFetcher({ url: API_URL ?? '' });
 
 export const Playground = () => {
   const [isCopied, setIsCopied] = useState(false);
@@ -197,10 +197,10 @@ export const Playground = () => {
 
   const sectionsMap = [
     {
-      header: "Find Interactions (by Drug)",
+      header: 'Find Interactions (by Drug)',
       sectionContent: (
         <>
-          Identify drug-gene interactions across 40 aggregate sources per{" "}
+          Identify drug-gene interactions across 40 aggregate sources per{' '}
           <i>n</i> drug inputs. <br />
           <br />
           <CopyToClipboard text={query1} onCopy={onCopyText}>
@@ -219,10 +219,10 @@ export const Playground = () => {
       ),
     },
     {
-      header: "Find Interactions (by Gene)",
+      header: 'Find Interactions (by Gene)',
       sectionContent: (
         <>
-          Identify drug-gene interactions across 40 aggregate sources per{" "}
+          Identify drug-gene interactions across 40 aggregate sources per{' '}
           <i>n</i> gene inputs. <br />
           <br />
           <CopyToClipboard text={query2} onCopy={onCopyText}>
@@ -241,7 +241,7 @@ export const Playground = () => {
       ),
     },
     {
-      header: "Drug Attributes and Approval Enums",
+      header: 'Drug Attributes and Approval Enums',
       sectionContent: (
         <>
           Identify drug attributes, approval values, and active ANDA/NDA
@@ -262,10 +262,10 @@ export const Playground = () => {
       ),
     },
     {
-      header: "Gene Category Annotations",
+      header: 'Gene Category Annotations',
       sectionContent: (
         <>
-          Identify annotations for druggability and clinical actionability per{" "}
+          Identify annotations for druggability and clinical actionability per{' '}
           <i>n</i> gene inputs <br /> <br />
           <CopyToClipboard text={query4} onCopy={onCopyText}>
             <span>
@@ -283,14 +283,14 @@ export const Playground = () => {
       ),
     },
     {
-      header: "Pagination Example (all Drugs)",
+      header: 'Pagination Example (all Drugs)',
       sectionContent: (
         <>
           An example of cursor-based approach to paginating through all
           available drug records in DGIdb (in increments of 100 records).
           <br />
           <br />
-          Use cursor location in conjunction with <i>before</i> and <i>after</i>{" "}
+          Use cursor location in conjunction with <i>before</i> and <i>after</i>{' '}
           keywords to paginate through additional records.
           <br />
           <br />
@@ -310,14 +310,14 @@ export const Playground = () => {
       ),
     },
     {
-      header: "Pagination Example (all Genes)",
+      header: 'Pagination Example (all Genes)',
       sectionContent: (
         <>
           An example of cursor-based approach to paginating through all
           available gene records in DGIdb (in increments of 100 records).
           <br />
           <br />
-          Use cursor location in conjunction with <i>before</i> and <i>after</i>{" "}
+          Use cursor location in conjunction with <i>before</i> and <i>after</i>{' '}
           keywords to paginate through additional records.
           <br />
           <br />
@@ -346,8 +346,8 @@ export const Playground = () => {
             <Accordion key={section.header}>
               <AccordionSummary
                 style={{
-                  padding: "0 10px",
-                  backgroundColor: "var(--background-light)",
+                  padding: '0 10px',
+                  backgroundColor: 'var(--background-light)',
                 }}
                 expandIcon={<ExpandMoreIcon />}
               >
@@ -357,9 +357,9 @@ export const Playground = () => {
               </AccordionSummary>
               <AccordionDetails
                 style={{
-                  maxHeight: "350px",
-                  overflow: "scroll",
-                  padding: "5px",
+                  maxHeight: '350px',
+                  overflow: 'scroll',
+                  padding: '5px',
                 }}
               >
                 {section.sectionContent}

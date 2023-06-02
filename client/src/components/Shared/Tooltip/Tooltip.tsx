@@ -1,20 +1,20 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import Link from "@mui/material/Link";
-import { Box } from "@mui/material";
-import "./Tooltip.scss";
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import Link from '@mui/material/Link';
+import { Box } from '@mui/material';
+import './Tooltip.scss';
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "#f5f5f9",
-    color: "rgba(0, 0, 0, 0.87)",
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
     maxWidth: 220,
     minWidth: 160,
     fontSize: theme.typography.pxToRem(12),
-    border: "1px solid #dadde9",
+    border: '1px solid #dadde9',
   },
 }));
 
@@ -67,7 +67,7 @@ export const PublicationsTooltip: React.FC<Props> = ({
               {hoverTexts.map((row: any, index: number) => (
                 <Box mb={1} key={index}>
                   <Link
-                    href={"https://pubmed.ncbi.nlm.nih.gov/" + row.pmid}
+                    href={'https://pubmed.ncbi.nlm.nih.gov/' + row.pmid}
                     target="_blank"
                   >
                     {row.pmid}
@@ -77,8 +77,8 @@ export const PublicationsTooltip: React.FC<Props> = ({
             </Box>
             <em>
               {displayText && ~~displayText > 0
-                ? "Full publications above"
-                : "No supporting publications"}
+                ? 'Full publications above'
+                : 'No supporting publications'}
             </em>
           </>
         }

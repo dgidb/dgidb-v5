@@ -1,1 +1,1 @@
-export * from "./GeneSummary";
+export * from './GeneSummary';

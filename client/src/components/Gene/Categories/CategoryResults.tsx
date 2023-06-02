@@ -1,22 +1,22 @@
 // hooks/dependencies
-import React, { useContext } from "react";
-import { useGetCategories } from "hooks/queries/useGetCategories";
+import React, { useContext } from 'react';
+import { useGetCategories } from 'hooks/queries/useGetCategories';
 
 // components
-import { GlobalClientContext } from "stores/Global/GlobalClient";
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
 
 // styles
-import "./CategoryResults.scss";
-import TableDownloader from "components/Shared/TableDownloader/TableDownloader";
-import { Tab, Tabs } from "@mui/material";
-import TabPanel from "components/Shared/TabPanel/TabPanel";
-import { useSearchParams } from "react-router-dom";
-import AmbiguousTermsSummary from "components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary";
+import './CategoryResults.scss';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
+import { useSearchParams } from 'react-router-dom';
+import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 
 export const CategoryResults: React.FC = () => {
   const { state } = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
-  const searchType = searchParams.get("searchType");
+  const searchType = searchParams.get('searchType');
   const { data } = useGetCategories(state.searchTerms);
   const [value, setValue] = React.useState(0);
 

@@ -1,1 +1,1 @@
-export * from "./BrowseSources";
+export * from './BrowseSources';

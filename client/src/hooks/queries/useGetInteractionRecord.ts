@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getInteractionRecordQuery = gql`
   query interaction($id: ID!) {
@@ -40,6 +40,6 @@ export function useGetInteractionRecord(id: string) {
       });
       return res;
     },
-    { enabled: id !== "" }
+    { enabled: id !== '' }
   );
 }

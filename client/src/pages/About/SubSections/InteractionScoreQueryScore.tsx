@@ -43,7 +43,7 @@ export const InteractionScoreQueryScore = () => {
       <img width="800px" src="/images/interaction_score.png" />
 
       <p>
-        {" "}
+        {' '}
         Overview of DGIdb’s new Query Scores and interaction scores. A)
         Schematic of how each of the scores is calculated within DGIdb. Gene and
         drug queries both return a Query Score that is dependent on the search

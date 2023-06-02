@@ -1,4 +1,4 @@
-import { SearchTypes } from "types/types";
+import { SearchTypes } from 'types/types';
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -12,22 +12,22 @@ type ActionMap<M extends { [index: string]: any }> = {
 };
 
 export enum ActionTypes {
-  AddTerm = "ADD_TERM",
-  DeleteTerm = "DELETE_TERM",
-  DeleteLastTerm = "DELETE_LAST_TERM",
-  DeleteAllTerms = "DELETE_ALL_TERMS",
-  AddGeneDemoTerms = "GENE_DEMO_TERMS",
-  AddCategoryDemoTerms = "CATEGORY_DEMO_TERMS",
-  AddDrugDemoTerms = "DRUG_DEMO_TERMS",
-  HideDisclaimer = "HIDE_DISCLAIMER",
-  ShowDisclaimer = "SHOW_DISCLAIMER",
-  EnableDarkMode = "ENABLE_DARK_MODE",
-  DisableDarkMode = "DISABLE_DARK_MODE",
-  SetByDrug = "SET_INTERACTIONS_BY_DRUG",
-  SetByGene = "SET_INTERACTIONS_BY_GENE",
-  SetGeneCategories = "SET_GENE_CATEGORIES",
-  BrandPage = "BRAND_PAGE",
-  ContentPage = "CONTENT_PAGE",
+  AddTerm = 'ADD_TERM',
+  DeleteTerm = 'DELETE_TERM',
+  DeleteLastTerm = 'DELETE_LAST_TERM',
+  DeleteAllTerms = 'DELETE_ALL_TERMS',
+  AddGeneDemoTerms = 'GENE_DEMO_TERMS',
+  AddCategoryDemoTerms = 'CATEGORY_DEMO_TERMS',
+  AddDrugDemoTerms = 'DRUG_DEMO_TERMS',
+  HideDisclaimer = 'HIDE_DISCLAIMER',
+  ShowDisclaimer = 'SHOW_DISCLAIMER',
+  EnableDarkMode = 'ENABLE_DARK_MODE',
+  DisableDarkMode = 'DISABLE_DARK_MODE',
+  SetByDrug = 'SET_INTERACTIONS_BY_DRUG',
+  SetByGene = 'SET_INTERACTIONS_BY_GENE',
+  SetGeneCategories = 'SET_GENE_CATEGORIES',
+  BrandPage = 'BRAND_PAGE',
+  ContentPage = 'CONTENT_PAGE',
 }
 
 // search terms
@@ -54,19 +54,19 @@ export const searchTermsReducer = (
       return [...stateCopy, action.payload];
     case ActionTypes.AddGeneDemoTerms:
       return [
-        "FLT1",
-        "FLT2",
-        "FLT3",
-        "STK1",
-        "MM1",
-        "AQP1",
-        "LOC100508755",
-        "FAKE1",
+        'FLT1',
+        'FLT2',
+        'FLT3',
+        'STK1',
+        'MM1',
+        'AQP1',
+        'LOC100508755',
+        'FAKE1',
       ];
     case ActionTypes.AddDrugDemoTerms:
-      return ["SUNITINIB", "ZALCITABINE", "TRASTUZUMAB", "NOTREAL"];
+      return ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL'];
     case ActionTypes.AddCategoryDemoTerms:
-      return ["HER2", "ERBB2", "PTGDR", "EGFR", "RECK", "KCNMA1", "MM1"];
+      return ['HER2', 'ERBB2', 'PTGDR', 'EGFR', 'RECK', 'KCNMA1', 'MM1'];
     case ActionTypes.DeleteLastTerm:
       return stateCopy.slice(0, -1);
     case ActionTypes.DeleteAllTerms:

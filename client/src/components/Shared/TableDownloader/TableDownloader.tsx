@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import CircularProgress from "@mui/material/CircularProgress";
-import DownloadIcon from "@mui/icons-material/Download";
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import DownloadIcon from '@mui/icons-material/Download';
 
-import { API_URL } from "config";
-import Box from "@mui/material/Box";
+import { API_URL } from 'config';
+import Box from '@mui/material/Box';
 
 interface Props<FilterVars> {
   tableName: string;
@@ -21,9 +21,9 @@ export function TableDownloader<FV>(props: React.PropsWithChildren<Props<FV>>) {
     setIsLoading(true);
     setHasError(false);
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ variables: props.vars }),
     };
@@ -31,11 +31,11 @@ export function TableDownloader<FV>(props: React.PropsWithChildren<Props<FV>>) {
       if (resp.ok) {
         resp.blob().then((blob) => {
           const fileUrl = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
+          const a = document.createElement('a');
           a.href = fileUrl;
-          a.style.display = "none";
+          a.style.display = 'none';
           a.download = `${props.tableName}-${
-            new Date().toLocaleString().split(",")[0]
+            new Date().toLocaleString().split(',')[0]
           }.tsv`;
           document.body.append(a);
           a.click();
@@ -52,7 +52,7 @@ export function TableDownloader<FV>(props: React.PropsWithChildren<Props<FV>>) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <Button
         variant="outlined"
         color="secondary"

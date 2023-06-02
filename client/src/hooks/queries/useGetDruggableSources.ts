@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getDruggableSourcesQuery = gql`
   query sources($sourceType: SourceTypeFilter) {
@@ -39,14 +39,14 @@ const getDruggableSourcesQuery = gql`
 
 export function useGetDruggableSources(sourceType: string) {
   return useQuery(
-    "druggable-sources" + sourceType,
+    'druggable-sources' + sourceType,
     async () => {
       const res = await graphQLClient.request(getDruggableSourcesQuery, {
         sourceType,
       });
       return res;
     },
-    { enabled: sourceType !== "" }
+    { enabled: sourceType !== '' }
   );
 }
 
@@ -79,14 +79,14 @@ const getGeneSourcesQuery = gql`
 
 export function useGetGeneSources(sourceType: string) {
   return useQuery(
-    "gene-sources" + sourceType,
+    'gene-sources' + sourceType,
     async () => {
       const res = await graphQLClient.request(getGeneSourcesQuery, {
         sourceType,
       });
       return res;
     },
-    { enabled: sourceType !== "" }
+    { enabled: sourceType !== '' }
   );
 }
 
@@ -119,14 +119,14 @@ const getDrugSourcesQuery = gql`
 
 export function useGetDrugSources(sourceType: string) {
   return useQuery(
-    "drug-sources" + sourceType,
+    'drug-sources' + sourceType,
     async () => {
       const res = await graphQLClient.request(getDrugSourcesQuery, {
         sourceType,
       });
       return res;
     },
-    { enabled: sourceType !== "" }
+    { enabled: sourceType !== '' }
   );
 }
 
@@ -163,13 +163,13 @@ const getInteractionSourcesQuery = gql`
 
 export function useGetInteractionSources(sourceType: string) {
   return useQuery(
-    "interaction-sources" + sourceType,
+    'interaction-sources' + sourceType,
     async () => {
       const res = await graphQLClient.request(getInteractionSourcesQuery, {
         sourceType,
       });
       return res;
     },
-    { enabled: sourceType !== "" }
+    { enabled: sourceType !== '' }
   );
 }

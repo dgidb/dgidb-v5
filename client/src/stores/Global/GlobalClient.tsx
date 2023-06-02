@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, Dispatch } from "react";
+import React, { createContext, useReducer, Dispatch } from 'react';
 import {
   searchTermsReducer,
   SearchTermsActions,
@@ -7,8 +7,8 @@ import {
   ThemeSettingsActions,
   interactionModeReducer,
   InteractionModeActions,
-} from "./reducers";
-import { SearchTypes } from "types/types";
+} from './reducers';
+import { SearchTypes } from 'types/types';
 
 type InitialStateType = {
   interactionMode: SearchTypes;

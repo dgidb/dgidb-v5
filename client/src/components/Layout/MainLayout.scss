@@ -2,7 +2,7 @@ html,
 body {
   background-color: var(--background);
   margin: 0;
-  font-family: "Lato";
+  font-family: 'Lato';
   color: var(--text-content);
 
   h1,
@@ -40,7 +40,7 @@ header {
   );
 
   .header-logo {
-    font-family: "Fira Sans", sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     font-size: 3.2rem;
     font-weight: 700;
     line-height: 80px;
@@ -81,7 +81,7 @@ header {
       li {
         margin-left: 60px;
         line-height: 46px;
-        font-family: "Work Sans";
+        font-family: 'Work Sans';
         font-size: 18px;
         cursor: pointer;
       }
@@ -109,7 +109,7 @@ footer {
   justify-content: center;
   padding: 20px;
   font-size: 20px;
-  font-family: "Work Sans";
+  font-family: 'Work Sans';
   font-weight: 300;
 }
 

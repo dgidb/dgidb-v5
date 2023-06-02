@@ -1,24 +1,24 @@
 // hooks/dependencies
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useGetGeneRecord } from "hooks/queries/useGetGeneRecord";
-import Box from "@mui/material/Box";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // styles
-import "./GeneRecord.scss";
-import TableBody from "@mui/material/TableBody";
-import Table from "@mui/material/Table";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
+import './GeneRecord.scss';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
-import { LinearProgress, Link } from "@mui/material";
-import { useGetGeneInteractions } from "hooks/queries/useGetGeneInteractions";
-import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-import { dropRedundantCites } from "utils/dropRedundantCites";
+import { LinearProgress, Link } from '@mui/material';
+import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import { dropRedundantCites } from 'utils/dropRedundantCites';
 
 export const GeneRecord: React.FC = () => {
   const geneId: any = useParams().gene;
@@ -48,13 +48,13 @@ export const GeneRecord: React.FC = () => {
 
   const noData = (
     <TableRow>
-      <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
+      <TableCell style={{ borderBottom: 'none' }}>No data available.</TableCell>
     </TableRow>
   );
 
   const sectionsMap = [
     {
-      name: "Gene Info",
+      name: 'Gene Info',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -62,7 +62,7 @@ export const GeneRecord: React.FC = () => {
               {geneData?.geneAttributes.length ? (
                 geneData?.geneAttributes?.map((attribute: any) => {
                   return (
-                    <TableRow key={attribute.name + " " + attribute.value}>
+                    <TableRow key={attribute.name + ' ' + attribute.value}>
                       <TableCell className="attribute-name">
                         {attribute.name}:
                       </TableCell>
@@ -75,9 +75,9 @@ export const GeneRecord: React.FC = () => {
               ) : geneDataIsloading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -91,7 +91,7 @@ export const GeneRecord: React.FC = () => {
       ),
     },
     {
-      name: "Aliases",
+      name: 'Aliases',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -109,9 +109,9 @@ export const GeneRecord: React.FC = () => {
               ) : geneDataIsloading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -125,7 +125,7 @@ export const GeneRecord: React.FC = () => {
       ),
     },
     {
-      name: "Categories",
+      name: 'Categories',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -143,9 +143,9 @@ export const GeneRecord: React.FC = () => {
               ) : geneDataIsloading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -159,7 +159,7 @@ export const GeneRecord: React.FC = () => {
       ),
     },
     {
-      name: "Publications",
+      name: 'Publications',
       sectionContent: (
         <Box className="box-content publication-item">
           <Table>
@@ -170,7 +170,7 @@ export const GeneRecord: React.FC = () => {
                     <TableCell className="attribute-name">
                       <Link
                         className="pub-link"
-                        href={"https://pubmed.ncbi.nlm.nih.gov/" + pub.pmid}
+                        href={'https://pubmed.ncbi.nlm.nih.gov/' + pub.pmid}
                         target="_blank"
                       >
                         {pub.citation}
@@ -181,9 +181,9 @@ export const GeneRecord: React.FC = () => {
               ) : interactionDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -211,8 +211,8 @@ export const GeneRecord: React.FC = () => {
               <Accordion key={section.name} defaultExpanded>
                 <AccordionSummary
                   style={{
-                    padding: "0 10px",
-                    backgroundColor: "var(--background-light)",
+                    padding: '0 10px',
+                    backgroundColor: 'var(--background-light)',
                   }}
                   expandIcon={<ExpandMoreIcon />}
                 >
@@ -222,9 +222,9 @@ export const GeneRecord: React.FC = () => {
                 </AccordionSummary>
                 <AccordionDetails
                   style={{
-                    maxHeight: "350px",
-                    overflow: "scroll",
-                    padding: "5px",
+                    maxHeight: '350px',
+                    overflow: 'scroll',
+                    padding: '5px',
                   }}
                 >
                   {section.sectionContent}
@@ -237,8 +237,8 @@ export const GeneRecord: React.FC = () => {
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{
-                padding: "0 10px",
-                backgroundColor: "var(--background-light)",
+                padding: '0 10px',
+                backgroundColor: 'var(--background-light)',
               }}
               expandIcon={<ExpandMoreIcon />}
             >

@@ -1,12 +1,12 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 
 // components
-import { Info } from "./SubSections/Info";
-import { Files } from "./SubSections/Files";
+import { Info } from './SubSections/Info';
+import { Files } from './SubSections/Files';
 
 // styles
-import "./Downloads.scss";
+import './Downloads.scss';
 
 export const Downloads = () => {
   return (

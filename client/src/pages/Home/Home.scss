@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600&display=swap');
 
 .home-page-container {
   background-color: var(--background);
-  font-family: "Work Sans";
+  font-family: 'Work Sans';
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   .home-blurb {
     margin-top: 160px;
     font-size: 20px;
-    font-family: "Work Sans";
+    font-family: 'Work Sans';
     font-weight: 300;
     width: 560px;
     display: flex;
@@ -60,7 +60,7 @@
   }
 
   .home-links {
-    font-family: "Work Sans";
+    font-family: 'Work Sans';
     font-size: 20px;
     margin-top: 10px;
   }
@@ -72,7 +72,7 @@
     justify-content: center;
     padding: 20px;
     font-size: 20px;
-    font-family: "Work Sans";
+    font-family: 'Work Sans';
     font-weight: 300;
   }
 
@@ -95,7 +95,7 @@
 }
 
 .logo {
-  font-family: "Fira Sans", sans-serif;
+  font-family: 'Fira Sans', sans-serif;
   font-size: 100px;
   font-weight: 800;
   line-height: 80px;

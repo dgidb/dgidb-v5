@@ -1,15 +1,15 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from "react";
-import SearchBar from "components/Shared/SearchBar/SearchBar";
-import { createSearchParams, useNavigate } from "react-router-dom";
-import { GlobalClientContext } from "stores/Global/GlobalClient";
-import { ActionTypes } from "stores/Global/reducers";
+import React, { useState, useContext, useEffect } from 'react';
+import SearchBar from 'components/Shared/SearchBar/SearchBar';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+import { GlobalClientContext } from 'stores/Global/GlobalClient';
+import { ActionTypes } from 'stores/Global/reducers';
 
 // styles
 // todo: introduce dark mode back later
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
-import "./Home.scss";
+import './Home.scss';
 
 export const Home: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
@@ -18,10 +18,10 @@ export const Home: React.FC = () => {
   const handleSubmit = async () => {
     dispatch({ type: ActionTypes.ContentPage });
     navigate({
-      pathname: "/results",
+      pathname: '/results',
       search: `${createSearchParams({
         searchType: state.interactionMode,
-        searchTerms: state.searchTerms.join(","),
+        searchTerms: state.searchTerms.join(','),
       })}`,
     });
   };
@@ -49,13 +49,13 @@ export const Home: React.FC = () => {
 
   const handleDemoClick = () => {
     switch (state.interactionMode) {
-      case "gene":
+      case 'gene':
         dispatch({ type: ActionTypes.AddGeneDemoTerms });
         break;
-      case "drug":
+      case 'drug':
         dispatch({ type: ActionTypes.AddDrugDemoTerms });
         break;
-      case "categories":
+      case 'categories':
         dispatch({ type: ActionTypes.AddCategoryDemoTerms });
         break;
       default:
@@ -80,27 +80,27 @@ export const Home: React.FC = () => {
       <div className="home-links">
         <span
           style={{
-            padding: "0 15px",
+            padding: '0 15px',
             fontSize: 18,
-            textDecoration: "underline",
+            textDecoration: 'underline',
           }}
         >
           <a href="/api">API</a>
         </span>
         <span
           style={{
-            padding: "0 15px",
+            padding: '0 15px',
             fontSize: 18,
-            textDecoration: "underline",
+            textDecoration: 'underline',
           }}
         >
           <a href="/downloads">Downloads</a>
         </span>
         <span
           style={{
-            padding: "0 15px",
+            padding: '0 15px',
             fontSize: 18,
-            textDecoration: "underline",
+            textDecoration: 'underline',
           }}
         >
           <a href="https://github.com/dgidb/dgidb-v5">Github</a>

@@ -1,4 +1,4 @@
-import { Routes } from "./public";
+import { Routes } from './public';
 
 export const AppRoutes = () => {
   // const element = useRoutes(publicRoutes);

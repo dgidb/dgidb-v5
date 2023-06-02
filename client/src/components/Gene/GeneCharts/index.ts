@@ -1,3 +1,3 @@
-export * from "./InteractionTypeGene";
-export * from "./DirectionalityGene";
-export * from "./RegulatoryApprovalGene";
+export * from './InteractionTypeGene';
+export * from './DirectionalityGene';
+export * from './RegulatoryApprovalGene';

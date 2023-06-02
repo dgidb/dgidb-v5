@@ -1,1 +1,1 @@
-export * from "./InteractionRecord";
+export * from './InteractionRecord';

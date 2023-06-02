@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,8 +7,8 @@ import {
   BarElement,
   Title,
   Tooltip,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
@@ -18,20 +18,20 @@ interface Props {
 
 export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
   const [chartData, setChartData] = useState<any>({
-    labels: ["inhibitor", "antagonist", "antibody", "agonist"],
+    labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
-        label: "",
+        label: '',
         data: [0, 0, 0, 0],
         backgroundColor: [
-          "#480A77",
-          "#8075FF",
-          "#89E8F1",
-          "#FA198B",
-          "#4BC6B9",
-          "#F0EFF4",
-          "#D1CFE2",
-          "#BAA898",
+          '#480A77',
+          '#8075FF',
+          '#89E8F1',
+          '#FA198B',
+          '#4BC6B9',
+          '#F0EFF4',
+          '#D1CFE2',
+          '#BAA898',
         ],
       },
     ],
@@ -46,12 +46,12 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
       },
       title: {
         display: true,
-        text: "Interaction Type",
+        text: 'Interaction Type',
       },
     },
   };
 
-  const labels = ["inhibitor", "antagonist", "antibody", "agonist"];
+  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
     if (data?.length) {
@@ -60,16 +60,16 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
         drug.interactions.forEach((int: any) => {
           if (int.interactionTypes.length) {
             switch (int.interactionTypes[0].type) {
-              case "inhibitor":
+              case 'inhibitor':
                 dataArray[0]++;
                 break;
-              case "antagonist":
+              case 'antagonist':
                 dataArray[1]++;
                 break;
-              case "antibody":
+              case 'antibody':
                 dataArray[2]++;
                 break;
-              case "agonist":
+              case 'agonist':
                 dataArray[3]++;
                 break;
               default:
@@ -82,17 +82,17 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
         labels,
         datasets: [
           {
-            label: "",
+            label: '',
             data: dataArray,
             backgroundColor: [
-              "#480A77",
-              "#8075FF",
-              "#89E8F1",
-              "#FA198B",
-              "#4BC6B9",
-              "#F0EFF4",
-              "#D1CFE2",
-              "#BAA898",
+              '#480A77',
+              '#8075FF',
+              '#89E8F1',
+              '#FA198B',
+              '#4BC6B9',
+              '#F0EFF4',
+              '#D1CFE2',
+              '#BAA898',
             ],
           },
         ],

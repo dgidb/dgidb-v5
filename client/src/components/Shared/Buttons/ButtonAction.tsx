@@ -1,4 +1,4 @@
-import "./ButtonAction.scss";
+import './ButtonAction.scss';
 
 interface Props {
   text: string;
@@ -15,8 +15,8 @@ export const ButtonAction: React.FC<Props> = ({
 }) => {
   return (
     <div
-      className={`button-action-component ${type ? type : "primary"} ${
-        disabled ? "disabled" : ""
+      className={`button-action-component ${type ? type : 'primary'} ${
+        disabled ? 'disabled' : ''
       }`}
       onClick={() => handler()}
     >

@@ -1,30 +1,30 @@
-import { useState } from "react";
+import { useState } from 'react';
 // hooks/dependencies
 import {
   useGetDruggableSources,
   useGetGeneSources,
   useGetDrugSources,
   useGetInteractionSources,
-} from "hooks/queries/useGetDruggableSources";
+} from 'hooks/queries/useGetDruggableSources';
 
 // styles
-import "./BrowseSources.scss";
-import Box from "@mui/material/Box";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import './BrowseSources.scss';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const BrowseSources = () => {
-  const [filter, setFilter] = useState<string>("All");
+  const [filter, setFilter] = useState<string>('All');
 
-  const { data: geneData } = useGetGeneSources("GENE");
-  const { data: drugData } = useGetDrugSources("DRUG");
-  const { data: interactionData } = useGetInteractionSources("INTERACTION");
+  const { data: geneData } = useGetGeneSources('GENE');
+  const { data: drugData } = useGetDrugSources('DRUG');
+  const { data: interactionData } = useGetInteractionSources('INTERACTION');
   const { data: potentiallyDruggableData } = useGetDruggableSources(
-    "POTENTIALLY_DRUGGABLE"
+    'POTENTIALLY_DRUGGABLE'
   );
 
   let geneSources = geneData?.sources?.nodes;
@@ -34,24 +34,24 @@ export const BrowseSources = () => {
 
   const sectionsMap = [
     {
-      heading: "Gene Sources",
+      heading: 'Gene Sources',
       sources: geneSources,
-      value: "Gene",
+      value: 'Gene',
     },
     {
-      heading: "Drug Sources",
+      heading: 'Drug Sources',
       sources: drugSources,
-      value: "Drug",
+      value: 'Drug',
     },
     {
-      heading: "Interaction Sources",
+      heading: 'Interaction Sources',
       sources: interactionSources,
-      value: "Interaction",
+      value: 'Interaction',
     },
     {
-      heading: "Potentially Druggable Sources",
+      heading: 'Potentially Druggable Sources',
       sources: potentiallyDruggableSources,
-      value: "Potentially Druggable",
+      value: 'Potentially Druggable',
     },
   ];
 
@@ -115,7 +115,7 @@ export const BrowseSources = () => {
               <b>Interaction Claims Count:</b> {src.interactionClaimsCount}
             </Box>
             <Box>
-              <b>Interaction Claims In Groups:</b>{" "}
+              <b>Interaction Claims In Groups:</b>{' '}
               {src.interactionClaimsInGroupsCount}
             </Box>
           </Box>
@@ -128,16 +128,16 @@ export const BrowseSources = () => {
           <Box m="10px">
             <Accordion>
               <AccordionSummary
-                style={{ padding: "0 10px" }}
+                style={{ padding: '0 10px' }}
                 expandIcon={<ExpandMoreIcon />}
               >
                 <b>Full Citation</b>
               </AccordionSummary>
               <AccordionDetails
                 style={{
-                  maxHeight: "150px",
-                  overflow: "scroll",
-                  padding: "0 10px 10px",
+                  maxHeight: '150px',
+                  overflow: 'scroll',
+                  padding: '0 10px 10px',
                 }}
               >
                 {src.citation}
@@ -154,7 +154,7 @@ export const BrowseSources = () => {
   return (
     <Box className="sources-page-container">
       <Box display="flex">
-        <h1 style={{ marginRight: "10px" }}>
+        <h1 style={{ marginRight: '10px' }}>
           <b>Sources</b>
         </h1>
       </Box>
@@ -165,7 +165,7 @@ export const BrowseSources = () => {
           className="filter-buttons"
         >
           <Button
-            variant={filter === "All" ? "outlined" : "contained"}
+            variant={filter === 'All' ? 'outlined' : 'contained'}
             value="All"
           >
             All
@@ -173,7 +173,7 @@ export const BrowseSources = () => {
           {sectionsMap.map((section: any) => {
             return (
               <Button
-                variant={filter === section.value ? "outlined" : "contained"}
+                variant={filter === section.value ? 'outlined' : 'contained'}
                 value={section.value}
                 key={section.value}
               >
@@ -184,7 +184,7 @@ export const BrowseSources = () => {
         </ButtonGroup>
       </Box>
       {sectionsMap.map((section: any) => {
-        return section.value === filter || filter === "All" ? (
+        return section.value === filter || filter === 'All' ? (
           <Box key={section.heading}>
             <Box className="source-type-header">
               <h2>

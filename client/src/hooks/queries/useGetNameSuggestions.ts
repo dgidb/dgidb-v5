@@ -1,7 +1,7 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
-import { SearchTypes } from "types/types";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
+import { SearchTypes } from 'types/types';
 
 const getGeneNameSuggestionsQuery = gql`
   query geneNameSuggestions($term: String!) {
@@ -20,10 +20,10 @@ const getDrugNameSuggestionsQuery = gql`
 `;
 
 export function useGetNameSuggestions(searchTerm: string, type: SearchTypes) {
-  let queryName = "gene-name-suggestion";
+  let queryName = 'gene-name-suggestion';
   let query = getGeneNameSuggestionsQuery;
   if (type === SearchTypes.Drug) {
-    queryName = "drug-name-suggestion";
+    queryName = 'drug-name-suggestion';
     query = getDrugNameSuggestionsQuery;
   }
   return useQuery(
@@ -32,6 +32,6 @@ export function useGetNameSuggestions(searchTerm: string, type: SearchTypes) {
       const res = await graphQLClient.request(query, { term: searchTerm });
       return res;
     },
-    { enabled: searchTerm !== "" }
+    { enabled: searchTerm !== '' }
   );
 }

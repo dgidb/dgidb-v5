@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getCategoriesQuery = gql`
   query genes($names: [String!]!) {
@@ -17,7 +17,7 @@ const getCategoriesQuery = gql`
 `;
 export function useGetCategories(names: string[]) {
   return useQuery(
-    "categories" + names,
+    'categories' + names,
     async () => {
       const res = await graphQLClient.request(getCategoriesQuery, { names });
       return res;
@@ -40,7 +40,7 @@ const getCategoriesbySourceQuery = gql`
 
 export function useGetCategoriesBySource(names: string[]) {
   return useQuery(
-    "categories-by-source" + names,
+    'categories-by-source' + names,
     async () => {
       const res = await graphQLClient.request(getCategoriesbySourceQuery, {
         names,

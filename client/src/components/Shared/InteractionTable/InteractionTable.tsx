@@ -1,14 +1,14 @@
 // hooks/dependencies
-import React from "react";
+import React from 'react';
 
 // styles
-import "./InteractionTable.scss";
-import { Box, LinearProgress } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { truncateDecimals } from "utils/format";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { PublicationsTooltip, SourcesTooltip } from "../Tooltip/Tooltip";
-import { ResultTypes } from "types/types";
+import './InteractionTable.scss';
+import { Box, LinearProgress } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { truncateDecimals } from 'utils/format';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { PublicationsTooltip, SourcesTooltip } from '../Tooltip/Tooltip';
+import { ResultTypes } from 'types/types';
 
 interface Props {
   isLoading: boolean;
@@ -20,23 +20,23 @@ interface Props {
 export const InteractionTable: React.FC<Props> = ({
   interactionResults,
   isLoading,
-  recordType = "",
+  recordType = '',
   ambiguous = false,
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const resultType = searchParams.get("searchType") as ResultTypes;
+  const resultType = searchParams.get('searchType') as ResultTypes;
 
   const termColumn = {
-    field: "term",
-    headerName: "Term",
+    field: 'term',
+    headerName: 'Term',
     flex: 0.5,
     minWidth: 0,
   };
 
   const geneColumn = {
-    field: "gene",
-    headerName: "Gene",
+    field: 'gene',
+    headerName: 'Gene',
     flex: 0.5,
     minWidth: 0,
     renderCell: (params: any) => (
@@ -51,8 +51,8 @@ export const InteractionTable: React.FC<Props> = ({
   };
 
   const drugColumn = {
-    field: "drug",
-    headerName: "Drug",
+    field: 'drug',
+    headerName: 'Drug',
     flex: 1,
     minWidth: 0,
     renderCell: (params: any) => (
@@ -68,21 +68,21 @@ export const InteractionTable: React.FC<Props> = ({
 
   const searchColumns = [
     {
-      field: "regulatoryApproval",
-      headerName: "Regulatory Approval",
+      field: 'regulatoryApproval',
+      headerName: 'Regulatory Approval',
       flex: 0.8,
       minWidth: 0,
     },
     {
-      field: "indication",
-      headerName: "Indication",
+      field: 'indication',
+      headerName: 'Indication',
       flex: 1,
       minWidth: 0,
-      renderCell: (params: any) => <>{params.row.indication?.join(", ")}</>,
+      renderCell: (params: any) => <>{params.row.indication?.join(', ')}</>,
     },
     {
-      field: "interactionScore",
-      headerName: "Interaction Score",
+      field: 'interactionScore',
+      headerName: 'Interaction Score',
       flex: 0.6,
       minWidth: 0,
     },
@@ -90,14 +90,14 @@ export const InteractionTable: React.FC<Props> = ({
 
   const recordColumns = [
     {
-      field: "interactionTypes",
-      headerName: "Interaction Types",
+      field: 'interactionTypes',
+      headerName: 'Interaction Types',
       flex: 1,
       minWidth: 0,
     },
     {
-      field: "pmids",
-      headerName: "PMIDs",
+      field: 'pmids',
+      headerName: 'PMIDs',
       flex: 0.4,
       minWidth: 0,
       renderCell: (params: any) => (
@@ -108,8 +108,8 @@ export const InteractionTable: React.FC<Props> = ({
       ),
     },
     {
-      field: "sources",
-      headerName: "Sources",
+      field: 'sources',
+      headerName: 'Sources',
       flex: 0.4,
       minWidth: 0,
       renderCell: (params: any) => (
@@ -120,8 +120,8 @@ export const InteractionTable: React.FC<Props> = ({
       ),
     },
     {
-      field: "interactionScore",
-      headerName: "Interaction Score",
+      field: 'interactionScore',
+      headerName: 'Interaction Score',
       flex: 0.6,
       minWidth: 0,
     },
@@ -148,7 +148,7 @@ export const InteractionTable: React.FC<Props> = ({
   }
 
   const handleEvent = (event: any) => {
-    navigate("/interactions/" + event.row.id);
+    navigate('/interactions/' + event.row.id);
   };
 
   const rows = interactionResults?.map((interaction: any) => {
@@ -160,17 +160,17 @@ export const InteractionTable: React.FC<Props> = ({
       drug: interaction?.drug?.name,
       drugId: interaction?.drug?.conceptId,
       regulatoryApproval: interaction?.drug?.approved
-        ? "Approved"
-        : "Not Approved",
+        ? 'Approved'
+        : 'Not Approved',
       indication: interaction?.drug?.drugAttributes
-        ?.filter((attribute: any) => attribute.name === "Indication")
+        ?.filter((attribute: any) => attribute.name === 'Indication')
         .map((attribute: any) => attribute.value),
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
       interactionTypes: interaction?.interactionTypes
         ?.map((interactionType: any) => {
           return interactionType.type;
         })
-        .join(", "),
+        .join(', '),
       pmids: interaction?.publications,
       sources: interaction?.sources,
     };
@@ -187,23 +187,23 @@ export const InteractionTable: React.FC<Props> = ({
           pageSizeOptions={[25, 50, 100]}
           className="data-grid"
           classes={{
-            columnHeader: "table-header",
-            menuIcon: "column-menu-button",
-            cell: "table-cell",
-            toolbarContainer: "footer",
+            columnHeader: 'table-header',
+            menuIcon: 'column-menu-button',
+            cell: 'table-cell',
+            toolbarContainer: 'footer',
           }}
           rowSelection={false}
           showColumnVerticalBorder
-          getRowHeight={() => "auto"}
+          getRowHeight={() => 'auto'}
         />
       </Box>
     </Box>
   ) : (
     <LinearProgress
       sx={{
-        backgroundColor: "white",
-        "& .MuiLinearProgress-bar": {
-          backgroundColor: "#480a77",
+        backgroundColor: 'white',
+        '& .MuiLinearProgress-bar': {
+          backgroundColor: '#480a77',
         },
       }}
       className="linear-bar"

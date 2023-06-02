@@ -1,4 +1,4 @@
-import { Email, GitHub, Home, LinkedIn } from "@mui/icons-material";
+import { Email, GitHub, Home, LinkedIn } from '@mui/icons-material';
 
 export const Contact = () => {
   return (
@@ -8,7 +8,7 @@ export const Contact = () => {
           DGIdb was developed at The McDonnell Genome Institute, Washington
           University School of Medicine. If you have a source of information
           related to the druggable genome you would like us to incorporate,
-          please contact us at{" "}
+          please contact us at{' '}
           <a href="mailto:help@dgidb.org">help@dgidb.org.</a>
         </p>
         <p>

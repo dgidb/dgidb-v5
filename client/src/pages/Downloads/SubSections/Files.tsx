@@ -1,12 +1,12 @@
 //dependencies
-import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function createData(
   date: string,
@@ -20,46 +20,46 @@ function createData(
 
 const rows = [
   createData(
-    "2022-Feb",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2022-Feb',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
   createData(
-    "2021-May",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2021-May',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
   createData(
-    "2021-Jan",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2021-Jan',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
   createData(
-    "2020-Nov",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2020-Nov',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
   createData(
-    "2020-Oct",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2020-Oct',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
   createData(
-    "2020-Sep",
-    "interactions.tsv",
-    "genes.tsv",
-    "drugs.tsv",
-    "categories.tsv"
+    '2020-Sep',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
   ),
 ];
 
@@ -82,7 +82,7 @@ export const Files = () => {
             {rows.map((row) => (
               <TableRow
                 key={row.date}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.date}
@@ -90,25 +90,25 @@ export const Files = () => {
                 <TableCell align="right">
                   <a
                     download
-                    href={"data/" + row.date + "/" + row.interactions}
+                    href={'data/' + row.date + '/' + row.interactions}
                   >
                     {row.interactions}
                   </a>
                 </TableCell>
                 <TableCell align="right">
-                  <a download href={"data/" + row.date + "/" + row.genes}>
+                  <a download href={'data/' + row.date + '/' + row.genes}>
                     {row.genes}
                   </a>
                 </TableCell>
                 <TableCell align="right">
-                  <a download href={"data/" + row.date + "/" + row.drugs}>
+                  <a download href={'data/' + row.date + '/' + row.drugs}>
                     {row.drugs}
                   </a>
                 </TableCell>
                 <TableCell align="right">
                   <a
                     download
-                    href={"data/" + row.date + "/" + row.interactions}
+                    href={'data/' + row.date + '/' + row.interactions}
                   >
                     {row.categories}
                   </a>

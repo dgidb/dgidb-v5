@@ -1,12 +1,12 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
-import { useGetDruggableSources } from "hooks/queries/useGetDruggableSources";
+import React, { useState, useEffect } from 'react';
+import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
 
 // components
-import { BrowseCategoriesGenesTable } from "components/Browse/Categories/BrowseCategoriesGenesTable";
+import { BrowseCategoriesGenesTable } from 'components/Browse/Categories/BrowseCategoriesGenesTable';
 
 // styles
-import "./BrowseCategories.scss";
+import './BrowseCategories.scss';
 import {
   Accordion,
   AccordionDetails,
@@ -14,8 +14,8 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface Categories {
   [key: string]: number;
@@ -31,7 +31,7 @@ export const BrowseCategories: React.FC = () => {
 
   const [renderedCategories, setRenderedCategories] = useState<any>([]);
 
-  const { data } = useGetDruggableSources("POTENTIALLY_DRUGGABLE");
+  const { data } = useGetDruggableSources('POTENTIALLY_DRUGGABLE');
 
   useEffect(() => {
     if (data?.sources?.nodes) {
@@ -65,7 +65,7 @@ export const BrowseCategories: React.FC = () => {
       if (includes) {
         let cats: any = src?.categoriesInSource;
         cats?.forEach((cat: any) => {
-          if (typeof allCategoriesCopy[cat.name] === "number") {
+          if (typeof allCategoriesCopy[cat.name] === 'number') {
             allCategoriesCopy[cat.name] += cat.geneCount;
           } else {
             allCategoriesCopy[cat.name] = cat.geneCount;
@@ -140,13 +140,13 @@ export const BrowseCategories: React.FC = () => {
             return (
               <Accordion>
                 <AccordionSummary
-                  style={{ padding: "0 10px" }}
+                  style={{ padding: '0 10px' }}
                   expandIcon={<ExpandMoreIcon />}
                 >
                   {`${cat.name} ${cat.geneCount}`}
                 </AccordionSummary>
                 <AccordionDetails
-                  style={{ overflow: "scroll", padding: "0 10px 10px" }}
+                  style={{ overflow: 'scroll', padding: '0 10px 10px' }}
                 >
                   <BrowseCategoriesGenesTable
                     categoryName={cat.name}

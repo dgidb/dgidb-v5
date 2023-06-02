@@ -1,7 +1,7 @@
-import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router } from "react-router-dom";
-import { GlobalClient } from "stores/Global/GlobalClient";
+import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { GlobalClient } from 'stores/Global/GlobalClient';
 
 export const queryClient = new QueryClient();
 export const GlobalContext = React.createContext(null);

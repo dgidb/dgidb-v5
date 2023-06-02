@@ -11,10 +11,10 @@ export const Info = () => {
         You may load the latest data dump into your local database instance by
         running the following command while in your local checkout of the DGIdb
         repository: psql -d dgidb -f dgidb_v5_20230208_m1.sql. This will
-        recreate your local database and import the{" "}
+        recreate your local database and import the{' '}
         <a href="https://nch-igm-wagner-lab-public.s3.us-east-2.amazonaws.com/dgidb_v5_20230208_m1.sql">
           latest data dump
-        </a>{" "}
+        </a>{' '}
         directly. Please see the Installation instructions for more details
         about creating a local instance of DGIdb.
       </p>
