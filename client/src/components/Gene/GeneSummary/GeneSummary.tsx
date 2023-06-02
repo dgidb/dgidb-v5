@@ -32,20 +32,22 @@ ChartJS.register(
 
 interface CountProps {
   geneMatches: any[];
-  selectedGene: string;
-  setSelectedGene: any;
+  selectedGenes: string[];
+  setSelectedGenes: any;
 }
 
 const InteractionCount: React.FC<CountProps> = ({
   geneMatches,
-  selectedGene,
-  setSelectedGene,
+  selectedGenes,
+  setSelectedGenes,
 }) => {
   const toggleFilter = (geneName: string) => {
-    if (selectedGene === geneName) {
-      setSelectedGene('');
+    if (selectedGenes.includes(geneName)) {
+      setSelectedGenes(
+        selectedGenes.filter((gene: string) => gene !== geneName)
+      );
     } else {
-      setSelectedGene(geneName);
+      setSelectedGenes([geneName, ...selectedGenes]);
     }
   };
 
@@ -67,7 +69,7 @@ const InteractionCount: React.FC<CountProps> = ({
         return (
           <div
             className={`interaction-count-row ${
-              selectedGene === gene.name ? 'filtered-by' : null
+              selectedGenes.includes(gene.name) ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(gene.name)}
             key={i}
@@ -83,10 +85,10 @@ const InteractionCount: React.FC<CountProps> = ({
 
 interface InfoProps {
   geneMatches: any;
-  selectedGene: string;
+  selectedGenes: string[];
 }
 
-const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGene }) => {
+const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [value, setValue] = useState(0);
 
@@ -110,9 +112,11 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGene }) => {
   }
 
   const filteredGeneMatches =
-    selectedGene === ''
+    selectedGenes.length === 0
       ? geneMatches
-      : geneMatches.filter((geneMatch: any) => geneMatch.name === selectedGene);
+      : geneMatches.filter((geneMatch: any) =>
+          selectedGenes.includes(geneMatch.name)
+        );
 
   return (
     <div className="summary-infographic-container">
@@ -158,7 +162,9 @@ interface SummaryProps {
 
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const [selectedGene, setSelectedGene] = useState<string>('');
+  const [selectedGenes, setSelectedGenes] = useState<string[]>([]);
+  const [displayedInteractionResults, setDisplayedInteractionResults] =
+    useState<any[]>([]);
 
   useEffect(() => {
     let interactions: any[] = [];
@@ -177,6 +183,19 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
     setInteractionResults(interactions);
   }, [genes]);
 
+  useEffect(() => {
+    if (selectedGenes.length === 0) {
+      setDisplayedInteractionResults(interactionResults);
+    } else {
+      const newDisplayedInteractionResults: any[] = [];
+      interactionResults.forEach((interaction: any) => {
+        if (selectedGenes.includes(interaction.gene.name))
+          newDisplayedInteractionResults.push(interaction);
+      });
+      setDisplayedInteractionResults(newDisplayedInteractionResults);
+    }
+  }, [selectedGenes, interactionResults]);
+
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
   return (
     <div className="gene-summary-container">
@@ -184,10 +203,10 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
       <div className="gene-summary-content">
         <InteractionCount
           geneMatches={geneMatches}
-          selectedGene={selectedGene}
-          setSelectedGene={setSelectedGene}
+          selectedGenes={selectedGenes}
+          setSelectedGenes={setSelectedGenes}
         />
-        <SummaryInfo geneMatches={geneMatches} selectedGene={selectedGene} />
+        <SummaryInfo geneMatches={geneMatches} selectedGenes={selectedGenes} />
       </div>
       <Box
         display="flex"
@@ -207,7 +226,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
         />
       </Box>
       <InteractionTable
-        interactionResults={interactionResults}
+        interactionResults={displayedInteractionResults}
         isLoading={isLoading}
       />
     </div>
