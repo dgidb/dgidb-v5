@@ -98,7 +98,11 @@ export const DrugRecord: React.FC = () => {
                   return (
                     <TableRow key={alias.alias}>
                       <TableCell className="attribute-name">
-                        {generateXrefLink(alias.alias, ResultTypes.Drug, 'meta-link')}
+                        {generateXrefLink(
+                          alias.alias,
+                          ResultTypes.Drug,
+                          'meta-link'
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -206,7 +210,9 @@ export const DrugRecord: React.FC = () => {
     <Box className="drug-record-container">
       <Box className="drug-record-header">
         <Box className="name">{drugData?.name}</Box>
-        <Box className="concept-id">{generateXrefLink(drugId, ResultTypes.Drug, 'concept-id-link')}</Box>
+        <Box className="concept-id">
+          {generateXrefLink(drugId, ResultTypes.Drug, 'concept-id-link')}
+        </Box>
       </Box>
       <Box display="flex">
         <Box display="block" width="35%">

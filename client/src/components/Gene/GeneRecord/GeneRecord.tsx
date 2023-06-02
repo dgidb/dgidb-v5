@@ -103,7 +103,11 @@ export const GeneRecord: React.FC = () => {
                   return (
                     <TableRow key={alias.alias}>
                       <TableCell className="attribute-name">
-                        {generateXrefLink(alias.alias, ResultTypes.Gene, 'meta-link')}
+                        {generateXrefLink(
+                          alias.alias,
+                          ResultTypes.Gene,
+                          'meta-link'
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -204,7 +208,9 @@ export const GeneRecord: React.FC = () => {
     <Box className="content gene-record-container">
       <Box className="gene-record-header">
         <Box className="symbol">{geneData?.name}</Box>
-        <Box className="concept-id">{generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}</Box>
+        <Box className="concept-id">
+          {generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}
+        </Box>
       </Box>
       <Box display="flex">
         <Box display="block" width="35%">
