@@ -20,6 +20,8 @@ import Table from '@mui/material/Table';
 import { LinearProgress, Link } from '@mui/material';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
+import { generateXrefLink } from 'utils/generateXrefLink';
+import { ResultTypes } from 'types/types';
 
 export const DrugRecord: React.FC = () => {
   const drugId = useParams().drug as string;
@@ -96,7 +98,7 @@ export const DrugRecord: React.FC = () => {
                   return (
                     <TableRow key={alias.alias}>
                       <TableCell className="attribute-name">
-                        {alias.alias}
+                        {generateXrefLink(alias.alias, ResultTypes.Drug, 'meta-link')}
                       </TableCell>
                     </TableRow>
                   );
@@ -204,7 +206,7 @@ export const DrugRecord: React.FC = () => {
     <Box className="drug-record-container">
       <Box className="drug-record-header">
         <Box className="name">{drugData?.name}</Box>
-        <Box className="concept-id">{drugId}</Box>
+        <Box className="concept-id">{generateXrefLink(drugId, ResultTypes.Drug, 'concept-id-link')}</Box>
       </Box>
       <Box display="flex">
         <Box display="block" width="35%">
