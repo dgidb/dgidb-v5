@@ -96,7 +96,8 @@ export const KnownDataClients = () => {
       </ul>
       <p>
         If your resource is using DGIdb but is missing from this list and you
-        would like us to add it, please contact us at help@dgidb.org.
+        would like us to add it, please contact us at{' '}
+        <a href="mailto:help@dgidb.org">help@dgidb.org.</a>
       </p>
     </div>
   );

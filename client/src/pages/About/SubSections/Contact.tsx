@@ -13,9 +13,9 @@ export const Contact = () => {
         </p>
         <p>
           Citation: Integration of the Drug–Gene Interaction Database (DGIdb
-          4.0) with open crowdsource efforts. Freshour SL, Kiwala S, Cotto KC,
-          Coffman AC, McMichael JF, Song JJ, Griffith M, Griffith OL, Wagner AH.
-          Nucleic Acids Research. 2021 Jan 8.
+          4.0) with open crowdsource efforts. Freshour SL*, Kiwala S*, Cotto
+          KC*, Coffman AC, McMichael JF, Song JJ, Griffith M, Griffith OL,
+          Wagner AH. Nucleic Acids Research. 2021 Jan 8.
           doi:https://doi.org/10.1093/nar/gkaa1084.
         </p>
         <h3 id="current-contributors">Current Contributors</h3>
@@ -162,6 +162,8 @@ export const Contact = () => {
           </a>
         </p>
       </div>
+      <div className="contact-section-container spacing"></div>
+      <div className="contact-section-container spacing"></div>
       <div className="contact-section-container spacing"></div>
 
       <div className="contact-session-container">

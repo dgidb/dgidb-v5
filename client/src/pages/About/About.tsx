@@ -69,7 +69,7 @@ export const About = () => {
           <FAQ />
         </div>
         <div className="doc-section">
-          <h3 id="known-data-clients">KnownDataClients</h3>
+          <h3 id="known-data-clients">Known Data Clients</h3>
           <KnownDataClients />
         </div>
         <div className="doc-section">
