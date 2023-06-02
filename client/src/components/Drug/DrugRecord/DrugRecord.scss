@@ -37,7 +37,7 @@
     }
 
     .box-content {
-      padding: .5rem;
+      padding: 0.5rem;
       max-height: 570px;
     }
   }
@@ -62,7 +62,7 @@
     }
   }
 
-  .drug-record-lower  {
+  .drug-record-lower {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);

@@ -52,6 +52,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
+    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "format": "yarn run prettier -- --write",
     "start:prod": "env-cmd -f ./.env.production react-scripts start",
     "start:staging": "env-cmd -f ./.env.staging react-scripts start",
@@ -102,5 +103,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

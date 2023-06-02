@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -8,12 +8,12 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-} from "@mui/material";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import "./AmbiguousTerms.scss";
-import { useGetInteractionsByGenes } from "hooks/queries/useGetInteractions";
-import InteractionTable from "../InteractionTable/InteractionTable";
+} from '@mui/material';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import './AmbiguousTerms.scss';
+import { useGetInteractionsByGenes } from 'hooks/queries/useGetInteractions';
+import InteractionTable from '../InteractionTable/InteractionTable';
 
 interface Props {
   ambiguousTermData: any;
@@ -48,14 +48,14 @@ export const AmbiguousResult: React.FC<Props> = ({
     <Accordion defaultExpanded>
       <AccordionSummary
         style={{
-          backgroundColor: "var(--background-light)",
+          backgroundColor: 'var(--background-light)',
           margin: 0,
         }}
         expandIcon={<ExpandMoreIcon />}
-        classes={{ content: "accordion-summary" }}
+        classes={{ content: 'accordion-summary' }}
       >
         <Box display="flex" alignItems="center">
-          <h3 style={{ marginTop: "6px" }}>
+          <h3 style={{ marginTop: '6px' }}>
             <b>Search Term: "{ambiguousTermData.searchTerm}"</b>
           </h3>
           <Box px="2px" display="flex" alignItems="center">
@@ -65,7 +65,7 @@ export const AmbiguousResult: React.FC<Props> = ({
             onChange={handleChange}
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()}
-            value={selectedTerm[0] || ""}
+            value={selectedTerm[0] || ''}
             variant="standard"
             label="Select..."
             sx={{ m: 1, minWidth: 120 }}
@@ -82,7 +82,7 @@ export const AmbiguousResult: React.FC<Props> = ({
       </AccordionSummary>
       <AccordionDetails
         style={{
-          backgroundColor: "var(--soft-background)",
+          backgroundColor: 'var(--soft-background)',
         }}
       >
         <Box>

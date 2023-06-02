@@ -1,1 +1,1 @@
-export * from './BrowseCategoriesGenesTable'
+export * from './BrowseCategoriesGenesTable';
