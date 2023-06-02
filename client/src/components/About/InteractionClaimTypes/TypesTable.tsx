@@ -36,7 +36,7 @@ export const TypesTable: React.FC = () => {
                   <TableCell component="th" scope="row">
                     {row.type}
                   </TableCell>
-                  <TableCell align="right">{row.definition}</TableCell>
+                  <TableCell align="left">{row.definition}</TableCell>
                   <TableCell align="right">{row.directionality}</TableCell>
                   <TableCell
                     dangerouslySetInnerHTML={createMarkup(row.reference)}
