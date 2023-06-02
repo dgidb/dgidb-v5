@@ -13,7 +13,7 @@
 
 :root {
   --background: #180a20;
-  --background-light: #3C3143;
+  --background-light: #3c3143;
   --theme-primary: #480a77;
   --text-primary: white;
   --text-primary-low: #dedede;
@@ -30,7 +30,7 @@
   --chart-fill-7: #efc7e5;
 }
 
-[data-theme='light'] {
+[data-theme="light"] {
   --background: white;
   --soft-background: #f7f5ff;
   --background-light: #dfdde9;
@@ -43,7 +43,7 @@
   --logo-gradient-2: #ada7bd;
 }
 
-[data-theme='light-home'] {
+[data-theme="light-home"] {
   --background: white;
   --soft-background: #f7f5ff;
   --background-light: #dfdde9;
@@ -55,9 +55,9 @@
   --logo-gradient-2: #ada7bd;
 }
 
-[data-theme='dark'] {
-  --text-accent: #8075FF;
-  --background: #120C1A;
+[data-theme="dark"] {
+  --text-accent: #8075ff;
+  --background: #120c1a;
   --box-border: #392073;
   --box: #21163a;
   --highlight: #63516e;
@@ -69,12 +69,12 @@
   --background-dark: #180a20;
 }
 
-[data-theme='dark-home'] {
-  --background: #120C1A;
+[data-theme="dark-home"] {
+  --background: #120c1a;
   --highlight: #b3a8b9;
   --theme-primary: #480a77;
   --text-content: #c9dbd9;
   --soft-background: #2c2133;
   --text-primary: #e8eaed;
-  --text-accent: #8075FF;
+  --text-accent: #8075ff;
 }

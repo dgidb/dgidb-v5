@@ -31,7 +31,6 @@
     padding: 1rem;
     border: solid white 1px;
 
-
     .box-title {
       color: var(--text-primary);
       font-size: 1.4rem;
@@ -39,7 +38,7 @@
     }
 
     .box-content {
-      padding: .5rem;
+      padding: 0.5rem;
       max-height: 570px;
 
       table > tbody > tr {
@@ -82,10 +81,9 @@
       max-height: 400px;
       overflow: scroll;
     }
-
   }
 
-  .gene-record-lower  {
+  .gene-record-lower {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
