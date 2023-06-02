@@ -1,6 +1,6 @@
 name: Frontend checks
 on:
-  pull-request:
+  pull_request:
     branches-ignore:
       - main
       - dev
