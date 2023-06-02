@@ -1,4 +1,4 @@
-import { SearchTypes } from "types/types";
+import { SearchTypes } from 'types/types';
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -8,26 +8,26 @@ type ActionMap<M extends { [index: string]: any }> = {
     : {
         type: Key;
         payload: M[Key];
-      }
+      };
 };
 
 export enum ActionTypes {
-  AddTerm = "ADD_TERM",
-  DeleteTerm = "DELETE_TERM",
-  DeleteLastTerm = "DELETE_LAST_TERM",
-  DeleteAllTerms = "DELETE_ALL_TERMS",
-  AddGeneDemoTerms = "GENE_DEMO_TERMS",
-  AddCategoryDemoTerms = "CATEGORY_DEMO_TERMS",
-  AddDrugDemoTerms = "DRUG_DEMO_TERMS",
-  HideDisclaimer = "HIDE_DISCLAIMER",
-  ShowDisclaimer = "SHOW_DISCLAIMER",
-  EnableDarkMode = "ENABLE_DARK_MODE",
-  DisableDarkMode = "DISABLE_DARK_MODE",
-  SetByDrug = "SET_INTERACTIONS_BY_DRUG",
-  SetByGene = "SET_INTERACTIONS_BY_GENE",
-  SetGeneCategories = "SET_GENE_CATEGORIES",
-  BrandPage = "BRAND_PAGE",
-  ContentPage = "CONTENT_PAGE"
+  AddTerm = 'ADD_TERM',
+  DeleteTerm = 'DELETE_TERM',
+  DeleteLastTerm = 'DELETE_LAST_TERM',
+  DeleteAllTerms = 'DELETE_ALL_TERMS',
+  AddGeneDemoTerms = 'GENE_DEMO_TERMS',
+  AddCategoryDemoTerms = 'CATEGORY_DEMO_TERMS',
+  AddDrugDemoTerms = 'DRUG_DEMO_TERMS',
+  HideDisclaimer = 'HIDE_DISCLAIMER',
+  ShowDisclaimer = 'SHOW_DISCLAIMER',
+  EnableDarkMode = 'ENABLE_DARK_MODE',
+  DisableDarkMode = 'DISABLE_DARK_MODE',
+  SetByDrug = 'SET_INTERACTIONS_BY_DRUG',
+  SetByGene = 'SET_INTERACTIONS_BY_GENE',
+  SetGeneCategories = 'SET_GENE_CATEGORIES',
+  BrandPage = 'BRAND_PAGE',
+  ContentPage = 'CONTENT_PAGE',
 }
 
 // search terms
@@ -41,9 +41,8 @@ type SearchTermsPayload = {
   [ActionTypes.DeleteAllTerms]: undefined;
 };
 
-export type SearchTermsActions = ActionMap<
-  SearchTermsPayload
->[keyof ActionMap<SearchTermsPayload>];
+export type SearchTermsActions =
+  ActionMap<SearchTermsPayload>[keyof ActionMap<SearchTermsPayload>];
 
 export const searchTermsReducer = (
   state: string[],
@@ -52,9 +51,18 @@ export const searchTermsReducer = (
   let stateCopy = Array.from(state);
   switch (action.type) {
     case ActionTypes.AddTerm:
-      return [...stateCopy, action.payload]
+      return [...stateCopy, action.payload];
     case ActionTypes.AddGeneDemoTerms:
-      return ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1'];
+      return [
+        'FLT1',
+        'FLT2',
+        'FLT3',
+        'STK1',
+        'MM1',
+        'AQP1',
+        'LOC100508755',
+        'FAKE1',
+      ];
     case ActionTypes.AddDrugDemoTerms:
       return ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL'];
     case ActionTypes.AddCategoryDemoTerms:
@@ -64,7 +72,7 @@ export const searchTermsReducer = (
     case ActionTypes.DeleteAllTerms:
       return [];
     case ActionTypes.DeleteTerm:
-      return stateCopy.filter((term: any) => term !== action.payload)
+      return stateCopy.filter((term: any) => term !== action.payload);
     default:
       return state;
   }
@@ -77,9 +85,8 @@ type InteractionModePayload = {
   [ActionTypes.SetGeneCategories]: undefined;
 };
 
-export type InteractionModeActions = ActionMap<
-InteractionModePayload
->[keyof ActionMap<InteractionModePayload>];
+export type InteractionModeActions =
+  ActionMap<InteractionModePayload>[keyof ActionMap<InteractionModePayload>];
 
 export const interactionModeReducer = (
   state: SearchTypes,
@@ -105,37 +112,35 @@ export interface themeSettingsType {
 }
 
 type ThemeSettingsPayload = {
-  [ActionTypes.HideDisclaimer]: undefined,
-  [ActionTypes.ShowDisclaimer]: undefined,
-  [ActionTypes.EnableDarkMode]: undefined,
-  [ActionTypes.DisableDarkMode]: undefined
-  [ActionTypes.BrandPage]: undefined,
-  [ActionTypes.ContentPage]: undefined
-}
+  [ActionTypes.HideDisclaimer]: undefined;
+  [ActionTypes.ShowDisclaimer]: undefined;
+  [ActionTypes.EnableDarkMode]: undefined;
+  [ActionTypes.DisableDarkMode]: undefined;
+  [ActionTypes.BrandPage]: undefined;
+  [ActionTypes.ContentPage]: undefined;
+};
 
-export type ThemeSettingsActions = ActionMap<
-  ThemeSettingsPayload
->[keyof ActionMap<ThemeSettingsPayload>];
-
+export type ThemeSettingsActions =
+  ActionMap<ThemeSettingsPayload>[keyof ActionMap<ThemeSettingsPayload>];
 
 export const themeSettingsReducer = (
   state: themeSettingsType,
   action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
-  let stateCopy = Object.assign({}, state)
+  let stateCopy = Object.assign({}, state);
   switch (action.type) {
     case ActionTypes.HideDisclaimer:
-      return {...stateCopy, showDisclaimer: false};
+      return { ...stateCopy, showDisclaimer: false };
     case ActionTypes.ShowDisclaimer:
-      return {...stateCopy, showDisclaimer: true};
+      return { ...stateCopy, showDisclaimer: true };
     case ActionTypes.EnableDarkMode:
-      return {...stateCopy, darkModeEnabled: true};
+      return { ...stateCopy, darkModeEnabled: true };
     case ActionTypes.DisableDarkMode:
-      return {...stateCopy, darkModeEnabled: false};
+      return { ...stateCopy, darkModeEnabled: false };
     case ActionTypes.BrandPage:
-      return {...stateCopy, brandTheme: true};
+      return { ...stateCopy, brandTheme: true };
     case ActionTypes.ContentPage:
-      return {...stateCopy, brandTheme: false};
+      return { ...stateCopy, brandTheme: false };
     default:
       return state;
   }

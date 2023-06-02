@@ -36,80 +36,98 @@ const Header: React.FC = () => {
       <nav>
         <ul>
           <li>
-            <Button className='browse-button'
-            onClick={handleOpen}>Browse</Button>
+            <Button className="browse-button" onClick={handleOpen}>
+              Browse
+            </Button>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center"
+                vertical: 'bottom',
+                horizontal: 'center',
               }}
               transformOrigin={{
-                vertical: "top",
-                horizontal: "center"
-              }}>
-              <MenuItem onClick={() => {handleClose(); navigate('/browse/categories')}}>Categories</MenuItem>
-              <MenuItem onClick={() => {handleClose(); navigate('/browse/sources')}}>Sources</MenuItem>
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  navigate('/browse/categories');
+                }}
+              >
+                Categories
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  navigate('/browse/sources');
+                }}
+              >
+                Sources
+              </MenuItem>
             </Menu>
           </li>
-          <li onClick={() => navigate('/about')}>
-            About
-          </li>
-          <li onClick={() => navigate('/downloads')}>
-            Downloads
-          </li>
+          <li onClick={() => navigate('/about')}>About</li>
+          <li onClick={() => navigate('/downloads')}>Downloads</li>
         </ul>
       </nav>
     </header>
-  )
-}
+  );
+};
 
 const Footer: React.FC = () => {
-
-  const {dispatch} = useContext(GlobalClientContext);
+  const { dispatch } = useContext(GlobalClientContext);
 
   return (
-  <footer>
-    Disclaimer: This resource is intended for purely research purposes. It should not be used for emergencies or medical or professional advice.
-    <IconButton
-    style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px', fontSize: '25px'}}
-    onClick={() => dispatch({type: ActionTypes.HideDisclaimer})}><HighlightOffIcon /></IconButton>
-  </footer>
-  )
-}
+    <footer>
+      Disclaimer: This resource is intended for purely research purposes. It
+      should not be used for emergencies or medical or professional advice.
+      <IconButton
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          marginLeft: '10px',
+          fontSize: '25px',
+        }}
+        onClick={() => dispatch({ type: ActionTypes.HideDisclaimer })}
+      >
+        <HighlightOffIcon />
+      </IconButton>
+    </footer>
+  );
+};
 
-export const MainLayout = ({children }: MainLayoutProps) => {
-
-  const {state} = useContext(GlobalClientContext);
+export const MainLayout = ({ children }: MainLayoutProps) => {
+  const { state } = useContext(GlobalClientContext);
 
   let theme;
 
   if (state.themeSettings.darkModeEnabled) {
-    if (state.themeSettings.brandTheme){
+    if (state.themeSettings.brandTheme) {
       theme = 'dark-home';
     } else {
       theme = 'dark';
     }
   } else {
-    if (state.themeSettings.brandTheme){
+    if (state.themeSettings.brandTheme) {
       theme = 'light-home';
     } else {
       theme = 'light';
     }
   }
 
-  return(
-    <div className={"layout-container"} data-theme={theme}>
+  return (
+    <div className={'layout-container'} data-theme={theme}>
       <Header />
       <div className="content-container">
-        <Box className='content'>
-          {children}
-        </Box>
+        <Box className="content">{children}</Box>
       </div>
       {state.themeSettings.showDisclaimer && <Footer />}
     </div>
-  )
-}
+  );
+};

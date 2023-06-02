@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, Dispatch } from "react";
+import React, { createContext, useReducer, Dispatch } from 'react';
 import {
   searchTermsReducer,
   SearchTermsActions,
@@ -7,8 +7,8 @@ import {
   ThemeSettingsActions,
   interactionModeReducer,
   InteractionModeActions,
-} from "./reducers";
-import { SearchTypes } from "types/types";
+} from './reducers';
+import { SearchTypes } from 'types/types';
 
 type InitialStateType = {
   interactionMode: SearchTypes;
@@ -22,16 +22,18 @@ const initialState: InitialStateType = {
   themeSettings: {
     showDisclaimer: false,
     darkModeEnabled: false,
-    brandTheme: false
-  }
-}
+    brandTheme: false,
+  },
+};
 
 const GlobalClientContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<InteractionModeActions | SearchTermsActions | ThemeSettingsActions>;
+  dispatch: Dispatch<
+    InteractionModeActions | SearchTermsActions | ThemeSettingsActions
+  >;
 }>({
   state: initialState,
-  dispatch: () => null
+  dispatch: () => null,
 });
 
 const mainReducer = (
@@ -40,7 +42,7 @@ const mainReducer = (
 ) => ({
   searchTerms: searchTermsReducer(searchTerms, action),
   themeSettings: themeSettingsReducer(themeSettings, action),
-  interactionMode: interactionModeReducer(interactionMode, action)
+  interactionMode: interactionModeReducer(interactionMode, action),
 });
 
 const GlobalClient: React.FC = ({ children }) => {

@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getGenesForCategoryQuery = gql`
   query geneClaimCategory($categoryName: String!, $sourceDbNames: [String!]!) {
@@ -33,6 +33,6 @@ export function useGetGenesForCategory(
       });
       return res;
     },
-    { enabled: categoryName !== "" }
+    { enabled: categoryName !== '' }
   );
 }

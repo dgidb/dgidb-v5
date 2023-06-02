@@ -1,5 +1,4 @@
 .about-page-container {
-
   h3 {
     font-size: 2rem;
     margin-bottom: 15px;
@@ -28,9 +27,8 @@
     padding: 20px 40px;
     background-color: var(--background);
 
-
     .doc-section {
-      font-size: .95rem;
+      font-size: 0.95rem;
       padding-bottom: 20px;
     }
 
@@ -41,8 +39,8 @@
       }
 
       .about-citation {
-        color: #8075FF;
-        font-size: .8rem;
+        color: #8075ff;
+        font-size: 0.8rem;
         font-weight: 400;
       }
     }
@@ -57,23 +55,23 @@
   }
 
   .doc-section {
-    font-size: .89rem;
+    font-size: 0.89rem;
   }
 
   .contact-section-container {
-      .left-section{
-        float: left;
-        min-height: 700px;
-        width: 40%;
-      }
-      .right-section{
-        width: 40%;
-        float: left;
-        min-height: 700px;
-      }
-      .spacing {
-        min-height: 700px;
-      }
+    .left-section {
+      float: left;
+      min-height: 700px;
+      width: 40%;
+    }
+    .right-section {
+      width: 40%;
+      float: left;
+      min-height: 700px;
+    }
+    .spacing {
+      min-height: 700px;
+    }
   }
 
   .faq-section-container {
@@ -92,7 +90,6 @@
     }
     a {
       color: var(--text-accent);
-
     }
   }
 }

@@ -47,8 +47,8 @@
           cursor: pointer;
           position: absolute;
           top: 1%;
-          right: .1%;
-          bottom: 40%;;
+          right: 0.1%;
+          bottom: 40%;
           z-index: 1;
         }
       }
@@ -94,14 +94,16 @@
   height: 15px;
 }
 
-
 .logo {
   font-family: 'Fira Sans', sans-serif;
   font-size: 100px;
   font-weight: 800;
   line-height: 80px;
   margin-bottom: 6px;
-  background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
+  background: -webkit-linear-gradient(
+    var(--logo-gradient-1),
+    var(--logo-gradient-2)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -130,7 +132,6 @@ a {
 }
 
 @media screen and (max-width: var(--small-screen)) {
-
 }
 
 .MuiButton-outlined {
