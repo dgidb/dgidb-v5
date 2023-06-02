@@ -8,7 +8,7 @@ type ActionMap<M extends { [index: string]: any }> = {
     : {
         type: Key;
         payload: M[Key];
-      }
+      };
 };
 
 export enum ActionTypes {
@@ -27,7 +27,7 @@ export enum ActionTypes {
   SetByGene = "SET_INTERACTIONS_BY_GENE",
   SetGeneCategories = "SET_GENE_CATEGORIES",
   BrandPage = "BRAND_PAGE",
-  ContentPage = "CONTENT_PAGE"
+  ContentPage = "CONTENT_PAGE",
 }
 
 // search terms
@@ -41,9 +41,8 @@ type SearchTermsPayload = {
   [ActionTypes.DeleteAllTerms]: undefined;
 };
 
-export type SearchTermsActions = ActionMap<
-  SearchTermsPayload
->[keyof ActionMap<SearchTermsPayload>];
+export type SearchTermsActions =
+  ActionMap<SearchTermsPayload>[keyof ActionMap<SearchTermsPayload>];
 
 export const searchTermsReducer = (
   state: string[],
@@ -52,19 +51,28 @@ export const searchTermsReducer = (
   let stateCopy = Array.from(state);
   switch (action.type) {
     case ActionTypes.AddTerm:
-      return [...stateCopy, action.payload]
+      return [...stateCopy, action.payload];
     case ActionTypes.AddGeneDemoTerms:
-      return ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1'];
+      return [
+        "FLT1",
+        "FLT2",
+        "FLT3",
+        "STK1",
+        "MM1",
+        "AQP1",
+        "LOC100508755",
+        "FAKE1",
+      ];
     case ActionTypes.AddDrugDemoTerms:
-      return ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL'];
+      return ["SUNITINIB", "ZALCITABINE", "TRASTUZUMAB", "NOTREAL"];
     case ActionTypes.AddCategoryDemoTerms:
-      return ['HER2', 'ERBB2', 'PTGDR', 'EGFR', 'RECK', 'KCNMA1', 'MM1'];
+      return ["HER2", "ERBB2", "PTGDR", "EGFR", "RECK", "KCNMA1", "MM1"];
     case ActionTypes.DeleteLastTerm:
       return stateCopy.slice(0, -1);
     case ActionTypes.DeleteAllTerms:
       return [];
     case ActionTypes.DeleteTerm:
-      return stateCopy.filter((term: any) => term !== action.payload)
+      return stateCopy.filter((term: any) => term !== action.payload);
     default:
       return state;
   }
@@ -77,9 +85,8 @@ type InteractionModePayload = {
   [ActionTypes.SetGeneCategories]: undefined;
 };
 
-export type InteractionModeActions = ActionMap<
-InteractionModePayload
->[keyof ActionMap<InteractionModePayload>];
+export type InteractionModeActions =
+  ActionMap<InteractionModePayload>[keyof ActionMap<InteractionModePayload>];
 
 export const interactionModeReducer = (
   state: SearchTypes,
@@ -105,37 +112,35 @@ export interface themeSettingsType {
 }
 
 type ThemeSettingsPayload = {
-  [ActionTypes.HideDisclaimer]: undefined,
-  [ActionTypes.ShowDisclaimer]: undefined,
-  [ActionTypes.EnableDarkMode]: undefined,
-  [ActionTypes.DisableDarkMode]: undefined
-  [ActionTypes.BrandPage]: undefined,
-  [ActionTypes.ContentPage]: undefined
-}
+  [ActionTypes.HideDisclaimer]: undefined;
+  [ActionTypes.ShowDisclaimer]: undefined;
+  [ActionTypes.EnableDarkMode]: undefined;
+  [ActionTypes.DisableDarkMode]: undefined;
+  [ActionTypes.BrandPage]: undefined;
+  [ActionTypes.ContentPage]: undefined;
+};
 
-export type ThemeSettingsActions = ActionMap<
-  ThemeSettingsPayload
->[keyof ActionMap<ThemeSettingsPayload>];
-
+export type ThemeSettingsActions =
+  ActionMap<ThemeSettingsPayload>[keyof ActionMap<ThemeSettingsPayload>];
 
 export const themeSettingsReducer = (
   state: themeSettingsType,
   action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
-  let stateCopy = Object.assign({}, state)
+  let stateCopy = Object.assign({}, state);
   switch (action.type) {
     case ActionTypes.HideDisclaimer:
-      return {...stateCopy, showDisclaimer: false};
+      return { ...stateCopy, showDisclaimer: false };
     case ActionTypes.ShowDisclaimer:
-      return {...stateCopy, showDisclaimer: true};
+      return { ...stateCopy, showDisclaimer: true };
     case ActionTypes.EnableDarkMode:
-      return {...stateCopy, darkModeEnabled: true};
+      return { ...stateCopy, darkModeEnabled: true };
     case ActionTypes.DisableDarkMode:
-      return {...stateCopy, darkModeEnabled: false};
+      return { ...stateCopy, darkModeEnabled: false };
     case ActionTypes.BrandPage:
-      return {...stateCopy, brandTheme: true};
+      return { ...stateCopy, brandTheme: true };
     case ActionTypes.ContentPage:
-      return {...stateCopy, brandTheme: false};
+      return { ...stateCopy, brandTheme: false };
     default:
       return state;
   }

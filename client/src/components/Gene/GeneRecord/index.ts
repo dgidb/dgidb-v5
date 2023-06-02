@@ -1,1 +1,1 @@
-export * from './GeneRecord';
+export * from "./GeneRecord";

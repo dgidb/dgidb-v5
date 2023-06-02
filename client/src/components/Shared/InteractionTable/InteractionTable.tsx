@@ -78,9 +78,7 @@ export const InteractionTable: React.FC<Props> = ({
       headerName: "Indication",
       flex: 1,
       minWidth: 0,
-      renderCell: (params: any) => (
-        <>{params.row.indication?.join(", ")}</>
-      )
+      renderCell: (params: any) => <>{params.row.indication?.join(", ")}</>,
     },
     {
       field: "interactionScore",
@@ -164,9 +162,9 @@ export const InteractionTable: React.FC<Props> = ({
       regulatoryApproval: interaction?.drug?.approved
         ? "Approved"
         : "Not Approved",
-      indication: interaction?.drug?.drugAttributes?.filter(
-        (attribute: any) => (attribute.name === "Indication")
-      ).map((attribute: any) => (attribute.value)),
+      indication: interaction?.drug?.drugAttributes
+        ?.filter((attribute: any) => attribute.name === "Indication")
+        .map((attribute: any) => attribute.value),
       interactionScore: truncateDecimals(interaction?.interactionScore, 2),
       interactionTypes: interaction?.interactionTypes
         ?.map((interactionType: any) => {
@@ -196,20 +194,20 @@ export const InteractionTable: React.FC<Props> = ({
           }}
           rowSelection={false}
           showColumnVerticalBorder
-          getRowHeight={() => 'auto'}
+          getRowHeight={() => "auto"}
         />
       </Box>
     </Box>
   ) : (
-      <LinearProgress
-        sx={{
-          backgroundColor: "white",
-          "& .MuiLinearProgress-bar": {
-            backgroundColor: "#480a77",
-          },
-        }}
-        className="linear-bar"
-      />
+    <LinearProgress
+      sx={{
+        backgroundColor: "white",
+        "& .MuiLinearProgress-bar": {
+          backgroundColor: "#480a77",
+        },
+      }}
+      className="linear-bar"
+    />
   );
 };
 

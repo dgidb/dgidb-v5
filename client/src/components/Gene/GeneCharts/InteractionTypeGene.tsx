@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,32 +7,34 @@ import {
   BarElement,
   Title,
   Tooltip,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 interface Props {
   data: any;
 }
 
-export const InteractionTypeGene: React.FC<Props> = ({data}) => {
-
+export const InteractionTypeGene: React.FC<Props> = ({ data }) => {
   const [chartData, setChartData] = useState<any>({
-    labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
+    labels: ["inhibitor", "antagonist", "antibody", "agonist"],
     datasets: [
       {
-        label: '',
+        label: "",
         data: [0, 0, 0, 0],
-        backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
-      }
-    ]
+        backgroundColor: [
+          "#480A77",
+          "#8075FF",
+          "#89E8F1",
+          "#FA198B",
+          "#4BC6B9",
+          "#F0EFF4",
+          "#D1CFE2",
+          "#BAA898",
+        ],
+      },
+    ],
   });
 
   const options = {
@@ -40,59 +42,67 @@ export const InteractionTypeGene: React.FC<Props> = ({data}) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       title: {
         display: true,
-        text: 'Interaction Type',
+        text: "Interaction Type",
       },
     },
   };
 
-  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
+  const labels = ["inhibitor", "antagonist", "antibody", "agonist"];
 
   useEffect(() => {
     if (data?.length) {
-      let dataArray = [0, 0, 0, 0]
+      let dataArray = [0, 0, 0, 0];
       data.forEach((gene: any) => {
         gene.interactions.forEach((int: any) => {
-          if(int.interactionTypes.length){
-            switch(int.interactionTypes[0].type){
-              case 'inhibitor':
+          if (int.interactionTypes.length) {
+            switch (int.interactionTypes[0].type) {
+              case "inhibitor":
                 dataArray[0]++;
                 break;
-              case 'antagonist':
+              case "antagonist":
                 dataArray[1]++;
                 break;
-              case 'antibody':
+              case "antibody":
                 dataArray[2]++;
                 break;
-              case 'agonist':
+              case "agonist":
                 dataArray[3]++;
                 break;
               default:
                 return;
             }
           }
-        })
-
-      })
+        });
+      });
       setChartData({
         labels,
         datasets: [
           {
-            label: '',
+            label: "",
             data: dataArray,
-            backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
-          }
-        ]
+            backgroundColor: [
+              "#480A77",
+              "#8075FF",
+              "#89E8F1",
+              "#FA198B",
+              "#4BC6B9",
+              "#F0EFF4",
+              "#D1CFE2",
+              "#BAA898",
+            ],
+          },
+        ],
       });
     }
-  }, [data])
+  }, [data]);
 
   return (
     <div className="type-container">
-      <Bar options={options} data={chartData}/>
+      <Bar options={options} data={chartData} />
     </div>
-  )
-}
+  );
+};

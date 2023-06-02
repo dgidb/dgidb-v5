@@ -30,7 +30,13 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
     isError || isLoading ? (
       <div className="gene-summary-container">
         {isError && <div>Error: Interactions not found!</div>}
-        {isLoading && <Icon component={CircularProgress} baseClassName='loading-spinner' fontSize='small' />}
+        {isLoading && (
+          <Icon
+            component={CircularProgress}
+            baseClassName="loading-spinner"
+            fontSize="small"
+          />
+        )}
       </div>
     ) : !isLoading && geneMatches?.length === 0 ? (
       <Box className="no-results-message">

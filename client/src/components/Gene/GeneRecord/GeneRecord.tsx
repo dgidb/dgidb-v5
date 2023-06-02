@@ -39,8 +39,8 @@ export const GeneRecord: React.FC = () => {
     fetchedInteractionData?.gene?.interactions?.forEach((int: any) => {
       interactionData.push(int);
       int.publications.forEach((pub: any) => {
-        publications.push(pub)
-      })
+        publications.push(pub);
+      });
     });
     setInteractionResults(interactionData);
     setPublications(dropRedundantCites(publications));
@@ -164,13 +164,21 @@ export const GeneRecord: React.FC = () => {
         <Box className="box-content publication-item">
           <Table>
             <TableBody>
-              {publications.length > 0 ? publications.map((pub: any, index: number) => (
-                <TableRow key={index}>
-                  <TableCell className="attribute-name">
-                  <Link className="pub-link" href={'https://pubmed.ncbi.nlm.nih.gov/' + pub.pmid} target='_blank'>{pub.citation}</Link>
-                  </TableCell>
-                </TableRow>
-              )) : interactionDataIsLoading ? (
+              {publications.length > 0 ? (
+                publications.map((pub: any, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell className="attribute-name">
+                      <Link
+                        className="pub-link"
+                        href={"https://pubmed.ncbi.nlm.nih.gov/" + pub.pmid}
+                        target="_blank"
+                      >
+                        {pub.citation}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : interactionDataIsLoading ? (
                 <LinearProgress
                   sx={{
                     backgroundColor: "white",

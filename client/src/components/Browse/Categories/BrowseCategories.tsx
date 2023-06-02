@@ -7,8 +7,15 @@ import { BrowseCategoriesGenesTable } from "components/Browse/Categories/BrowseC
 
 // styles
 import "./BrowseCategories.scss";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface Categories {
   [key: string]: number;
@@ -81,10 +88,12 @@ export const BrowseCategories: React.FC = () => {
 
   const onChange = (event: any) => {
     if (checkedList.includes(event.target.id)) {
-      const newList = checkedList.filter((selectedOption: any) => { return selectedOption !== event.target.id as string })
-      setCheckedList(newList)
+      const newList = checkedList.filter((selectedOption: any) => {
+        return selectedOption !== (event.target.id as string);
+      });
+      setCheckedList(newList);
     } else {
-      setCheckedList([...checkedList, event.target.id])
+      setCheckedList([...checkedList, event.target.id]);
     }
   };
 
@@ -97,36 +106,49 @@ export const BrowseCategories: React.FC = () => {
   return (
     <div className="browse-categories-container">
       <div className="source-checklist">
-      <FormControlLabel
-        label="Select/Deselect All"
-        control={
-          <Checkbox
-            checked={checkAll}
-            indeterminate={indeterminate}
-            onChange={onCheckAllChange}
-          />
-        }
-      />
-      {plainOptions.map(option => {
-        return <Box><FormControlLabel
-        label={option}
-        control={<Checkbox checked={checkedList.includes(option)} onChange={onChange} id={option} />}
-      /></Box>})}
+        <FormControlLabel
+          label="Select/Deselect All"
+          control={
+            <Checkbox
+              checked={checkAll}
+              indeterminate={indeterminate}
+              onChange={onCheckAllChange}
+            />
+          }
+        />
+        {plainOptions.map((option) => {
+          return (
+            <Box>
+              <FormControlLabel
+                label={option}
+                control={
+                  <Checkbox
+                    checked={checkedList.includes(option)}
+                    onChange={onChange}
+                    id={option}
+                  />
+                }
+              />
+            </Box>
+          );
+        })}
       </div>
 
       <div className="category-list">
-          {renderedCategories?.map((cat: any, index: number) => {
-            if (cat.geneCount) {
-              return (
-                <Accordion>
-                  <AccordionSummary
-                    style={{padding: "0 10px"}}
-                    expandIcon={<ExpandMoreIcon />}
+        {renderedCategories?.map((cat: any, index: number) => {
+          if (cat.geneCount) {
+            return (
+              <Accordion>
+                <AccordionSummary
+                  style={{ padding: "0 10px" }}
+                  expandIcon={<ExpandMoreIcon />}
                 >
                   {`${cat.name} ${cat.geneCount}`}
                 </AccordionSummary>
-                <AccordionDetails style={{overflow: "scroll", padding: "0 10px 10px"}}>
-                <BrowseCategoriesGenesTable
+                <AccordionDetails
+                  style={{ overflow: "scroll", padding: "0 10px 10px" }}
+                >
+                  <BrowseCategoriesGenesTable
                     categoryName={cat.name}
                     sourceDbNames={
                       plainOptions.length === checkedList.length
@@ -136,11 +158,11 @@ export const BrowseCategories: React.FC = () => {
                   />
                 </AccordionDetails>
               </Accordion>
-              );
-            } else {
-              return null;
-            }
-          })}
+            );
+          } else {
+            return null;
+          }
+        })}
       </div>
     </div>
   );

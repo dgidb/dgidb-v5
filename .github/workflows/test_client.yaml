@@ -1,6 +1,6 @@
 name: Frontend checks
 on:
-  push:
+  pull-request:
     branches-ignore:
       - main
       - dev
@@ -20,3 +20,18 @@ jobs:
         run: |
           CI=false
           yarn build
+  lint:
+    name: Lint client files
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: yarn --prefer-offline
+      - name: Prettier check
+        uses: yarn run prettier-check
+

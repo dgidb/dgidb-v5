@@ -1,10 +1,10 @@
 export enum SearchTypes {
-  Gene = 'gene',
-  Drug = 'drug',
-  Categories = 'categories'
+  Gene = "gene",
+  Drug = "drug",
+  Categories = "categories",
 }
 
 export enum ResultTypes {
-  Gene = 'gene',
-  Drug = 'drug'
+  Gene = "gene",
+  Drug = "drug",
 }
