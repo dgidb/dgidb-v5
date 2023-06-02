@@ -33,6 +33,21 @@ module Genome; module Importers; module FileImporters; module RussLampel;
       @source.save
     end
 
+    def parse_description(gene_claim, description)
+      pattern = /^(.*?) \[SOURCE:(.*?);ACC:(.*?)\]$/
+      return if pattern.nil?
+
+      create_gene_claim_alias(gene_claim, pattern[1].chomp!(/[ . ]$/), GeneNomenclature::DESCRIPTION)
+
+      case pattern[2]
+      when 'UNIPROT/SWISSPROT'
+      when 'UNIPROT/SPTREMBL'
+        create_gene_claim_alias(gene_claim, "uniprot:#{pattern[3]}", GeneNomenclature::UNIPROTKB_ID)
+      when 'REFSEQ_PEPTIDE'
+        create_gene_claim_alias(gene_claim, "refseq:#{pattern[3]}", GeneNomenclature::REFSEQ_ACC)
+      end
+    end
+
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim("ensembl:#{row['gene_stable_id']}", GeneNomenclature::ENSEMBL_ID)

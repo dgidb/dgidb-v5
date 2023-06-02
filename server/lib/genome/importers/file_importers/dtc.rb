@@ -48,7 +48,7 @@ module Genome; module Importers; module FileImporters; module Dtc;
         unless drug_name.nil? || gene_name.nil?
           drug_claim = create_drug_claim(drug_name)
           unless drug_id.nil?
-            create_drug_claim_alias(drug_claim, drug_id, DrugNomenclature::CHEMBL_ID)
+            create_drug_claim_alias(drug_claim, "chembl:#{drug_id}", DrugNomenclature::CHEMBL_ID)
           end
           gene_name.split(',').each do |indv_gene|
             gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
