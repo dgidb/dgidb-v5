@@ -9,15 +9,16 @@ export const InteractionScore = () => {
       <p>
         The Interaction Score is a static score, meaning that it doesn't changed
         from search to search. It is based on the evidence of an interaction. It
-        uses evidence scores, the ratio of average known gene partners for all drugs to the known partners for the given
-        drug, and the ratio of average known drug partners for all genes to the
-        known partners for the given gene (see figure below). Since the
-        Interaction Score depends on numbers of drug and gene partners, as well
-        as number of supporting publications and sources, as sources are updated
-        and new claims are added the Interaction Score may change over time as
-        well. However, between updates, the Interaction Score will remain
-        static, regardless of the search set. The Interaction Score is also
-        displayed on an individual interaction's page.
+        uses evidence scores, the ratio of average known gene partners for all
+        drugs to the known partners for the given drug, and the ratio of average
+        known drug partners for all genes to the known partners for the given
+        gene (see figure below). Since the Interaction Score depends on numbers
+        of drug and gene partners, as well as number of supporting publications
+        and sources, as sources are updated and new claims are added the
+        Interaction Score may change over time as well. However, between
+        updates, the Interaction Score will remain static, regardless of the
+        search set. The Interaction Score is also displayed on an individual
+        interaction's page.
       </p>
 
       <img width="800px" src="/images/interaction_score.png" />
