@@ -21,71 +21,71 @@ $medium-shadow: drop-shadow(1px 1px 1px #a0a0a0);
 $low-shadow: drop-shadow(0px 0px 1px #808080);
 
 .button-action-component {
-	width: 100px;
-	margin: 5px;
-	border-radius: 5px;
-	display: flex;
-	padding: 7px;
-	align-items: center;
-	justify-content: center;
-	font-weight: bolder;
+  width: 100px;
+  margin: 5px;
+  border-radius: 5px;
+  display: flex;
+  padding: 7px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bolder;
 }
 
 .primary {
-	filter: $high-shadow;
-	background-color: $primary-color;
-	color: $primary-contrast;
-	cursor: pointer;
+  filter: $high-shadow;
+  background-color: $primary-color;
+  color: $primary-contrast;
+  cursor: pointer;
 
-	&:hover {
-		background-color: $primary-hover;
-	}
+  &:hover {
+    background-color: $primary-hover;
+  }
 
-	&:active {
-		filter: $low-shadow;
-		background-color: $primary-active;
-	}
+  &:active {
+    filter: $low-shadow;
+    background-color: $primary-active;
+  }
 }
 
 .secondary {
-	padding: 6px;
-	filter: $medium-shadow;
-	background-color: $secondary-contrast;
-	color: $primary-color;
-	cursor: pointer;
+  padding: 6px;
+  filter: $medium-shadow;
+  background-color: $secondary-contrast;
+  color: $primary-color;
+  cursor: pointer;
 
-	&:hover {
-		background-color: $secondary-contrast-hover;
-	}
+  &:hover {
+    background-color: $secondary-contrast-hover;
+  }
 
-	&:active {
-		color: $primary-hover;
-		background-color: $secondary-contrast-active;
-		filter: $low-shadow;
-	}
+  &:active {
+    color: $primary-hover;
+    background-color: $secondary-contrast-active;
+    filter: $low-shadow;
+  }
 }
 
 .tertiary {
-	padding: 5px;
-	border: 2px solid $tertiary-color;
-	color: $tertiary-color;
-	background-color: white;
-	cursor: pointer;
+  padding: 5px;
+  border: 2px solid $tertiary-color;
+  color: $tertiary-color;
+  background-color: white;
+  cursor: pointer;
 
-	&:hover {
-		background-color: $tertiary-hover;
-	}
+  &:hover {
+    background-color: $tertiary-hover;
+  }
 
-	&:active {
-		background-color: $tertiary-active;
-	}
+  &:active {
+    background-color: $tertiary-active;
+  }
 }
 
 .disabled {
-	border: none !important;
-	color: $disabled-text;
-	padding: 7px;
-	filter: none !important;
-	cursor: not-allowed;
-	background-color: $disabled-contrast !important;
+  border: none !important;
+  color: $disabled-text;
+  padding: 7px;
+  filter: none !important;
+  cursor: not-allowed;
+  background-color: $disabled-contrast !important;
 }

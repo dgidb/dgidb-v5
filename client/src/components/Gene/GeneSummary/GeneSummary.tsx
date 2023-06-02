@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,18 +8,18 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { InteractionTypeGene } from "components/Gene/GeneCharts";
-import { DirectionalityGene } from "components/Gene/GeneCharts";
-import { RegulatoryApprovalGene } from "components/Gene/GeneCharts";
+} from 'chart.js';
+import { InteractionTypeGene } from 'components/Gene/GeneCharts';
+import { DirectionalityGene } from 'components/Gene/GeneCharts';
+import { RegulatoryApprovalGene } from 'components/Gene/GeneCharts';
 
 // styles
-import "./GeneSummary.scss";
-import Box from "@mui/material/Box";
-import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-import TableDownloader from "components/Shared/TableDownloader/TableDownloader";
-import { Tab, Tabs } from "@mui/material";
-import TabPanel from "components/Shared/TabPanel/TabPanel";
+import './GeneSummary.scss';
+import Box from '@mui/material/Box';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +43,9 @@ const InteractionCount: React.FC<CountProps> = ({
 }) => {
   const toggleFilter = (geneName: string) => {
     if (selectedGenes.includes(geneName)) {
-      setSelectedGenes(selectedGenes.filter((gene: string) => gene !== geneName))
+      setSelectedGenes(
+        selectedGenes.filter((gene: string) => gene !== geneName)
+      );
     } else {
       setSelectedGenes([geneName, ...selectedGenes]);
     }
@@ -67,7 +69,7 @@ const InteractionCount: React.FC<CountProps> = ({
         return (
           <div
             className={`interaction-count-row ${
-              selectedGenes.includes(gene.name) ? "filtered-by" : null
+              selectedGenes.includes(gene.name) ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(gene.name)}
             key={i}
@@ -98,9 +100,9 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -112,7 +114,9 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
   const filteredGeneMatches =
     selectedGenes.length === 0
       ? geneMatches
-      : geneMatches.filter((geneMatch: any) => selectedGenes.includes(geneMatch.name));
+      : geneMatches.filter((geneMatch: any) =>
+          selectedGenes.includes(geneMatch.name)
+        );
 
   return (
     <div className="summary-infographic-container">
@@ -159,7 +163,8 @@ interface SummaryProps {
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedGenes, setSelectedGenes] = useState<string[]>([]);
-  const [displayedInteractionResults, setDisplayedInteractionResults] = useState<any[]>([]);
+  const [displayedInteractionResults, setDisplayedInteractionResults] =
+    useState<any[]>([]);
 
   useEffect(() => {
     let interactions: any[] = [];
@@ -184,11 +189,12 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
     } else {
       const newDisplayedInteractionResults: any[] = [];
       interactionResults.forEach((interaction: any) => {
-        if (selectedGenes.includes(interaction.gene.name)) newDisplayedInteractionResults.push(interaction);
-      })
+        if (selectedGenes.includes(interaction.gene.name))
+          newDisplayedInteractionResults.push(interaction);
+      });
       setDisplayedInteractionResults(newDisplayedInteractionResults);
     }
-  }, [selectedGenes, interactionResults])
+  }, [selectedGenes, interactionResults]);
 
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
   return (

@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,29 +10,31 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 interface Props {
   data: any;
 }
 
-export const InteractionTypeGene: React.FC<Props> = ({data}) => {
-
+export const InteractionTypeGene: React.FC<Props> = ({ data }) => {
   const [chartData, setChartData] = useState<any>({
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
     datasets: [
       {
         label: '',
         data: [0, 0, 0, 0],
-        backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898'],
-      }
-    ]
+        backgroundColor: [
+          '#480A77',
+          '#8075FF',
+          '#89E8F1',
+          '#FA198B',
+          '#4BC6B9',
+          '#F0EFF4',
+          '#D1CFE2',
+          '#BAA898',
+        ],
+      },
+    ],
   });
 
   const options = {
@@ -40,7 +42,7 @@ export const InteractionTypeGene: React.FC<Props> = ({data}) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       title: {
         display: true,
@@ -53,11 +55,11 @@ export const InteractionTypeGene: React.FC<Props> = ({data}) => {
 
   useEffect(() => {
     if (data?.length) {
-      let dataArray = [0, 0, 0, 0]
+      let dataArray = [0, 0, 0, 0];
       data.forEach((gene: any) => {
         gene.interactions.forEach((int: any) => {
-          if(int.interactionTypes.length){
-            switch(int.interactionTypes[0].type){
+          if (int.interactionTypes.length) {
+            switch (int.interactionTypes[0].type) {
               case 'inhibitor':
                 dataArray[0]++;
                 break;
@@ -74,25 +76,33 @@ export const InteractionTypeGene: React.FC<Props> = ({data}) => {
                 return;
             }
           }
-        })
-
-      })
+        });
+      });
       setChartData({
         labels,
         datasets: [
           {
             label: '',
             data: dataArray,
-            backgroundColor: ['#480A77', '#8075FF', '#89E8F1', '#FA198B', '#4BC6B9', '#F0EFF4', '#D1CFE2', '#BAA898']
-          }
-        ]
+            backgroundColor: [
+              '#480A77',
+              '#8075FF',
+              '#89E8F1',
+              '#FA198B',
+              '#4BC6B9',
+              '#F0EFF4',
+              '#D1CFE2',
+              '#BAA898',
+            ],
+          },
+        ],
       });
     }
-  }, [data])
+  }, [data]);
 
   return (
     <div className="type-container">
-      <Bar options={options} data={chartData}/>
+      <Bar options={options} data={chartData} />
     </div>
-  )
-}
+  );
+};

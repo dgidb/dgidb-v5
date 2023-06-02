@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,19 +8,19 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 
-import { InteractionTypeDrug } from "components/Drug/DrugCharts";
-import { DirectionalityDrug } from "components/Drug/DrugCharts";
-import { GeneCategories } from "components/Drug/DrugCharts";
-import { Tab, Tabs } from "@mui/material";
-import TabPanel from "components/Shared/TabPanel/TabPanel";
+import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
+import { DirectionalityDrug } from 'components/Drug/DrugCharts';
+import { GeneCategories } from 'components/Drug/DrugCharts';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
-import "./DrugSummary.scss";
-import Box from "@mui/material/Box";
-import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-import TableDownloader from "components/Shared/TableDownloader/TableDownloader";
+import './DrugSummary.scss';
+import Box from '@mui/material/Box';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 
 ChartJS.register(
   CategoryScale,
@@ -44,7 +44,9 @@ const InteractionCountDrug: React.FC<CountProps> = ({
 }) => {
   const toggleFilter = (drugName: string) => {
     if (selectedDrugs.includes(drugName)) {
-      setSelectedDrugs(selectedDrugs.filter((drug: string) => drug !== drugName))
+      setSelectedDrugs(
+        selectedDrugs.filter((drug: string) => drug !== drugName)
+      );
     } else {
       setSelectedDrugs([drugName, ...selectedDrugs]);
     }
@@ -66,7 +68,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
         return (
           <div
             className={`interaction-count-row ${
-              selectedDrugs.includes(drug.name) ? "filtered-by" : null
+              selectedDrugs.includes(drug.name) ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(drug.name)}
             key={i}
@@ -100,9 +102,9 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -114,7 +116,9 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
   const filteredDrugMatches =
     selectedDrugs.length === 0
       ? drugMatches
-      : drugMatches.filter((drugMatch: any) => selectedDrugs.includes(drugMatch.name));
+      : drugMatches.filter((drugMatch: any) =>
+          selectedDrugs.includes(drugMatch.name)
+        );
 
   return (
     <div className="summary-infographic-container">
@@ -161,7 +165,8 @@ interface SummaryProps {
 export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
-  const [displayedInteractionResults, setDisplayedInteractionResults] = useState<any[]>([]);
+  const [displayedInteractionResults, setDisplayedInteractionResults] =
+    useState<any[]>([]);
 
   useEffect(() => {
     let interactions: any[] = [];
@@ -173,7 +178,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
             approved: drug.matches[0].approved,
             name: drug.matches[0].name,
             conceptId: drug.matches[0].conceptId,
-            drugAttributes: drug.matches[0].drugAttributes
+            drugAttributes: drug.matches[0].drugAttributes,
           },
           ...interaction,
         });
@@ -184,13 +189,15 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
 
   useEffect(() => {
     if (selectedDrugs.length === 0) {
-      setDisplayedInteractionResults(interactionResults)
+      setDisplayedInteractionResults(interactionResults);
     } else {
-      setDisplayedInteractionResults(interactionResults.filter(
-        (interaction: any) => selectedDrugs.includes(interaction.drug.name))
-      )
+      setDisplayedInteractionResults(
+        interactionResults.filter((interaction: any) =>
+          selectedDrugs.includes(interaction.drug.name)
+        )
+      );
     }
-  }, [selectedDrugs, interactionResults])
+  }, [selectedDrugs, interactionResults]);
 
   const drugMatches = drugs?.map((drugMatch: any) => drugMatch.matches[0]);
 

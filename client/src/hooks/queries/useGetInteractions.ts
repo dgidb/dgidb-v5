@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getInteractionsByGenesQuery = gql`
   query genes($names: [String!]!) {
@@ -46,7 +46,7 @@ const getInteractionsByGenesQuery = gql`
 
 export function useGetInteractionsByGenes(names: string[]) {
   return useQuery(
-    "interactions" + names,
+    'interactions' + names,
     async () => {
       const res = await graphQLClient.request(getInteractionsByGenesQuery, {
         names,

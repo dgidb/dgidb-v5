@@ -30,7 +30,8 @@
   flex-direction: column;
 }
 
-.ant-checkbox-group-item, .ant-checkbox-wrapper{
+.ant-checkbox-group-item,
+.ant-checkbox-wrapper {
   color: var(--text-content);
 }
 
@@ -40,6 +41,4 @@
   .ant-collapse-header {
     color: var(--text-content) !important;
   }
-
 }
-
