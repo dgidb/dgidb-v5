@@ -1,6 +1,6 @@
-import { graphQLClient } from "config";
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
+import { graphQLClient } from 'config';
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
 
 const getGeneCountsForCategoriesQuery = gql`
   query categories($sourceDbNames: [String!]!) {
@@ -15,7 +15,7 @@ const getGeneCountsForCategoriesQuery = gql`
 
 export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
   return useQuery(
-    "gene-counts-for-categories",
+    'gene-counts-for-categories',
     async () => {
       const res = await graphQLClient.request(getGeneCountsForCategoriesQuery, {
         sourceDbNames: sourceDbNames,

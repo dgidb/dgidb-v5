@@ -1,10 +1,15 @@
-html, body {
+html,
+body {
   background-color: var(--background);
   margin: 0;
   font-family: 'Lato';
   color: var(--text-content);
 
-  h1, h2, h3, h4, h5 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     color: var(--text-content);
   }
 }
@@ -29,7 +34,10 @@ html, body {
 
 header {
   display: flex;
-  background: -webkit-linear-gradient(var(--header-gradient-1), var(--header-gradient-2));
+  background: -webkit-linear-gradient(
+    var(--header-gradient-1),
+    var(--header-gradient-2)
+  );
 
   .header-logo {
     font-family: 'Fira Sans', sans-serif;
@@ -37,7 +45,10 @@ header {
     font-weight: 700;
     line-height: 80px;
     margin: 3px 0 0 20px;
-    background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
+    background: -webkit-linear-gradient(
+      var(--logo-gradient-1),
+      var(--logo-gradient-2)
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -48,7 +59,7 @@ header {
     text-transform: none;
     font-size: 18px;
     font-weight: 100;
-    color: var(--background)
+    color: var(--background);
   }
 
   nav {

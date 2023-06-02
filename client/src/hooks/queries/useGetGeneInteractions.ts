@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getGeneInteractionsQuery = gql`
   query gene($conceptId: String!) {
@@ -31,13 +31,13 @@ const getGeneInteractionsQuery = gql`
 
 export function useGetGeneInteractions(conceptId: string) {
   return useQuery(
-    "gene-interactions" + conceptId,
+    'gene-interactions' + conceptId,
     async () => {
       const res = await graphQLClient.request(getGeneInteractionsQuery, {
         conceptId,
       });
       return res;
     },
-    { enabled: conceptId !== "" }
+    { enabled: conceptId !== '' }
   );
 }

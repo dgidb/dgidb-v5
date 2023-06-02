@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
@@ -12,15 +12,17 @@ import { ActionTypes } from 'stores/Global/reducers';
 import './Home.scss';
 
 export const Home: React.FC = () => {
-
-  const {state, dispatch} = useContext(GlobalClientContext);
+  const { state, dispatch } = useContext(GlobalClientContext);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    dispatch({type: ActionTypes.ContentPage})
+    dispatch({ type: ActionTypes.ContentPage });
     navigate({
       pathname: '/results',
-      search: `${createSearchParams({searchType: state.interactionMode, searchTerms: state.searchTerms.join(',')})}`,
+      search: `${createSearchParams({
+        searchType: state.interactionMode,
+        searchTerms: state.searchTerms.join(','),
+      })}`,
     });
   };
 
@@ -28,42 +30,41 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     if (isToggling) {
-      if(state.themeSettings.darkModeEnabled) {
-        dispatch({type: ActionTypes.DisableDarkMode})
+      if (state.themeSettings.darkModeEnabled) {
+        dispatch({ type: ActionTypes.DisableDarkMode });
       } else {
-        dispatch({type: ActionTypes.EnableDarkMode})
+        dispatch({ type: ActionTypes.EnableDarkMode });
       }
     }
-  }, [isToggling])
+  }, [isToggling]);
 
   // allow for toggling again once dark mode setting is updated
   useEffect(() => {
     setIsToggling(false);
-  }, [state.themeSettings.darkModeEnabled])
+  }, [state.themeSettings.darkModeEnabled]);
 
   useEffect(() => {
-    dispatch({type: ActionTypes.BrandPage})
-  }, [])
+    dispatch({ type: ActionTypes.BrandPage });
+  }, []);
 
   const handleDemoClick = () => {
-    switch(state.interactionMode) {
+    switch (state.interactionMode) {
       case 'gene':
-        dispatch({type: ActionTypes.AddGeneDemoTerms});
+        dispatch({ type: ActionTypes.AddGeneDemoTerms });
         break;
       case 'drug':
-        dispatch({type: ActionTypes.AddDrugDemoTerms});
+        dispatch({ type: ActionTypes.AddDrugDemoTerms });
         break;
       case 'categories':
-        dispatch({type: ActionTypes.AddCategoryDemoTerms});
+        dispatch({ type: ActionTypes.AddCategoryDemoTerms });
         break;
       default:
-        return
+        return;
     }
-  }
+  };
 
   return (
-    <div className="home-page-container" >
-
+    <div className="home-page-container">
       {/* <div className="logo">
         DGIdb
       </div>
@@ -73,16 +74,35 @@ export const Home: React.FC = () => {
 
       <SearchBar handleSubmit={handleSubmit} />
       <div className="home-blurb">
-        An open-source search engine for drug-gene interactions and the druggable genome.
+        An open-source search engine for drug-gene interactions and the
+        druggable genome.
       </div>
       <div className="home-links">
-        <span style={{padding: '0 15px', fontSize: 18, textDecoration: 'underline'}} >
-          <a href='/api'>API</a>
+        <span
+          style={{
+            padding: '0 15px',
+            fontSize: 18,
+            textDecoration: 'underline',
+          }}
+        >
+          <a href="/api">API</a>
         </span>
-        <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
-          <a href='/downloads'>Downloads</a>
+        <span
+          style={{
+            padding: '0 15px',
+            fontSize: 18,
+            textDecoration: 'underline',
+          }}
+        >
+          <a href="/downloads">Downloads</a>
         </span>
-        <span style={{ padding: '0 15px',fontSize: 18, textDecoration: 'underline'}} >
+        <span
+          style={{
+            padding: '0 15px',
+            fontSize: 18,
+            textDecoration: 'underline',
+          }}
+        >
           <a href="https://github.com/dgidb/dgidb-v5">Github</a>
         </span>
       </div>
@@ -98,6 +118,5 @@ export const Home: React.FC = () => {
         />
       </div> */}
     </div>
-    )
-}
-
+  );
+};

@@ -1,45 +1,41 @@
 .downloads-page-container {
+  h3 {
+    font-size: 2rem;
+  }
 
-    h3 {
-        font-size: 2rem;
+  background-color: var(--background);
+  display: flex;
+  color: var(--text-content);
+  // font-size: 50px;
+
+  font-weight: 300;
+
+  .table-of-contents-container {
+    min-width: 180px;
+  }
+
+  .about-content-container {
+    overflow: scroll;
+    color: var(--text-content);
+    padding: 20px 40px;
+    background-color: var(--background);
+
+    .doc-section {
+      font-size: 0.95rem;
+      padding-bottom: 20px;
+    }
+
+    .about-section-container {
+      .about-sub-header {
+        font-size: 20px;
+        font-weight: 400;
       }
 
-      background-color: var(--background);
-      display: flex;
-      color: var(--text-content);
-      // font-size: 50px;
-
-      font-weight: 300;
-
-      .table-of-contents-container {
-        min-width: 180px;
+      .about-citation {
+        color: #8075ff;
+        font-size: 0.8rem;
+        font-weight: 400;
       }
-
-      .about-content-container {
-        overflow: scroll;
-        color: var(--text-content);
-        padding: 20px 40px;
-        background-color: var(--background);
-
-
-        .doc-section {
-          font-size: .95rem;
-          padding-bottom: 20px;
-        }
-
-        .about-section-container {
-          .about-sub-header {
-            font-size: 20px;
-            font-weight: 400;
-          }
-
-          .about-citation {
-            color: #8075FF;
-            font-size: .8rem;
-            font-weight: 400;
-          }
-        }
-      }
-
-
+    }
+  }
 }

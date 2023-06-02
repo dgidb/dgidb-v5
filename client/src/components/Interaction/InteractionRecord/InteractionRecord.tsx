@@ -1,33 +1,33 @@
 // hooks / dependencies
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useGetInteractionRecord } from "hooks/queries/useGetInteractionRecord";
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetInteractionRecord } from 'hooks/queries/useGetInteractionRecord';
 
 // styles
-import "./InteractionRecord.scss";
-import TableBody from "@mui/material/TableBody";
-import Table from "@mui/material/Table";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import Box from "@mui/material/Box";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import './InteractionRecord.scss';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
   const { data } = useGetInteractionRecord(interactionId!);
   const noData = (
     <TableRow>
-      <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
+      <TableCell style={{ borderBottom: 'none' }}>No data available.</TableCell>
     </TableRow>
   );
 
   const sectionsMap = [
     {
-      name: "Interaction Info",
+      name: 'Interaction Info',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -69,7 +69,7 @@ export const InteractionRecord: React.FC = () => {
                 ? data?.interaction?.interactionTypes?.map((attribute: any) => {
                     return (
                       <TableRow
-                        key={"Directionality " + attribute.directionality}
+                        key={'Directionality ' + attribute.directionality}
                       >
                         <TableCell className="attribute-name">
                           Type & Directionality:
@@ -87,7 +87,7 @@ export const InteractionRecord: React.FC = () => {
       ),
     },
     {
-      name: "Publications",
+      name: 'Publications',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -98,7 +98,7 @@ export const InteractionRecord: React.FC = () => {
                       return (
                         <TableRow key={index}>
                           <TableCell className="attribute-name">
-                            {pmid?.citation}{" "}
+                            {pmid?.citation}{' '}
                             <a
                               className="info-link"
                               href={`https://pubmed.ncbi.nlm.nih.gov/${pmid?.pmid}/`}
@@ -128,8 +128,8 @@ export const InteractionRecord: React.FC = () => {
               href={`/drugs/${data.interaction?.drug?.conceptId}`}
             >
               {data?.interaction?.drug?.name}
-            </a>{" "}
-            <ArrowRightIcon />{" "}
+            </a>{' '}
+            <ArrowRightIcon />{' '}
             <a
               className="header-link"
               href={`/genes/${data.interaction?.gene?.conceptId}`}
@@ -145,8 +145,8 @@ export const InteractionRecord: React.FC = () => {
                 <Accordion key={section.name} defaultExpanded>
                   <AccordionSummary
                     style={{
-                      padding: "0 10px",
-                      backgroundColor: "var(--background-light)",
+                      padding: '0 10px',
+                      backgroundColor: 'var(--background-light)',
                     }}
                     expandIcon={<ExpandMoreIcon />}
                   >
@@ -156,9 +156,9 @@ export const InteractionRecord: React.FC = () => {
                   </AccordionSummary>
                   <AccordionDetails
                     style={{
-                      maxHeight: "500px",
-                      overflow: "scroll",
-                      padding: "5px",
+                      maxHeight: '500px',
+                      overflow: 'scroll',
+                      padding: '5px',
                     }}
                   >
                     {section.sectionContent}
@@ -171,8 +171,8 @@ export const InteractionRecord: React.FC = () => {
             <Accordion defaultExpanded>
               <AccordionSummary
                 style={{
-                  padding: "0 10px",
-                  backgroundColor: "var(--background-light)",
+                  padding: '0 10px',
+                  backgroundColor: 'var(--background-light)',
                 }}
                 expandIcon={<ExpandMoreIcon />}
               >
@@ -188,7 +188,7 @@ export const InteractionRecord: React.FC = () => {
                           (attribute: any) => {
                             return (
                               <TableRow
-                                key={attribute.name + " " + attribute.value}
+                                key={attribute.name + ' ' + attribute.value}
                               >
                                 <TableCell className="attribute-name">
                                   {attribute.name}:

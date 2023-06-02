@@ -1,7 +1,7 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
-import { ResultTypes } from "types/types";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
+import { ResultTypes } from 'types/types';
 
 const getGeneMatchesQuery = gql`
   query geneMatches($searchTerms: [String!]!) {
