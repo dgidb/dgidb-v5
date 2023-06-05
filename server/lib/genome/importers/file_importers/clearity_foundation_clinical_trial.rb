@@ -45,7 +45,9 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
         create_drug_claim_alias(drug_claim, "pubchem.compound:#{row['CID']}", DrugNomenclature::PUBCHEM_COMPOUND_ID) unless row['CID'] == 'N/A'
         create_drug_claim_alias(drug_claim, "pubchem.substance:#{row['SID']}", DrugNomenclature::PUBCHEM_SUBSTANCE_ID) unless row['SID'] == 'N/A'
         unless row['Other drug name'] == 'N/A'
-          create_drug_claim_alias(drug_claim, row['Other drug name'], DrugNomenclature::ALIAS)
+          row['Other drug name'].split(",").each do |other_name|
+            create_drug_claim_alias(drug_claim, other_name, DrugNomenclature::ALIAS)
+          end
         end
         create_drug_claim_attribute(drug_claim, DrugAttributeName::CLINICAL_TRIAL_ID, row['Clinical Trial ID(s)'])
 
