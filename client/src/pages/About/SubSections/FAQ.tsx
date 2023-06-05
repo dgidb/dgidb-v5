@@ -1,3 +1,5 @@
+import { Link } from '@mui/material';
+
 export const FAQ = () => {
   return (
     <div className="faq-section-container doc-section">
@@ -11,7 +13,7 @@ export const FAQ = () => {
       <div className="faq-item">
         <div className="faq-question">How do I cite DGIdb?</div>
         <div className="faq-answer">
-          Please cite our most recent paper on DGIdb, which can be found on the{' '}
+          Please cite our most recent paper on DGIdb, which can be found in the{' '}
           <a href="#publications">Publications</a> section.
         </div>
       </div>
@@ -35,63 +37,43 @@ export const FAQ = () => {
           What types of gene names/symbols should I use as input?
         </div>
         <div className="faq-answer">
-          The short answer is that you should ideally use official HUGO gene
-          symbols as reported by Entrez Gene. We have developed a gene name
-          grouping strategy that attempts to aggregate synonyms for each gene.
-          We start with the official name and alternate names of each Entrez
-          Gene and update with additional names from each data source. You
-          should get reasonable results with known synonyms, Ensembl Ids,
-          Uniprot Ids, etc. If you enter a gene name that is ambiguous or
-          unmatched this will be noted in the results. You should attempt to
-          find a more official name for such genes and update your gene list.
-        </div>
-      </div>
-      <div className="faq-item">
-        <div className="faq-question">How are genes defined in DGIdb?</div>
-        <div className="faq-answer">
-          The gene summary page shows the primary name, alternate names and
-          metadata for each gene locus as provided by each source of data
-          imported into DGIdb. Genes in DGIdb are first defined by Entrez but
-          mapped together with gene records from other sources by Entrez ID,
-          Ensembl ID, UniProt ID or alternate names/synonyms in that order of
-          preference.
-        </div>
-      </div>
-      <div className="faq-item">
-        <div className="faq-question">How are drugs defined in DGIdb?</div>
-        <div className="faq-answer">
-          The drug summary page shows the primary drug name, alternates names,
-          and metadata for each gene as provided by each source of the data
-          imported into DGIdb. Drugs are first defined by ChEMBL but mapped
-          together with drug records from other sources.
+          Where possible, you are advised to use up-to-date{' '}
+          <Link href="https://www.genenames.org/" target="_blank">
+            HGNC symbols
+          </Link>
+          . Nearly all DGIdb gene records are associated with an HGNC symbol and
+          concept identifer. Most records are also well-annotated with
+          alternative names and identifiers as well as previously-used symbols,
+          but these terms may be more ambiguous, or result in conflicting
+          matches. In this case, possible matches will be listed under the
+          "Ambiguous or Unmatched" tab in the search results page.
         </div>
       </div>
       <div className="faq-item">
         <div className="faq-question">
-          How are the gene and drug filters defined in DGIdb?
+          How are drugs and genes defined in DGIdb?
         </div>
         <div className="faq-answer">
-          When searching by genes, filters for drug interactions currently
-          include Approved drugs, Antineoplastic drugs, and Immunotherapies.
-          Regulatory approval status is extracted from ChEMBL. Anti-neoplastic
-          drugs are defined by inclusion in an anti-neoplastic drug-gene
-          interaction source (e.g. My Cancer Genome), or as a drug with an
-          anti-neoplastic attribute from its constituent source. Immunotherapy
-          drugs are defined as any drug with an attribute of 'immunosuppressive
-          agent', 'immunomodulatory agent' or 'immunostimulant'.
-          <br></br>
-          <br></br>
-          When searching by drugs, filters for gene interactions currently
-          include Clinically Actionable genes, genes included in the Druggable
-          Genome definition and Drug Resistant genes. Clinically Actionable
-          genes are genes that constitute the DGIdb 'clinically actionable' gene
-          category, and by definition is used to inform clinical action (e.g.
-          the Foundation One diagnostic gene panels). Similarly, druggable
-          genome genes are genes listed in the DGIdb 'druggable genome' gene
-          category. Drug resistance genes are defined by the Gene Ontology as
-          genes that confer drug resistance or susceptibility (GO identifier
-          0042493), and are maintained in the DGIdb through the 'drug
-          resistance' gene category.
+          Drug and gene records in DGIdb represent aggregations of individual
+          source drug and gene claims, grouped together by the{' '}
+          <Link
+            href="https://github.com/cancervariants/gene-normalization"
+            target="_blank"
+          >
+            Gene
+          </Link>{' '}
+          and
+          <Link
+            href="https://github.com/cancervariants/therapy-normalization"
+            target="_blank"
+          >
+            Therapy
+          </Link>{' '}
+          Normalization services. For both, normalized groups are first defined
+          by combining records from central, well-curated sources (e.g. Ensembl
+          and NCBI Gene for genes, and RxNorm and ChEMBL for drugs) based on
+          cross-references. See the normalization services' documentation for
+          more information.
         </div>
       </div>
       <div className="faq-item">
@@ -157,11 +139,9 @@ export const FAQ = () => {
         </div>
       </div>
       <div className="faq-item">
-        <div className="faq-question">
-          What is the "Interaction Score" and the "Query Score"?
-        </div>
+        <div className="faq-question">What is the "Interaction Score"?</div>
         <p className="faq-answer">
-          Please see the <a href="#interaction-scores">Score and Query Score</a>{' '}
+          Please see the <a href="#interaction-scores">Interaction Score</a>{' '}
           section for a detailed explanation of these terms.
         </p>
       </div>
@@ -256,10 +236,10 @@ export const FAQ = () => {
       <div className="faq-item">
         <div className="faq-question">How is DGIdb implemented?</div>
         <p className="faq-answer">
-          The web interface uses Ruby on Rails and React. The backend is a
-          Postgres database. The importers that process data from each source
-          and populate this database are written in Ruby with occasional forays
-          into Python.
+          The web interface is a React frontend served from a Ruby on Rails
+          backend using a GraphQL API. Data is deposited in a PostgreSQL
+          database. The importers that process data from each source and
+          populate this database are written in Ruby.
         </p>
       </div>
       <div className="faq-item">
@@ -283,9 +263,9 @@ export const FAQ = () => {
           What does the version stamp at the foot of each view mean?
         </div>
         <p className="faq-answer">
-          It is currently generated whenever we perform a rake task to create a
+          It is currently generated whenever we perform a Rake task to create a
           new data snapshot for DGIdb. The version number corresponds to a tag
-          in git and eventually the debian package we use to push a development
+          in Git and eventually the debian package we use to push a development
           version of DGIdb to the publicly facing server. The SHA-1 is the
           commit id from when the snapshot was generated, as is the datestamp.
         </p>
@@ -297,11 +277,7 @@ export const FAQ = () => {
         <p className="faq-answer">
           Please let us know. You may contact us by{' '}
           <a href="mailto:help@dgidb.org">email</a>. If your question is more
-          complicated, please ask it publicly on{' '}
-          <a href="http://www.biostars.org/">Biostars</a>. The{' '}
-          <a href="https://github.com/dgidb/dgidb-v5">code for DGIdb</a> is
-          open-source, and if you have a GitHub account you may post your
-          question directly to the GitHub{' '}
+          complicated, please ask it publicly on the GitHub{' '}
           <a href="https://github.com/dgidb/dgidb-v5/issues">issue tracker</a>{' '}
           for our developers to review. If you are the curious/ambitious type,
           feel free to investigate a solution and let us know what you find.

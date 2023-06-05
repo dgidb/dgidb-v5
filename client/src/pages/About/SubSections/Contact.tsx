@@ -163,8 +163,6 @@ export const Contact = () => {
         </p>
       </div>
       <div className="contact-section-container spacing"></div>
-      <div className="contact-section-container spacing"></div>
-      <div className="contact-section-container spacing"></div>
 
       <div className="contact-session-container">
         <h3 id="acknowledgements">Acknowledgements</h3>
