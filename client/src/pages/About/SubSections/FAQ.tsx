@@ -69,11 +69,11 @@ export const FAQ = () => {
           >
             Therapy
           </Link>{' '}
-          Normalizer services. For both, normalized groups are first defined by
-          combining records from central, well-curated sources (e.g. Ensembl and
-          NCBI Gene for genes, and RxNorm and ChEMBL for drugs) based on
-          cross-references. See the normalizer services' documentation for more
-          information.
+          Normalization services. For both, normalized groups are first defined
+          by combining records from central, well-curated sources (e.g. Ensembl
+          and NCBI Gene for genes, and RxNorm and ChEMBL for drugs) based on
+          cross-references. See the normalization services' documentation for
+          more information.
         </div>
       </div>
       <div className="faq-item">
@@ -237,9 +237,9 @@ export const FAQ = () => {
         <div className="faq-question">How is DGIdb implemented?</div>
         <p className="faq-answer">
           The web interface is a React frontend served from a Ruby on Rails
-          backend. Data is deposited in a PostgreSQL database. The importers
-          that process data from each source and populate this database are
-          written in Ruby.
+          backend using a GraphQL API. Data is deposited in a PostgreSQL
+          database. The importers that process data from each source and
+          populate this database are written in Ruby.
         </p>
       </div>
       <div className="faq-item">
