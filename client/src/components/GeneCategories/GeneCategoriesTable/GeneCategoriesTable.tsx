@@ -26,7 +26,12 @@ export const GeneCategoriesTable: React.FC<Props> = ({ categoriesResults }) => {
         return (
           <Box className="source-chip-box">
             {params.row.sources.map((source: string) => (
-              <Chip key={source} label={source} className="source-chip" size="small" />
+              <Chip
+                key={source}
+                label={source}
+                className="source-chip"
+                size="small"
+              />
             ))}
           </Box>
         );

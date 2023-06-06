@@ -1,11 +1,19 @@
-import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetCategories } from 'hooks/queries/useGetCategories';
 import { useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { DirectCategoriesMatch } from '../DirectCategoriesMatch/DirectCategoriesMatch';
+import { DirectMatchCard } from '../DirectMatchCard/DirectMatchCard';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 import './GeneCategoriesSearchResults.scss';
+import { ErrorMessage } from 'components/Shared/ErrorMessage/ErrorMessage';
 
 interface GeneCategoriesSearchResultsProps {
   value: number;
@@ -23,8 +31,34 @@ export const GeneCategoriesSearchResults: React.FC<
   const ambiguousMatches = data?.geneMatches?.ambiguousMatches;
   const failedMatches = data?.geneMatches?.noMatches;
 
-  // TODO merge search terms resulting in same gene
-  const directMatchesDisplay = directMatches && (
+  console.log(data);
+
+  const combinedMatches = directMatches?.reduce((acc: any[], curr: any) => {
+    const existing = acc.find(
+      (termMatch) =>
+        termMatch.matches[0].conceptId === curr.matches[0].conceptId
+    );
+    if (existing) {
+      existing.matchingTerms.push(curr.searchTerm);
+    } else {
+      acc.push({ matchingTerms: [curr.searchTerm], ...curr });
+    }
+    return acc;
+  }, []);
+
+  const loadingSpin = (
+    <Grid container justifyContent="center">
+      <Grid item>
+        <CircularProgress color="secondary" />
+      </Grid>
+    </Grid>
+  );
+
+  const noDirectMatchesMsg = (
+    <Typography>No unique matches were found for the provided search terms.</Typography>
+  )
+
+  const directMatchesDisplay = (
     <>
       <Grid
         container
@@ -37,15 +71,20 @@ export const GeneCategoriesSearchResults: React.FC<
           vars={{ names: state.searchTerms }}
         />
       </Grid>
-      {directMatches.map((directMatch: any, i: number) => (
-        <Box key={i} boxShadow={2}>
-          <DirectCategoriesMatch matchResult={directMatch} />
-        </Box>
-      ))}
+      {isLoading
+        ? loadingSpin
+        : isError
+        ? <ErrorMessage />
+        : combinedMatches?.length === 0 ?
+        noDirectMatchesMsg
+        : combinedMatches?.map((directMatch: any, i: number) => (
+            <Box key={i} boxShadow={2}>
+              <DirectMatchCard matchResult={{ ...directMatch }} />
+            </Box>
+          ))}
     </>
   );
 
-  // TODO loading screen
   return (
     <>
       <Tabs
@@ -55,13 +94,13 @@ export const GeneCategoriesSearchResults: React.FC<
         indicatorColor="secondary"
       >
         <Tab label="Unique Matches" />
-        <Tab label="Ambiguous or Unmatched" />
+        <Tab label="Ambiguous or Unmatched"  disabled={!!ambiguousMatches && !!failedMatches}/>
       </Tabs>
       <TabPanel value={value} index={0}>
-        {directMatches && directMatchesDisplay}
+        {directMatchesDisplay}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        ambig results here
+        TODO ambig results here
       </TabPanel>
     </>
   );

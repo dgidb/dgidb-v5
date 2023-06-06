@@ -8,18 +8,22 @@ import {
 } from '@mui/material';
 import { GeneCategoriesTable } from '../GeneCategoriesTable/GeneCategoriesTable';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import './DirectCategoriesMatch.scss';
+import './DirectMatchCard.scss';
 
 interface Props {
-  matchResult: any; // TODO
+  matchResult: any;
 }
 
-export const DirectCategoriesMatch: React.FC<Props> = ({ matchResult }) => {
+export const DirectMatchCard: React.FC<Props> = ({ matchResult }) => {
   return (
     <Accordion defaultExpanded disableGutters square>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6" className="cats-match-header">
-          Search Term: "{matchResult.searchTerm}" {'\u25B6 '}
+          Search Term{matchResult.matchingTerms.length > 1 && 's'}:{' '}
+          {matchResult.matchingTerms
+            .map((term: string) => `"${term}"`)
+            .join(', ')}{' '}
+          {'\u25B6 '}
           <Link
             className="cats-gene-link"
             href={`/genes/${matchResult.matches[0].conceptId}`}

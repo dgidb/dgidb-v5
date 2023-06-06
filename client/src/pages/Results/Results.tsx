@@ -46,18 +46,16 @@ export const Results: React.FC = () => {
 
   return (
     <div className="results-page-container">
-      {searchType !== SearchTypes.Categories ? (
-        <>
-          {searchType === SearchTypes.Gene? (
-            <GeneSearchResults value={value} handleChange={handleChange} />
-          ) : (
-            <DrugSearchResults value={value} handleChange={handleChange} />
-          )}
-        </>
+      {searchType === SearchTypes.Gene ? (
+        <GeneSearchResults value={value} handleChange={handleChange} />
+      ) : searchType === SearchTypes.Drug ? (
+        <DrugSearchResults value={value} handleChange={handleChange} />
       ) : (
-        ''
+        <GeneCategoriesSearchResults
+          value={value}
+          handleChange={handleChange}
+        />
       )}
-      {searchType === SearchTypes.Categories && <GeneCategoriesSearchResults value={value} handleChange={handleChange} />}
     </div>
   );
 };
