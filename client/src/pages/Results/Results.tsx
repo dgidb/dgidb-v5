@@ -1,21 +1,17 @@
-// hooks/dependencies
 import React, { useContext, useEffect } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useSearchParams } from 'react-router-dom';
-
-// components
-import { CategoryResults } from 'components/Gene/Categories/CategoryResults';
+import { SearchTypes } from 'types/types';
 import { ActionTypes } from 'stores/Global/reducers';
-
-// styles
 import { GeneSearchResults } from 'components/Gene/GeneSearchResults/GeneSearchResults';
 import { DrugSearchResults } from 'components/Drug/DrugSearchResults/DrugSearchResults';
+import { GeneCategoriesSearchResults } from 'components/GeneCategories/GeneCategoriesSearchResults/GeneCategoriesSearchResults';
 
 export const Results: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
   const searchTerms = searchParams.get('searchTerms')?.split(',');
-  const searchType = searchParams.get('searchType');
+  const searchType = searchParams.get('searchType') as SearchTypes;
 
   const [value, setValue] = React.useState(0);
 
@@ -26,12 +22,12 @@ export const Results: React.FC = () => {
   useEffect(() => {
     // update search type based on search params
     if (searchParams) {
-      if (searchType === 'gene') {
+      if (searchType === SearchTypes.Gene) {
         dispatch({ type: ActionTypes.SetByGene });
       }
-      if (searchType === 'drug') {
+      if (searchType === SearchTypes.Drug) {
         dispatch({ type: ActionTypes.SetByDrug });
-      } else if (searchType === 'categories') {
+      } else if (searchType === SearchTypes.Categories) {
         dispatch({ type: ActionTypes.SetGeneCategories });
       }
     }
@@ -50,9 +46,9 @@ export const Results: React.FC = () => {
 
   return (
     <div className="results-page-container">
-      {searchType !== 'categories' ? (
+      {searchType !== SearchTypes.Categories ? (
         <>
-          {searchType === 'gene' ? (
+          {searchType === SearchTypes.Gene? (
             <GeneSearchResults value={value} handleChange={handleChange} />
           ) : (
             <DrugSearchResults value={value} handleChange={handleChange} />
@@ -61,7 +57,7 @@ export const Results: React.FC = () => {
       ) : (
         ''
       )}
-      {searchType === 'categories' && <CategoryResults />}
+      {searchType === SearchTypes.Categories && <GeneCategoriesSearchResults value={value} handleChange={handleChange} />}
     </div>
   );
 };

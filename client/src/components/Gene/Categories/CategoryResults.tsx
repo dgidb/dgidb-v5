@@ -1,3 +1,4 @@
+// TODO delete this
 // hooks/dependencies
 import React, { useContext } from 'react';
 import { useGetCategories } from 'hooks/queries/useGetCategories';
@@ -16,7 +17,6 @@ import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/Ambig
 export const CategoryResults: React.FC = () => {
   const { state } = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
-  const searchType = searchParams.get('searchType');
   const { data } = useGetCategories(state.searchTerms);
   const [value, setValue] = React.useState(0);
 
