@@ -94,7 +94,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     } else if (searchType === SearchTypes.Categories) {
       setSelectedOptions([
         { suggestion: 'HER2' },
-        { name: 'ERBB2' },
+        { suggestion: 'ERBB2' },
         { suggestion: 'PTGDR' },
         { suggestion: 'EGFR' },
         { suggestion: 'RECK' },
