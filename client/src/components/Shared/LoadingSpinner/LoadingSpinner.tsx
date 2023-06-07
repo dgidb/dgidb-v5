@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid } from '@mui/material';
 
 export const LoadingSpinner = () => (
   <Grid container justifyContent="center">

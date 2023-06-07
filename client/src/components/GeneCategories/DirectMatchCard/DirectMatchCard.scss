@@ -1,22 +1,22 @@
 .cats-match-header {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .cats-gene-link {
-    color: var(--text-primary) !important;
-    text-decoration: none !important;
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
 
-    &:hover {
-        color: var(--text-accent) !important;
-        text-decoration: underline !important;
-    }
+  &:hover {
+    color: var(--text-accent) !important;
+    text-decoration: underline !important;
+  }
 
-    &:active {
-        color: var(--text-accent) !important;
-        text-decoration: underline !important;
-    }
+  &:active {
+    color: var(--text-accent) !important;
+    text-decoration: underline !important;
+  }
 }
 
 .cats-accordion-container {
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }

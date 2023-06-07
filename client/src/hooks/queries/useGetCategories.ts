@@ -33,11 +33,14 @@ const getCategoriesQuery = gql`
     }
   }
 `;
+
 export function useGetCategories(names: string[]) {
   return useQuery(
     'categories' + names,
     async () => {
-      const res = await graphQLClient.request(getCategoriesQuery, { searchTerms: names });
+      const res = await graphQLClient.request(getCategoriesQuery, {
+        searchTerms: names,
+      });
       return res;
     },
     { enabled: names.length > 0 }

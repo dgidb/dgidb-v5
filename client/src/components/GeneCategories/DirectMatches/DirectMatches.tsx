@@ -13,7 +13,9 @@ interface Props {
 }
 
 export const DirectMatches: React.FC<Props> = ({
-  directMatches, isLoading, isError
+  directMatches,
+  isLoading,
+  isError,
 }) => {
   const { state } = useContext(GlobalClientContext);
 
