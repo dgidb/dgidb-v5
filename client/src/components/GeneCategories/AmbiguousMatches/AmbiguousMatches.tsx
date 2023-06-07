@@ -23,6 +23,12 @@ export const AmbiguousMatches: React.FC<Props> = ({
     </Typography>
   );
 
+  const noAmbiguousOrFailedMatchesMsg = (
+    <Typography>
+      None of your search terms returned ambiguous or failed matches.
+    </Typography>
+  );
+
   const failedMatchesBox = (
     <Paper className="unmatched-terms">
       <Typography variant="h6">Unmatched Terms:</Typography>
@@ -52,7 +58,9 @@ export const AmbiguousMatches: React.FC<Props> = ({
                 ? ambiguousMatches.map((match: any) => (
                     <AmbiguousMatchesCard match={match} />
                   ))
-                : { noAmbiguousMatchesMsg }}
+                : failedMatches?.length > 0
+                ? noAmbiguousMatchesMsg
+                : noAmbiguousOrFailedMatchesMsg}
             </Box>
           </Grid>
           {failedMatches?.length > 0 && (
