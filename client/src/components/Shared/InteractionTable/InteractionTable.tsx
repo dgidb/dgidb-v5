@@ -17,6 +17,21 @@ interface Props {
   ambiguous?: boolean;
 }
 
+interface InteractionTableRow {
+  id: string;
+  term: string;
+  gene: string | undefined;
+  geneId: string | undefined;
+  drug: string | undefined;
+  drugId: string | undefined;
+  regulatoryApproval: string | undefined;
+  indication?: string[] | undefined;
+  interactionScore: number | undefined;
+  interactionTypes: string | undefined;
+  pmids: any[] | undefined;
+  sources: string[] | undefined;
+}
+
 export const InteractionTable: React.FC<Props> = ({
   interactionResults,
   isLoading,
@@ -151,30 +166,41 @@ export const InteractionTable: React.FC<Props> = ({
     navigate('/interactions/' + event.row.id);
   };
 
-  const rows = interactionResults?.map((interaction: any) => {
-    return {
-      id: interaction.id,
-      term: interaction.term,
-      gene: interaction?.gene?.name,
-      geneId: interaction?.gene?.conceptId,
-      drug: interaction?.drug?.name,
-      drugId: interaction?.drug?.conceptId,
-      regulatoryApproval: interaction?.drug?.approved
-        ? 'Approved'
-        : 'Not Approved',
-      indication: interaction?.drug?.drugAttributes
-        ?.filter((attribute: any) => attribute.name === 'Indication')
-        .map((attribute: any) => attribute.value),
-      interactionScore: truncateDecimals(interaction?.interactionScore, 2),
-      interactionTypes: interaction?.interactionTypes
-        ?.map((interactionType: any) => {
-          return interactionType.type;
-        })
-        .join(', '),
-      pmids: interaction?.publications,
-      sources: interaction?.sources,
-    };
-  });
+  const rows: InteractionTableRow[] = interactionResults?.map(
+    (interaction: any) => {
+      const row: InteractionTableRow = {
+        id: interaction.id,
+        term: interaction.term,
+        gene: interaction?.gene?.name,
+        geneId: interaction?.gene?.conceptId,
+        drug: interaction?.drug?.name,
+        drugId: interaction?.drug?.conceptId,
+        regulatoryApproval: interaction?.drug?.approved
+          ? 'Approved'
+          : 'Not Approved',
+        interactionScore: truncateDecimals(interaction?.interactionScore, 2),
+        interactionTypes: interaction?.interactionTypes
+          ?.map((interactionType: any) => {
+            return interactionType.type;
+          })
+          .join(', '),
+        pmids: interaction?.publications,
+        sources: interaction?.sources,
+      };
+
+      // only add if an indication is available to ensure MUI DataGrid's "is empty" filter works properly
+      const indications: { [k: string]: any } =
+        interaction?.drug?.drugAttributes
+          ?.filter((attribute: any) => attribute.name === 'Indication')
+          .map((attribute: any) => attribute.value);
+      if (indications.length > 0) {
+        row.indication = indications as string[];
+      }
+      return row;
+    }
+  );
+
+  console.log(rows);
 
   return !isLoading ? (
     <Box className="interaction-table-container">
