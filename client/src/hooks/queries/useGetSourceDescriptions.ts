@@ -173,3 +173,42 @@ export function useGetInteractionSources(sourceType: string) {
     { enabled: sourceType !== '' }
   );
 }
+
+const getSourceInfoQuery = gql`
+query getSourceInfo($name: String) {
+  source(name: $name) {
+    fullName
+    license
+    licenseLink
+    siteUrl
+    citation
+    sourceDbVersion
+    sourceTrustLevel {
+      level
+    }
+    sourceTypes {
+      type
+      displayName
+    }
+    drugClaimsCount
+    drugClaimsInGroupsCount
+    geneClaimsCount
+    geneClaimsInGroupsCount
+    interactionClaimsCount
+    interactionClaimsInGroupsCount
+  }
+}
+`
+
+export const useGetSourceInfo = (name: string) => (
+  useQuery(
+    'source' + name,
+    async () => {
+      const res = await graphQLClient.request(getSourceInfoQuery, {
+        name
+      });
+      return res;
+    },
+    { enabled: name!== '' }
+  )
+)

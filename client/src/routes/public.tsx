@@ -13,6 +13,7 @@ import { About } from 'pages/About';
 import { Downloads } from 'pages/Downloads';
 import { Playground } from 'pages/Playground';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
+import { SourceSummary } from 'components/Source/SourceSummary/SourceSummary';
 
 const App = () => {
   const { pathname, hash, key } = useLocation();
@@ -85,6 +86,16 @@ export const Routes = () => {
               element: <InteractionRecord />,
             },
           ],
+        },
+        {
+          path: '/sources',
+          element: <SourceSummary />,
+          children: [
+            {
+              path: ':name',
+              element: <SourceSummary />
+            }
+          ]
         },
         { path: '/results', element: <Results /> },
         { path: '/browse/categories', element: <BrowseCategories /> },

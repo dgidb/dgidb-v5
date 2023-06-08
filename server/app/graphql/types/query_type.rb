@@ -9,6 +9,7 @@ module Types
 
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
+    field :drug_claims, resolver: Resolvers::DrugClaims
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
     field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
@@ -108,11 +109,19 @@ module Types
 
     field :source, Types::SourceType, null: true do
       description "A source"
-      argument :id, String, required: true
+      argument :id, String, required: false
+      argument :name, String, required: false
     end
 
-    def source(id:)
-      Source.find_by(id: id)
+    # TODO double check sql equality operators
+    def source(id: nil, name: nil)
+      if name && id
+        Source.find_by("id = ? AND lower(source_db_name) LIKE ?", id, name.downcase)
+      elsif name
+        Source.find_by("lower(source_db_name) = ?", name.downcase)
+      elsif id
+        Source.find_by(id: id)
+      end
     end
 
     field :source_trust_level, Types::SourceTrustLevelType, null: true do

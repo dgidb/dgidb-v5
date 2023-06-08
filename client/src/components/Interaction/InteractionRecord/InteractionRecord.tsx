@@ -18,6 +18,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
+  console.log(useParams());
   const { data } = useGetInteractionRecord(interactionId!);
   const noData = (
     <TableRow>
