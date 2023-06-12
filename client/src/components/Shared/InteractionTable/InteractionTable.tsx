@@ -193,7 +193,7 @@ export const InteractionTable: React.FC<Props> = ({
         interaction?.drug?.drugAttributes
           ?.filter((attribute: any) => attribute.name === 'Indication')
           .map((attribute: any) => attribute.value);
-      if (indications.length > 0) {
+      if (indications?.length > 0) {
         row.indication = indications as string[];
       }
       return row;
