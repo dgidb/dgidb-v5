@@ -12,8 +12,11 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
+  Grid,
+  Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -104,66 +107,82 @@ export const BrowseCategories: React.FC = () => {
   };
 
   return (
-    <div className="browse-categories-container">
-      <div className="source-checklist">
-        <FormControlLabel
-          label="Select/Deselect All"
-          control={
-            <Checkbox
-              checked={checkAll}
-              indeterminate={indeterminate}
-              onChange={onCheckAllChange}
-            />
-          }
-        />
-        {plainOptions.map((option) => {
-          return (
-            <Box>
-              <FormControlLabel
-                label={option}
-                control={
-                  <Checkbox
-                    checked={checkedList.includes(option)}
-                    onChange={onChange}
-                    id={option}
-                  />
-                }
+    <Box className="browse-cats-container">
+      <Grid
+        container
+        justifyContent="space-between"
+        className="browse-cats-title-container"
+      >
+        <Typography variant="h4" className="browse-cats-title">
+          Druggable Gene Categories
+        </Typography>
+        <Button>download wip</Button>
+      </Grid>
+      <Grid container>
+        <Box className="browse-cats-checkbox-container">
+          <FormControlLabel
+            label="Select/Deselect All"
+            control={
+              <Checkbox
+                checked={checkAll}
+                indeterminate={indeterminate}
+                onChange={onCheckAllChange}
               />
-            </Box>
-          );
-        })}
-      </div>
-
-      <div className="category-list">
-        {renderedCategories?.map((cat: any, index: number) => {
-          if (cat.geneCount) {
+            }
+          />
+          {plainOptions.map((option) => {
             return (
-              <Accordion>
-                <AccordionSummary
-                  style={{ padding: '0 10px' }}
-                  expandIcon={<ExpandMoreIcon />}
-                >
-                  {`${cat.name} ${cat.geneCount}`}
-                </AccordionSummary>
-                <AccordionDetails
-                  style={{ overflow: 'scroll', padding: '0 10px 10px' }}
-                >
-                  <BrowseCategoriesGenesTable
-                    categoryName={cat.name}
-                    sourceDbNames={
-                      plainOptions.length === checkedList.length
-                        ? []
-                        : checkedList
-                    }
-                  />
-                </AccordionDetails>
-              </Accordion>
+              <Box>
+                <FormControlLabel
+                  label={option}
+                  control={
+                    <Checkbox
+                      checked={checkedList.includes(option)}
+                      onChange={onChange}
+                      id={option}
+                    />
+                  }
+                />
+              </Box>
             );
-          } else {
-            return null;
-          }
-        })}
-      </div>
-    </div>
+          })}
+        </Box>
+        <Box className="browse-cats-accordion-horizontal-container" flex={1}>
+          <Box style={{ maxHeight: '80vh', overflow: 'auto' }} boxShadow={3}>
+            {renderedCategories?.map((cat: any, index: number) => {
+              if (cat.geneCount) {
+                return (
+                  <Accordion
+                    TransitionProps={{ unmountOnExit: true }}
+                    disableGutters
+                  >
+                    <AccordionSummary
+                      style={{ padding: '0 10px' }}
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      {`${cat.name} (${cat.geneCount} genes)`}
+                    </AccordionSummary>
+                    <AccordionDetails
+                      style={{ overflow: 'scroll', padding: '0 10px 10px' }}
+                    >
+                      <BrowseCategoriesGenesTable
+                        categoryName={cat.name}
+                        sourceDbNames={
+                          plainOptions.length === checkedList.length
+                            ? []
+                            : checkedList
+                        }
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </Box>
+        </Box>
+      </Grid>
+    </Box>
   );
 };

@@ -1,7 +1,8 @@
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import React from 'react';
 import './GeneCategoriesTable.scss';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
+import { SourceChip } from 'components/Shared/SourceChip/SourceChip';
 
 interface Props {
   categoriesResults: any[];
@@ -26,12 +27,7 @@ export const GeneCategoriesTable: React.FC<Props> = ({ categoriesResults }) => {
         return (
           <Box className="source-chip-box">
             {params.row.sources.map((source: string) => (
-              <Chip
-                key={source}
-                label={source}
-                className="source-chip"
-                size="small"
-              />
+              <SourceChip source={source} />
             ))}
           </Box>
         );
@@ -59,6 +55,9 @@ export const GeneCategoriesTable: React.FC<Props> = ({ categoriesResults }) => {
         cell: 'categories-table-cell',
       }}
       getRowHeight={() => 'auto'}
+      sx={{
+        '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '5px' },
+      }}
     />
   );
 };

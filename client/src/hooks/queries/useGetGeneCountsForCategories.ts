@@ -22,6 +22,6 @@ export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
       });
       return res;
     },
-    { enabled: true } // TODO double check
+    { enabled: true }
   );
 };
