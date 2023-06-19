@@ -9,7 +9,11 @@ import { API_URL } from 'config';
 import Box from '@mui/material/Box';
 
 interface Props<FilterVars> {
-  tableName: string;
+  tableName:
+    | 'browse_category_results'
+    | 'gene_category_results'
+    | 'gene_interaction_results'
+    | 'drug_interaction_results';
   vars: FilterVars;
 }
 

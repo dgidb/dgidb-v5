@@ -5,7 +5,7 @@ import { useGetGenesForCategory } from 'hooks/queries/useGetGenesForCategory';
 // styles
 import './BrowseCategoriesGenesTable.scss';
 import { Box } from '@mui/system';
-import { LinearProgress, Skeleton } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { SourceChip } from 'components/Shared/SourceChip/SourceChip';
 

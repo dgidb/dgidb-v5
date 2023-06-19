@@ -12,13 +12,13 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
   Checkbox,
   FormControlLabel,
   Grid,
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 
 interface Categories {
   [key: string]: number;
@@ -106,6 +106,10 @@ export const BrowseCategories: React.FC = () => {
     setCheckAll(e.target.checked);
   };
 
+  const sourceNames = plainOptions.length === checkedList.length
+  ? []
+  : checkedList;
+
   return (
     <Box className="browse-cats-container">
       <Grid
@@ -116,7 +120,7 @@ export const BrowseCategories: React.FC = () => {
         <Typography variant="h4" className="browse-cats-title">
           Druggable Gene Categories
         </Typography>
-        <Button>download wip</Button>
+        <TableDownloader tableName="browse_category_results" vars={{ names: sourceNames }} />
       </Grid>
       <Grid container>
         <Box className="browse-cats-checkbox-container">
@@ -167,11 +171,7 @@ export const BrowseCategories: React.FC = () => {
                     >
                       <BrowseCategoriesGenesTable
                         categoryName={cat.name}
-                        sourceDbNames={
-                          plainOptions.length === checkedList.length
-                            ? []
-                            : checkedList
-                        }
+                        sourceDbNames={sourceNames}
                       />
                     </AccordionDetails>
                   </Accordion>

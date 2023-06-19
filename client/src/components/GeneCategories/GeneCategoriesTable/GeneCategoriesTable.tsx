@@ -1,7 +1,7 @@
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import React from 'react';
 import './GeneCategoriesTable.scss';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { SourceChip } from 'components/Shared/SourceChip/SourceChip';
 
 interface Props {
