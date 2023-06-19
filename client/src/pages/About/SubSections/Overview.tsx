@@ -39,7 +39,7 @@ export const Overview = () => {
         >
           Gene
         </Link>{' '}
-        and
+        and{' '}
         <Link
           href="https://github.com/cancervariants/therapy-normalization"
           target="_blank"

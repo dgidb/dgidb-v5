@@ -18,35 +18,37 @@ import './About.scss';
 export const About = () => {
   return (
     <div className="about-page-container">
-      <div className="table-of-contents-container">
-        <Box mb={1} mt={1}>
-          <Link href="#about">About</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#publications">Publications</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#interaction-types">Types/Directionalities</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#interaction-scores">Interaction Score</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#faq">FAQ</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#known-data-clients">Known Data Clients</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#contact">Contact</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#current-contributors">Current Contributors</Link>
-        </Box>
-        <Box mb={1}>
-          <Link href="#acknowledgements">Acknowledgements</Link>
-        </Box>
-      </div>
+      <Box>
+        <div className="table-of-contents-container">
+          <Box mb={1} mt={1}>
+            <Link href="#about">About</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#publications">Publications</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#interaction-types">Types/Directionalities</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#interaction-scores">Interaction Score</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#faq">FAQ</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#known-data-clients">Known Data Clients</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#contact">Contact</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#current-contributors">Current Contributors</Link>
+          </Box>
+          <Box mb={1}>
+            <Link href="#acknowledgements">Acknowledgements</Link>
+          </Box>
+        </div>
+      </Box>
       <div className="about-content-container">
         <div className="doc-section">
           <h3 id="about">About</h3>
