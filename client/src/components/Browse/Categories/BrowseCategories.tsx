@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from 'react';
-import { useGetDruggableSources } from 'hooks/queries/useGetDruggableSources';
+import { useGetDruggableSources } from 'hooks/queries/useGetSourceInfo';
 
 // components
 import { BrowseCategoriesGenesTable } from 'components/Browse/Categories/BrowseCategoriesGenesTable';

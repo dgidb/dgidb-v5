@@ -5,7 +5,7 @@ import {
   useGetGeneSources,
   useGetDrugSources,
   useGetInteractionSources,
-} from 'hooks/queries/useGetDruggableSources';
+} from 'hooks/queries/useGetSourceInfo';
 
 // styles
 import './BrowseSources.scss';
