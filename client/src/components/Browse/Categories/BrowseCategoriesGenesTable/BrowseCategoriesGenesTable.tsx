@@ -110,7 +110,9 @@ export const BrowseCategoriesGenesTable: React.FC<
           getRowHeight={() => 'auto'}
           getRowClassName={(params) => 'categorized-genes-data-rows'}
           sx={{
-            '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '5px' },
+            '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
+              py: '5px',
+            },
           }}
         />
       </Box>

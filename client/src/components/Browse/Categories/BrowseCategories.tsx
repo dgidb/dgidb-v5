@@ -106,9 +106,8 @@ export const BrowseCategories: React.FC = () => {
     setCheckAll(e.target.checked);
   };
 
-  const sourceNames = plainOptions.length === checkedList.length
-  ? []
-  : checkedList;
+  const sourceNames =
+    plainOptions.length === checkedList.length ? [] : checkedList;
 
   return (
     <Box className="browse-cats-container">
@@ -120,7 +119,10 @@ export const BrowseCategories: React.FC = () => {
         <Typography variant="h4" className="browse-cats-title">
           Druggable Gene Categories
         </Typography>
-        <TableDownloader tableName="browse_category_results" vars={{ names: sourceNames }} />
+        <TableDownloader
+          tableName="browse_category_results"
+          vars={{ names: sourceNames }}
+        />
       </Grid>
       <Grid container>
         <Box className="browse-cats-checkbox-container">
