@@ -1,3 +1,4 @@
+require_relative 'deploy/sidekiq'
 require_relative 'deploy/puma'
 
 # config valid for current version and patch releases of Capistrano
