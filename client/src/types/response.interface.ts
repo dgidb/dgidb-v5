@@ -1,18 +1,17 @@
-
 export interface Response {
-  "data": {
-    "gene": {
-      "interactions": [
+  data: {
+    gene: {
+      interactions: [
         {
-        "interactionClaims": {
-          "drugClaim": {
-            "drug": {
-              "name": string
-            }
-          }
+          interactionClaims: {
+            drugClaim: {
+              drug: {
+                name: string;
+              };
+            };
+          };
         }
-      }
-      ]
-    }
-  }
+      ];
+    };
+  };
 }

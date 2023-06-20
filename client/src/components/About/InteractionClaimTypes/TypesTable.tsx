@@ -7,13 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-
 export const TypesTable: React.FC = () => {
-
   const { data } = useGetInteractionClaimTypes();
 
   function createMarkup(inset_html: any) {
-    return {__html: inset_html};
+    return { __html: inset_html };
   }
 
   return (
@@ -29,21 +27,27 @@ export const TypesTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.interactionClaimTypes?.nodes?.map((row: any, key: number) => (
-            <TableRow
-              key={key}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">{row.type}</TableCell>
-              <TableCell align="right">{row.definition}</TableCell>
-              <TableCell align="right">{row.directionality}</TableCell>
-              <TableCell dangerouslySetInnerHTML={createMarkup(row.reference)} align="right"></TableCell>
-
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+            {data?.interactionClaimTypes?.nodes?.map(
+              (row: any, key: number) => (
+                <TableRow
+                  key={key}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.type}
+                  </TableCell>
+                  <TableCell align="left">{row.definition}</TableCell>
+                  <TableCell align="right">{row.directionality}</TableCell>
+                  <TableCell
+                    dangerouslySetInnerHTML={createMarkup(row.reference)}
+                    align="right"
+                  ></TableCell>
+                </TableRow>
+              )
+            )}
+          </TableBody>
+        </Table>
       </TableContainer>
     </div>
-  )
+  );
 };

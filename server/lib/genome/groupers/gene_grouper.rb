@@ -271,6 +271,8 @@ module Genome
       def add_claim_aliases(claim, gene)
         existing_gene_aliases = gene.gene_aliases.pluck(:alias).to_set
         claim.gene_claim_aliases.map(&:alias).map(&:upcase).to_set.each do |claim_alias|
+          next if claim_alias == gene.name || claim_alias == gene.concept_id.upcase
+
           if !existing_gene_aliases.member?(claim_alias)
             gene_alias = GeneAlias.create(
               alias: claim_alias,

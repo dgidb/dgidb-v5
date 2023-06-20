@@ -1,8 +1,3 @@
-.loading-spinner {
-  color: var(--header-gradient-1) !important;
-  margin-left: 10px;
-}
-
 .table-header {
   background-color: var(--background-light);
   font-size: 14px;
@@ -27,4 +22,25 @@
 
 .interaction-table-container {
   background-color: var(--background);
+}
+
+.gene-cell {
+  margin: 15px 0 15px 0;
+}
+
+.drug-cell {
+  margin: 15px 0 15px 0;
+}
+
+.record-link {
+  color: var(--header-gradient-1);
+  text-decoration: none;
+}
+
+.record-link:hover {
+  text-decoration: underline;
+}
+
+.record-link:active {
+  text-decoration: underline;
 }

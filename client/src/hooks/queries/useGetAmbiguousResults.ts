@@ -1,15 +1,42 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
+import { ResultTypes } from 'types/types';
 
 const getGeneMatchesQuery = gql`
-  query geneMatches($names: [String!]!) {
-    geneMatches(searchTerms: $names) {
+  query geneMatches($searchTerms: [String!]!) {
+    geneMatches(searchTerms: $searchTerms) {
       directMatches {
         searchTerm
         matches {
-          id
           name
+          conceptId
+          interactions {
+            id
+            drug {
+              name
+              conceptId
+              approved
+              drugApprovalRatings {
+                rating
+              }
+              drugAttributes {
+                name
+                value
+              }
+            }
+            interactionScore
+            interactionTypes {
+              type
+              directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              fullName
+            }
+          }
         }
       }
       ambiguousMatches {
@@ -17,6 +44,7 @@ const getGeneMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {
@@ -27,13 +55,39 @@ const getGeneMatchesQuery = gql`
 `;
 
 const getDrugMatchesQuery = gql`
-  query drugMatches($names: [String!]!) {
-    drugMatches(searchTerms: $names) {
+  query drugMatches($searchTerms: [String!]!) {
+    drugMatches(searchTerms: $searchTerms) {
       directMatches {
         searchTerm
         matches {
-          id
           name
+          conceptId
+          approved
+          drugAttributes {
+            name
+            value
+          }
+          interactions {
+            id
+            gene {
+              name
+              conceptId
+              geneCategories {
+                name
+              }
+            }
+            interactionScore
+            interactionTypes {
+              type
+              directionality
+            }
+            publications {
+              pmid
+            }
+            sources {
+              fullName
+            }
+          }
         }
       }
       ambiguousMatches {
@@ -41,6 +95,7 @@ const getDrugMatchesQuery = gql`
         matches {
           id
           name
+          conceptId
         }
       }
       noMatches {
@@ -50,17 +105,18 @@ const getDrugMatchesQuery = gql`
   }
 `;
 
-export function useGetMatchedResults(names: string[], type: string) {
-  const key = type + names
-  const requestQuery = type === "gene" ? getGeneMatchesQuery : getDrugMatchesQuery
+export function useGetMatchedResults(names: string[], type: ResultTypes) {
+  const key = type + names;
+  const requestQuery =
+    type === ResultTypes.Gene ? getGeneMatchesQuery : getDrugMatchesQuery;
   return useQuery(
     key,
     async () => {
       const res = await graphQLClient.request(requestQuery, {
-        names,
+        searchTerms: names,
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }

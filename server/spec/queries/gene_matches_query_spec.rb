@@ -18,8 +18,34 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
         directMatches {
           searchTerm
           matches {
-            id
             name
+            conceptId
+            interactions {
+              id
+              drug {
+                name
+                conceptId
+                approved
+                drugApprovalRatings {
+                  rating
+                }
+                drugAttributes {
+                  name
+                  value
+                }
+              }
+              interactionScore
+              interactionTypes {
+                type
+                directionality
+              }
+              publications {
+                pmid
+              }
+              sources {
+                fullName
+              }
+            }
           }
         }
         ambiguousMatches {
@@ -27,6 +53,7 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
           matches {
             id
             name
+            conceptId
           }
         }
         noMatches {
@@ -51,19 +78,21 @@ RSpec.describe 'Ambiguous gene matches query', type: :graphql do
     braf_result = direct_matches.select { |dm| dm['searchTerm'] == @braf.name }[0]
     expect(braf_result['matches'].size).to eq 1
     expect(braf_result['matches'][0]['name']).to eq @braf.name
-    expect(braf_result['matches'][0]['id']).to eq @braf.id
+    expect(braf_result['matches'][0]['conceptId']).to eq @braf.concept_id
     alk_result = direct_matches.select { |dm| dm['searchTerm'] == @alk1_alk.alias }[0]
     expect(alk_result['matches'].size).to eq 1
     expect(alk_result['matches'][0]['name']).to eq @alk.name
-    expect(alk_result['matches'][0]['id']).to eq @alk.id
+    expect(alk_result['matches'][0]['conceptId']).to eq @alk.concept_id
 
     ambig_matches = result['data']['geneMatches']['ambiguousMatches']
     expect(ambig_matches.size).to eq 1
     expect(ambig_matches[0]['searchTerm']).to eq @stk1_flt.alias
     ambig_flt = ambig_matches[0]['matches'].select { |m| m['name'] == @flt.name }[0]
     expect(ambig_flt['id']).to eq @flt.id
+    expect(ambig_flt['conceptId']).to eq @flt.concept_id
     ambig_cdk = ambig_matches[0]['matches'].select { |m| m['name'] == @cdk.name }[0]
     expect(ambig_cdk['id']).to eq @cdk.id
+    expect(ambig_cdk['conceptId']).to eq @cdk.concept_id
 
     no_matches = result['data']['geneMatches']['noMatches']
     expect(no_matches.size).to eq 1

@@ -1,52 +1,48 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getCategoriesQuery = gql`
-  query genes($names: [String!]!) {
-    genes(names: $names) {
-      nodes {
-        name
-        geneCategoriesWithSources {
+  query geneCategoriesSearch($searchTerms: [String!]!) {
+    geneMatches(searchTerms: $searchTerms) {
+      directMatches {
+        searchTerm
+        matches {
           name
-          sourceNames
+          conceptId
+          geneCategoriesWithSources {
+            name
+            sourceNames
+          }
         }
+      }
+      ambiguousMatches {
+        searchTerm
+        matches {
+          name
+          conceptId
+          geneCategoriesWithSources {
+            name
+            sourceNames
+          }
+        }
+      }
+      noMatches {
+        searchTerm
       }
     }
   }
 `;
+
 export function useGetCategories(names: string[]) {
   return useQuery(
-    "categories" + names,
+    'categories' + names,
     async () => {
-      const res = await graphQLClient.request(getCategoriesQuery, { names });
-      return res;
-    },
-    { enabled: names !== [] }
-  );
-}
-
-const getCategoriesbySourceQuery = gql`
-  query categories($names: [String!]!) {
-    genes(names: $names) {
-      nodes {
-        geneCategories {
-          name
-        }
-      }
-    }
-  }
-`;
-
-export function useGetCategoriesBySource(names: string[]) {
-  return useQuery(
-    "categories-by-source" + names,
-    async () => {
-      const res = await graphQLClient.request(getCategoriesbySourceQuery, {
-        names,
+      const res = await graphQLClient.request(getCategoriesQuery, {
+        searchTerms: names,
       });
       return res;
     },
-    { enabled: names !== [] }
+    { enabled: names.length > 0 }
   );
 }

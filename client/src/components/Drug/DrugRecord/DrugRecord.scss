@@ -1,3 +1,7 @@
+.linear-bar {
+  margin: 15px;
+}
+
 .drug-record-container {
   padding: 20px;
   background-color: var(--background);
@@ -21,6 +25,19 @@
       margin-left: 0.75em;
       margin-bottom: 0.22em;
     }
+
+    .concept-id-link {
+      color: var(--text-accent) !important;
+      text-decoration: none !important;
+    }
+
+    .concept-id-link:hover {
+      text-decoration: underline !important;
+    }
+
+    .concept-id-link:active {
+      text-decoration: underline !important;
+    }
   }
 
   .data-box {
@@ -33,7 +50,7 @@
     }
 
     .box-content {
-      padding: .5rem;
+      padding: 0.5rem;
       max-height: 570px;
     }
   }
@@ -58,7 +75,7 @@
     }
   }
 
-  .drug-record-lower  {
+  .drug-record-lower {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
