@@ -1,1 +1,1 @@
-export * from './DrugSummary'
+export * from './DrugSummary';

@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { gql } from "graphql-request";
-import { graphQLClient } from "config";
+import { useQuery } from 'react-query';
+import { gql } from 'graphql-request';
+import { graphQLClient } from 'config';
 
 const getDrugInteractionsQuery = gql`
   query drug($conceptId: String!) {
@@ -31,13 +31,13 @@ const getDrugInteractionsQuery = gql`
 
 export function useGetDrugInteractions(conceptId: string) {
   return useQuery(
-    "drug-interactions" + conceptId,
+    'drug-interactions' + conceptId,
     async () => {
       const res = await graphQLClient.request(getDrugInteractionsQuery, {
         conceptId,
       });
       return res;
     },
-    { enabled: conceptId !== "" }
+    { enabled: conceptId !== '' }
   );
 }

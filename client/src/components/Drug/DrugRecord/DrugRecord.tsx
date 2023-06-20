@@ -1,25 +1,25 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useGetDrugRecord } from "hooks/queries/useGetDrugRecord";
-import Box from "@mui/material/Box";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LaunchIcon from "@mui/icons-material/Launch";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetDrugRecord } from 'hooks/queries/useGetDrugRecord';
+import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 // styles
-import "./DrugRecord.scss";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import Table from "@mui/material/Table";
+import './DrugRecord.scss';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Table from '@mui/material/Table';
 
 // components
-import { LinearProgress, Link } from "@mui/material";
-import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-import { useGetDrugInteractions } from "hooks/queries/useGetDrugInteractions";
+import { LinearProgress, Link } from '@mui/material';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
 
 export const DrugRecord: React.FC = () => {
   const drugId = useParams().drug as string;
@@ -43,13 +43,13 @@ export const DrugRecord: React.FC = () => {
 
   const noData = (
     <TableRow>
-      <TableCell style={{ borderBottom: "none" }}>No data available.</TableCell>
+      <TableCell style={{ borderBottom: 'none' }}>No data available.</TableCell>
     </TableRow>
   );
 
   const sectionsMap = [
     {
-      name: "Drug Info",
+      name: 'Drug Info',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -57,7 +57,7 @@ export const DrugRecord: React.FC = () => {
               {drugData?.drugAttributes.length ? (
                 drugData?.drugAttributes?.map((attribute: any) => {
                   return (
-                    <TableRow key={attribute.name + " " + attribute.value}>
+                    <TableRow key={attribute.name + ' ' + attribute.value}>
                       <TableCell className="attribute-name">
                         {attribute.name}:
                       </TableCell>
@@ -70,9 +70,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -86,7 +86,7 @@ export const DrugRecord: React.FC = () => {
       ),
     },
     {
-      name: "Aliases",
+      name: 'Aliases',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -104,9 +104,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -120,7 +120,7 @@ export const DrugRecord: React.FC = () => {
       ),
     },
     {
-      name: "Approval Ratings",
+      name: 'Approval Ratings',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -142,9 +142,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -158,7 +158,7 @@ export const DrugRecord: React.FC = () => {
       ),
     },
     {
-      name: "FDA Applications",
+      name: 'FDA Applications',
       sectionContent: (
         <Box className="box-content">
           <Table>
@@ -183,9 +183,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: "white",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#480a77",
+                    backgroundColor: 'white',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#480a77',
                     },
                   }}
                   className="linear-bar"
@@ -213,8 +213,8 @@ export const DrugRecord: React.FC = () => {
               <Accordion key={section.name} defaultExpanded>
                 <AccordionSummary
                   style={{
-                    padding: "0 10px",
-                    backgroundColor: "var(--background-light)",
+                    padding: '0 10px',
+                    backgroundColor: 'var(--background-light)',
                   }}
                   expandIcon={<ExpandMoreIcon />}
                 >
@@ -224,9 +224,9 @@ export const DrugRecord: React.FC = () => {
                 </AccordionSummary>
                 <AccordionDetails
                   style={{
-                    maxHeight: "350px",
-                    overflow: "scroll",
-                    padding: "5px",
+                    maxHeight: '350px',
+                    overflow: 'scroll',
+                    padding: '5px',
                   }}
                 >
                   {section.sectionContent}
@@ -239,8 +239,8 @@ export const DrugRecord: React.FC = () => {
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{
-                padding: "0 10px",
-                backgroundColor: "var(--background-light)",
+                padding: '0 10px',
+                backgroundColor: 'var(--background-light)',
               }}
               expandIcon={<ExpandMoreIcon />}
             >

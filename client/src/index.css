@@ -13,7 +13,7 @@
 
 :root {
   --background: #180a20;
-  --background-light: #3C3143;
+  --background-light: #3c3143;
   --theme-primary: #480a77;
   --text-primary: white;
   --text-primary-low: #dedede;
@@ -56,8 +56,8 @@
 }
 
 [data-theme='dark'] {
-  --text-accent: #8075FF;
-  --background: #120C1A;
+  --text-accent: #8075ff;
+  --background: #120c1a;
   --box-border: #392073;
   --box: #21163a;
   --highlight: #63516e;
@@ -70,11 +70,11 @@
 }
 
 [data-theme='dark-home'] {
-  --background: #120C1A;
+  --background: #120c1a;
   --highlight: #b3a8b9;
   --theme-primary: #480a77;
   --text-content: #c9dbd9;
   --soft-background: #2c2133;
   --text-primary: #e8eaed;
-  --text-accent: #8075FF;
+  --text-accent: #8075ff;
 }

@@ -1,7 +1,5 @@
 .category-results-container {
-
   .gene-categories {
-
     .gene-category-result {
       margin-bottom: 20px;
 
@@ -30,7 +28,7 @@
           .category-name {
             width: 400px;
             padding: 3px 8px;
-            color: var(--text-primary)
+            color: var(--text-primary);
             // background-color: var(--background-light);
           }
 
@@ -39,7 +37,7 @@
             border-left: var(--text-content) 1px solid;
             flex: 1;
             padding: 3px 8px;
-            color: var(--text-primary)
+            color: var(--text-primary);
           }
         }
 
@@ -52,7 +50,7 @@
 }
 
 .ant-tabs-tab {
-  color: var(--text-primary)
+  color: var(--text-primary);
 }
 
 .ant-tabs-content {

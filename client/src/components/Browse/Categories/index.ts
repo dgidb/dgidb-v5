@@ -1,1 +1,1 @@
-export * from './BrowseCategories'
+export * from './BrowseCategories';

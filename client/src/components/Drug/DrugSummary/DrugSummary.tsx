@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,19 +8,19 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 
-import { InteractionTypeDrug } from "components/Drug/DrugCharts";
-import { DirectionalityDrug } from "components/Drug/DrugCharts";
-import { GeneCategories } from "components/Drug/DrugCharts";
-import { Tab, Tabs } from "@mui/material";
-import TabPanel from "components/Shared/TabPanel/TabPanel";
+import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
+import { DirectionalityDrug } from 'components/Drug/DrugCharts';
+import { GeneCategories } from 'components/Drug/DrugCharts';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
-import "./DrugSummary.scss";
-import Box from "@mui/material/Box";
-import InteractionTable from "components/Shared/InteractionTable/InteractionTable";
-import TableDownloader from "components/Shared/TableDownloader/TableDownloader";
+import './DrugSummary.scss';
+import Box from '@mui/material/Box';
+import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
+import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 
 ChartJS.register(
   CategoryScale,
@@ -44,7 +44,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
 }) => {
   const toggleFilter = (drugName: string) => {
     if (selectedDrug === drugName) {
-      setSelectedDrug("");
+      setSelectedDrug('');
     } else {
       setSelectedDrug(drugName);
     }
@@ -66,7 +66,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
         return (
           <div
             className={`interaction-count-row ${
-              selectedDrug === drug.name ? "filtered-by" : null
+              selectedDrug === drug.name ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(drug.name)}
             key={i}
@@ -100,9 +100,9 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -112,7 +112,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
   }
 
   const filteredDrugMatches =
-    selectedDrug === ""
+    selectedDrug === ''
       ? drugMatches
       : drugMatches.filter((drugMatch: any) => drugMatch.name === selectedDrug);
 
@@ -160,7 +160,7 @@ interface SummaryProps {
 
 export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const [selectedDrug, setSelectedDrug] = useState<string>("");
+  const [selectedDrug, setSelectedDrug] = useState<string>('');
 
   useEffect(() => {
     let interactions: any[] = [];
@@ -172,7 +172,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
             approved: drug.matches[0].approved,
             name: drug.matches[0].name,
             conceptId: drug.matches[0].conceptId,
-            drugAttributes: drug.matches[0].drugAttributes
+            drugAttributes: drug.matches[0].drugAttributes,
           },
           ...interaction,
         });
