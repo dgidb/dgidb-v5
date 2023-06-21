@@ -1,0 +1,26 @@
+changelog:
+  exclude:
+    labels:
+      - test
+    authors:
+      - dependabot
+      - github-actions
+  categories:
+    - title: New Features
+      labels:
+        - requirement
+        - epic
+    - title: Enhancements
+      labels:
+        - enhancement
+        - performance
+    - title: Bug Fixes
+      labels:
+        - bug
+    - title: Clean-up
+      labels:
+        - cleanup
+        - technical debt
+    - title: Other Changes
+      labels:
+        - "*"

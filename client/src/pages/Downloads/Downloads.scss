@@ -1,13 +1,15 @@
 .downloads-page-container {
-  h3 {
-    font-size: 2rem;
+  p {
+    margin-bottom: 0.5em;
+  }
+
+  .downloads-title-container {
+    margin-bottom: 0.7em;
   }
 
   background-color: var(--background);
   display: flex;
   color: var(--text-content);
-  // font-size: 50px;
-
   font-weight: 300;
 
   .table-of-contents-container {
@@ -22,10 +24,18 @@
 
     .doc-section {
       font-size: 0.95rem;
-      padding-bottom: 20px;
+      padding-bottom: 10px;
     }
 
     .about-section-container {
+      .code-text-container {
+        margin: 0.9em;
+
+        .code-text {
+          font-size: 0.85rem;
+        }
+      }
+
       .about-sub-header {
         font-size: 20px;
         font-weight: 400;
