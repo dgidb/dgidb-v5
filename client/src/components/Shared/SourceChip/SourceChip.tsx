@@ -1,6 +1,6 @@
 import { Chip } from '@mui/material';
 
-import './SourceChip.scss'
+import './SourceChip.scss';
 
 interface SourceChipProps {
   source: string;

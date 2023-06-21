@@ -1,13 +1,11 @@
 .browse-cats-container {
   padding: 24px;
-}
 
-.browse-cats-title-container {
-  margin-bottom: 1.1em;
-}
+  .browse-cats-title-container {
+    margin-bottom: 1.1em;
+  }
 
-.browse-cats-checkbox-container {
-  margin-right: 1em;
-  padding: 0.8em;
-  background-color: var(--background-light);
+  .empty-msg {
+    margin: 1em;
+  }
 }

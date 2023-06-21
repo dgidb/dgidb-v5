@@ -37,7 +37,8 @@ const getDruggableSourcesQuery = gql`
   }
 `;
 
-export function useGetDruggableSources(sourceType: string) {
+export const useGetDruggableSources = (enabled: boolean = true) => {
+  const sourceType = 'POTENTIALLY_DRUGGABLE';
   return useQuery(
     'druggable-sources' + sourceType,
     async () => {
@@ -46,9 +47,9 @@ export function useGetDruggableSources(sourceType: string) {
       });
       return res;
     },
-    { enabled: sourceType !== '' }
+    { enabled: enabled }
   );
-}
+};
 
 const getGeneSourcesQuery = gql`
   query sources($sourceType: SourceTypeFilter) {

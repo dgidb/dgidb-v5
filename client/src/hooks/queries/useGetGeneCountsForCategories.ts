@@ -13,7 +13,11 @@ const getGeneCountsForCategoriesQuery = gql`
   }
 `;
 
-export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
+export const useGetGeneCountsForCategories = (
+  sourceDbNames: String[],
+  enabled: boolean = true
+) => {
+  console.log('firintg query');
   return useQuery(
     'gene-counts-for-categories',
     async () => {
@@ -22,6 +26,6 @@ export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
       });
       return res;
     },
-    { enabled: true }
+    { enabled: enabled }
   );
 };

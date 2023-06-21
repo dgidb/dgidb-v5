@@ -2,21 +2,24 @@
 import React, { useEffect, useState } from 'react';
 import { useGetGenesForCategory } from 'hooks/queries/useGetGenesForCategory';
 
-// styles
-import './BrowseCategoriesGenesTable.scss';
+// components
 import { Box } from '@mui/system';
 import { LinearProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { SourceChip } from 'components/Shared/SourceChip/SourceChip';
 
-interface BrowseCategoriesGenesTableProps {
+// styles
+import './CategoryTable.scss';
+
+interface CategoryTableProps {
   categoryName: String;
   sourceDbNames: String[];
 }
 
-export const BrowseCategoriesGenesTable: React.FC<
-  BrowseCategoriesGenesTableProps
-> = ({ categoryName, sourceDbNames }) => {
+export const CategoryTable: React.FC<CategoryTableProps> = ({
+  categoryName,
+  sourceDbNames,
+}) => {
   const [genesInCategory, setGenesInCategory] = useState([]);
 
   const { data, isError, isLoading } = useGetGenesForCategory(
