@@ -10,6 +10,8 @@ import { ActionTypes } from 'stores/Global/reducers';
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
+import { Box, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export const Home: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
@@ -47,76 +49,31 @@ export const Home: React.FC = () => {
     dispatch({ type: ActionTypes.BrandPage });
   }, []);
 
-  const handleDemoClick = () => {
-    switch (state.interactionMode) {
-      case 'gene':
-        dispatch({ type: ActionTypes.AddGeneDemoTerms });
-        break;
-      case 'drug':
-        dispatch({ type: ActionTypes.AddDrugDemoTerms });
-        break;
-      case 'categories':
-        dispatch({ type: ActionTypes.AddCategoryDemoTerms });
-        break;
-      default:
-        return;
-    }
-  };
-
   return (
     <div className="home-page-container">
-      {/* <div className="logo">
-        DGIdb
-      </div>
-      <div className="tagline">
-        THE DRUG GENE INTERACTION DATABASE
-      </div> */}
-
       <SearchBar handleSubmit={handleSubmit} />
       <div className="home-blurb">
         An open-source search engine for drug-gene interactions and the
         druggable genome.
       </div>
-      <div className="home-links">
-        <span
-          style={{
-            padding: '0 15px',
-            fontSize: 18,
-            textDecoration: 'underline',
-          }}
-        >
-          <a href="/api">API</a>
-        </span>
-        <span
-          style={{
-            padding: '0 15px',
-            fontSize: 18,
-            textDecoration: 'underline',
-          }}
-        >
-          <a href="/downloads">Downloads</a>
-        </span>
-        <span
-          style={{
-            padding: '0 15px',
-            fontSize: 18,
-            textDecoration: 'underline',
-          }}
-        >
-          <a href="https://github.com/dgidb/dgidb-v5">Github</a>
-        </span>
-      </div>
-
-      {/* todo: introduce at a later date
-      <div className="darkmode-toggle">
-        <Switch
-          loading={isToggling}
-          defaultChecked
-          checkedChildren={<SunIcon />}
-          unCheckedChildren={<MoonIcon />}
-          onChange={() => setIsToggling(true)}
-        />
-      </div> */}
+      <Box className="home-links">
+        <Grid container width="300px" justifyContent="space-between">
+          <Link className="home-link" to="/api">
+            API
+          </Link>
+          <Link className="home-link" to="/downloads">
+            Downloads
+          </Link>
+          <a
+            className="home-link"
+            href="https://github.com/dgidb/dgidb-v5"
+            rel="noreferrer"
+            target="_blank"
+          >
+            GitHub
+          </a>
+        </Grid>
+      </Box>
     </div>
   );
 };
