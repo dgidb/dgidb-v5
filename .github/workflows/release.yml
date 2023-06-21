@@ -1,0 +1,19 @@
+name: Build and deploy production
+
+on: 
+  release:
+    types: [published]
+jobs: 
+  build-production:
+    uses: dgidb/dgidb-v5/.github/workflows/build_client.yml@main
+    with: 
+      branch: main
+  deploy-production:
+    uses: dgidb/dgidb-v5/.github/workflows/deploy.yml@main
+    needs: build-production
+    with:
+      environment: production
+    secrets:
+      SSH_HOST: ${{ secrets.DGIDB_PRODUCTION_SSH_HOST }}
+      SSH_KEY: ${{ secrets.DGIDB_PRODUCTION_SSH_KEY }}
+
