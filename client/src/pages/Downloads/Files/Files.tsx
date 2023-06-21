@@ -1,5 +1,7 @@
-//dependencies
+// dependencies
 import React from 'react';
+
+// components
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,6 +9,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+// style
+import './Files.scss';
 
 function createData(
   date: string,
@@ -66,16 +71,21 @@ const rows = [
 export const Files = () => {
   return (
     <div className="about-section-container doc-section">
-      <p>The files will go here</p>
-      <TableContainer component={Paper}>
+      <p>
+        TSV download of all gene claims, drug claims, and drug-gene interaction
+        claims in DGIdb from all sources that were mapped to valid genes or
+        drugs. For ease of use, we recommend working directly with the API or
+        SQL database dump.
+      </p>
+      <TableContainer component={Paper} className="downloads-table">
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell align="right">Interactions</TableCell>
-              <TableCell align="right">Genes</TableCell>
-              <TableCell align="right">Drugs</TableCell>
-              <TableCell align="right">Categories</TableCell>
+              <TableCell align="center">Interactions</TableCell>
+              <TableCell align="center">Genes</TableCell>
+              <TableCell align="center">Drugs</TableCell>
+              <TableCell align="center">Categories</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -87,7 +97,7 @@ export const Files = () => {
                 <TableCell component="th" scope="row">
                   {row.date}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <a
                     download
                     href={'data/' + row.date + '/' + row.interactions}
@@ -95,17 +105,17 @@ export const Files = () => {
                     {row.interactions}
                   </a>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <a download href={'data/' + row.date + '/' + row.genes}>
                     {row.genes}
                   </a>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <a download href={'data/' + row.date + '/' + row.drugs}>
                     {row.drugs}
                   </a>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <a
                     download
                     href={'data/' + row.date + '/' + row.interactions}
