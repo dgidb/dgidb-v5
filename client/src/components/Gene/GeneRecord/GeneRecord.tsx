@@ -19,6 +19,8 @@ import { LinearProgress, Link } from '@mui/material';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
+import { generateXrefLink } from 'utils/generateXrefLink';
+import { ResultTypes } from 'types/types';
 
 export const GeneRecord: React.FC = () => {
   const geneId: any = useParams().gene;
@@ -101,7 +103,11 @@ export const GeneRecord: React.FC = () => {
                   return (
                     <TableRow key={alias.alias}>
                       <TableCell className="attribute-name">
-                        {alias.alias}
+                        {generateXrefLink(
+                          alias.alias,
+                          ResultTypes.Gene,
+                          'meta-link'
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -169,7 +175,7 @@ export const GeneRecord: React.FC = () => {
                   <TableRow key={index}>
                     <TableCell className="attribute-name">
                       <Link
-                        className="pub-link"
+                        className="meta-link"
                         href={'https://pubmed.ncbi.nlm.nih.gov/' + pub.pmid}
                         target="_blank"
                       >
@@ -202,7 +208,9 @@ export const GeneRecord: React.FC = () => {
     <Box className="content gene-record-container">
       <Box className="gene-record-header">
         <Box className="symbol">{geneData?.name}</Box>
-        <Box className="concept-id">{geneId}</Box>
+        <Box className="concept-id">
+          {generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}
+        </Box>
       </Box>
       <Box display="flex">
         <Box display="block" width="35%">

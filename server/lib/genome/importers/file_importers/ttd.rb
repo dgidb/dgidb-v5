@@ -49,10 +49,10 @@ module Genome; module Importers; module FileImporters; module Ttd;
         gene_abbreviation.sub!(')', '')
         gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
         create_gene_claim_alias(gene_claim, gene_abbreviation, GeneNomenclature::SYMBOL)
-        create_gene_claim_alias(gene_claim, row['TargetID'], GeneNomenclature::TTD_ID)
+        create_gene_claim_alias(gene_claim, "ttd.target:#{row['TargetID']}", GeneNomenclature::TTD_ID)
 
         drug_claim = create_drug_claim(row['Drug_Name'].gsub(/\A"|"\Z/, ''), DrugNomenclature::PRIMARY_NAME)
-        create_drug_claim_alias(drug_claim, row['DrugID'], DrugNomenclature::TTD_ID)
+        create_drug_claim_alias(drug_claim, "ttd.drug:#{row['DrugID']}", DrugNomenclature::TTD_ID)
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         if !row['MOA'].nil? && !row['MOA'] == '.'

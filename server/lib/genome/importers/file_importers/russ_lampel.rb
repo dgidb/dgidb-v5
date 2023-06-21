@@ -33,11 +33,37 @@ module Genome; module Importers; module FileImporters; module RussLampel;
       @source.save
     end
 
+    def parse_description(gene_claim, description)
+      pattern = /^(.*?) \[Source:(.*?);Acc:(.*?)\]$/
+      match = pattern.match(description)
+      return if match.nil?
+
+      create_gene_claim_alias(gene_claim, match[1].strip.chomp("."), GeneNomenclature::DESCRIPTION)
+
+      case match[2]
+      when 'Uniprot/SWISSPROT'
+      when 'Uniprot/SPTREMBL'
+        create_gene_claim_alias(gene_claim, "uniprot:#{match[3]}", GeneNomenclature::UNIPROTKB_ID)
+      when 'RefSeq_peptide'
+        create_gene_claim_alias(gene_claim, "refseq:#{match[3]}", GeneNomenclature::REFSEQ_ACC)
+      end
+    end
+
+    def add_display_id(gene_claim, display_id)
+      refseq_pattern = /\A(NP|XP)_\d{6}\.\d+\z/
+      match = refseq_pattern.match(display_id)
+      if match
+        create_gene_claim_alias(gene_claim, display_id, GeneNomenclature::REFSEQ_ACC)
+      else
+        create_gene_claim_alias(gene_claim, display_id, GeneNomenclature::SYMBOL)
+      end
+    end
+
     def create_gene_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
         gene_claim = create_gene_claim("ensembl:#{row['gene_stable_id']}", GeneNomenclature::ENSEMBL_ID)
-        create_gene_claim_alias(gene_claim, row['display_id'], GeneNomenclature::SYMBOL) unless row['display_id'] == 'N/A'
-        create_gene_claim_alias(gene_claim, row['description'], GeneNomenclature::DESCRIPTION) unless row['description'] == 'N/A'
+        add_display_id(gene_claim, row['display_id']) unless row['display_id'] == 'N/A'
+        parse_description(gene_claim, row['description']) unless row['description'] == 'N/A'
         create_gene_claim_category(gene_claim, 'DRUGGABLE GENOME')
       end
     end

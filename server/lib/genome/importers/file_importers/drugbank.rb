@@ -62,15 +62,14 @@ module Genome; module Importers; module FileImporters; module Drugbank;
               create_gene_claim_alias(gene_claim, "iuphar.receptor:#{syn}", GeneNomenclature::GTOP_ID)
             when 'HUGO Gene Nomenclature Committee (HGNC)'
               create_gene_claim_alias(gene_claim, syn, GeneNomenclature::HGNC_ID)
+            when 'GenAtlas'
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
+            when 'GenBank Protein Atlas'
+              create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
+            when 'GenBank Protein Database'
+              create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
             else
-              case nomen
-              when 'GenAtlas'
-                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYMBOL)
-              when 'GenBank Protein Atlas'
-                create_gene_claim_alias(gene_claim, "genbank:#{syn}", GeneNomenclature::GENBANK_ID)
-              else
-                create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
-              end
+              create_gene_claim_alias(gene_claim, syn, GeneNomenclature::SYNONYM)
             end
           end
         end

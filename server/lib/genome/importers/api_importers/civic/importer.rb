@@ -53,9 +53,9 @@ module Genome
           end
 
           def create_gene_claim_entries(gene)
-            gc = create_gene_claim(gene.official_name)
-            base_aliases = gene.gene_aliases + [gene.name]
-            base_aliases.uniq.reject { |n| n == gene.official_name }.each do |gene_alias|
+            gc = create_gene_claim(gene.name)
+            base_aliases = gene.gene_aliases + [gene.official_name]
+            base_aliases.uniq.reject { |n| n == gene.name }.each do |gene_alias|
               create_gene_claim_alias(gc, gene_alias, GeneNomenclature::SYMBOL)
             end
             create_gene_claim_alias(gc, "ncbigene:#{gene.entrez_id}", GeneNomenclature::NCBI_ID)
