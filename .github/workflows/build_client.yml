@@ -1,5 +1,8 @@
 name: Build DGIdb React Frontend
 
+env:
+  CI: false
+
 on:
   workflow_call:
     inputs:
