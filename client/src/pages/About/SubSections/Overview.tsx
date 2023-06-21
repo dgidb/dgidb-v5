@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 
 export const Overview = () => {
   return (
@@ -27,20 +27,32 @@ export const Overview = () => {
         potential drug-gene interactions. The drug-gene interaction database
         (DGIdb) attempts to address this challenge. Using a combination of
         expert curation and text-mining, drug-gene interactions have been mined
-        from DrugBank, PharmGKB, Chembl, Drug Target Commons, TTD, and others.
+        from DrugBank, PharmGKB, ChEMBL, Drug Target Commons, TTD, and others.
         Genes have also been categorized as potentially druggable according to
         membership in selected pathways, molecular functions and gene families
         from the Gene Ontology, the Human Protein Atlas, IDG, "druggable genome"
         lists from Hopkins and Groom (2002) and Russ and Lampel (2005), and
-        others. Genes are defined according to Entrez and supplemented by
-        Ensembl and drugs according to Chembl and Wikidata. DGIdb contains over
-        40,000 genes and 10,000 drugs involved in over 100,000 drug-gene
-        interactions or belonging to one of 42 potentially druggable gene
-        categories. Users can enter a list of genes to retrieve all known or
-        potentially druggable genes in that list. Results can be filtered by
-        source, interaction type, or gene category. DGIdb is built on Ruby on
-        Rails and PostgreSQL with a flexible relational database schema to
-        accommodate metadata from various sources.
+        others. Drug and gene grouping is provided by the VICC{' '}
+        <Link
+          href="https://github.com/cancervariants/gene-normalization"
+          target="_blank"
+        >
+          Gene
+        </Link>{' '}
+        and{' '}
+        <Link
+          href="https://github.com/cancervariants/therapy-normalization"
+          target="_blank"
+        >
+          Therapy
+        </Link>{' '}
+        Normalizer services. DGIdb contains over 10,000 genes and 15,000 drugs
+        involved in over 50,000 drug-gene interactions or belonging to one of 43
+        potentially druggable gene categories. Users can enter a list of genes
+        to retrieve all known or potentially druggable genes in that list.
+        Results can be filtered by source, interaction type, or gene category.
+        DGIdb is built on Ruby on Rails and PostgreSQL with a flexible
+        relational database schema to accommodate metadata from various sources.
       </p>
 
       <p>
@@ -54,7 +66,7 @@ export const Overview = () => {
         proteins carrying activating amino acid changes as determined by
         mutational analyses--make more compelling the need for a searchable
         database of drug-gene interactions. A similar paradigm exists in the
-        research of other human diseases. Thus, a commonly asked question in
+        research of other human diseases. Thus, a commonly-asked question in
         such projects is whether potential driver genes are targeted by any
         known drugs or belong to any putatively druggable gene categories. Along
         these lines, recent high profile cancer marker papers have presented
@@ -147,8 +159,8 @@ export const Overview = () => {
         represents an appropriate therapeutic intervention. DGIdb's concept of a
         drug-gene interaction or membership in a potentially druggable category
         is inclusive and largely driven by the underlying data sources and
-        publications. It includes 42 potentially druggable categories and least
-        49 interaction types as defined by source datasets. These include
+        publications. It includes 43 potentially druggable categories and least
+        30 interaction types as defined by source datasets. These include
         inhibitors, activators, cofactors, ligands, vaccines, and in many cases,
         interactions of unknown type. Wherever possible we provide filtering by
         source, interaction type, and gene category to allow the user to quickly

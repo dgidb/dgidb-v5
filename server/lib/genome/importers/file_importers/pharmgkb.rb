@@ -44,9 +44,9 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           drug_name = row['Entity2_name']
           pharmgkb_drug_id = row['Entity2_id']
           drug_claim = create_drug_claim(drug_name)
-          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, DrugNomenclature::PHARMGKB_ID)
+          create_drug_claim_alias(drug_claim, "pharmgkb.drug:#{pharmgkb_drug_id}", DrugNomenclature::PHARMGKB_ID)
           gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
-          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, GeneNomenclature::PHARMGKB_ID)
+          create_gene_claim_alias(gene_claim, "pharmgkb.gene:#{pharmgkb_gene_id}", GeneNomenclature::PHARMGKB_ID)
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           create_interaction_claim_link(interaction_claim, 'PharmGKB interaction', "https://www.pharmgkb.org/combination/#{pharmgkb_gene_id},#{pharmgkb_drug_id}/overview")
           if row['PMIDs'].present?
@@ -58,9 +58,9 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           gene_name = row['Entity2_name']
           pharmgkb_gene_id = row['Entity2_id']
           drug_claim = create_drug_claim(drug_name)
-          create_drug_claim_alias(drug_claim, pharmgkb_drug_id, DrugNomenclature::PHARMGKB_ID)
+          create_drug_claim_alias(drug_claim, "pharmgkb.drug:#{pharmgkb_drug_id}", DrugNomenclature::PHARMGKB_ID)
           gene_claim = create_gene_claim(gene_name, GeneNomenclature::NAME)
-          create_gene_claim_alias(gene_claim, pharmgkb_gene_id, GeneNomenclature::PHARMGKB_ID)
+          create_gene_claim_alias(gene_claim, "pharmgkb.gene:#{pharmgkb_gene_id}", GeneNomenclature::PHARMGKB_ID)
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
           create_interaction_claim_link(interaction_claim, 'PharmGKB interaction', "https://www.pharmgkb.org/combination/#{pharmgkb_gene_id},#{pharmgkb_drug_id}/overview")
           add_interaction_claim_publications(interaction_claim, row['PMIDs']) if row['PMIDs'].present?

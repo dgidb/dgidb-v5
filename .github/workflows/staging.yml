@@ -1,0 +1,19 @@
+name: Build and deploy staging
+
+on: 
+  push:
+    branches: [staging]
+jobs: 
+  build-staging:
+    uses: dgidb/dgidb-v5/.github/workflows/build_client.yml@main
+    with: 
+      branch: staging
+  deploy-staging:
+    uses: dgidb/dgidb-v5/.github/workflows/deploy.yml@main
+    needs: build-staging
+    with:
+      environment: staging
+    secrets:
+      SSH_HOST: ${{ secrets.DGIDB_STAGING_SSH_HOST }}
+      SSH_KEY: ${{ secrets.DGIDB_STAGING_SSH_KEY }}
+

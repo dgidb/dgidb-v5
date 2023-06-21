@@ -34,14 +34,6 @@
         overflow: scroll !important;
         position: relative;
 
-        .ant-select-selection-item {
-          color: var(--theme-primary);
-        }
-
-        .ant-select-dropdown {
-          width: 50px;
-        }
-
         .search-filters {
           padding: 8px 6px 0 5px;
           cursor: pointer;
@@ -64,6 +56,7 @@
     font-size: 20px;
     margin-top: 10px;
   }
+
   .home-footer {
     background-color: var(--theme-primary);
     margin-top: auto;
@@ -81,17 +74,7 @@
     position: absolute;
     bottom: 15%;
     margin-right: 5%;
-
-    .ant-switch {
-      background-color: var(--theme-primary) !important;
-      color: var(--text-content);
-    }
   }
-}
-
-.ant-switch-inner .ionicon {
-  margin-top: 3.5px;
-  height: 15px;
 }
 
 .logo {
@@ -106,18 +89,6 @@
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.ant-btn .ant-btn-link {
-  text-decoration: underline !important;
-}
-
-.ant-menu-submenu-popup {
-  left: 1080px !important;
-}
-
-.ant-menu-sub {
-  background-color: var(--background-light) !important;
 }
 
 a {

@@ -33,20 +33,22 @@ ChartJS.register(
 
 interface CountProps {
   drugMatches: any[];
-  selectedDrug: string;
-  setSelectedDrug: any;
+  selectedDrugs: string[];
+  setSelectedDrugs: any;
 }
 
 const InteractionCountDrug: React.FC<CountProps> = ({
   drugMatches,
-  selectedDrug,
-  setSelectedDrug,
+  selectedDrugs,
+  setSelectedDrugs,
 }) => {
   const toggleFilter = (drugName: string) => {
-    if (selectedDrug === drugName) {
-      setSelectedDrug('');
+    if (selectedDrugs.includes(drugName)) {
+      setSelectedDrugs(
+        selectedDrugs.filter((drug: string) => drug !== drugName)
+      );
     } else {
-      setSelectedDrug(drugName);
+      setSelectedDrugs([drugName, ...selectedDrugs]);
     }
   };
 
@@ -66,7 +68,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
         return (
           <div
             className={`interaction-count-row ${
-              selectedDrug === drug.name ? 'filtered-by' : null
+              selectedDrugs.includes(drug.name) ? 'filtered-by' : null
             }`}
             onClick={() => toggleFilter(drug.name)}
             key={i}
@@ -82,12 +84,12 @@ const InteractionCountDrug: React.FC<CountProps> = ({
 
 interface InfoProps {
   drugMatches: any;
-  selectedDrug: string;
+  selectedDrugs: string[];
 }
 
 const SummaryInfoDrug: React.FC<InfoProps> = ({
   drugMatches,
-  selectedDrug,
+  selectedDrugs,
 }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [value, setValue] = useState(0);
@@ -112,9 +114,11 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
   }
 
   const filteredDrugMatches =
-    selectedDrug === ''
+    selectedDrugs.length === 0
       ? drugMatches
-      : drugMatches.filter((drugMatch: any) => drugMatch.name === selectedDrug);
+      : drugMatches.filter((drugMatch: any) =>
+          selectedDrugs.includes(drugMatch.name)
+        );
 
   return (
     <div className="summary-infographic-container">
@@ -160,7 +164,9 @@ interface SummaryProps {
 
 export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
-  const [selectedDrug, setSelectedDrug] = useState<string>('');
+  const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
+  const [displayedInteractionResults, setDisplayedInteractionResults] =
+    useState<any[]>([]);
 
   useEffect(() => {
     let interactions: any[] = [];
@@ -181,6 +187,18 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
     setInteractionResults(interactions);
   }, [drugs]);
 
+  useEffect(() => {
+    if (selectedDrugs.length === 0) {
+      setDisplayedInteractionResults(interactionResults);
+    } else {
+      setDisplayedInteractionResults(
+        interactionResults.filter((interaction: any) =>
+          selectedDrugs.includes(interaction.drug.name)
+        )
+      );
+    }
+  }, [selectedDrugs, interactionResults]);
+
   const drugMatches = drugs?.map((drugMatch: any) => drugMatch.matches[0]);
 
   return (
@@ -189,12 +207,12 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
       <div className="drug-summary-content">
         <InteractionCountDrug
           drugMatches={drugMatches}
-          selectedDrug={selectedDrug}
-          setSelectedDrug={setSelectedDrug}
+          selectedDrugs={selectedDrugs}
+          setSelectedDrugs={setSelectedDrugs}
         />
         <SummaryInfoDrug
           drugMatches={drugMatches}
-          selectedDrug={selectedDrug}
+          selectedDrugs={selectedDrugs}
         />
       </div>
       <Box
@@ -215,7 +233,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
         />
       </Box>
       <InteractionTable
-        interactionResults={interactionResults}
+        interactionResults={displayedInteractionResults}
         isLoading={isLoading}
       />
     </div>

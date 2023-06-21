@@ -25,6 +25,19 @@
       margin-left: 0.75em;
       margin-bottom: 0.22em;
     }
+
+    .concept-id-link {
+      color: var(--text-accent) !important;
+      text-decoration: none !important;
+    }
+
+    .concept-id-link:hover {
+      text-decoration: underline !important;
+    }
+
+    .concept-id-link:active {
+      text-decoration: underline !important;
+    }
   }
 
   .data-box {
