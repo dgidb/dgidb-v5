@@ -2,8 +2,7 @@ module Genome; module Importers; module ApiImporters; module Docm
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
-    def initialize(source_db_version = Date.today.strftime('%d-%B-%Y'))
-      @new_version = source_db_version
+    def initialize
       @source_db_name = 'DoCM'
     end
 
@@ -18,10 +17,9 @@ module Genome; module Importers; module ApiImporters; module Docm
       api_client.variants.each do |variant|
         interaction_information = parse_interaction_information(variant)
         interaction_information.each do |interaction_info|
-          gc = create_gene_claim(variant['gene'], 'DoCM Entrez Gene Symbol')
+          gc = create_gene_claim(variant['gene'], GeneNomenclature::NCBI_NAME)
           dc = create_drug_claim(interaction_info['Therapeutic Context'].upcase,
-                                 interaction_info['Therapeutic Context'].upcase,
-                                 'DoCM Drug Name')
+                                 DrugNomenclature::PRIMARY_NAME)
           ic = create_interaction_claim(gc, dc)
           create_interaction_claim_attributes(ic, interaction_info)
           create_interaction_claim_publications(ic, variant['diseases'])
@@ -60,9 +58,9 @@ module Genome; module Importers; module ApiImporters; module Docm
 
     def create_interaction_claim_attributes(interaction_claim, interaction_info)
       {
-        'Clinical Status' => 'Status',
-        'Pathway' => 'Pathway',
-        'Variant Effect' => 'Effect'
+        InteractionAttributeName::APPROVAL_STATUS => 'Status',
+        InteractionAttributeName::PATHWAY => 'Pathway',
+        InteractionAttributeName::VARIANT_EFFECT => 'Effect'
       }.each do |name, interaction_info_key|
         create_interaction_claim_attribute(interaction_claim, name, interaction_info[interaction_info_key])
       end
@@ -77,15 +75,19 @@ module Genome; module Importers; module ApiImporters; module Docm
     def create_new_source
       @source ||= Source.create(
         {
-            base_url: 'http://docm.info/',
-            site_url: 'http://docm.info/',
-            citation: 'DoCM: a database of curated mutations in cancer. Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. Nat Methods. 2016;13(10):806-7. PMID: 27684579',
-            source_db_version: new_version,
-            source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
-            source_db_name: source_db_name,
-            full_name: 'Database of Curated Mutations',
-            license: 'Creative Commons Attribution 4.0 International License',
-            license_link: 'http://www.docm.info/about'
+          base_url: 'http://docm.info/',
+          site_url: 'http://docm.info/',
+          citation: 'Ainscough BJ, Griffith M, Coffman AC, Wagner AH, Kunisaki J, Choudhary MN, McMichael JF, Fulton RS, Wilson RK, Griffith OL, Mardis ER. DoCM: a database of curated mutations in cancer. Nat Methods. 2016 Sep 29;13(10):806-7. doi: 10.1038/nmeth.4000. PMID: 27684579; PMCID: PMC5317181.',
+          citation_short: 'Ainscough BJ, et al. DoCM: a database of curated mutations in cancer. Nat Methods. 2016 Sep 29;13(10):806-7.',
+          pmid: '27684579',
+          pmcid: 'PMC5317181',
+          doi: '10.1038/nmeth.4000',
+          source_db_version: set_current_date_version,
+          source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
+          source_db_name: source_db_name,
+          full_name: 'Database of Curated Mutations',
+          license: License::CC_BY_4_0,
+          license_link: 'http://www.docm.info/about'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')

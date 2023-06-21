@@ -7,14 +7,18 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
 
   type Types::DrugType.connection_type, null: false
 
-  scope { Drug.all }
+  scope { Drug.all.distinct }
 
-  option(:id, type: ID, description: 'Exact match filtering on the ID of the drug.') do |scope, value|
+  option(:ids, type: [String], description: 'Exact match filtering on a list of drug IDs') do |scope, value|
     scope.where(id: value)
   end
 
-  option(:name, type: String, description: 'Substring filtering on drug name.') do |scope, value|
-    scope.where("name ILIKE ?", "%#{value}%")
+  option(:names, type: [String], description: 'Substring filtering on a list of drug names.') do |scope, value|
+    scope.where(name: value.map(&:upcase))
+  end
+
+  option(:name, type: String, description: 'Left anchored string search on drug name') do |scope, value|
+    scope.where('drugs.name ILIKE ?', "#{value}%")
   end
 
   option(:approved, type: Boolean, description: 'Filtering on approval status of drug.') do |scope, value|
@@ -30,6 +34,10 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
   end
 
   option(:concept_id, type: String, description: 'Exact match filtering on concept ID.') do |scope, value|
+    scope.where(concept_id: value)
+  end
+
+  option(:concept_ids, type: [String], description: 'Exact match filtering on a list of concept IDs') do |scope, value|
     scope.where(concept_id: value)
   end
 

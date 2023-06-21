@@ -5,6 +5,11 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@apollo/client": "^3.4.10",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.3",
+    "@mui/x-data-grid": "^6.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -12,20 +17,24 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.19",
+    "@types/react-chartjs-2": "^2.5.7",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-tag-autocomplete": "^6.1.1",
-    "antd": "^4.16.13",
+    "chart.js": "^3.7.1",
     "cors": "^2.8.5",
     "create-react-app": "^5.0.0",
     "css-loader": "^6.7.1",
+    "env-cmd": "^10.1.0",
+    "graphiql": "^2.4.0",
     "graphql": "^15.5.1",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",
-    "react": "^18.0.0",
-    "react-css-theme-switcher": "^0.3.0",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^4.1.0",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.14.1",
     "react-query": "^3.34.0",
     "react-router-dom": "^6.2.2",
@@ -37,13 +46,19 @@
     "webpack": "^5.71.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd -f ./.env.local react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
-    "format": "yarn run prettier -- --write"
+    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
+    "format": "yarn run prettier -- --write",
+    "start:prod": "env-cmd -f ./.env.production react-scripts start",
+    "start:staging": "env-cmd -f ./.env.staging react-scripts start",
+    "build:prod": "env-cmd -f ./.env.prod react-scripts build",
+    "build:staging": "env-cmd -f ./.env.staging react-scripts build",
+    "build:dev": "env-cmd -f ./.env.dev react-scripts build"
   },
   "browserslist": {
     "production": [
@@ -88,5 +103,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

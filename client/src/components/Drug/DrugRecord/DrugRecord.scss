@@ -1,0 +1,91 @@
+.linear-bar {
+  margin: 15px;
+}
+
+.drug-record-container {
+  padding: 20px;
+  background-color: var(--background);
+  border-radius: 5px;
+
+  .drug-record-header {
+    display: flex;
+    flex-direction: row;
+    align-items: end; // isn't aligning name object correctly
+    margin-bottom: 0.5em;
+
+    .name {
+      font-weight: bold;
+      font-size: 36px;
+      color: var(--text-primary);
+    }
+
+    .concept-id {
+      color: var(--text-accent);
+      font-size: 24px;
+      margin-left: 0.75em;
+      margin-bottom: 0.22em;
+    }
+  }
+
+  .data-box {
+    padding: 1rem;
+    border: solid white 1px;
+
+    .box-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .box-content {
+      padding: 0.5rem;
+      max-height: 570px;
+    }
+  }
+
+  .drug-record-upper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    // grid-template-rows: repeat(9, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 0px;
+    margin-bottom: 15px;
+
+    .drug-record-info {
+      grid-area: 1 / 1 / 4 / 5;
+      max-height: 400px;
+      overflow: scroll;
+    }
+    .drug-record-approval {
+      grid-area: 1 / 5 / 4 / 7;
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+
+  .drug-record-lower {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+
+    .drug-record-aliases {
+      grid-area: 4 / 1 / 6 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-active {
+      grid-area: 6 / 1 / 8 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-publications {
+      grid-area: 8 / 1 / 10 / 3;
+      overflow: scroll;
+      max-height: 500px;
+    }
+    .drug-record-table {
+      grid-area: 4 / 3 / 10 / 7;
+    }
+  }
+}

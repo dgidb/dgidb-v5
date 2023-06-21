@@ -41,6 +41,8 @@ module Utils
         delete from drug_aliases;
         delete from drug_attributes_sources;
         delete from drug_attributes;
+        delete from drug_applications;
+        delete from drug_approval_ratings;
         delete from drugs;
       SQL
 
@@ -67,7 +69,7 @@ module Utils
 
           delete from drug_claim_attributes where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
           delete from drug_claim_aliases where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
-          delete from drug_claim_types_drug_claims where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
+          delete from drug_claim_approval_ratings where drug_claim_id in (select id from drug_claims where source_id = '#{source_id}');
           update drug_claims set drug_id = NULL where source_id = '#{source_id}';
           delete from drug_claims where source_id = '#{source_id}';
 
@@ -111,7 +113,7 @@ module Utils
     def self.destroy_empty_groups
       Interaction.includes(:interaction_claims).where(interaction_claims: {id: nil}).destroy_all
       # Empty genes are expected
-      # empty_genes = DataModel::Gene.includes(:gene_claims).where(gene_claims: {id: nil}).destroy_all
+      # empty_genes = Gene.includes(:gene_claims).where(gene_claims: {id: nil}).destroy_all
       # Empty drugs are okay to delete
       Drug.includes(:drug_claims).where(drug_claims: {id: nil}).destroy_all
     end
@@ -124,32 +126,23 @@ module Utils
 
     def self.destroy_unsourced_aliases
       GeneAlias.includes(:sources).where(sources: {id: nil}).destroy_all
-      #Drug aliases are currently imported directly from the therapy
-      #normalizer but not attributed to ChEMBL or Wikidata (outstanding issue #485)
-      #Therefore, none of the drug aliases currently have a source
-      #DrugAlias.includes(:sources).where(sources: {id: nil}).destroy_all
+      # Drug aliases are currently imported directly from the therapy
+      # normalizer but not attributed to ChEMBL or Wikidata (outstanding issue #485)
+      # Therefore, none of the drug aliases currently have a source
+      # DrugAlias.includes(:sources).where(sources: {id: nil}).destroy_all
     end
 
     def self.destroy_unsourced_gene_categories
       Gene.joins(:gene_categories).includes(:gene_categories, gene_claims: [:gene_claim_categories]).each do |g|
-        gene_claim_categories = g.gene_claims.flat_map{|c| c.gene_claim_categories}
+        gene_claim_categories = g.gene_claims.flat_map { |c| c.gene_claim_categories }
         g.gene_categories.each do |c|
-          unless gene_claim_categories.include? c
-            g.gene_categories.delete(c)
-          end
+          g.gene_categories.delete(c) unless gene_claim_categories.include? c
         end
       end
     end
 
     def self.destroy_na
       sql = <<-SQL
-        delete from drug_claim_types_drug_claims d
-        where
-        d.drug_claim_id in
-          (select id from drug_claims
-          where upper(drug_claims.name) in ('NA','N/A')
-          );
-
         delete from drug_claims_drugs d
         where
         d.drug_claim_id in
@@ -393,10 +386,9 @@ module Utils
         a.value = a.value.strip
         a.save!
       end
-      DrugClaim.where("name LIKE ' %' or name LIKE '% ' or primary_name LIKE ' %' or primary_name LIKE '% '").all.each do |c|
+      DrugClaim.where("name LIKE ' %' or name LIKE '% '").all.each do |c|
         clean_name = c.name.strip
-        clean_primary_name = c.primary_name.strip
-        clean_claim = DrugClaim.where(name: clean_name, primary_name: clean_primary_name, nomenclature: c.nomenclature, source_id: c.source_id).first_or_create
+        clean_claim = DrugClaim.where(name: clean_name, nomenclature: c.nomenclature, source_id: c.source_id).first_or_create
         c.drug_claim_aliases.each do |synonym|
           DrugClaimAlias.where(alias: synonym.alias, nomenclature: synonym.nomenclature, drug_claim_id: clean_claim.id).first_or_create
           synonym.delete

@@ -1,0 +1,44 @@
+.browse-categories-container {
+  display: flex;
+  flex: stretch;
+
+  .category-list {
+    flex: 1;
+  }
+
+  .ant-collapse-content {
+    .ant-collapse-content-box {
+      padding: 0px !important;
+    }
+  }
+
+  .ant-table-wrapper {
+    background-color: var(--background-light) !important;
+  }
+
+  .ant-table-pagination .ant-pagination {
+    margin: 8px 0 !important;
+  }
+
+  .ant-table-container table > thead > tr > th {
+    background-color: var(--background-light);
+  }
+}
+
+.ant-checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-checkbox-group-item,
+.ant-checkbox-wrapper {
+  color: var(--text-content);
+}
+
+.ant-collapse {
+  background-color: var(--background-content);
+
+  .ant-collapse-header {
+    color: var(--text-content) !important;
+  }
+}

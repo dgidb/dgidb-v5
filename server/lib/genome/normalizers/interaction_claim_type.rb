@@ -69,44 +69,55 @@ module Genome
         val = val.downcase.strip
 
         case val
-        when 'na', 'n/a'
-          'na'
-        when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer', 'diffusing substance', 'vesciant', 'gene replacement','opener','releasing agent','substrate','vaccine antigen'
+        when 'other', 'unknown', 'protector', 'oxidizer', 'coating agent', 'dilator', 'deoxidizer',
+            'diffusing substance', 'vesciant', 'gene replacement', 'releasing agent', 'substrate', 'other/unknown'
           'other/unknown'
-        when 'moduator','cross-linking agent','neutralizer', 'reducer', 'metabolizer', 'acetylation', 'chelator', 'cross-linking/alkylation', 'regulator','stabiliser'
+        when 'modulator', 'cross-linking agent', 'neutralizer', 'reducer', 'metabolizer', 'acetylation',
+            'chelator', 'cross-linking/alkylation', 'regulator', 'stabiliser', 'allosteric modulator'
           'modulator'
-        when 'positive modulator','positive allosteric modulator', 'regulator (upregulator)', 'enhancer', 'modulator (allosteric modulator)'
+        when 'positive modulator', 'positive allosteric modulator', 'regulator (upregulator)', 'enhancer',
+            'modulator (allosteric modulator)'
           'positive modulator'
-        when 'inhibitor','inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker', 'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor', 'aggregation inhibitor', 'inhibition of synthesis', "translocation inhibitor", 'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors', 'anti-angiogenic.', 'allosteric inhibitor','antagonist','antisense inhibitor'
+        when 'inhibitor', 'inhibitor, competitive', 'gating inhibitor', 'inhibitor; antagonist; blocker',
+            'inhibitor (gating inhibitor)', 'growth_inhibition', 'inhibition', 'weak inhibitor',
+            'aggregation inhibitor', 'inhibition of synthesis', 'translocation inhibitor',
+            'inhibits downstream inflammation cascades', 'inactivator', 'inihibitor', 'inhibitors',
+            'anti-angiogenic.', 'allosteric inhibitor', 'antagonist', 'antisense inhibitor'
           'inhibitor'
-        when 'blocker','channel blocker', 'blocker (channel blocker)', 'nucleotide exchange blocker'
+        when 'blocker', 'channel blocker', 'blocker (channel blocker)', 'nucleotide exchange blocker'
           'blocker'
-        when 'antisense', 'sirna drug'
+        when 'antisense', 'antisense oligonucleotide', 'sirna drug'
           'antisense oligonucleotide'
-        when 'binding agent','binding', 'binder (minor groove binder)', 'breaker'
+        when 'binding agent', 'binding', 'binder (minor groove binder)', 'breaker', 'binder'
           'binder'
-        when 'negative modulator','negative allosteric modulator','disrupting agent','incorporation into and destabilization', 'intercalation', 'desensitize the target', 'disrupter', 'intercalator', 'downregulator','allosteric antagonist'
+        when 'negative modulator', 'negative allosteric modulator', 'disrupting agent',
+            'incorporation into and destabilization', 'intercalation', 'desensitize the target', 'disrupter',
+            'intercalator', 'downregulator', 'allosteric antagonist'
           'negative modulator'
-        when 'inhibitory immune response', 'car-t-cell-therapy(dual specific)', 'immunomodulator', 'immunomodulator (immunostimulant)', 'immune response agent', 'car-t-cell-therapy', 'immune response agent', 'immunostimulant', 'immunostimulator', 'Radioimmunotherapy'
+        when 'inhibitory immune response', 'car-t-cell-therapy(dual specific)', 'immunomodulator',
+            'immunomodulator (immunostimulant)', 'immune response agent', 'car-t-cell-therapy',
+            'immunostimulant', 'immunostimulator', 'radioimmunotherapy', 'immunotherapy'
           'immunotherapy'
-        when 'component of'
+        when 'antibody'
+          'antibody'
+        when 'vaccine', 'vaccine antigen'
+          'vaccine'
+        when 'component of', 'product of'
           'product of'
-        when 'opener'
+        when 'opener', 'potentiator'
           'potentiator'
-        when 'stablizer', 'stabilization', 'stabilizer'
+        when 'stablizer', 'stabilization', 'stabilizer', 'chaperone'
           'chaperone'
-        when 'activator','reactivator'
+        when 'activator', 'reactivator'
           'activator'
-        when 'partial agonist','agonist','co-agonist'
+        when 'partial agonist', 'agonist', 'co-agonist'
           'agonist'
-        when 'inverse agonist','agonis; inverse agonist', 'inverse_agonist'
+        when 'inverse agonist', 'agonis; inverse agonist', 'inverse_agonist'
           'inverse agonist'
-        when 'cytotoxicity'
+        when 'cytotoxicity', 'cytotoxic'
           'cytotoxic'
-        when 'proteolytic enzyme','hydrolytic enzyme','degrader','degradation'
+        when 'proteolytic enzyme', 'hydrolytic enzyme', 'degrader', 'degradation', 'cleavage'
           'cleavage'
-        else
-          val
         end
       end
 

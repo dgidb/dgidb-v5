@@ -1,39 +1,48 @@
-import React, { createContext, useReducer, Dispatch } from "react";
+import React, { createContext, useReducer, Dispatch } from 'react';
 import {
   searchTermsReducer,
   SearchTermsActions,
   themeSettingsType,
   themeSettingsReducer,
-  ThemeSettingsActions
-} from "./reducers";
+  ThemeSettingsActions,
+  interactionModeReducer,
+  InteractionModeActions,
+} from './reducers';
+import { SearchTypes } from 'types/types';
 
 type InitialStateType = {
+  interactionMode: SearchTypes;
   searchTerms: string[];
   themeSettings: themeSettingsType;
 };
 
 const initialState: InitialStateType = {
+  interactionMode: SearchTypes.Gene,
   searchTerms: [],
   themeSettings: {
-    showDisclaimer: true,
-    darkModeEnabled: true,
-  }
-}
+    showDisclaimer: false,
+    darkModeEnabled: false,
+    brandTheme: false,
+  },
+};
 
 const GlobalClientContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<SearchTermsActions | ThemeSettingsActions>;
+  dispatch: Dispatch<
+    InteractionModeActions | SearchTermsActions | ThemeSettingsActions
+  >;
 }>({
   state: initialState,
-  dispatch: () => null
+  dispatch: () => null,
 });
 
 const mainReducer = (
-  { searchTerms, themeSettings }: InitialStateType,
-  action: SearchTermsActions | ThemeSettingsActions
+  { searchTerms, themeSettings, interactionMode }: InitialStateType,
+  action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => ({
   searchTerms: searchTermsReducer(searchTerms, action),
   themeSettings: themeSettingsReducer(themeSettings, action),
+  interactionMode: interactionModeReducer(interactionMode, action),
 });
 
 const GlobalClient: React.FC = ({ children }) => {

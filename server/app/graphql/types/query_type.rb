@@ -4,8 +4,107 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
+    include Types::Queries::GeneLookupQuery
+    include Types::Queries::DrugLookupQuery
+
     field :genes, resolver: Resolvers::Genes
     field :drugs, resolver: Resolvers::Drugs
+    field :sources, resolver: Resolvers::Sources
+    field :categories, resolver: Resolvers::Categories
+    field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
+
+    field :drug_suggestions, [Types::DrugSuggestionType], null: true do
+      description "A searchable drug name or alias that can be completed from the supplied term"
+      argument :term, String, required: true
+      argument :n, Int, required: false
+    end
+
+
+    def drug_suggestions(term:, n: 10)
+      matches = Drug.where("drugs.name ILIKE ?", "#{term}%").limit(n).map do |drug|
+        {
+          drug_name: drug.name,
+          concept_id: drug.concept_id,
+          suggestion: drug.name,
+          suggestion_type: 'NAME'
+        }
+      end
+      matches = matches.uniq { |d| d[:suggestion] }
+
+      if matches.length < n
+        matches += DrugAlias.includes(:drug)
+          .where("drug_aliases.alias ILIKE ?", "#{term}%")
+          .limit(n - matches.length)
+          .map do |drug_alias|
+          {
+            drug_name: drug_alias.drug.name,
+            concept_id: drug_alias.drug.concept_id,
+            suggestion: drug_alias.alias,
+            suggestion_type: 'ALIAS'
+          }
+        end
+      end
+      matches = matches.uniq { |d| d[:suggestion] }
+
+      if matches.length < n
+        matches += Drug.where("drugs.concept_id ILIKE ?", "#{term}%").limit(n).map do |drug|
+          {
+            drug_name: drug.name,
+            concept_id: drug.concept_id,
+            suggestion: drug.concept_id,
+            suggestion_type: 'CONCEPT_ID'
+          }
+        end
+      end
+
+      return matches.uniq { |d| d[:suggestion] }
+    end
+
+    field :gene_suggestions, [Types::GeneSuggestionType], null: true do
+      description "A searchable gene name or alias that can be completed from the supplied term"
+      argument :term, String, required: true
+      argument :n, Int, required: false
+    end
+
+    def gene_suggestions(term:, n: 10)
+      matches = Gene.where("genes.name ILIKE ?", "#{term}%").limit(n).map do |gene|
+        {
+          gene_name: gene.name,
+          concept_id: gene.concept_id,
+          suggestion: gene.name,
+          suggestion_type: 'NAME'
+        }
+      end
+      matches = matches.uniq { |g| g[:suggestion] }
+
+      if matches.length < n
+        matches += GeneAlias.includes(:gene)
+          .where("gene_aliases.alias ILIKE ?", "#{term}%")
+          .limit(n - matches.length)
+          .map do |gene_alias|
+          {
+            gene_name: gene_alias.gene.name,
+            concept_id: gene_alias.gene.concept_id,
+            suggestion: gene_alias.alias,
+            suggestion_type: 'ALIAS'
+          }
+        end
+      end
+      matches = matches.uniq { |g| g[:suggestion] }
+
+      if matches.length < n
+        matches += Gene.where("genes.concept_id ILIKE ?", "#{term}%").limit(n).map do |gene|
+          {
+            gene_name: gene.name,
+            concept_id: gene.concept_id,
+            suggestion: gene.concept_id,
+            suggestion_type: 'CONCEPT_ID'
+          }
+        end
+      end
+
+      return matches.uniq { |g| g[:suggestion] }
+    end
 
     field :source, Types::SourceType, null: true do
       description "A source"
@@ -31,7 +130,7 @@ module Types
     end
 
     def source_type(id:)
-      ::SourceType.find_by(id: id)
+      SourceType.find_by(id: id)
     end
 
     field :gene_claim, Types::GeneClaimType, null: true do
@@ -45,20 +144,11 @@ module Types
 
     field :gene, Types::GeneType, null: true do
       description "A gene"
-      argument :name, String, required: true
+      argument :concept_id, String, required: true
     end
 
-    def gene(name: )
-      Gene.find_by(name: name)
-    end
-
-    field :genes, [Types::GeneType], null: false do
-      description "A gene"
-      argument :name, [String], required: true
-    end
-
-    def genes(name: )
-      Gene.where(name: name)
+    def gene(concept_id: )
+      Gene.find_by(concept_id: concept_id)
     end
 
     field :gene_alias, Types::GeneAliasType, null: true do
@@ -98,12 +188,13 @@ module Types
     end
 
     field :gene_claim_category, Types::GeneClaimCategoryType, null: true do
-      description "Category for a drug claim"
-      argument :id, String, required: true
+      description "Category for a gene claim"
+      argument :name, String, required: true
     end
 
-    def gene_claim_category(id: )
-      GeneClaimCategory.find_by(id: id)
+    def gene_claim_category(name: )
+      context.scoped_set!(:category_name, name)
+      GeneClaimCategory.find_by(name: name)
     end
 
     field :drug_alias, Types::DrugAliasType, null: true do
@@ -142,15 +233,6 @@ module Types
       DrugClaimAttribute.find_by(id: id)
     end
 
-    field :drug_claim_type, Types::DrugClaimTypeType, null: true do
-      description "Types of drug claims"
-      argument :id, ID, required: true
-    end
-
-    def drug_claim_type(id:)
-      ::DrugClaimType.find_by(id: id)
-    end
-
     field :drug_claim, Types::DrugClaimType, null: true do
       description "A claim for a drug"
       argument :id, ID, required: true
@@ -160,13 +242,31 @@ module Types
       DrugClaim.find_by(id: id)
     end
 
-    field :drug, Types::DrugType, null: true do
-      description "A drug"
+    field :drug_application, Types::DrugApplicationType, null: true do
+      description "Drug application"
       argument :id, ID, required: true
     end
 
-    def drug(id:)
-      Drug.find_by(id: id)
+    def drug_application(id:)
+      DrugApplication.find_by(id: id)
+    end
+
+    field :drug_approval_rating, Types::DrugApprovalRatingType, null: true do
+      description "Drug approval rating"
+      argument :id, ID, required: true
+    end
+
+    def drug_approval_rating(id:)
+      DrugApprovalRating.find_by(id: id)
+    end
+
+    field :drug, Types::DrugType, null: true do
+      description "A drug"
+      argument :concept_id, String, required: true
+    end
+
+    def drug(concept_id: )
+      Drug.find_by(concept_id: concept_id)
     end
 
     field :interaction_attribute, Types::InteractionAttributeType, null: true do

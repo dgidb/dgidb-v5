@@ -31,3 +31,7 @@
 /config/master.key
 
 /vendor
+
+/config/credentials/staging.key
+
+/config/credentials/production.key

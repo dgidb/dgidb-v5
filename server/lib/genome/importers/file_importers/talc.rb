@@ -17,7 +17,11 @@ module Genome; module Importers; module FileImporters; module Talc;
         {
           base_url: 'https://www.ncbi.nlm.nih.gov/pubmed/24377743',
           site_url: 'https://www.ncbi.nlm.nih.gov/pubmed/24377743',
-          citation: 'Morgensztern,D., Campo,M.J., Dahlberg,S.E., Doebele,R.C., Garon,E., Gerber,D.E., Goldberg,S.B., Hammerman,P.S., Heist,R.S., Hensing,T., et al. (2015) Molecularly targeted therapies in non-small-cell lung cancer annual update 2014. J. Thorac. Oncol., 10, S1–63. PMID: 25535693',
+          citation: 'Morgensztern D, Campo MJ, Dahlberg SE, Doebele RC, Garon E, Gerber DE, Goldberg SB, Hammerman PS, Heist RS, Hensing T, Horn L, Ramalingam SS, Rudin CM, Salgia R, Sequist LV, Shaw AT, Simon GR, Somaiah N, Spigel DR, Wrangle J, Johnson D, Herbst RS, Bunn P, Govindan R. Molecularly targeted therapies in non-small-cell lung cancer annual update 2014. J Thorac Oncol. 2015 Jan;10(1 Suppl 1):S1-63. doi: 10.1097/JTO.0000000000000405. PMID: 25535693; PMCID: PMC4346098.',
+          citation_short: 'Morgensztern D, et al. Molecularly targeted therapies in non-small-cell lung cancer annual update 2014. J Thorac Oncol. 2015 Jan;10(1 Suppl 1):S1-63.',
+          pmid: '25535693',
+          pmcid: 'PMC4346098',
+          doi: '10.1097/JTO.0000000000000405',
           source_db_version: '12-May-2016',
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
@@ -32,19 +36,19 @@ module Genome; module Importers; module FileImporters; module Talc;
 
     def create_interaction_claims
       CSV.foreach(file_path, headers: true, col_sep: "\t") do |row|
-        gene_claim = create_gene_claim(row['gene_target'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['gene_target'], 'Gene Symbol')
-        create_gene_claim_alias(gene_claim, row['entrez_id'], 'Entrez ID')
+        gene_claim = create_gene_claim(row['gene_target'])
+        create_gene_claim_alias(gene_claim, "ncbigene:#{row['entrez_id']}", GeneNomenclature::NCBI_ID)
 
-        drug_claim = create_drug_claim(row['drug_name'].upcase, row['drug_name'].upcase, 'TALC')
-        create_drug_claim_alias(drug_claim, row['drug_name'], 'Primary Drug Name')
+        drug_claim = create_drug_claim(row['drug_name'].upcase)
         unless row['drug_generic_name'] == 'NA'
-          create_drug_claim_alias(drug_claim, row['drug_generic_name'], 'Drug Generic Name')
+          create_drug_claim_alias(drug_claim, row['drug_generic_name'], DrugNomenclature::GENERIC_NAME)
         end
         unless row['drug_trade_name'] == 'NA'
-          create_drug_claim_alias(drug_claim, row['drug_trade_name'], 'Drug Trade Name')
+          create_drug_claim_alias(drug_claim, row['drug_trade_name'], DrugNomenclature::TRADE_NAME)
         end
-        create_drug_claim_alias(drug_claim, row['drug_synonym'], 'Drug Synonym') unless row['drug_synonym'] == 'NA'
+        unless row['drug_synonym'] == 'NA'
+          create_drug_claim_alias(drug_claim, row['drug_synonym'], DrugNomenclature::ALIAS)
+        end
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         create_interaction_claim_type(interaction_claim, row['interaction_type']) unless row['interaction_type'] == 'NA'

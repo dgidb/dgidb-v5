@@ -1,44 +1,77 @@
-html, body {
+html,
+body {
   background-color: var(--background);
   margin: 0;
   font-family: 'Lato';
+  color: var(--text-content);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: var(--text-content);
+  }
 }
 
 .layout-container {
-  background-color: var(--background);
-  color: var(--text-primary);
+  background-color: var(--background-light);
+  color: var(--text-content);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+
+  .content-container {
+    background-color: var(--background-light);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+
+  .content {
+    background-color: var(--background);
+  }
 }
+
 header {
   display: flex;
+  background: -webkit-linear-gradient(
+    var(--header-gradient-1),
+    var(--header-gradient-2)
+  );
 
   .header-logo {
     font-family: 'Fira Sans', sans-serif;
-    font-size: 3.6rem;
+    font-size: 3.2rem;
     font-weight: 700;
     line-height: 80px;
     margin: 3px 0 0 20px;
-    background: -webkit-linear-gradient(var(--logo-gradient-1), var(--logo-gradient-2));
+    background: -webkit-linear-gradient(
+      var(--logo-gradient-1),
+      var(--logo-gradient-2)
+    );
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     cursor: pointer;
   }
 
+  .browse-button {
+    text-transform: none;
+    font-size: 18px;
+    font-weight: 100;
+    color: var(--background);
+  }
+
   nav {
-    background-color: var(--background);
     flex-grow: 1;
     display: flex;
     align-self: flex-end;
     justify-content: flex-end;
     align-items: center;
-    position: relative;
     height: 80px;
 
-
     ul {
+      color: white;
       display: flex;
       justify-content: flex-end;
       list-style: none;
@@ -47,6 +80,7 @@ header {
 
       li {
         margin-left: 60px;
+        line-height: 46px;
         font-family: 'Work Sans';
         font-size: 18px;
         cursor: pointer;
@@ -54,9 +88,15 @@ header {
     }
   }
 
+  .ant-menu-title-content {
+    color: var(--text-content);
+  }
+
+  .ant-menu-dark.ant-menu-horizontal {
+    background-color: var(--background);
+    color: var(--text-content);
+  }
 }
-
-
 
 footer {
   background-color: var(--theme-primary);
@@ -71,4 +111,9 @@ footer {
   font-size: 20px;
   font-family: 'Work Sans';
   font-weight: 300;
+}
+
+.ant-tabs {
+  background-color: var(--background);
+  border-radius: 5px;
 }

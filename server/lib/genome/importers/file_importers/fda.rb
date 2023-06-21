@@ -18,11 +18,10 @@ module Genome; module Importers; module FileImporters; module Fda
         {
           base_url: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
           site_url: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
-          citation: 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling',
           source_db_version: set_current_date_version,
           source_db_name: source_db_name,
           full_name: 'FDA Pharmacogenomic Biomarkers',
-          license: 'Public Domain',
+          license: License::PUBLIC_DOMAIN,
           license_link: 'https://www.fda.gov/about-fda/about-website/website-policies#linking'
         }
       )
@@ -34,19 +33,19 @@ module Genome; module Importers; module FileImporters; module Fda
       if row['Drug'].include?(',')
         combination_therapy = row['Drug']
         row['Drug'].split(',').each do |drug|
-          drug_claim = create_drug_claim(drug, drug, 'FDA Drug Name')
+          drug_claim = create_drug_claim(drug)
           interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-          create_interaction_claim_attribute(interaction_claim, 'Combination therapy', combination_therapy)
-          if !fusion_protein.nil?
-            create_interaction_claim_attribute(interaction_claim, 'Fusion protein', fusion_protein)
+          create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_therapy)
+          unless fusion_protein.nil?
+            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::FUSION_PROTEIN, fusion_protein)
           end
           create_interaction_claim_link(interaction_claim, 'Table of Pharmacogenomic Biomarkers in Drug Labeling', 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling')
         end
       else
-        drug_claim = create_drug_claim(row['Drug'], row['Drug'], 'FDA Drug Name')
+        drug_claim = create_drug_claim(row['Drug'])
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
         if not fusion_protein.nil?
-          create_interaction_claim_attribute(interaction_claim, 'Fusion protein', fusion_protein)
+          create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::FUSION_PROTEIN, fusion_protein)
         end
         create_interaction_claim_link(interaction_claim, 'Table of Pharmacogenomic Biomarkers in Drug Labeling', 'https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling')
       end
@@ -57,12 +56,12 @@ module Genome; module Importers; module FileImporters; module Fda
         if row['Biomarker'].include?(':')
           fusion_protein = row['Biomarker']
           row['Biomarker'].split(':').each do |indv_gene|
-            gene_claim = create_gene_claim(indv_gene, 'FDA Gene Name')
+            gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
             create_drug_claims(row, gene_claim, fusion_protein)
           end
         else
           row['Biomarker'].split(',').each do |indv_gene|
-            gene_claim = create_gene_claim(indv_gene, 'FDA Gene Name')
+            gene_claim = create_gene_claim(indv_gene, GeneNomenclature::NAME)
             create_drug_claims(row, gene_claim, nil)
           end
         end

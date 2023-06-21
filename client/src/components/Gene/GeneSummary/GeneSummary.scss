@@ -1,0 +1,100 @@
+.gene-summary-container {
+  color: var(--text-content);
+  margin: 15px;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    color: var(--text-content);
+  }
+
+  h4 {
+    color: var(--text-content);
+  }
+
+  .gene-summary-content {
+    display: flex;
+    background-color: var(--background);
+
+    .interaction-count-container {
+      border: 1px var(--text-content) solid;
+      margin-right: 7px;
+      padding: 10px;
+      min-height: 400px;
+      flex-grow: 1;
+
+      .interaction-count-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .interaction-count-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+
+        &:hover {
+          background-color: var(--background-light);
+          cursor: pointer;
+        }
+      }
+
+      .interaction-count-gene {
+        margin-right: 1.5em;
+      }
+
+      .filtered-by {
+        background-color: var(--background-light);
+      }
+    }
+
+    .summary-infographic-container {
+      border: 1px var(--text-content) solid;
+      padding: 10px;
+      width: 80%;
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+
+      .tabbed-view {
+        align-items: flex-start !important;
+        justify-content: center;
+      }
+
+      .chart-section {
+        height: 100%;
+        width: 100%;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+
+        .score-container {
+          padding-left: 10px;
+        }
+        .type-container {
+          padding-left: 10px;
+        }
+        .approval-container {
+          padding-left: 10px;
+        }
+      }
+      .chart-selector {
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+canvas {
+  max-height: 500px !important;
+  max-width: 500px !important;
+  min-height: 500px !important;
+  min-width: 550px !important;
+}

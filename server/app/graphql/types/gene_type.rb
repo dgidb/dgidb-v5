@@ -1,23 +1,29 @@
 module Types
   class GeneType < Types::BaseObject
+  class CategoryWithSources < Types::BaseObject
+    field :name, String, null: false
+    field :source_names, [String], null: false
+  end
     field :id, ID, null: false
     field :name, String, null: true
     field :long_name, String, null: true
-    field :entrez_id, Int, null: true
+    field :concept_id, String, null: true
 
     field :gene_claims, [Types::GeneClaimType], null: false
-    field :gene_gene_interaction_claims, [Types::GeneGeneInteractionClaimType], null: false
     field :interactions, [Types::InteractionType], null: false
     field :gene_aliases, [Types::GeneAliasType], null: false
     field :gene_attributes, [Types::GeneAttributeType], null: false
     field :gene_categories, [Types::GeneClaimCategoryType], null: false
+    field :gene_categories_with_sources, [CategoryWithSources], null: false do
+      argument :category_name, String, required: false
+    end
+
+    def gene_categories_with_sources (category_name: nil)
+      object.gene_categories_with_sources(category_name: category_name)
+    end
 
     def gene_claims
       Loaders::AssociationLoader.for(Gene, :gene_claims).load(object)
-    end
-
-    def gene_gene_interaction_claims
-      Loaders::AssociationLoader.for(Gene, :gene_gene_interaction_claims).load(object)
     end
 
     def interactions

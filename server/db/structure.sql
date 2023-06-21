@@ -120,6 +120,29 @@ CREATE TABLE public.drug_aliases (
 
 
 --
+-- Name: drug_applications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_applications (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    app_no character varying,
+    drug_id text
+);
+
+
+--
+-- Name: drug_approval_ratings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_approval_ratings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    rating character varying NOT NULL,
+    drug_id text,
+    source_id text
+);
+
+
+--
 -- Name: drug_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -154,6 +177,17 @@ CREATE TABLE public.drug_claim_aliases (
 
 
 --
+-- Name: drug_claim_approval_ratings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.drug_claim_approval_ratings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    rating character varying NOT NULL,
+    drug_claim_id text
+);
+
+
+--
 -- Name: drug_claim_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -166,26 +200,6 @@ CREATE TABLE public.drug_claim_attributes (
 
 
 --
--- Name: drug_claim_types; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.drug_claim_types (
-    id character varying(255) NOT NULL,
-    type character varying(255) NOT NULL
-);
-
-
---
--- Name: drug_claim_types_drug_claims; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.drug_claim_types_drug_claims (
-    drug_claim_id character varying(255) NOT NULL,
-    drug_claim_type_id character varying(255) NOT NULL
-);
-
-
---
 -- Name: drug_claims; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -194,7 +208,6 @@ CREATE TABLE public.drug_claims (
     name text NOT NULL,
     nomenclature text NOT NULL,
     source_id text,
-    primary_name character varying(255),
     drug_id text
 );
 
@@ -331,7 +344,7 @@ CREATE TABLE public.genes (
     id text NOT NULL,
     name text,
     long_name character varying(255),
-    entrez_id integer
+    concept_id character varying NOT NULL
 );
 
 
@@ -444,7 +457,8 @@ CREATE TABLE public.interaction_types_interactions (
 CREATE TABLE public.interactions (
     id text NOT NULL,
     drug_id text NOT NULL,
-    gene_id text NOT NULL
+    gene_id text NOT NULL,
+    score numeric
 );
 
 
@@ -540,9 +554,12 @@ CREATE TABLE public.sources (
     gene_claims_in_groups_count integer DEFAULT 0,
     drug_claims_in_groups_count integer DEFAULT 0,
     source_trust_level_id character varying(255),
-    gene_gene_interaction_claims_count integer DEFAULT 0,
     license character varying,
-    license_link character varying
+    license_link character varying,
+    citation_short character varying,
+    pmid character varying,
+    pmcid character varying,
+    doi character varying
 );
 
 
@@ -593,6 +610,22 @@ ALTER TABLE ONLY public.drug_aliases
 
 
 --
+-- Name: drug_applications drug_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_applications
+    ADD CONSTRAINT drug_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: drug_approval_ratings drug_approval_ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT drug_approval_ratings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: drug_attributes drug_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -617,27 +650,19 @@ ALTER TABLE ONLY public.drug_claim_aliases
 
 
 --
+-- Name: drug_claim_approval_ratings drug_claim_approval_ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_claim_approval_ratings
+    ADD CONSTRAINT drug_claim_approval_ratings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: drug_claim_attributes drug_claim_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.drug_claim_attributes
     ADD CONSTRAINT drug_claim_attributes_pkey PRIMARY KEY (id);
-
-
---
--- Name: drug_claim_types_drug_claims drug_claim_types_drug_claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_claim_types_drug_claims
-    ADD CONSTRAINT drug_claim_types_drug_claims_pkey PRIMARY KEY (drug_claim_id, drug_claim_type_id);
-
-
---
--- Name: drug_claim_types drug_claim_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_claim_types
-    ADD CONSTRAINT drug_claim_types_pkey PRIMARY KEY (id);
 
 
 --
@@ -951,13 +976,6 @@ CREATE INDEX drug_claim_attributes_drug_claim_id_idx ON public.drug_claim_attrib
 
 
 --
--- Name: drug_claim_types_lower_type_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX drug_claim_types_lower_type_idx ON public.drug_claim_types USING btree (lower((type)::text));
-
-
---
 -- Name: drug_claims_full_text; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1084,10 +1102,38 @@ CREATE INDEX index_drug_aliases_on_drug_id ON public.drug_aliases USING btree (d
 
 
 --
+-- Name: index_drug_applications_on_drug_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_applications_on_drug_id ON public.drug_applications USING btree (drug_id);
+
+
+--
+-- Name: index_drug_approval_ratings_on_drug_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_approval_ratings_on_drug_id ON public.drug_approval_ratings USING btree (drug_id);
+
+
+--
+-- Name: index_drug_approval_ratings_on_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_approval_ratings_on_source_id ON public.drug_approval_ratings USING btree (source_id);
+
+
+--
 -- Name: index_drug_attributes_on_drug_id_and_name_and_value; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_drug_attributes_on_drug_id_and_name_and_value ON public.drug_attributes USING btree (drug_id, name, value);
+
+
+--
+-- Name: index_drug_claim_approval_ratings_on_drug_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_drug_claim_approval_ratings_on_drug_claim_id ON public.drug_claim_approval_ratings USING btree (drug_claim_id);
 
 
 --
@@ -1119,10 +1165,24 @@ CREATE UNIQUE INDEX index_drug_claims_on_name_and_nomenclature_and_source_id ON 
 
 
 --
+-- Name: index_drugs_on_concept_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_drugs_on_concept_id ON public.drugs USING btree (upper((concept_id)::text));
+
+
+--
 -- Name: index_drugs_on_name_and_concept_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_drugs_on_name_and_concept_id ON public.drugs USING btree (name, concept_id);
+
+
+--
+-- Name: index_gene_aliases_on_alias; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gene_aliases_on_alias ON public.gene_aliases USING btree (alias);
 
 
 --
@@ -1175,10 +1235,17 @@ CREATE UNIQUE INDEX index_gene_claims_on_name_and_nomenclature_and_source_id ON 
 
 
 --
--- Name: index_genes_on_entrez_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_genes_on_concept_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_genes_on_entrez_id ON public.genes USING btree (entrez_id);
+CREATE UNIQUE INDEX index_genes_on_concept_id ON public.genes USING btree (upper((concept_id)::text));
+
+
+--
+-- Name: index_genes_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_genes_on_name ON public.genes USING btree (name);
 
 
 --
@@ -1361,14 +1428,6 @@ ALTER TABLE ONLY public.drug_attributes_sources
 
 
 --
--- Name: drug_claim_types_drug_claims fk_drug_claim; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_claim_types_drug_claims
-    ADD CONSTRAINT fk_drug_claim FOREIGN KEY (drug_claim_id) REFERENCES public.drug_claims(id) MATCH FULL;
-
-
---
 -- Name: drug_claim_aliases fk_drug_claim_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1390,14 +1449,6 @@ ALTER TABLE ONLY public.drug_claim_attributes
 
 ALTER TABLE ONLY public.interaction_claims
     ADD CONSTRAINT fk_drug_claim_id FOREIGN KEY (drug_claim_id) REFERENCES public.drug_claims(id) MATCH FULL;
-
-
---
--- Name: drug_claim_types_drug_claims fk_drug_claim_type; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.drug_claim_types_drug_claims
-    ADD CONSTRAINT fk_drug_claim_type FOREIGN KEY (drug_claim_type_id) REFERENCES public.drug_claim_types(id) MATCH FULL;
 
 
 --
@@ -1609,6 +1660,14 @@ ALTER TABLE ONLY public.interaction_attributes
 
 
 --
+-- Name: drug_applications fk_rails_33d3846e26; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_applications
+    ADD CONSTRAINT fk_rails_33d3846e26 FOREIGN KEY (drug_id) REFERENCES public.drugs(id);
+
+
+--
 -- Name: drug_aliases fk_rails_4d255ac147; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1617,11 +1676,35 @@ ALTER TABLE ONLY public.drug_aliases
 
 
 --
+-- Name: drug_approval_ratings fk_rails_5bd60d85d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT fk_rails_5bd60d85d8 FOREIGN KEY (source_id) REFERENCES public.sources(id);
+
+
+--
 -- Name: interaction_claim_links fk_rails_af235a7f08; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.interaction_claim_links
     ADD CONSTRAINT fk_rails_af235a7f08 FOREIGN KEY (interaction_claim_id) REFERENCES public.interaction_claims(id);
+
+
+--
+-- Name: drug_claim_approval_ratings fk_rails_db4dd24d4e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_claim_approval_ratings
+    ADD CONSTRAINT fk_rails_db4dd24d4e FOREIGN KEY (drug_claim_id) REFERENCES public.drug_claims(id);
+
+
+--
+-- Name: drug_approval_ratings fk_rails_e9572ff2dd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.drug_approval_ratings
+    ADD CONSTRAINT fk_rails_e9572ff2dd FOREIGN KEY (drug_id) REFERENCES public.drugs(id);
 
 
 --
@@ -1783,6 +1866,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200811160413'),
 ('20200901140610'),
 ('20200904144705'),
-('20220317193102');
+('20220317193102'),
+('20220408032834'),
+('20220408181519'),
+('20220408182256'),
+('20220511151940'),
+('20220520001558'),
+('20220520141004'),
+('20220520193230'),
+('20220523150744'),
+('20220523183117'),
+('20230104221712'),
+('20230110183235'),
+('20230214150515');
 
 

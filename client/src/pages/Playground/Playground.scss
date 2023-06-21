@@ -1,0 +1,22 @@
+.playground-page-container {
+  background-color: var(--background);
+  display: flex;
+  color: var(--text-content);
+
+  .main {
+    display: contents;
+    width: 85%;
+  }
+}
+
+.collapse-group {
+  fontsize: 16;
+  width: 15%;
+  height: 30px;
+  display: block;
+}
+
+.graphiql-container {
+  max-height: 1000px;
+  min-height: 1000px;
+}

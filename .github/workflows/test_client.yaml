@@ -1,0 +1,36 @@
+name: Frontend checks
+on:
+  push:
+    branches: [ main, staging, dev ]
+  pull_request:
+    branches: [ main, staging, dev ]
+jobs:
+  test_build:
+    name: Test client build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v3
+      - name: install dependencies
+        run: yarn install
+      - name: build
+        run: |
+          CI=false
+          yarn build
+  lint:
+    name: Lint client files
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: yarn --prefer-offline
+      - name: Prettier check
+        run: yarn run prettier-check
+

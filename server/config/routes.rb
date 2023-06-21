@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   post "/api/graphql", to: "graphql#execute"
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  
-  if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/api/graphql"
-  end
+  post "/api/graphql/download/:table_name", to: "table_download#download_table"
+
+  mount GraphiQL::Rails::Engine, at: "/api/graphiql", graphql_path: "/api/graphql"
 end
