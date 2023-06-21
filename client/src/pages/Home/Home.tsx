@@ -1,17 +1,19 @@
 // hooks/dependencies
 import React, { useState, useContext, useEffect } from 'react';
+
+// components
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
+import { Box, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 // styles
 // todo: introduce dark mode back later
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
-import { Box, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 export const Home: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
