@@ -11,6 +11,7 @@ production:
   port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
   username: <%= ENV.fetch("RDS_USERNAME") { "dgidb" } %>
   password: <%= ENV.fetch("RDS_PASSWORD") { "" } %>
+  pool: 35
 
 staging:
   <<: *default
