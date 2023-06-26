@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation, useRoutes } from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';
-import { BrowseSources } from 'components/Browse/Sources';
+import { BrowseSources } from 'components/BrowseSources';
 import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
@@ -12,7 +12,7 @@ import { About } from 'pages/About';
 import { Downloads } from 'pages/Downloads';
 import { Playground } from 'pages/Playground';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
-import { BrowseCategories } from 'components/Browse/Categories/BrowseCategories';
+import { BrowseCategories } from 'components/BrowseCategories/BrowseCategories';
 
 const App = () => {
   const { pathname, hash, key } = useLocation();

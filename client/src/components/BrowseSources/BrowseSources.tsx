@@ -23,9 +23,7 @@ export const BrowseSources = () => {
   const { data: geneData } = useGetGeneSources('GENE');
   const { data: drugData } = useGetDrugSources('DRUG');
   const { data: interactionData } = useGetInteractionSources('INTERACTION');
-  const { data: potentiallyDruggableData } = useGetDruggableSources(
-    'POTENTIALLY_DRUGGABLE'
-  );
+  const { data: potentiallyDruggableData } = useGetDruggableSources();
 
   let geneSources = geneData?.sources?.nodes;
   let drugSources = drugData?.sources?.nodes;
