@@ -38,11 +38,7 @@ export const Contact = () => {
         <p>
           Creator
           <br />
-          <Link
-            href="https://griffithlab.org"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Link href="https://griffithlab.org" target="_blank" rel="noreferrer">
             <Home />
           </Link>
           <Link
