@@ -42,7 +42,6 @@ export const Contact = () => {
             href="https://griffithlab.org"
             target="_blank"
             rel="noreferrer"
-            className="contrib-icon"
           >
             <Home />
           </Link>
@@ -161,7 +160,7 @@ export const Contact = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <Email className="contrib-icon"/>
+            <Email />
           </Link>
         </p>
       </div>
