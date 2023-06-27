@@ -20,9 +20,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export const BrowseSources = () => {
   const [filter, setFilter] = useState<string>('All');
 
-  const { data: geneData } = useGetGeneSources('GENE');
-  const { data: drugData } = useGetDrugSources('DRUG');
-  const { data: interactionData } = useGetInteractionSources('INTERACTION');
+  const { data: geneData } = useGetGeneSources();
+  const { data: drugData } = useGetDrugSources();
+  const { data: interactionData } = useGetInteractionSources();
   const { data: potentiallyDruggableData } = useGetDruggableSources();
 
   let geneSources = geneData?.sources?.nodes;

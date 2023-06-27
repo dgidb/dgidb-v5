@@ -6,8 +6,6 @@ import { useGetDruggableSources } from 'hooks/queries/useGetSourceInfo';
 import { CategoriesListing } from './CategoriesListing/CategoriesListing';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Typography,
 } from '@mui/material';
