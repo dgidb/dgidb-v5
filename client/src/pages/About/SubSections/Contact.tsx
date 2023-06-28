@@ -1,4 +1,5 @@
 import { Email, GitHub, Home, LinkedIn } from '@mui/icons-material';
+import { Link } from '@mui/material';
 
 export const Contact = () => {
   return (
@@ -9,7 +10,7 @@ export const Contact = () => {
           University School of Medicine. If you have a source of information
           related to the druggable genome you would like us to incorporate,
           please contact us at{' '}
-          <a href="mailto:help@dgidb.org">help@dgidb.org.</a>
+          <Link href="mailto:help@dgidb.org">help@dgidb.org.</Link>
         </p>
         <p>
           Citation: Integration of the Drug–Gene Interaction Database (DGIdb
@@ -21,9 +22,15 @@ export const Contact = () => {
         <h3 id="current-contributors">Current Contributors</h3>
       </div>
 
-      <div className="contact-section-container left-section">
+      <div className="left-section">
         <h4>
-          <a href="http://genome.wustl.edu/">The McDonnell Genome Institute</a>
+          <Link
+            href="http://genome.wustl.edu/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            The McDonnell Genome Institute
+          </Link>
         </h4>
         <p>Washington University</p>
 
@@ -31,86 +38,138 @@ export const Contact = () => {
         <p>
           Creator
           <br />
-          <a href="https://griffithlab.org">
+          <Link href="https://griffithlab.org" target="_blank" rel="noreferrer">
             <Home />
-          </a>
-          <a href="mailto:mgriffit@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:mgriffit@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Obi Griffith</h4>
         <p>
           Creator
           <br />
-          <a href="https://griffithlab.org">
+          <Link href="https://griffithlab.org" target="_blank" rel="noreferrer">
             <Home />
-          </a>
-          <a href="mailto:obigriffith@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:obigriffith@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Susanna Kiwala</h4>
         <p>
           Software developer
           <br />
-          <a href="https://github.com/susannasiebert">
+          <Link
+            href="https://github.com/susannasiebert"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GitHub />
-          </a>
-          <a href="mailto:susanna.kiwala@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:susanna.kiwala@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Kelsy Cotto</h4>
         <p>
           Curator, software developer
           <br />
-          <a href="https://www.linkedin.com/in/kelsy-cotto-94b9018b/">
+          <Link
+            href="https://www.linkedin.com/in/kelsy-cotto-94b9018b/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkedIn />
-          </a>
-          <a href="mailto:kelsy.cotto@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:kelsy.cotto@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Sharon Freshour</h4>
         <p>
           Curator, software developer
           <br />
-          <a href="https://www.linkedin.com/in/sharonfreshour/">
+          <Link
+            href="https://www.linkedin.com/in/sharonfreshour/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkedIn />
-          </a>
-          <a href="mailto:sharonfreshour@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:sharonfreshour@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Adam Coffman</h4>
         <p>
           Software developer
           <br />
-          <a href="https://github.com/acoffman">
+          <Link
+            href="https://github.com/acoffman"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GitHub />
-          </a>
-          <a href="mailto:acoffman@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:acoffman@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Josh McMichael</h4>
         <p>
           User experience (UX) developer
           <br />
-          <a href="https://github.com/jmcmichael">
+          <Link
+            href="https://github.com/jmcmichael"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GitHub />
-          </a>
-          <a href="mailto:jmcmicha@wustl.edu">
+          </Link>
+          <Link
+            href="mailto:jmcmicha@wustl.edu"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
       </div>
 
-      <div className="contact-section-container right-section">
+      <div className="right-section">
         <h4>
-          <a href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine">
+          <Link
+            href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine"
+            target="_blank"
+            rel="noreferrer"
+          >
             The Institute for Genomic Medicine
-          </a>
+          </Link>
         </h4>
         <p>Nationwide Children's Hospital</p>
 
@@ -118,48 +177,80 @@ export const Contact = () => {
         <p>
           Creator, software developer
           <br />
-          <a href="http://alexwagner.info">
+          <Link href="http://alexwagner.info" target="_blank" rel="noreferrer">
             <Home />
-          </a>
-          <a href="mailto:Alex.Wagner@nationwidechildrens.org">
+          </Link>
+          <Link
+            href="mailto:Alex.Wagner@nationwidechildrens.org"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Matthew Cannon</h4>
         <p>
           Software developer
           <br />
-          <a href="https://www.linkedin.com/in/matthew-cannon-b250a730/">
+          <Link
+            href="https://www.linkedin.com/in/matthew-cannon-b250a730/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkedIn />
-          </a>
-          <a href="mailto:Matthew.Cannon2@nationwidechildrens.org">
+          </Link>
+          <Link
+            href="mailto:Matthew.Cannon2@nationwidechildrens.org"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>Katie Stahl</h4>
         <p>
           Software developer
           <br />
-          <a href="https://github.com/katiestahl">
+          <Link
+            href="https://github.com/katiestahl"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GitHub />
-          </a>
-          <a href="https://www.linkedin.com/in/katie-stahl-05b81a126/">
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/katie-stahl-05b81a126/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkedIn />
-          </a>
-          <a href="mailto:Kathryn.Stahl@nationwidechildrens.org">
+          </Link>
+          <Link
+            href="mailto:Kathryn.Stahl@nationwidechildrens.org"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
         <h4>James Stevenson</h4>
         <p>
           Software developer
           <br />
-          <a href="https://jsstevenson.github.io/">
+          <Link
+            href="https://jsstevenson.github.io/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Home />
-          </a>
-          <a href="mailto:James.Stevenson@nationwidechildrens.org">
+          </Link>
+          <Link
+            href="mailto:James.Stevenson@nationwidechildrens.org"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Email />
-          </a>
+          </Link>
         </p>
       </div>
       <div className="contact-section-container spacing"></div>
