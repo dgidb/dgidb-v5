@@ -65,7 +65,7 @@ export const BrowseCategories: React.FC = () => {
           />
         </Grid>
         <Box className="browse-cats-accordion-horizontal-container" flex={1}>
-          <CategoriesListing sources={checkedSources} />
+          <CategoriesListing checkedSources={checkedSources} sourcesLoaded={isLoading !== undefined && !isLoading && !isError}/>
         </Box>
       </Grid>
     </Box>

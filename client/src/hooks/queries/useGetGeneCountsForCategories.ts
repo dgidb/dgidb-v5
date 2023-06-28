@@ -17,7 +17,6 @@ export const useGetGeneCountsForCategories = (
   sourceDbNames: String[],
   enabled: boolean = true
 ) => {
-  console.log('firintg query');
   return useQuery(
     'gene-counts-for-categories',
     async () => {
