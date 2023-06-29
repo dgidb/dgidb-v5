@@ -32,7 +32,7 @@ const ReleaseInformation: React.FC = () => {
     <div>
       {currentRelease && (
         <div className="release-info">
-          DDIdb {currentRelease.name} (
+          DGIdb {currentRelease.name} (
           {new Date(currentRelease.published_at).toLocaleString().split(',')[0]}
           )&nbsp; &bull; &nbsp;
           <a href={currentRelease.html_url} target="_blank">
