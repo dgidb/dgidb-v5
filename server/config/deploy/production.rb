@@ -7,8 +7,10 @@ set :rails_env, 'production'
 
 set :linked_files, fetch(:linked_files, []).push('config/master.key')
 
-set :ssh_options, {
-    keys: [ENV['DGIDB_PROD_KEY']],
-    forward_agent: false,
-    auth_methods: %w(publickey)
-}
+if !ENV['CI']
+  set :ssh_options, {
+      keys: [ENV['DGIDB_PROD_KEY']].compact,
+      forward_agent: false,
+      auth_methods: %w(publickey)
+  }
+end

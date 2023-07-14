@@ -30,7 +30,7 @@ jobs:
       - run: rm -rf public/*
         working-directory: ./server
 
-      - run: yarn build:${{ inputs.branch }}
+      - run: CI=false yarn build:${{ inputs.branch }}
         working-directory: ./client
 
       - run: cp -r ../../client/build/* .
