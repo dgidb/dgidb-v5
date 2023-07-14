@@ -6,12 +6,19 @@ export const Overview = () => {
       <p className="about-sub-header">
         Mining the Druggable Genome for Personalized Medicine
       </p>
+
       <p className="about-citation">
-        Citation: Integration of the Drug-Gene Interaction Database (DGIdb 4.0)
-        with open crowdsource efforts. Freshour S*, Kiwala S*, Cotto KC*,
-        Coffman AC, McMichael JF, Song J, Griffith M, Griffith OL, Wagner AH.
-        Nucleic Acids Research. 2020 Nov 25; doi:
-        https://doi.org/10.1093/nar/gkaa1084. PMID: 33237278
+        <Link
+          href="https://pubmed.ncbi.nlm.nih.gov/33237278/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Integration of the Drug-Gene Interaction Database (DGIdb 4.0) with
+          open crowdsource efforts.
+        </Link>{' '}
+        Freshour S*, Kiwala S*, Cotto KC*, Coffman AC, McMichael JF, Song J,
+        Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2020 Nov 25;
+        doi: https://doi.org/10.1093/nar/gkaa1084. PMID: 33237278
       </p>
 
       <p>
@@ -27,12 +34,69 @@ export const Overview = () => {
         potential drug-gene interactions. The drug-gene interaction database
         (DGIdb) attempts to address this challenge. Using a combination of
         expert curation and text-mining, drug-gene interactions have been mined
-        from DrugBank, PharmGKB, ChEMBL, Drug Target Commons, TTD, and others.
-        Genes have also been categorized as potentially druggable according to
-        membership in selected pathways, molecular functions and gene families
-        from the Gene Ontology, the Human Protein Atlas, IDG, "druggable genome"
-        lists from Hopkins and Groom (2002) and Russ and Lampel (2005), and
-        others. Drug and gene grouping is provided by the VICC{' '}
+        from{' '}
+        <Link href="https://www.drugbank.com/" target="_blank" rel="noreferrer">
+          DrugBank
+        </Link>
+        ,{' '}
+        <Link href="https://www.pharmgkb.org/" target="_blank" rel="noreferrer">
+          PharmGKB
+        </Link>
+        ,{' '}
+        <Link
+          href="https://www.ebi.ac.uk/chembl/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          ChEMBL
+        </Link>
+        ,{' '}
+        <Link
+          href="https://drugtargetcommons.fimm.fi/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Drug Target Commons
+        </Link>
+        , and <Link href="/browse/sources">others</Link>. Genes have also been
+        categorized as potentially druggable according to membership in selected
+        pathways, molecular functions and gene families from the{' '}
+        <Link href="http://geneontology.org/" target="_blank" rel="noreferrer">
+          Gene Ontology
+        </Link>
+        , the{' '}
+        <Link
+          href="https://www.proteinatlas.org/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Human Protein Atlas
+        </Link>
+        ,{' '}
+        <Link
+          href="https://druggablegenome.net/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          IDG
+        </Link>
+        , "druggable genome" lists from{' '}
+        <Link
+          href="https://pubmed.ncbi.nlm.nih.gov/12209152/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Hopkins and Groom (2002)
+        </Link>{' '}
+        and{' '}
+        <Link
+          href="https://pubmed.ncbi.nlm.nih.gov/16376820/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Russ and Lampel (2005)
+        </Link>
+        , and others. Drug and gene grouping is provided by the VICC{' '}
         <Link
           href="https://github.com/cancervariants/gene-normalization"
           target="_blank"

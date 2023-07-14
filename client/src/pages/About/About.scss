@@ -1,4 +1,8 @@
 .about-page-container {
+  a {
+    color: var(--link) !important;
+  }
+
   h3 {
     font-size: 2rem;
     margin-bottom: 15px;
@@ -42,15 +46,10 @@
       }
 
       .about-citation {
-        color: #8075ff;
         font-size: 0.8rem;
         font-weight: 400;
       }
     }
-  }
-
-  .ant-anchor-link-title {
-    color: var(--text-content) !important;
   }
 
   span {
@@ -59,6 +58,12 @@
 
   .doc-section {
     font-size: 0.89rem;
+  }
+
+  .publications-section-container {
+    .about-pub-item {
+      padding-bottom: 0.5em;
+    }
   }
 
   .contact-section-container {
@@ -75,6 +80,9 @@
     .spacing {
       min-height: 700px;
     }
+    svg {
+      fill: var(--text-primary);
+    }
   }
 
   .faq-section-container {
@@ -90,9 +98,6 @@
   .known-section-container {
     li {
       list-style-type: none;
-    }
-    a {
-      color: var(--text-accent);
     }
   }
 }
