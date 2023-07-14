@@ -117,7 +117,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         gene_claim = create_gene_claim("NCBIGENE:#{line['Target ID']}", GeneNomenclature::NCBI_ID)
         create_gene_claim_aliases(gene_claim, line)
 
-        drug_claim = create_drug_claim("iuphar.ligand:#{line['Ligand ID']}",
+        drug_claim = create_drug_claim("iuphar.ligand:#{line['Ligand ID']}".upcase,
                                        DrugNomenclature::GTOP_LIGAND_ID)
         create_drug_claim_aliases(drug_claim, line)
         unless blank?(line['Ligand Species'])
