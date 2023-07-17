@@ -10,6 +10,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import './MainLayout.scss';
 import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ReleaseInformation from 'components/Shared/ReleaseInformation/ReleaseInformation';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -80,24 +81,29 @@ const Header: React.FC = () => {
 };
 
 const Footer: React.FC = () => {
-  const { dispatch } = useContext(GlobalClientContext);
+  const { state, dispatch } = useContext(GlobalClientContext);
 
   return (
     <footer>
-      Disclaimer: This resource is intended for purely research purposes. It
-      should not be used for emergencies or medical or professional advice.
-      <IconButton
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          marginLeft: '10px',
-          fontSize: '25px',
-        }}
-        onClick={() => dispatch({ type: ActionTypes.HideDisclaimer })}
-      >
-        <HighlightOffIcon />
-      </IconButton>
+      {state.themeSettings.showDisclaimer && (
+        <div>
+          Disclaimer: This resource is intended for purely research purposes. It
+          should not be used for emergencies or medical or professional advice.
+          <IconButton
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              marginLeft: '10px',
+              fontSize: '25px',
+            }}
+            onClick={() => dispatch({ type: ActionTypes.HideDisclaimer })}
+          >
+            <HighlightOffIcon />
+          </IconButton>
+        </div>
+      )}
+      <ReleaseInformation />
     </footer>
   );
 };
@@ -127,7 +133,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <div className="content-container">
         <Box className="content">{children}</Box>
       </div>
-      {state.themeSettings.showDisclaimer && <Footer />}
+      <Footer />
     </div>
   );
 };
