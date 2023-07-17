@@ -27,7 +27,7 @@ module Genome; module Importers; module FileImporters; module Dtc;
           pmid: '30219839',
           pmcid: 'PMC6146131',
           doi: '10.1093/database/bay083',
-          source_db_version: set_current_date_version,
+          source_db_version: '2020-09-02',  # using static file
           source_db_name: source_db_name,
           full_name: 'Drug Target Commons',
           license: License::CC_BY_NC_SA_3_0,
