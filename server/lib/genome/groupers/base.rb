@@ -27,7 +27,7 @@ module Genome
       def fetch_source_meta
         url = URI("#{@normalizer_url_root}search?q=")
         body = fetch_json_response(url)
-        body['source_matches'].reduce({}) { |map, source| map.update(source['source'] => source['source_meta_']) }
+        body['source_matches'].transform_values { |value| value['source_meta_'] }
       end
 
       # Normalize claim terms
