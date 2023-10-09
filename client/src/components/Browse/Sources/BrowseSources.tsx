@@ -27,10 +27,10 @@ export const BrowseSources = () => {
     'POTENTIALLY_DRUGGABLE'
   );
 
-  let geneSources = geneData?.sources?.nodes;
-  let drugSources = drugData?.sources?.nodes;
-  let interactionSources = interactionData?.sources?.nodes;
-  let potentiallyDruggableSources = potentiallyDruggableData?.sources?.nodes;
+  let geneSources = geneData?.sources?.nodes?.sort((a: { sourceDbName: string; }, b: { sourceDbName: any; }) => a.sourceDbName.localeCompare(b.sourceDbName));
+  let drugSources = drugData?.sources?.nodes?.sort((a: { sourceDbName: string; }, b: { sourceDbName: any; }) => a.sourceDbName.localeCompare(b.sourceDbName));
+  let interactionSources = interactionData?.sources?.nodes?.sort((a: { sourceDbName: string; }, b: { sourceDbName: any; }) => a.sourceDbName.localeCompare(b.sourceDbName));
+  let potentiallyDruggableSources = potentiallyDruggableData?.sources?.nodes?.sort((a: { sourceDbName: string; }, b: { sourceDbName: any; }) => a.sourceDbName.localeCompare(b.sourceDbName));
 
   const sectionsMap = [
     {
