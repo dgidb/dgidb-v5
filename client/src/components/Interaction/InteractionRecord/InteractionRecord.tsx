@@ -116,6 +116,30 @@ export const InteractionRecord: React.FC = () => {
         </Box>
       ),
     },
+    {
+      name: 'Sources',
+      sectionContent: (
+        <Box className="box-content">
+          <Table>
+            <TableBody>
+              {data?.interaction?.sources.length
+                ? data?.interaction?.sources?.map(
+                    (source: any, index: number) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell className="attribute-name">
+                            {source.fullName}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )
+                : noData}
+            </TableBody>
+          </Table>
+        </Box>
+      ),
+    },
   ];
 
   return (
