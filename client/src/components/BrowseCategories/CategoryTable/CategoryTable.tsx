@@ -2,20 +2,24 @@
 import React, { useEffect, useState } from 'react';
 import { useGetGenesForCategory } from 'hooks/queries/useGetGenesForCategory';
 
-// styles
-import './BrowseCategoriesGenesTable.scss';
+// components
 import { Box } from '@mui/system';
-import { Skeleton } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { SourceChip } from 'components/Shared/SourceChip/SourceChip';
 
-interface BrowseCategoriesGenesTableProps {
+// styles
+import './CategoryTable.scss';
+
+interface CategoryTableProps {
   categoryName: String;
   sourceDbNames: String[];
 }
 
-export const BrowseCategoriesGenesTable: React.FC<
-  BrowseCategoriesGenesTableProps
-> = ({ categoryName, sourceDbNames }) => {
+export const CategoryTable: React.FC<CategoryTableProps> = ({
+  categoryName,
+  sourceDbNames,
+}) => {
   const [genesInCategory, setGenesInCategory] = useState([]);
 
   const { data, isError, isLoading } = useGetGenesForCategory(
@@ -53,14 +57,21 @@ export const BrowseCategoriesGenesTable: React.FC<
     {
       field: 'geneDescription',
       headerName: 'Gene Description',
-      flex: 1,
+      flex: 1.0,
       minWidth: 0,
     },
     {
       field: 'sources',
       headerName: 'Sources',
-      flex: 0.75,
+      flex: 1.0,
       minWidth: 0,
+      renderCell: (params: any) => (
+        <Box>
+          {params.row.sources.map((source: string) => (
+            <SourceChip source={source} />
+          ))}
+        </Box>
+      ),
     },
   ];
 
@@ -70,19 +81,11 @@ export const BrowseCategoriesGenesTable: React.FC<
       gene: geneInCategory.gene.name,
       geneId: geneInCategory.gene.conceptId,
       geneDescription: geneInCategory.gene.description,
-      sources: geneInCategory.gene.sources?.join(', '),
+      sources: geneInCategory.gene.sources || [],
     };
   });
 
-  if (isLoading) {
-    return (
-      <Box className="loading">
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-      </Box>
-    );
-  } else if (isError) {
+  if (isError) {
     return <Box>Error! Unable to complete request</Box>;
   }
   return (
@@ -101,8 +104,19 @@ export const BrowseCategoriesGenesTable: React.FC<
             cell: 'table-cell',
             footerContainer: 'table-cell',
           }}
+          slots={{
+            loadingOverlay: LinearProgress,
+          }}
           rowSelection={false}
           showColumnVerticalBorder
+          loading={isLoading}
+          getRowHeight={() => 'auto'}
+          getRowClassName={(params) => 'categorized-genes-data-rows'}
+          sx={{
+            '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
+              py: '5px',
+            },
+          }}
         />
       </Box>
     </Box>

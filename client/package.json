@@ -39,7 +39,6 @@
     "react-query": "^3.34.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "^5.0.0",
-    "react-sticky": "^6.0.3",
     "react-tag-autocomplete": "^6.3.0",
     "sass": "^1.38.1",
     "typescript": "^5.1.3",

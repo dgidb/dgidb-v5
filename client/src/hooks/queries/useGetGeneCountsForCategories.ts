@@ -13,7 +13,10 @@ const getGeneCountsForCategoriesQuery = gql`
   }
 `;
 
-export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
+export const useGetGeneCountsForCategories = (
+  sourceDbNames: String[],
+  enabled: boolean = true
+) => {
   return useQuery(
     'gene-counts-for-categories',
     async () => {
@@ -22,6 +25,6 @@ export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
       });
       return res;
     },
-    { enabled: true } // TODO double check
+    { enabled: enabled }
   );
 };

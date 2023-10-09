@@ -37,7 +37,8 @@ const getDruggableSourcesQuery = gql`
   }
 `;
 
-export function useGetDruggableSources(sourceType: string) {
+export const useGetDruggableSources = (enabled: boolean = true) => {
+  const sourceType = 'POTENTIALLY_DRUGGABLE';
   return useQuery(
     'druggable-sources' + sourceType,
     async () => {
@@ -46,9 +47,9 @@ export function useGetDruggableSources(sourceType: string) {
       });
       return res;
     },
-    { enabled: sourceType !== '' }
+    { enabled: enabled }
   );
-}
+};
 
 const getGeneSourcesQuery = gql`
   query sources($sourceType: SourceTypeFilter) {
@@ -77,7 +78,8 @@ const getGeneSourcesQuery = gql`
   }
 `;
 
-export function useGetGeneSources(sourceType: string) {
+export function useGetGeneSources() {
+  const sourceType = 'GENE';
   return useQuery(
     'gene-sources' + sourceType,
     async () => {
@@ -86,7 +88,7 @@ export function useGetGeneSources(sourceType: string) {
       });
       return res;
     },
-    { enabled: sourceType !== '' }
+    { enabled: true }
   );
 }
 
@@ -117,7 +119,8 @@ const getDrugSourcesQuery = gql`
   }
 `;
 
-export function useGetDrugSources(sourceType: string) {
+export function useGetDrugSources() {
+  const sourceType = 'DRUG'
   return useQuery(
     'drug-sources' + sourceType,
     async () => {
@@ -126,7 +129,7 @@ export function useGetDrugSources(sourceType: string) {
       });
       return res;
     },
-    { enabled: sourceType !== '' }
+    { enabled: true }
   );
 }
 
@@ -161,7 +164,8 @@ const getInteractionSourcesQuery = gql`
   }
 `;
 
-export function useGetInteractionSources(sourceType: string) {
+export function useGetInteractionSources() {
+  const sourceType = 'INTERACTION';
   return useQuery(
     'interaction-sources' + sourceType,
     async () => {
@@ -170,6 +174,6 @@ export function useGetInteractionSources(sourceType: string) {
       });
       return res;
     },
-    { enabled: sourceType !== '' }
+    { enabled: true }
   );
 }
