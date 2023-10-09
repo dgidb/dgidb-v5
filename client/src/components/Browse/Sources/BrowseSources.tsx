@@ -28,8 +28,11 @@ export const BrowseSources = () => {
   );
 
   const getSortedData = (data: any) => {
-    return data?.sources?.nodes?.sort((a: { sourceDbName: string; }, b: { sourceDbName: any; }) => a.sourceDbName.localeCompare(b.sourceDbName));
-  }
+    return data?.sources?.nodes?.sort(
+      (a: { sourceDbName: string }, b: { sourceDbName: any }) =>
+        a.sourceDbName.localeCompare(b.sourceDbName)
+    );
+  };
 
   let geneSources = getSortedData(geneData);
   let drugSources = getSortedData(drugData);
