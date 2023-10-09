@@ -115,6 +115,9 @@ export const InteractionTable: React.FC<Props> = ({
       headerName: 'PMIDs',
       flex: 0.4,
       minWidth: 0,
+      valueGetter: (params: any) => {
+        return params.row.pmids?.length;
+      },
       renderCell: (params: any) => (
         <PublicationsTooltip
           displayText={params.row.pmids?.length}
@@ -127,6 +130,9 @@ export const InteractionTable: React.FC<Props> = ({
       headerName: 'Sources',
       flex: 0.4,
       minWidth: 0,
+      valueGetter: (params: any) => {
+        return params.row.sources?.length;
+      },
       renderCell: (params: any) => (
         <SourcesTooltip
           hoverTexts={params.row.sources}
@@ -199,8 +205,6 @@ export const InteractionTable: React.FC<Props> = ({
       return row;
     }
   );
-
-  console.log(rows);
 
   return !isLoading ? (
     <Box className="interaction-table-container">
