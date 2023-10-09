@@ -49,7 +49,6 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
         license: License::CC_BY_SA_4_0,
         license_link: 'https://www.guidetopharmacology.org/about.jsp'
       )
-      @source.source_db_version = set_current_date_version
       @source.source_types << SourceType.find_by(type: 'interaction')
       @source.source_types << SourceType.find_by(type: 'potentially_druggable')
       @source.save
@@ -58,12 +57,12 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     def import_gene_claims
       refseq_id_pattern = /^((AC|AP|NC|NG|NM|NP|NR|NT|NW|XM|XP|XR|YP|ZP)_\d+|(NZ\_[A-Z]{4}\d+))(\.\d+)?$/
 
-      CSV.foreach(gene_file_path, headers: true) do |line|
-        gene_name = line['Human Entrez Gene']
-        next if blank?(gene_name) || gene_name.include?('|')
+      CSV.foreach(gene_file_path, headers: true, skip_lines: /GtoPdb Version/) do |line|
+        gene_lui = line['Human Entrez Gene']
+        next if blank?(gene_lui) || gene_lui.include?('|')
 
-        gene_claim = create_gene_claim("ncbigene:#{gene_name}", GeneNomenclature::NCBI_ID)
-        target_to_entrez[line['Target id']] = gene_name
+        gene_claim = create_gene_claim("NCBIGENE:#{gene_lui}", GeneNomenclature::NCBI_ID)
+        target_to_entrez[line['Target id']] = gene_lui
         unless blank?(line['HGNC id'])
           create_gene_claim_alias(gene_claim, "hgnc:#{line['HGNC id']}", GeneNomenclature::HGNC_ID)
         end
@@ -112,52 +111,57 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     def import_interaction_claims
-      CSV.foreach(interaction_file_path, headers: true) do |line|
-        next unless valid_line?(line)
+      CSV.foreach(interaction_file_path, headers: true, skip_lines: /GtoPdb Version/) do |line|
+        next unless valid_interaction_line?(line)
 
-        gene_claim = GeneClaim.first_or_create(name: "NCBIGENE:#{line['target_id']}")
+        gene_claim = create_gene_claim("NCBIGENE:#{line['Target ID']}", GeneNomenclature::NCBI_ID)
         create_gene_claim_aliases(gene_claim, line)
 
-        drug_claim = create_drug_claim("pubchem.substance:#{line['ligand_pubchem_sid']}",
-                                       DrugNomenclature::PUBCHEM_SUBSTANCE_ID)
+        drug_claim = create_drug_claim("iuphar.ligand:#{line['Ligand ID']}".upcase,
+                                       DrugNomenclature::GTOP_LIGAND_ID)
         create_drug_claim_aliases(drug_claim, line)
-        unless blank?(line['ligand_species'])
-          create_drug_claim_attribute(drug_claim, DrugAttributeName::SPECIES_NAME, line['ligand_species'])
+        unless blank?(line['Ligand Species'])
+          create_drug_claim_attribute(drug_claim, DrugAttributeName::SPECIES_NAME, line['Ligand Species'])
         end
-        create_drug_claim_approval_rating(drug_claim, 'Approved') if line['approved_drug'] == 't'
+        create_drug_claim_approval_rating(drug_claim, 'Approved') if line['Approved'] == 't'
 
         interaction_claim = create_interaction_claim(gene_claim, drug_claim)
-        type = line['type'].downcase
+        type = line['Type'].downcase
         create_interaction_claim_type(interaction_claim, type) unless type == 'none'
-        unless blank?(line['pubmed_ids'])
-          line['pubmed_ids'].split('|').each do |pmid|
+        unless blank?(line['Pubmed ID'])
+          line['Pubmed ID'].split('|').each do |pmid|
             create_interaction_claim_publication(interaction_claim, pmid)
           end
         end
         create_interaction_claim_attributes(interaction_claim, line)
-        create_interaction_claim_link(interaction_claim, 'Ligand Biological Activity', "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=#{line['ligand_id']}&tab=biology")
+        create_interaction_claim_link(interaction_claim, 'Ligand Biological Activity', "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=#{line['Ligand ID']}&tab=biology")
       end
       backfill_publication_information
     end
 
-    def valid_line?(line)
-      line['target_species'] == 'Human' && blank?(line['target_ligand']) && !blank?(line['ligand_pubchem_sid']) && !blank?(line['target_ensembl_gene_id']) && !blank?(target_to_entrez[line['target_id']])
+    # Valid interactions should:
+    # * describe humans
+    # * have pubchem substance IDs to ensure drug descriptiveness
+    # * have ensembl gene IDs to ensure gene descriptiveness
+    # * have NCBI gene IDs to ensure gene descriptiveness
+    def valid_interaction_line?(line)
+      line['Target Species'] == 'Human' && blank?(line['Target Ligand']) && !blank?(line['Ligand PubChem SID']) && !blank?(line['Target Ensembl Gene ID']) && !blank?(target_to_entrez[line['Target ID']])
     end
 
     def create_gene_claim_aliases (gene_claim, line)
-      create_gene_claim_alias(gene_claim, line['target'], GeneNomenclature::NAME) unless blank?(line['target'])
-      unless blank?(line['target_ensembl_gene_id'])
-        line['target_ensembl_gene_id'].split('|').each do |ensembl_id|
+      create_gene_claim_alias(gene_claim, line['Target'], GeneNomenclature::NAME) unless blank?(line['Target'])
+      unless blank?(line['Target Ensembl Gene ID'])
+        line['Target Ensembl Gene ID'].split('|').each do |ensembl_id|
           create_gene_claim_alias(gene_claim, "ensembl:#{ensembl_id}", GeneNomenclature::NCBI_ID)
         end
       end
-      unless blank?(line['target_gene_symbol'])
-        line['target_gene_symbol'].split('|').each do |gene_symbol|
+      unless blank?(line['Target Gene Symbol'])
+        line['Target Gene Symbol'].split('|').each do |gene_symbol|
           create_gene_claim_alias(gene_claim, gene_symbol, GeneNomenclature::SYMBOL)
         end
       end
-      unless blank?(line['target_uniprot'])
-        line['target_uniprot'].split('|').each do |uniprot_id|
+      unless blank?(line['Target UniProt ID'])
+        line['Target UniProt ID'].split('|').each do |uniprot_id|
           create_gene_claim_alias(gene_claim, "uniprot:#{uniprot_id}", GeneNomenclature::UNIPROTKB_ID)
         end
       end
@@ -168,10 +172,12 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     def create_drug_claim_aliases(drug_claim, line)
-      create_drug_claim_alias(drug_claim, strip_tags(line['ligand']).upcase, DrugNomenclature::GTOP_LIGAND_NAME)
-      return if blank?(line['ligand_gene_symbol'])
+      create_drug_claim_alias(drug_claim, strip_tags(line['Ligand']).upcase, DrugNomenclature::GTOP_LIGAND_NAME)
+      create_drug_claim_alias(drug_claim, "pubchem.substance:#{line['Ligand PubChem SID']}", DrugNomenclature::PUBCHEM_SUBSTANCE_ID)
 
-      line['ligand_gene_symbol'].split('|').each do |gene_symbol|
+      return if blank?(line['Ligand Gene Symbol'])
+
+      line['Ligand Gene Symbol'].split('|').each do |gene_symbol|
         create_drug_claim_attribute(drug_claim, DrugAttributeName::GENE_SYMBOL, gene_symbol)
       end
     end
@@ -182,13 +188,13 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
 
     def create_interaction_claim_attributes(interaction_claim, line)
       attributes = {
-        InteractionAttributeName::CONTEXT => line['ligand_context'],
-        InteractionAttributeName::BINDING_SITE => line['receptor_site'],
-        InteractionAttributeName::ASSAY => line['assay_description'],
-        InteractionAttributeName::MOA => line['action'],
-        InteractionAttributeName::DETAILS => line['action_comment'],
-        InteractionAttributeName::ENDOGENOUS_DRUG => line['endogenous'],
-        InteractionAttributeName::DIRECT => line['primary_target']
+        InteractionAttributeName::CONTEXT => line['Ligand Context'],
+        InteractionAttributeName::BINDING_SITE => line['Receptor Site'],
+        InteractionAttributeName::ASSAY => line['Assay Description'],
+        InteractionAttributeName::MOA => line['Action'],
+        InteractionAttributeName::DETAILS => line['Action comment'],
+        InteractionAttributeName::ENDOGENOUS_DRUG => line['Endogenous'],
+        InteractionAttributeName::DIRECT => line['Primary Target']
       }
       boolean_parser = {
         't' => 'True',

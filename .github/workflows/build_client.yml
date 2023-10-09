@@ -1,0 +1,44 @@
+name: Build DGIdb React Frontend
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+
+jobs:
+  build_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm install -g yarn
+        working-directory: ./client
+
+      - run: yarn install
+        working-directory: ./client
+
+      - run: rm -rf public/*
+        working-directory: ./server
+
+      - run: CI=false yarn build:${{ inputs.branch == 'main' && 'prod' || inputs.branch }}
+        working-directory: ./client
+
+      - run: cp -r ../../client/build/* .
+        working-directory: ./server/public
+
+      - name: Commit and push build
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: server/public/*
+          push: origin ${{ inputs.branch }}
+          message: Automated frontend build
