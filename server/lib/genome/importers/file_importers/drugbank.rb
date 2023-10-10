@@ -31,7 +31,7 @@ module Genome; module Importers; module FileImporters; module Drugbank;
           pmid: '29126136',
           pmcid: 'PMC5753335',
           doi: '10.1093/nar/gkx1037',
-          source_db_version: '5.1.9',
+          source_db_version: '5.1.10',
           source_db_name: 'DrugBank',
           full_name: 'DrugBank - Open Data Drug & Drug Target Database',
           license: License::CUSTOM_NON_COMMERCIAL,

@@ -15,6 +15,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { truncateDecimals } from 'utils/format';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
@@ -61,7 +62,7 @@ export const InteractionRecord: React.FC = () => {
                   Interaction Score:
                 </TableCell>
                 <TableCell className="attribute-value">
-                  {data?.interaction?.interactionScore}
+                  {truncateDecimals(data?.interaction?.interactionScore, 2)}
                 </TableCell>
               </TableRow>
 
@@ -105,6 +106,30 @@ export const InteractionRecord: React.FC = () => {
                             >
                               (PMID: {pmid?.pmid})
                             </a>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )
+                : noData}
+            </TableBody>
+          </Table>
+        </Box>
+      ),
+    },
+    {
+      name: 'Sources',
+      sectionContent: (
+        <Box className="box-content">
+          <Table>
+            <TableBody>
+              {data?.interaction?.sources.length
+                ? data?.interaction?.sources?.map(
+                    (source: any, index: number) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell className="attribute-name">
+                            {source.fullName}
                           </TableCell>
                         </TableRow>
                       );

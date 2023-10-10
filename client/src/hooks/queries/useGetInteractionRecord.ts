@@ -23,6 +23,9 @@ const getInteractionRecordQuery = gql`
         pmid
         citation
       }
+      sources {
+        fullName
+      }
       interactionAttributes {
         name
         value

@@ -16,7 +16,7 @@ class GeneInteractionsTsv
         i.drug.name,
         i.drug.approved ? 'Approved' : 'Not Approved',
         i.drug.drug_attributes
-          .select { |da| da.name == 'Drug Indications' }
+          .select { |da| da.name == 'Indication' }
           .map(&:value)
           .join(','),
         i.interaction_score
