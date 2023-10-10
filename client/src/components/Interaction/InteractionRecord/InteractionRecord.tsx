@@ -15,6 +15,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { truncateDecimals } from 'utils/format';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
@@ -61,7 +62,7 @@ export const InteractionRecord: React.FC = () => {
                   Interaction Score:
                 </TableCell>
                 <TableCell className="attribute-value">
-                  {data?.interaction?.interactionScore}
+                  {truncateDecimals(data?.interaction?.interactionScore, 2)}
                 </TableCell>
               </TableRow>
 
