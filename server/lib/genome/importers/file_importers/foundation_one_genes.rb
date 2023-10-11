@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module FoundationOneGenes
           pmid: '22585170',
           pmcid: 'PMC3353152',
           doi: '10.1158/2159-8290.CD-11-0184',
-          source_db_version: set_current_date_version,
+          source_db_version: '2020-09-03',  # using static file
           source_trust_level_id: SourceTrustLevel.EXPERT_CURATED,
           source_db_name: source_db_name,
           full_name: 'Foundation One',

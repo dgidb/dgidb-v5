@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module Cgi
           pmid: '29592813',
           pmcid: 'PMC5875005',
           doi: '10.1186/s13073-018-0531-8',
-          source_db_version: set_current_date_version,
+          source_db_version: '2022-02-01',  # using static file
           source_db_name: source_db_name,
           full_name: 'Cancer Genome Interpreter',
           license: License::CC_BY_NC_4_0,
