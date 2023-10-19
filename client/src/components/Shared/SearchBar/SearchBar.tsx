@@ -104,6 +104,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     }
   };
   const handleSearchClick = () => {
+    if (selectedOptions?.length === 0) {
+      return;
+    }
     state.searchTerms = selectedOptions.map((option) => option.suggestion);
     handleSubmit();
   };
