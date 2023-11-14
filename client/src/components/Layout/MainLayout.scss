@@ -33,7 +33,6 @@ body {
 }
 
 header {
-  display: flex;
   background: -webkit-linear-gradient(
     var(--header-gradient-1),
     var(--header-gradient-2)
@@ -60,6 +59,15 @@ header {
     font-size: 18px;
     font-weight: 100;
     color: var(--background);
+  }
+
+  .header-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    background-color: #f0e7c0;
+    padding: 10px;
   }
 
   nav {
