@@ -43,9 +43,9 @@ export const DrugRecord: React.FC = () => {
     setInteractionResults(interactionData);
   }, [fetchedInteractionData]);
 
-  console.log(fetchedDrugData)
+  console.log(fetchedDrugData);
 
-  const drugExists = drugData !== null
+  const drugExists = drugData !== null;
 
   const noData = (
     <TableRow>
@@ -271,8 +271,11 @@ export const DrugRecord: React.FC = () => {
         </Box>
       </Box>
     </Box>
-  ) :
-  (<Box p={2}>
-    <Alert severity="error">We could not find any results for this drug.</Alert>
-  </Box>);
+  ) : (
+    <Box p={2}>
+      <Alert severity="error">
+        We could not find any results for this drug.
+      </Alert>
+    </Box>
+  );
 };

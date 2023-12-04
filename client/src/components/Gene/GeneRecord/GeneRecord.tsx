@@ -30,7 +30,7 @@ export const GeneRecord: React.FC = () => {
     useGetGeneRecord(geneId);
   const geneData = fetchedGeneData?.gene;
 
-  const geneExists = geneData !== null
+  const geneExists = geneData !== null;
 
   // get interaction data
   const { data: fetchedInteractionData, isLoading: interactionDataIsLoading } =
@@ -267,11 +267,13 @@ export const GeneRecord: React.FC = () => {
         </Box>
       </Box>
     </Box>
-  ) :
-  (<Box p={2}>
-    <Alert severity="error">We could not find any results for this gene.</Alert>
-  </Box>
-  )
+  ) : (
+    <Box p={2}>
+      <Alert severity="error">
+        We could not find any results for this gene.
+      </Alert>
+    </Box>
+  );
 };
 
 export const GeneRecordContainer: React.FC = () => {

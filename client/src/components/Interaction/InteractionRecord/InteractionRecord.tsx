@@ -149,98 +149,100 @@ export const InteractionRecord: React.FC = () => {
   ];
 
   return interactionExists ? (
-      <Box className="content interaction-record-container">
-        <Box className="interaction-record-header">
-          <Box className="symbol">
-            <a
-              className="header-link"
-              href={`/drugs/${data.interaction?.drug?.conceptId}`}
-            >
-              {interactionData?.drug?.name}
-            </a>{' '}
-            <ArrowRightIcon />{' '}
-            <a
-              className="header-link"
-              href={`/genes/${data.interaction?.gene?.conceptId}`}
-            >
-              {interactionData?.gene?.name}
-            </a>
-          </Box>
-        </Box>
-        <Box display="flex">
-          <Box display="block" width="45%">
-            {sectionsMap.map((section) => {
-              return (
-                <Accordion key={section.name} defaultExpanded>
-                  <AccordionSummary
-                    style={{
-                      padding: '0 10px',
-                      backgroundColor: 'var(--background-light)',
-                    }}
-                    expandIcon={<ExpandMoreIcon />}
-                  >
-                    <h3>
-                      <b>{section.name}</b>
-                    </h3>
-                  </AccordionSummary>
-                  <AccordionDetails
-                    style={{
-                      maxHeight: '500px',
-                      overflow: 'scroll',
-                      padding: '5px',
-                    }}
-                  >
-                    {section.sectionContent}
-                  </AccordionDetails>
-                </Accordion>
-              );
-            })}
-          </Box>
-          <Box ml={1} width="55%">
-            <Accordion defaultExpanded>
-              <AccordionSummary
-                style={{
-                  padding: '0 10px',
-                  backgroundColor: 'var(--background-light)',
-                }}
-                expandIcon={<ExpandMoreIcon />}
-              >
-                <h3>
-                  <b>Interaction Attributes</b>
-                </h3>
-              </AccordionSummary>
-              <AccordionDetails className="attributes-container">
-                <Table>
-                  <TableBody>
-                    {interactionData?.interactionAttributes.length
-                      ? interactionData?.interactionAttributes?.map(
-                          (attribute: any) => {
-                            return (
-                              <TableRow
-                                key={attribute.name + ' ' + attribute.value}
-                              >
-                                <TableCell className="attribute-name">
-                                  {attribute.name}:
-                                </TableCell>
-                                <TableCell className="attribute-value">
-                                  {attribute.value}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          }
-                        )
-                      : noData}
-                  </TableBody>
-                </Table>
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+    <Box className="content interaction-record-container">
+      <Box className="interaction-record-header">
+        <Box className="symbol">
+          <a
+            className="header-link"
+            href={`/drugs/${data.interaction?.drug?.conceptId}`}
+          >
+            {interactionData?.drug?.name}
+          </a>{' '}
+          <ArrowRightIcon />{' '}
+          <a
+            className="header-link"
+            href={`/genes/${data.interaction?.gene?.conceptId}`}
+          >
+            {interactionData?.gene?.name}
+          </a>
         </Box>
       </Box>
+      <Box display="flex">
+        <Box display="block" width="45%">
+          {sectionsMap.map((section) => {
+            return (
+              <Accordion key={section.name} defaultExpanded>
+                <AccordionSummary
+                  style={{
+                    padding: '0 10px',
+                    backgroundColor: 'var(--background-light)',
+                  }}
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <h3>
+                    <b>{section.name}</b>
+                  </h3>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    maxHeight: '500px',
+                    overflow: 'scroll',
+                    padding: '5px',
+                  }}
+                >
+                  {section.sectionContent}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </Box>
+        <Box ml={1} width="55%">
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              style={{
+                padding: '0 10px',
+                backgroundColor: 'var(--background-light)',
+              }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <h3>
+                <b>Interaction Attributes</b>
+              </h3>
+            </AccordionSummary>
+            <AccordionDetails className="attributes-container">
+              <Table>
+                <TableBody>
+                  {interactionData?.interactionAttributes.length
+                    ? interactionData?.interactionAttributes?.map(
+                        (attribute: any) => {
+                          return (
+                            <TableRow
+                              key={attribute.name + ' ' + attribute.value}
+                            >
+                              <TableCell className="attribute-name">
+                                {attribute.name}:
+                              </TableCell>
+                              <TableCell className="attribute-value">
+                                {attribute.value}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        }
+                      )
+                    : noData}
+                </TableBody>
+              </Table>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+      </Box>
+    </Box>
   ) : (
-  <Box p={2}>
-    <Alert severity="error">We could not find any results for this interaction.</Alert>
-  </Box>
+    <Box p={2}>
+      <Alert severity="error">
+        We could not find any results for this interaction.
+      </Alert>
+    </Box>
   );
 };
 
