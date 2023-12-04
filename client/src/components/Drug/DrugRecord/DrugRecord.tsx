@@ -17,7 +17,7 @@ import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 
 // components
-import { LinearProgress, Link } from '@mui/material';
+import { Alert, LinearProgress, Link } from '@mui/material';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
 import { generateXrefLink } from 'utils/generateXrefLink';
@@ -42,6 +42,10 @@ export const DrugRecord: React.FC = () => {
     });
     setInteractionResults(interactionData);
   }, [fetchedInteractionData]);
+
+  console.log(fetchedDrugData)
+
+  const drugExists = drugData !== null
 
   const noData = (
     <TableRow>
@@ -206,7 +210,7 @@ export const DrugRecord: React.FC = () => {
     },
   ];
 
-  return (
+  return drugExists ? (
     <Box className="drug-record-container">
       <Box className="drug-record-header">
         <Box className="name">{drugData?.name}</Box>
@@ -267,5 +271,8 @@ export const DrugRecord: React.FC = () => {
         </Box>
       </Box>
     </Box>
-  );
+  ) :
+  (<Box p={2}>
+    <Alert severity="error">We could not find any results for this drug.</Alert>
+  </Box>);
 };

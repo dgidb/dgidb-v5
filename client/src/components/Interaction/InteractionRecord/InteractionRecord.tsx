@@ -16,10 +16,15 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { truncateDecimals } from 'utils/format';
+import { Alert } from '@mui/material';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
   const { data } = useGetInteractionRecord(interactionId!);
+  const interactionData = data?.interaction;
+
+  const interactionExists = interactionData !== null;
+
   const noData = (
     <TableRow>
       <TableCell style={{ borderBottom: 'none' }}>No data available.</TableCell>
@@ -38,10 +43,10 @@ export const InteractionRecord: React.FC = () => {
                 <TableCell className="attribute-value">
                   <a
                     className="info-link"
-                    href={`/drugs/${data?.interaction?.drug?.conceptId}`}
+                    href={`/drugs/${interactionData?.drug?.conceptId}`}
                   >
-                    {data?.interaction?.drug?.name} [
-                    {data?.interaction?.drug?.conceptId}]
+                    {interactionData?.drug?.name} [
+                    {interactionData?.drug?.conceptId}]
                   </a>
                 </TableCell>
               </TableRow>
@@ -50,10 +55,10 @@ export const InteractionRecord: React.FC = () => {
                 <TableCell className="attribute-value">
                   <a
                     className="info-link"
-                    href={`/genes/${data?.interaction?.gene?.conceptId}`}
+                    href={`/genes/${interactionData?.gene?.conceptId}`}
                   >
-                    {data?.interaction?.gene?.name} [
-                    {data?.interaction?.gene?.conceptId}]
+                    {interactionData?.gene?.name} [
+                    {interactionData?.gene?.conceptId}]
                   </a>
                 </TableCell>
               </TableRow>
@@ -62,12 +67,12 @@ export const InteractionRecord: React.FC = () => {
                   Interaction Score:
                 </TableCell>
                 <TableCell className="attribute-value">
-                  {truncateDecimals(data?.interaction?.interactionScore, 2)}
+                  {truncateDecimals(interactionData?.interactionScore, 2)}
                 </TableCell>
               </TableRow>
 
-              {data?.interaction?.interactionTypes
-                ? data?.interaction?.interactionTypes?.map((attribute: any) => {
+              {interactionData?.interactionTypes
+                ? interactionData?.interactionTypes?.map((attribute: any) => {
                     return (
                       <TableRow
                         key={'Directionality ' + attribute.directionality}
@@ -93,8 +98,8 @@ export const InteractionRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {data?.interaction?.publications.length
-                ? data?.interaction?.publications?.map(
+              {interactionData?.publications.length
+                ? interactionData?.publications?.map(
                     (pmid: any, index: number) => {
                       return (
                         <TableRow key={index}>
@@ -123,8 +128,8 @@ export const InteractionRecord: React.FC = () => {
         <Box className="box-content">
           <Table>
             <TableBody>
-              {data?.interaction?.sources.length
-                ? data?.interaction?.sources?.map(
+              {interactionData?.sources.length
+                ? interactionData?.sources?.map(
                     (source: any, index: number) => {
                       return (
                         <TableRow key={index}>
@@ -143,8 +148,7 @@ export const InteractionRecord: React.FC = () => {
     },
   ];
 
-  return (
-    data && (
+  return interactionExists ? (
       <Box className="content interaction-record-container">
         <Box className="interaction-record-header">
           <Box className="symbol">
@@ -152,14 +156,14 @@ export const InteractionRecord: React.FC = () => {
               className="header-link"
               href={`/drugs/${data.interaction?.drug?.conceptId}`}
             >
-              {data?.interaction?.drug?.name}
+              {interactionData?.drug?.name}
             </a>{' '}
             <ArrowRightIcon />{' '}
             <a
               className="header-link"
               href={`/genes/${data.interaction?.gene?.conceptId}`}
             >
-              {data?.interaction?.gene?.name}
+              {interactionData?.gene?.name}
             </a>
           </Box>
         </Box>
@@ -208,8 +212,8 @@ export const InteractionRecord: React.FC = () => {
               <AccordionDetails className="attributes-container">
                 <Table>
                   <TableBody>
-                    {data?.interaction?.interactionAttributes.length
-                      ? data?.interaction?.interactionAttributes?.map(
+                    {interactionData?.interactionAttributes.length
+                      ? interactionData?.interactionAttributes?.map(
                           (attribute: any) => {
                             return (
                               <TableRow
@@ -233,7 +237,10 @@ export const InteractionRecord: React.FC = () => {
           </Box>
         </Box>
       </Box>
-    )
+  ) : (
+  <Box p={2}>
+    <Alert severity="error">We could not find any results for this interaction.</Alert>
+  </Box>
   );
 };
 

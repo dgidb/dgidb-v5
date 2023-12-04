@@ -15,7 +15,7 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import { LinearProgress, Link } from '@mui/material';
+import { Alert, LinearProgress, Link } from '@mui/material';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
@@ -29,6 +29,8 @@ export const GeneRecord: React.FC = () => {
   const { data: fetchedGeneData, isLoading: geneDataIsloading } =
     useGetGeneRecord(geneId);
   const geneData = fetchedGeneData?.gene;
+
+  const geneExists = geneData !== null
 
   // get interaction data
   const { data: fetchedInteractionData, isLoading: interactionDataIsLoading } =
@@ -204,7 +206,7 @@ export const GeneRecord: React.FC = () => {
     },
   ];
 
-  return (
+  return geneExists ? (
     <Box className="content gene-record-container">
       <Box className="gene-record-header">
         <Box className="symbol">{geneData?.name}</Box>
@@ -265,7 +267,11 @@ export const GeneRecord: React.FC = () => {
         </Box>
       </Box>
     </Box>
-  );
+  ) :
+  (<Box p={2}>
+    <Alert severity="error">We could not find any results for this gene.</Alert>
+  </Box>
+  )
 };
 
 export const GeneRecordContainer: React.FC = () => {
