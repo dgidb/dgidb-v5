@@ -43,8 +43,6 @@ export const DrugRecord: React.FC = () => {
     setInteractionResults(interactionData);
   }, [fetchedInteractionData]);
 
-  console.log(fetchedDrugData);
-
   const drugExists = drugData !== null;
 
   const noData = (
