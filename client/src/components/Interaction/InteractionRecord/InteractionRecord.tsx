@@ -154,14 +154,14 @@ export const InteractionRecord: React.FC = () => {
         <Box className="symbol">
           <a
             className="header-link"
-            href={`/drugs/${data.interaction?.drug?.conceptId}`}
+            href={`/drugs/${interactionData?.drug?.conceptId}`}
           >
             {interactionData?.drug?.name}
           </a>{' '}
           <ArrowRightIcon />{' '}
           <a
             className="header-link"
-            href={`/genes/${data.interaction?.gene?.conceptId}`}
+            href={`/genes/${interactionData?.gene?.conceptId}`}
           >
             {interactionData?.gene?.name}
           </a>
