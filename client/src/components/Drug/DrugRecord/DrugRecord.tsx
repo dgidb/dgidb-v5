@@ -22,6 +22,7 @@ import InteractionTable from 'components/Shared/InteractionTable/InteractionTabl
 import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
 import { generateXrefLink } from 'utils/generateXrefLink';
 import { ResultTypes } from 'types/types';
+import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 
 export const DrugRecord: React.FC = () => {
   const drugId = useParams().drug as string;
@@ -274,6 +275,7 @@ export const DrugRecord: React.FC = () => {
       <Alert severity="error">
         We could not find any results for this drug.
       </Alert>
+      <NotFoundError />
     </Box>
   );
 };

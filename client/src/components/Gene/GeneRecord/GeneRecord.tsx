@@ -21,6 +21,7 @@ import InteractionTable from 'components/Shared/InteractionTable/InteractionTabl
 import { dropRedundantCites } from 'utils/dropRedundantCites';
 import { generateXrefLink } from 'utils/generateXrefLink';
 import { ResultTypes } from 'types/types';
+import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 
 export const GeneRecord: React.FC = () => {
   const geneId: any = useParams().gene;
@@ -272,6 +273,7 @@ export const GeneRecord: React.FC = () => {
       <Alert severity="error">
         We could not find any results for this gene.
       </Alert>
+      <NotFoundError />
     </Box>
   );
 };

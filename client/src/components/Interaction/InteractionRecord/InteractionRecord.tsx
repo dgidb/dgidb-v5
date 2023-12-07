@@ -17,6 +17,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { truncateDecimals } from 'utils/format';
 import { Alert } from '@mui/material';
+import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 
 export const InteractionRecord: React.FC = () => {
   const interactionId = useParams().id;
@@ -242,6 +243,7 @@ export const InteractionRecord: React.FC = () => {
       <Alert severity="error">
         We could not find any results for this interaction.
       </Alert>
+      <NotFoundError />
     </Box>
   );
 };
