@@ -1,0 +1,43 @@
+.api-page-header {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.api-info-container {
+  padding: 20px;
+  p {
+    margin-bottom: 15px;
+    code {
+      color: #c7254e;
+    }
+  }
+}
+
+.playground-page-header {
+  padding-left: 20px;
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.playground-page-container {
+  background-color: var(--background);
+  display: flex;
+  color: var(--text-content);
+
+  .main {
+    display: contents;
+    width: 85%;
+  }
+}
+
+.collapse-group {
+  fontsize: 16;
+  width: 15%;
+  height: 30px;
+  display: block;
+}
+
+.graphiql-container {
+  max-height: 1000px;
+  min-height: 1000px;
+}
