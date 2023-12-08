@@ -1,6 +1,6 @@
 // hooks/dependencies
 import { useState } from 'react';
-import './Playground.scss';
+import './API.scss';
 import { API_URL } from 'config';
 
 // graphiql
@@ -185,7 +185,7 @@ const query6 = `
 
 const fetcher = createGraphiQLFetcher({ url: API_URL ?? '' });
 
-export const Playground = () => {
+export const API = () => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopyText = () => {
@@ -339,37 +339,55 @@ export const Playground = () => {
   ];
 
   return (
-    <div className="playground-page-container">
-      <div className="collapse-group">
-        {sectionsMap.map((section) => {
-          return (
-            <Accordion key={section.header}>
-              <AccordionSummary
-                style={{
-                  padding: '0 10px',
-                  backgroundColor: 'var(--background-light)',
-                }}
-                expandIcon={<ExpandMoreIcon />}
-              >
-                <h5>
-                  <b>{section.header}</b>
-                </h5>
-              </AccordionSummary>
-              <AccordionDetails
-                style={{
-                  maxHeight: '350px',
-                  overflow: 'scroll',
-                  padding: '5px',
-                }}
-              >
-                {section.sectionContent}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+    <div>
+      <div className="api-info-container">
+        <div className="api-page-header">API Documentation</div>
+        <p>
+          The DGIdb API can be used to query for drug-gene interactions in your
+          own applications.
+        </p>
+        <p>
+          To query the API, make GraphQL queries to:{' '}
+          <code>https://dgidb.org/api/graphql</code>
+        </p>
+        <p>
+          For examples and to experiment with API requests in your browser,
+          refer to the Playground below.
+        </p>
       </div>
-      <div className="main">
-        <GraphiQL fetcher={fetcher} />
+      <div className="playground-page-header">Playground</div>
+      <div className="playground-page-container">
+        <div className="collapse-group">
+          {sectionsMap.map((section) => {
+            return (
+              <Accordion key={section.header}>
+                <AccordionSummary
+                  style={{
+                    padding: '0 10px',
+                    backgroundColor: 'var(--background-light)',
+                  }}
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <h5>
+                    <b>{section.header}</b>
+                  </h5>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    maxHeight: '350px',
+                    overflow: 'scroll',
+                    padding: '5px',
+                  }}
+                >
+                  {section.sectionContent}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </div>
+        <div className="main">
+          <GraphiQL fetcher={fetcher} />
+        </div>
       </div>
     </div>
   );
