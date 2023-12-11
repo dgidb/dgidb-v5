@@ -48,8 +48,8 @@ module Genome
           if normalized_gene.is_a? String
             normalized_id = normalized_gene
           else
-            normalized_id = normalized_gene['normalize_id']
-            create_new_gene normalized_gene['gene'] if Gene.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_gene['normalized_id']
+            create_new_gene(normalized_gene['gene'], normalized_id) if Gene.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_gene(gene_claim, normalized_id)
 
@@ -57,19 +57,6 @@ module Genome
         end
       end
 
-      # def set_response_structure
-      #   @descriptor_name = 'gene_descriptor'
-      #
-      #   url = URI("#{@normalizer_host}search?q=")
-      #   body = fetch_json_response(url)
-      #   version = body['service_meta_']['version']
-      #   if version < '0.2.0'
-      #     @id_name = 'gene_id'
-      #   else
-      #     @id_name = 'gene'
-      #   end
-      # end
-      #
       def create_sources
         gene_source_type = SourceType.find_by(type: 'gene')
 
@@ -132,10 +119,6 @@ module Genome
           HGNC: hgnc,
           NCBI: ncbi
         }
-      end
-
-      def get_concept_id(response)
-        response['normalized_id'] unless response['match_type'].zero?
       end
 
       def create_gene_claim(record, source)
@@ -212,8 +195,8 @@ module Genome
         )
       end
 
-      def add_grouper_data(gene, descriptor)
-        gene_data = retrieve_normalizer_data(descriptor['id'][15..])
+      def add_grouper_data(gene, descriptor, normalized_id)
+        gene_data = retrieve_normalizer_data(normalized_id)
         gene_data.each do |source_name, source_data|
           source = @sources[source_name.to_sym]
 
@@ -227,19 +210,19 @@ module Genome
         end
       end
 
-      def create_new_gene(gene_response)
+      def create_new_gene(gene_response, normalized_id)
         name = if gene_response.fetch('label').blank?
-                 gene_response['id'][15..]
+                 normalized_id
                else
                  gene_response['label']
                end
         gene = Gene.where(
-          concept_id: gene_response['id'][15..],
+          concept_id: normalized_id,
           name: name,
           long_name: retrieve_extension(gene_response, 'approved_name')
         ).first_or_create
 
-        add_grouper_data(gene, gene_response)
+        add_grouper_data(gene, gene_response, normalized_id)
       end
 
       def add_claim_attributes(claim, gene)

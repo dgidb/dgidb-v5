@@ -8,7 +8,8 @@ module Genome
         if !url_base.ends_with? "/"
           url_base += "/"
         end
-        @normalizer_host = "#{url_base}/therapy/"
+        @normalizer_host = "#{url_base}therapy/"
+        @descriptor_name = 'therapy'
 
         @term_to_match_dict = {}
 
@@ -49,19 +50,6 @@ module Genome
           add_claim_to_drug(drug_claim, normalized_id)
 
           pbar.progress += 1
-        end
-      end
-
-      def set_response_structure
-        url = URI("#{@normalizer_host}search?q=")
-        body = fetch_json_response(url)
-        version = body['service_meta_']['version']
-        if version < '0.4.0'
-          @descriptor_name = 'therapy_descriptor'
-          @id_name = 'therapy_id'
-        else
-          @descriptor_name = 'therapeutic_descriptor'
-          @id_name = 'therapeutic'
         end
       end
 
@@ -166,10 +154,6 @@ module Genome
           ChemIDplus: chemidplus,
           Wikidata: wikidata
         }
-      end
-
-      def get_concept_id(response)
-        response[@descriptor_name][@id_name] unless response['match_type'].zero?
       end
 
       def produce_concept_id_nomenclature(concept_id)
@@ -293,7 +277,7 @@ module Genome
       end
 
       def add_grouper_data(drug, descriptor)
-        drug_data = retrieve_normalizer_data(descriptor[@id_name])
+        gene_data = retrieve_normalizer_data(descriptor['id'][15..])
 
         drug_data.each do |source_name, source_data|
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)

@@ -60,7 +60,7 @@ module Genome
             response = retrieve_normalizer_response(claim_alias.alias)
             match_type = response['match_type']
             if !response.nil? && match_type > 0
-              concept_id = response[@descriptor_name]['id'][15..]
+              concept_id = response['normalized_id']
               if !claim_responses.key?(concept_id)
                 claim_responses[concept_id] = response
               end
@@ -91,6 +91,10 @@ module Genome
           end
         end
         response
+      end
+
+      def get_concept_id(response)
+        response['normalized_id'] unless response['match_type'].zero?
       end
 
       def retrieve_extension(descriptor, type, default = nil)
