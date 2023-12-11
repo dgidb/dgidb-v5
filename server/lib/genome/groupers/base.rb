@@ -25,7 +25,7 @@ module Genome
       end
 
       def fetch_source_meta
-        url = URI("#{@normalizer_url_root}search?q=")
+        url = URI("#{@normalizer_host}search?q=")
         body = fetch_json_response(url)
         body['source_matches'].transform_values { |value| value['source_meta_'] }
       end
@@ -60,7 +60,7 @@ module Genome
             response = retrieve_normalizer_response(claim_alias.alias)
             match_type = response['match_type']
             if !response.nil? && match_type > 0
-              concept_id = response[@descriptor_name][@id_name]
+              concept_id = response[@descriptor_name]['id'][15..]
               if !claim_responses.key?(concept_id)
                 claim_responses[concept_id] = response
               end
@@ -103,7 +103,7 @@ module Genome
       end
 
       def retrieve_normalizer_response(term)
-        body = fetch_json_response("#{@normalizer_url_root}normalize?q=#{CGI.escape(term)}")
+        body = fetch_json_response("#{@normalizer_host}normalize?q=#{CGI.escape(term)}")
         @term_to_match_dict[term.upcase] = get_concept_id(body) unless term == '' || body.nil?
 
         body
@@ -114,7 +114,7 @@ module Genome
       end
 
       def retrieve_normalizer_data(term)
-        body = fetch_json_response("#{@normalizer_url_root}normalize_unmerged?q=#{CGI.escape(term)}")
+        body = fetch_json_response("#{@normalizer_host}normalize_unmerged?q=#{CGI.escape(term)}")
         body['source_matches']
       end
     end

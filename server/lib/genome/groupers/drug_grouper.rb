@@ -4,8 +4,11 @@ module Genome
       attr_reader :term_to_match_dict
 
       def initialize
-        url_base = ENV['THERAPY_URL_BASE'] || 'http://localhost:8000'
-        @normalizer_url_root = "#{url_base}/therapy/"
+        url_base = ENV['THERAPY_HOSTNAME'] || 'http://localhost:8000'
+        if !url_base.ends_with? "/"
+          url_base += "/"
+        end
+        @normalizer_host = "#{url_base}/therapy/"
 
         @term_to_match_dict = {}
 
@@ -50,7 +53,7 @@ module Genome
       end
 
       def set_response_structure
-        url = URI("#{@normalizer_url_root}search?q=")
+        url = URI("#{@normalizer_host}search?q=")
         body = fetch_json_response(url)
         version = body['service_meta_']['version']
         if version < '0.4.0'

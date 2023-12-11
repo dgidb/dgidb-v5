@@ -4,8 +4,12 @@ module Genome
       attr_reader :term_to_match_dict
 
       def initialize
-        url_base = ENV['GENE_URL_BASE'] || 'http://localhost:8000'
-        @normalizer_url_root = "#{url_base}/gene/"
+        url_base = ENV['GENE_HOSTNAME'] || 'http://localhost:8000'
+        if !url_base.ends_with? "/"
+          url_base += "/"
+        end
+        @normalizer_host = "#{url_base}gene/"
+        @descriptor_name = 'gene'
 
         @term_to_match_dict = {}
         @sources = {}
@@ -33,7 +37,7 @@ module Genome
           puts "Grouping #{claims.length} ungrouped gene claims from #{source_name}"
         end
 
-        set_response_structure
+        # set_response_structure
         create_sources
 
         pbar = ProgressBar.create(title: 'Grouping genes', total: claims.size, format: "%t: %p%% %a |%B|")
@@ -44,8 +48,8 @@ module Genome
           if normalized_gene.is_a? String
             normalized_id = normalized_gene
           else
-            normalized_id = normalized_gene[@descriptor_name][@id_name]
-            create_new_gene normalized_gene[@descriptor_name] if Gene.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_gene['normalize_id']
+            create_new_gene normalized_gene['gene'] if Gene.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_gene(gene_claim, normalized_id)
 
@@ -53,19 +57,19 @@ module Genome
         end
       end
 
-      def set_response_structure
-        @descriptor_name = 'gene_descriptor'
-
-        url = URI("#{@normalizer_url_root}search?q=")
-        body = fetch_json_response(url)
-        version = body['service_meta_']['version']
-        if version < '0.2.0'
-          @id_name = 'gene_id'
-        else
-          @id_name = 'gene'
-        end
-      end
-
+      # def set_response_structure
+      #   @descriptor_name = 'gene_descriptor'
+      #
+      #   url = URI("#{@normalizer_host}search?q=")
+      #   body = fetch_json_response(url)
+      #   version = body['service_meta_']['version']
+      #   if version < '0.2.0'
+      #     @id_name = 'gene_id'
+      #   else
+      #     @id_name = 'gene'
+      #   end
+      # end
+      #
       def create_sources
         gene_source_type = SourceType.find_by(type: 'gene')
 
@@ -131,7 +135,7 @@ module Genome
       end
 
       def get_concept_id(response)
-        response[@descriptor_name][@id_name] unless response['match_type'].zero?
+        response['normalized_id'] unless response['match_type'].zero?
       end
 
       def create_gene_claim(record, source)
@@ -209,7 +213,7 @@ module Genome
       end
 
       def add_grouper_data(gene, descriptor)
-        gene_data = retrieve_normalizer_data(descriptor[@id_name])
+        gene_data = retrieve_normalizer_data(descriptor['id'][15..])
         gene_data.each do |source_name, source_data|
           source = @sources[source_name.to_sym]
 
@@ -223,19 +227,19 @@ module Genome
         end
       end
 
-      def create_new_gene(descriptor)
-        name = if descriptor.fetch('label').blank?
-                 descriptor[@id_name]
+      def create_new_gene(gene_response)
+        name = if gene_response.fetch('label').blank?
+                 gene_response['id'][15..]
                else
-                 descriptor['label']
+                 gene_response['label']
                end
         gene = Gene.where(
-          concept_id: descriptor[@id_name],
+          concept_id: gene_response['id'][15..],
           name: name,
-          long_name: retrieve_extension(descriptor, 'approved_name')
+          long_name: retrieve_extension(gene_response, 'approved_name')
         ).first_or_create
 
-        add_grouper_data(gene, descriptor)
+        add_grouper_data(gene, gene_response)
       end
 
       def add_claim_attributes(claim, gene)
