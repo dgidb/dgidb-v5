@@ -19,7 +19,7 @@ export const Info = () => {
       </Box>
       <p>
         This will recreate the local database and import the latest data dump
-        directly. Please see the{' '}
+        directly. Please see the {' '}
         <Link
           href="https://github.com/dgidb/dgidb-v5/blob/main/README.md"
           target="_blank"
