@@ -11,15 +11,16 @@ export const Info = () => {
         information for each source.
       </p>
       <p>
-        You may instantiate your local database instance by running the following command while
-        in the 'server' directory of your local checkout of the DGIdb repository:
+        You may instantiate your local database instance by running the
+        following command while in the 'server' directory of your local checkout
+        of the DGIdb repository:
       </p>
       <Box sx={{ ml: 2 }} className="code-text-container">
         <code className="code-text">rake dgidb:load_local</code>
       </Box>
       <p>
         This will recreate the local database and import the latest data dump
-        directly. Please see the {' '}
+        directly. Please see the{' '}
         <Link
           href="https://github.com/dgidb/dgidb-v5/blob/main/README.md"
           target="_blank"
