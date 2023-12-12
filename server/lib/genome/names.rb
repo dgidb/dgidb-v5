@@ -35,6 +35,7 @@ module Genome
       WIKIDATA_ID = 'Wikidata ID'
       CONCEPT_ID = 'Concept ID'
       GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'
+      GTOP_LIGAND_ID = 'GuideToPharmacology Ligand ID'
       DRUGBANK_ID = 'DrugBank ID'
       PHARMGKB_ID = 'PharmGKB ID'
       CHEMBL_ID = 'ChEMBL ID'

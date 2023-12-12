@@ -22,7 +22,7 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def gene_lookup_base_url(id)
-      "http://api.geneontology.org/api/bioentity/function/%22GO:#{id}%22"
+      "https://api.geneontology.org/api/bioentity/function/%22GO:#{id}%22"
     end
 
     def params(start, rows)

@@ -30,8 +30,8 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   # TODO: search filters (Clinically Actionable, Druggable Genome, Drug Resistance)
 
-  # gene claim catagory by name
-  option(:gene_claim_catagory, type: [String], description: "Filtering on gene claim catagory name.") do |scope, values|
+  # gene claim category by name
+  option(:gene_claim_category, type: [String], description: "Filtering on gene claim category name.") do |scope, values|
     scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name IN (?)', values)
   end
 
