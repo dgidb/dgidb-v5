@@ -52,7 +52,7 @@ module Utils; module SnapshotHelpers
     unless Dir.exist? 'data'
       Dir.mkdir('data')
     end
-    system_or_die("wget -O #{destination} http://dgidb.org/data/data.sql")
+    system_or_die("wget -O #{destination} https://nch-igm-wagner-lab-public.s3.us-east-2.amazonaws.com/dgidb_v5_latest.sql")
   end
 
   private
