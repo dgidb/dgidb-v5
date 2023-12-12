@@ -18,21 +18,6 @@ export const Info = () => {
         <code className="code-text">rake dgidb:load_local</code>
       </Box>
       <p>
-        Alternatively, you may download the {' '}
-        <Link
-          href="https://nch-igm-wagner-lab-public.s3.us-east-2.amazonaws.com/dgidb_v5_latest.sql"
-          target="_blank"
-          rel="noopener"
-        >
-          latest data dump
-        </Link>{' '}
-        directly and run the following command
-        while in the directory of your local checkout of the DGIdb repository:
-      </p>
-      <Box sx={{ ml: 2 }} className="code-text-container">
-        <code className="code-text">psql -d dgidb -f dgidb_v5_latest.sql</code>
-      </Box>
-      <p>
         This will recreate the local database and import the latest data dump
         directly. Please see the{' '}
         <Link
