@@ -14,6 +14,8 @@ import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
 
+import ReactGA from 'react-ga'
+
 const App = () => {
   const { pathname, hash, key } = useLocation();
 
@@ -33,6 +35,11 @@ const App = () => {
       }, 0);
     }
   }, [pathname, hash, key]);
+
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
 
   return (
     <MainLayout>
