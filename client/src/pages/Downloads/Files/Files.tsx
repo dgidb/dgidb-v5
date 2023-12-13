@@ -25,6 +25,13 @@ function createData(
 
 const rows = [
   createData(
+    '2023-Dec',
+    'interactions.tsv',
+    'genes.tsv',
+    'drugs.tsv',
+    'categories.tsv'
+  ),
+  createData(
     '2022-Feb',
     'interactions.tsv',
     'genes.tsv',
