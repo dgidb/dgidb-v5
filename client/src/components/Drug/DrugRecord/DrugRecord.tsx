@@ -219,8 +219,8 @@ export const DrugRecord: React.FC = () => {
           {generateXrefLink(drugId, ResultTypes.Drug, 'concept-id-link')}
         </Box>
       </Box>
-      <Box display={isMobile ? "block" : "flex"}>
-        <Box display="block" width={isMobile ? "100%" : "35%"}>
+      <Box display={isMobile ? 'block' : 'flex'}>
+        <Box display="block" width={isMobile ? '100%' : '35%'}>
           {sectionsMap.map((section) => {
             return (
               <Accordion key={section.name} defaultExpanded>
@@ -248,7 +248,11 @@ export const DrugRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={isMobile ? 0 : 1} mt={isMobile ? 2 : 0} width={isMobile ? "100%" : "65%"}>
+        <Box
+          ml={isMobile ? 0 : 1}
+          mt={isMobile ? 2 : 0}
+          width={isMobile ? '100%' : '65%'}
+        >
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{

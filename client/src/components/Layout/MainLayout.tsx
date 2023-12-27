@@ -109,26 +109,26 @@ const Header: React.FC = () => {
 
   const mobileNavItems = [
     {
-      text: "Browse Categories",
-      navPath: "/browse/categories",
+      text: 'Browse Categories',
+      navPath: '/browse/categories',
       icon: <CategoryIcon />,
     },
     {
-      text: "Browse Sources",
-      navPath: "/browse/sources",
+      text: 'Browse Sources',
+      navPath: '/browse/sources',
       icon: <SourceIcon />,
     },
     {
-      text: "About",
-      navPath: "/about",
+      text: 'About',
+      navPath: '/about',
       icon: <InfoIcon />,
     },
     {
-      text: "Downloads",
-      navPath: "/downloads",
+      text: 'Downloads',
+      navPath: '/downloads',
       icon: <CloudDownloadIcon />,
-    }
-  ]
+    },
+  ];
 
   const mobileNavMenu = (
     <>
@@ -141,19 +141,21 @@ const Header: React.FC = () => {
         onClose={() => setShowMenuDrawer(false)}
       >
         <List>
-        {mobileNavItems.map(item => {
-          return (<ListItem>
-            <ListItemButton
-              onClick={() => {
-                setShowMenuDrawer(false);
-                navigate(item.navPath);
-              }}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>)
-        })}
+          {mobileNavItems.map((item) => {
+            return (
+              <ListItem>
+                <ListItemButton
+                  onClick={() => {
+                    setShowMenuDrawer(false);
+                    navigate(item.navPath);
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </Drawer>
     </>

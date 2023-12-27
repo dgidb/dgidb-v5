@@ -170,8 +170,8 @@ export const InteractionRecord: React.FC = () => {
           </a>
         </Box>
       </Box>
-      <Box display={isMobile ? "block" : "flex"}>
-        <Box display="block" width={isMobile ? "100%" : "45%"}>
+      <Box display={isMobile ? 'block' : 'flex'}>
+        <Box display="block" width={isMobile ? '100%' : '45%'}>
           {sectionsMap.map((section) => {
             return (
               <Accordion key={section.name} defaultExpanded>
@@ -199,7 +199,11 @@ export const InteractionRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={isMobile ? 0 : 1} mt={isMobile ? 2 : 0} width={isMobile ? "100%" : "55%"}>
+        <Box
+          ml={isMobile ? 0 : 1}
+          mt={isMobile ? 2 : 0}
+          width={isMobile ? '100%' : '55%'}
+        >
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{
