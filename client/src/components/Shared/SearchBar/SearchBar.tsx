@@ -129,7 +129,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   return (
     <>
-      <Box>
+      <Box id="search-bar-container" width="90%">
         <Box display="flex">
           <Box>
             <Select
@@ -145,7 +145,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               </MenuItem>
             </Select>
           </Box>
-          <Box display="block" ml={1}>
+          <Box display="block" ml={1} width="100%">
             <Autocomplete
               multiple
               filterSelectedOptions
@@ -153,7 +153,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               options={autocompleteOptions}
               getOptionLabel={(option: any) => option.suggestion}
               renderInput={(params) => (
-                <Box width={650}>
+                <Box>
                   <TextField
                     {...params}
                     variant="standard"

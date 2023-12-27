@@ -22,8 +22,10 @@ import { dropRedundantCites } from 'utils/dropRedundantCites';
 import { generateXrefLink } from 'utils/generateXrefLink';
 import { ResultTypes } from 'types/types';
 import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 export const GeneRecord: React.FC = () => {
+  const isMobile = useGetIsMobile();
   const geneId: any = useParams().gene;
 
   // get gene attributes
@@ -215,8 +217,8 @@ export const GeneRecord: React.FC = () => {
           {generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}
         </Box>
       </Box>
-      <Box display="flex">
-        <Box display="block" width="35%">
+      <Box display={isMobile ? "block" : "flex"}>
+        <Box display="block" width={isMobile ? "100%" : "35%"}>
           {sectionsMap.map((section) => {
             return (
               <Accordion key={section.name} defaultExpanded>
@@ -244,7 +246,7 @@ export const GeneRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={1} width="65%">
+        <Box ml={isMobile ? 0 : 1} width={isMobile ? "100%" : "65%"}>
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{

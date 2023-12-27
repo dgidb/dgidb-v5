@@ -15,13 +15,25 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Drawer,
   IconButton,
   Link,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ReleaseInformation from 'components/Shared/ReleaseInformation/ReleaseInformation';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import MenuIcon from '@mui/icons-material/Menu';
+import InfoIcon from '@mui/icons-material/Info';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import CategoryIcon from '@mui/icons-material/Category';
+import SourceIcon from '@mui/icons-material/Source';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -32,6 +44,7 @@ const Header: React.FC = () => {
   const [hideBanner, setHideBanner] = useState(
     window.localStorage.getItem('banner-closed')
   );
+  const [showMenuDrawer, setShowMenuDrawer] = useState(false);
 
   const handleOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -47,55 +60,112 @@ const Header: React.FC = () => {
   };
 
   const navigate = useNavigate();
+  const isMobile = useGetIsMobile();
+
+  const desktopNavMenu = (
+    <nav>
+      <ul>
+        <li>
+          <Button className="browse-button" onClick={handleOpen}>
+            Browse
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                navigate('/browse/categories');
+              }}
+            >
+              Categories
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                navigate('/browse/sources');
+              }}
+            >
+              Sources
+            </MenuItem>
+          </Menu>
+        </li>
+        <li onClick={() => navigate('/about')}>About</li>
+        <li onClick={() => navigate('/downloads')}>Downloads</li>
+      </ul>
+    </nav>
+  );
+
+  const mobileNavItems = [
+    {
+      text: "Browse Categories",
+      navPath: "/browse/categories",
+      icon: <CategoryIcon />,
+    },
+    {
+      text: "Browse Sources",
+      navPath: "/browse/sources",
+      icon: <SourceIcon />,
+    },
+    {
+      text: "About",
+      navPath: "/about",
+      icon: <InfoIcon />,
+    },
+    {
+      text: "Downloads",
+      navPath: "/downloads",
+      icon: <CloudDownloadIcon />,
+    }
+  ]
+
+  const mobileNavMenu = (
+    <>
+      <IconButton onClick={() => setShowMenuDrawer(true)}>
+        <MenuIcon htmlColor="white" />
+      </IconButton>
+      <Drawer
+        anchor="right"
+        open={showMenuDrawer}
+        onClose={() => setShowMenuDrawer(false)}
+      >
+        <List>
+        {mobileNavItems.map(item => {
+          return (<ListItem>
+            <ListItemButton
+              onClick={() => {
+                setShowMenuDrawer(false);
+                navigate(item.navPath);
+              }}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>)
+        })}
+        </List>
+      </Drawer>
+    </>
+  );
 
   return (
     <header>
-      <Box display="flex">
+      <Box display="flex" justifyContent="space-between">
         <div className="header-logo" onClick={() => navigate('/')}>
           DGIdb
         </div>
-        <nav>
-          <ul>
-            <li>
-              <Button className="browse-button" onClick={handleOpen}>
-                Browse
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    navigate('/browse/categories');
-                  }}
-                >
-                  Categories
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    navigate('/browse/sources');
-                  }}
-                >
-                  Sources
-                </MenuItem>
-              </Menu>
-            </li>
-            <li onClick={() => navigate('/about')}>About</li>
-            <li onClick={() => navigate('/downloads')}>Downloads</li>
-          </ul>
-        </nav>
+        {isMobile ? mobileNavMenu : desktopNavMenu}
       </Box>
       {!hideBanner ? (
         <Box className="header-banner">
