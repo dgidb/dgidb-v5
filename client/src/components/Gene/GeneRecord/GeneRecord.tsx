@@ -246,7 +246,7 @@ export const GeneRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={isMobile ? 0 : 1} width={isMobile ? "100%" : "65%"}>
+        <Box ml={isMobile ? 0 : 1} mt={isMobile ? 2 : 0} width={isMobile ? "100%" : "65%"}>
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{
