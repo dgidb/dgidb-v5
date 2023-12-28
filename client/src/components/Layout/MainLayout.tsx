@@ -141,9 +141,9 @@ const Header: React.FC = () => {
         onClose={() => setShowMenuDrawer(false)}
       >
         <List>
-          {mobileNavItems.map((item) => {
+          {mobileNavItems.map((item, index) => {
             return (
-              <ListItem>
+              <ListItem key={index}>
                 <ListItemButton
                   onClick={() => {
                     setShowMenuDrawer(false);
