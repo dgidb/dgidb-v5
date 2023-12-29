@@ -161,7 +161,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
           <Tabs
             value={value}
             onChange={handleChange}
-            orientation={isMobile ? "horizontal" : "vertical"}
+            orientation={isMobile ? 'horizontal' : 'vertical'}
             textColor="secondary"
             indicatorColor="secondary"
           >
@@ -248,7 +248,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" flexWrap="wrap" mb={1}>
           <h1>Interaction Results</h1>
           <Box id="interaction-count" ml={2}>
             {interactionResults.length} total interactions

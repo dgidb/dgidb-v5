@@ -169,7 +169,7 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
           <Tabs
             value={value}
             onChange={handleChange}
-            orientation={isMobile ? "horizontal" : "vertical"}
+            orientation={isMobile ? 'horizontal' : 'vertical'}
             textColor="secondary"
             indicatorColor="secondary"
           >
@@ -253,7 +253,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" flexWrap="wrap" mb={1}>
           <h1>Interaction Results</h1>
           <Box id="interaction-count" ml={2}>
             {interactionResults.length} total interactions

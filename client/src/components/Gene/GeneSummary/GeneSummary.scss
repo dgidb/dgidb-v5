@@ -27,6 +27,7 @@
       max-width: 100% !important;
       border: none !important;
       margin-bottom: 20px;
+      margin-left: 0 !important;
     }
     .chart-section {
       flex-direction: column;
@@ -70,6 +71,7 @@
     }
 
     .summary-infographic-container {
+      margin-left: 5px;
       border: 1px var(--text-content) solid;
       padding: 10px;
       display: flex;
