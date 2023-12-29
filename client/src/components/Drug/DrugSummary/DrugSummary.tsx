@@ -13,7 +13,7 @@ import {
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
-import { Tab, Tabs } from '@mui/material';
+import { Alert, IconButton, Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
@@ -21,6 +21,7 @@ import './DrugSummary.scss';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
+import CloseIcon from '@mui/icons-material/Close';
 
 ChartJS.register(
   CategoryScale,
@@ -42,6 +43,13 @@ const InteractionCountDrug: React.FC<CountProps> = ({
   selectedDrugs,
   setSelectedDrugs,
 }) => {
+  const [hideAlert, setHideAlert] = React.useState(
+    window.localStorage.getItem('interaction-filter-tip-alert')
+  );
+  const handleCloseAlertTip = () => {
+    setHideAlert('true');
+    window.localStorage.setItem('interaction-filter-tip-alert', 'true');
+  };
   const toggleFilter = (drugName: string) => {
     if (selectedDrugs.includes(drugName)) {
       setSelectedDrugs(
@@ -54,6 +62,23 @@ const InteractionCountDrug: React.FC<CountProps> = ({
 
   return (
     <div className="interaction-count-container">
+      {!hideAlert && (
+        <Alert
+          severity="info"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={handleCloseAlertTip}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          You can filter by selecting the rows below
+        </Alert>
+      )}
       <div className="interaction-count-header">
         <div className="interaction-count-drug">
           <h2>
