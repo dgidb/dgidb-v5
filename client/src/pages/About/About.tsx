@@ -30,45 +30,50 @@ export const About = () => {
   const aboutSections = [
     {
       name: 'About',
-      href: '#about'
+      href: '#about',
     },
     {
       name: 'Publications',
-      href: '#publications'
+      href: '#publications',
     },
     {
       name: 'Types/Directionalities',
-      href: '#interaction-types'
+      href: '#interaction-types',
     },
     {
       name: 'Interaction Score',
-      href: '#interaction-scores'
+      href: '#interaction-scores',
     },
     {
       name: 'FAQ',
-      href: '#faq'
+      href: '#faq',
     },
     {
       name: 'Known Data Clients',
-      href: '#known-data-clients'
+      href: '#known-data-clients',
     },
     {
       name: 'Contact',
-      href: '#contact'
+      href: '#contact',
     },
     {
       name: 'Current Contributors',
-      href: '#current-contributors'
+      href: '#current-contributors',
     },
     {
       name: 'Acknowledgements',
-      href: '#acknowledgements'
+      href: '#acknowledgements',
     },
-  ]
+  ];
 
   const jumpToButton = (
     <>
-      <Button id="jump-to-button" variant="contained" onClick={handleClick} style={{position: "fixed", bottom: 10, right: 5}}>
+      <Button
+        id="jump-to-button"
+        variant="contained"
+        onClick={handleClick}
+        style={{ position: 'fixed', bottom: 10, right: 5 }}
+      >
         Jump To
       </Button>
       <Menu
@@ -79,8 +84,10 @@ export const About = () => {
       >
         {aboutSections.map((section, index) => {
           return (
-            <MenuItem key={index}><Link href={section.href}>{section.name}</Link></MenuItem>
-          )
+            <MenuItem key={index}>
+              <Link href={section.href}>{section.name}</Link>
+            </MenuItem>
+          );
         })}
       </Menu>
     </>
@@ -88,7 +95,7 @@ export const About = () => {
 
   return (
     <div className="about-page-container">
-      {isMobile ? jumpToButton : ""}
+      {isMobile ? jumpToButton : ''}
       <Box>
         <div className="table-of-contents-container" hidden={isMobile}>
           {aboutSections.map((section, index) => {
@@ -96,7 +103,7 @@ export const About = () => {
               <Box mb={1} key={index}>
                 <Link href={section.href}>{section.name}</Link>
               </Box>
-            )
+            );
           })}
         </div>
       </Box>
