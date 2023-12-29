@@ -117,6 +117,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     // populate tags from state if nothing entered
     if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
       setSelectedOptions(
+        // extra security to ensure no duplicates are displayed
         [...new Set(state.searchTerms)].map((option) => {
           return { suggestion: option };
         })
