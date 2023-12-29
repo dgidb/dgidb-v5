@@ -14,15 +14,32 @@
     color: var(--text-content);
   }
 
+  @media screen and (max-width: 768px) {
+    .gene-summary-content {
+      display: block !important;
+    }
+    .interaction-count-container {
+      max-width: 100% !important;
+      border: none !important;
+    }
+    .summary-infographic-container {
+      max-width: 100% !important;
+      border: none !important;
+    }
+    .chart-section {
+      flex-direction: column;
+    }
+  }
+
   .gene-summary-content {
     display: flex;
     background-color: var(--background);
 
     .interaction-count-container {
       border: 1px var(--text-content) solid;
-      margin-right: 7px;
       padding: 10px;
-      min-height: 400px;
+      max-width: fit-content;
+      min-height: fit-content;
       flex-grow: 1;
 
       .interaction-count-header {
@@ -54,15 +71,16 @@
     .summary-infographic-container {
       border: 1px var(--text-content) solid;
       padding: 10px;
-      width: 80%;
-      justify-content: space-between;
       display: flex;
       flex-direction: column;
-      height: 500px;
+      min-height: 500px;
+      width: 100%;
+      overflow-x: scroll;
 
       .tabbed-view {
         align-items: flex-start !important;
         justify-content: center;
+        min-width: fit-content;
       }
 
       .chart-section {

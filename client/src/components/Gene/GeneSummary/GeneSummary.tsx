@@ -125,6 +125,7 @@ interface InfoProps {
 }
 
 const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
+  const isMobile = useGetIsMobile();
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [value, setValue] = useState(0);
 
@@ -168,7 +169,7 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
           <Tabs
             value={value}
             onChange={handleChange}
-            orientation="vertical"
+            orientation={isMobile ? "horizontal" : "vertical"}
             textColor="secondary"
             indicatorColor="secondary"
           >

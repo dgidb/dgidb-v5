@@ -22,6 +22,7 @@ import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 import CloseIcon from '@mui/icons-material/Close';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 ChartJS.register(
   CategoryScale,
@@ -116,6 +117,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
   drugMatches,
   selectedDrugs,
 }) => {
+  const isMobile = useGetIsMobile();
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [value, setValue] = useState(0);
 
@@ -159,7 +161,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
           <Tabs
             value={value}
             onChange={handleChange}
-            orientation="vertical"
+            orientation={isMobile ? "horizontal" : "vertical"}
             textColor="secondary"
             indicatorColor="secondary"
           >
