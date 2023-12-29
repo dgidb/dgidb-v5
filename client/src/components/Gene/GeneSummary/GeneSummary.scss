@@ -21,10 +21,12 @@
     .interaction-count-container {
       max-width: 100% !important;
       border: none !important;
+      margin-bottom: 20px;
     }
     .summary-infographic-container {
       max-width: 100% !important;
       border: none !important;
+      margin-bottom: 20px;
     }
     .chart-section {
       flex-direction: column;
@@ -39,7 +41,6 @@
       border: 1px var(--text-content) solid;
       padding: 10px;
       max-width: fit-content;
-      min-height: fit-content;
       flex-grow: 1;
 
       .interaction-count-header {

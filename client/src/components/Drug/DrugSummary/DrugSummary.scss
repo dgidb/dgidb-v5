@@ -13,15 +13,32 @@
     color: var(--text-content);
   }
 
+  @media screen and (max-width: 768px) {
+    .drug-summary-content {
+      display: block !important;
+    }
+    .interaction-count-container {
+      max-width: 100% !important;
+      border: none !important;
+      margin-bottom: 20px;
+    }
+    .summary-infographic-container {
+      max-width: 100% !important;
+      border: none !important;
+      margin-bottom: 20px;
+    }
+    .chart-section {
+      flex-direction: column;
+    }
+  }
+
   .drug-summary-content {
     display: flex;
 
     .interaction-count-container {
       border: 1px var(--text-content) solid;
-      margin-right: 7px;
       padding: 10px;
-      min-height: 400px;
-      width: 100px;
+      max-width: fit-content;
       flex-grow: 1;
 
       .interaction-count-header {
@@ -52,11 +69,10 @@
     .summary-infographic-container {
       border: 1px var(--text-content) solid;
       padding: 10px;
-      width: 80%;
-      justify-content: space-between;
       display: flex;
       flex-direction: column;
-      height: 500px;
+      width: 100%;
+      overflow-x: scroll;
 
       .tabbed-view {
         align-items: flex-start !important;
