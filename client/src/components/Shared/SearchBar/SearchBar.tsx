@@ -115,14 +115,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   useEffect(() => {
     // populate tags from state if nothing entered
-    if (selectedOptions?.length !== 0) {
-      selectedOptions.map((option) => {
-        dispatch({ type: ActionTypes.AddTerm, payload: option.suggestion });
-      });
-      // populate
-    } else if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
+    if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
       setSelectedOptions(
-        state.searchTerms.map((option) => {
+        [...new Set(state.searchTerms)].map((option) => {
           return { suggestion: option };
         })
       );
