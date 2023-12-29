@@ -21,8 +21,13 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({
 }) => {
   const isMobile = useGetIsMobile();
   return !isLoading ? (
-    <Box display="flex" justifyContent="space-between" minHeight="50px" flexWrap={isMobile ? "wrap" : "nowrap"}>
-      <Box width={unmatchedTerms?.length > 0 && !isMobile  ? '80%' : '100%'}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      minHeight="50px"
+      flexWrap={isMobile ? 'wrap' : 'nowrap'}
+    >
+      <Box width={unmatchedTerms?.length > 0 && !isMobile ? '80%' : '100%'}>
         {ambiguousTerms?.length > 0 ? (
           ambiguousTerms?.map((term: any) => {
             return (
@@ -42,7 +47,12 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({
         )}
       </Box>
       {unmatchedTerms?.length > 0 && (
-        <Box width="20%" minWidth="fit-content" className="unmatched-terms" mt={isMobile ? 2 : 0}>
+        <Box
+          width="20%"
+          minWidth="fit-content"
+          className="unmatched-terms"
+          mt={isMobile ? 2 : 0}
+        >
           <h3>
             <b>Unmatched Terms:</b>
           </h3>

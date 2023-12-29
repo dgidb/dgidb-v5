@@ -67,7 +67,8 @@ export const AmbiguousMatchesCard: React.FC<Props> = ({ match }) => {
           </Box>
         ) : (
           <Typography fontStyle="italic">
-            {match.searchTerm} is ambiguous. Please select context from drop down.
+            {match.searchTerm} is ambiguous. Please select context from drop
+            down.
           </Typography>
         )}
       </AccordionDetails>
