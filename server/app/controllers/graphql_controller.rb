@@ -11,8 +11,10 @@ class GraphqlController < ApplicationController
     context = {
       # Query context goes here, for example:
       # current_user: current_user,
+      tracers: [AnalyticsTracer.for_request(request)]
     }
     result = DgidbSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    logger.info context['tracers']
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
