@@ -6,7 +6,7 @@
   padding: 15px;
   .sources-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 15px;
     grid-row-gap: 15px;
@@ -38,6 +38,7 @@
     }
   }
   .filter-buttons {
+    flex-wrap: wrap;
     .MuiButton-outlined {
       color: var(--theme-primary) !important;
       border-color: var(--theme-primary) !important;

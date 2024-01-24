@@ -102,17 +102,3 @@ export const Routes = () => {
 
   return <>{element}</>;
 };
-
-// export const publicRoutes = [
-//   {
-//     path: '/',
-//     element: <App />,
-//     children: [
-//       { path: '/genes/*', element: <GeneRecord /> },
-//       { path: '/results', element: <Results /> },
-//       { path: '/about', element: <About /> },
-//       { path: '/', element: <Home /> },
-//       { path: '*', element: <Navigate to="." /> },
-//     ],
-//   }
-// ];
