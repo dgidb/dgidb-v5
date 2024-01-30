@@ -18,8 +18,19 @@ import './GeneSummary.scss';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
-import { Tab, Tabs } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  IconButton,
+  Tab,
+  Tabs,
+} from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CloseIcon from '@mui/icons-material/Close';
 
 ChartJS.register(
   CategoryScale,
@@ -41,6 +52,13 @@ const InteractionCount: React.FC<CountProps> = ({
   selectedGenes,
   setSelectedGenes,
 }) => {
+  const [hideAlert, setHideAlert] = React.useState(
+    window.localStorage.getItem('interaction-filter-tip-alert')
+  );
+  const handleCloseAlertTip = () => {
+    setHideAlert('true');
+    window.localStorage.setItem('interaction-filter-tip-alert', 'true');
+  };
   const toggleFilter = (geneName: string) => {
     if (selectedGenes.includes(geneName)) {
       setSelectedGenes(
@@ -53,6 +71,23 @@ const InteractionCount: React.FC<CountProps> = ({
 
   return (
     <div className="interaction-count-container">
+      {!hideAlert && (
+        <Alert
+          severity="info"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={handleCloseAlertTip}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          You can filter by selecting the rows below
+        </Alert>
+      )}
       <div className="interaction-count-header">
         <div className="interaction-count-gene">
           <h2>
@@ -65,6 +100,7 @@ const InteractionCount: React.FC<CountProps> = ({
           </h2>
         </div>
       </div>
+
       {geneMatches?.map((gene: any, i: number) => {
         return (
           <div
@@ -89,6 +125,7 @@ interface InfoProps {
 }
 
 const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
+  const isMobile = useGetIsMobile();
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [value, setValue] = useState(0);
 
@@ -132,7 +169,7 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
           <Tabs
             value={value}
             onChange={handleChange}
-            orientation="vertical"
+            orientation={isMobile ? 'horizontal' : 'vertical'}
             textColor="secondary"
             indicatorColor="secondary"
           >
@@ -161,6 +198,7 @@ interface SummaryProps {
 }
 
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
+  const isMobile = useGetIsMobile();
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedGenes, setSelectedGenes] = useState<string[]>([]);
   const [displayedInteractionResults, setDisplayedInteractionResults] =
@@ -197,6 +235,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
   }, [selectedGenes, interactionResults]);
 
   const geneMatches = genes?.map((geneMatch: any) => geneMatch.matches[0]);
+
   return (
     <div className="gene-summary-container">
       <h1>Gene Summary</h1>
@@ -214,7 +253,7 @@ export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" flexWrap="wrap" mb={1}>
           <h1>Interaction Results</h1>
           <Box id="interaction-count" ml={2}>
             {interactionResults.length} total interactions

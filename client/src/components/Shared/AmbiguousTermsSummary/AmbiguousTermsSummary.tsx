@@ -4,6 +4,7 @@ import { Box, CircularProgress, Icon } from '@mui/material';
 import AmbiguousResult from './AmbiguousResult';
 import './AmbiguousTerms.scss';
 import { ResultTypes } from 'types/types';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 interface AmbiguousTermsSummaryProps {
   resultType: ResultTypes;
@@ -18,9 +19,15 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({
   ambiguousTerms,
   unmatchedTerms,
 }) => {
+  const isMobile = useGetIsMobile();
   return !isLoading ? (
-    <Box display="flex" justifyContent="space-between" minHeight="50px">
-      <Box width={unmatchedTerms?.length > 0 ? '80%' : '100%'}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      minHeight="50px"
+      flexWrap={isMobile ? 'wrap' : 'nowrap'}
+    >
+      <Box width={unmatchedTerms?.length > 0 && !isMobile ? '80%' : '100%'}>
         {ambiguousTerms?.length > 0 ? (
           ambiguousTerms?.map((term: any) => {
             return (
@@ -40,7 +47,12 @@ export const AmbiguousTermsSummary: React.FC<AmbiguousTermsSummaryProps> = ({
         )}
       </Box>
       {unmatchedTerms?.length > 0 && (
-        <Box width="20%" className="unmatched-terms">
+        <Box
+          width="20%"
+          minWidth="fit-content"
+          className="unmatched-terms"
+          mt={isMobile ? 2 : 0}
+        >
           <h3>
             <b>Unmatched Terms:</b>
           </h3>
