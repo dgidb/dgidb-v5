@@ -18,8 +18,10 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { truncateDecimals } from 'utils/format';
 import { Alert } from '@mui/material';
 import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 export const InteractionRecord: React.FC = () => {
+  const isMobile = useGetIsMobile();
   const interactionId = useParams().id;
   const { data } = useGetInteractionRecord(interactionId!);
   const interactionData = data?.interaction;
@@ -168,8 +170,8 @@ export const InteractionRecord: React.FC = () => {
           </a>
         </Box>
       </Box>
-      <Box display="flex">
-        <Box display="block" width="45%">
+      <Box display={isMobile ? 'block' : 'flex'}>
+        <Box display="block" width={isMobile ? '100%' : '45%'}>
           {sectionsMap.map((section) => {
             return (
               <Accordion key={section.name} defaultExpanded>
@@ -197,7 +199,11 @@ export const InteractionRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={1} width="55%">
+        <Box
+          ml={isMobile ? 0 : 1}
+          mt={isMobile ? 2 : 0}
+          width={isMobile ? '100%' : '55%'}
+        >
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{

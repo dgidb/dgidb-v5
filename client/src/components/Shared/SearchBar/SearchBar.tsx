@@ -14,6 +14,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 type SearchBarProps = {
   handleSubmit: () => void;
@@ -21,6 +22,7 @@ type SearchBarProps = {
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const { state, dispatch } = useContext(GlobalClientContext);
+  const isMobile = useGetIsMobile();
   const [searchType, setSearchType] = React.useState<SearchTypes>(
     state.interactionMode
   );
@@ -113,14 +115,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   useEffect(() => {
     // populate tags from state if nothing entered
-    if (selectedOptions?.length !== 0) {
-      selectedOptions.map((option) => {
-        dispatch({ type: ActionTypes.AddTerm, payload: option.suggestion });
-      });
-      // populate
-    } else if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
+    if (state.searchTerms?.length > 0 && selectedOptions?.length === 0) {
       setSelectedOptions(
-        state.searchTerms.map((option) => {
+        // extra security to ensure no duplicates are displayed
+        [...new Set(state.searchTerms)].map((option) => {
           return { suggestion: option };
         })
       );
@@ -129,14 +127,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   return (
     <>
-      <Box>
-        <Box display="flex">
-          <Box>
+      <Box id="search-bar-container" width={isMobile ? '95%' : '75%'}>
+        <Box display="flex" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+          <Box width={isMobile ? '100%' : 'fit-content'}>
             <Select
               value={state.interactionMode || searchType}
               defaultValue={state.interactionMode || SearchTypes.Gene}
               onChange={handleChange}
               classes={{ select: 'search-type-select' }}
+              fullWidth={isMobile}
             >
               <MenuItem value={SearchTypes.Gene}>Interactions by Gene</MenuItem>
               <MenuItem value={SearchTypes.Drug}>Interactions by Drug</MenuItem>
@@ -145,7 +144,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               </MenuItem>
             </Select>
           </Box>
-          <Box display="block" ml={1}>
+          <Box display="block" ml={1} width="100%" mt={isMobile ? 2 : 0}>
             <Autocomplete
               multiple
               filterSelectedOptions
@@ -153,7 +152,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
               options={autocompleteOptions}
               getOptionLabel={(option: any) => option.suggestion}
               renderInput={(params) => (
-                <Box width={650}>
+                <Box>
                   <TextField
                     {...params}
                     variant="standard"
