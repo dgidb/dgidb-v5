@@ -125,7 +125,7 @@ export const Files = () => {
                 <TableCell align="center">
                   <a
                     download
-                    href={'data/' + row.date + '/' + row.interactions}
+                    href={'data/' + row.date + '/' + row.categories}
                   >
                     {row.categories}
                   </a>
