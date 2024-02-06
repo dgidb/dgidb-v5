@@ -4,7 +4,7 @@ export const Publications = () => {
   return (
     <div className="publications-section-container">
       <div className="about-pub-item">
-        <Link href="https://pubmed.ncbi.nlm.nih.gov/33237278/" target="_blank">
+        <Link href="https://pubmed.ncbi.nlm.nih.gov/37953380/" target="_blank">
           DGIdb 5.0: rebuilding the drug-gene interaction database for
           precision medicine and drug discovery platforms.
         </Link>{' '}
