@@ -5,13 +5,13 @@ export const Publications = () => {
     <div className="publications-section-container">
       <div className="about-pub-item">
         <Link href="https://pubmed.ncbi.nlm.nih.gov/37953380/" target="_blank">
-          DGIdb 5.0: rebuilding the drug-gene interaction database for
-          precision medicine and drug discovery platforms.
+          DGIdb 5.0: rebuilding the drug-gene interaction database for precision
+          medicine and drug discovery platforms.
         </Link>{' '}
-        Cannon M, Stevenson J, Stahl K, Basu R, Coffman A, Kiwala S, McMichael JF,
-        Kuzma K, Morrisey D, Cotto KC, Mardis ER, Griffith OL, Griffith M, Wagner AH.
-        Nucleic Acids Research. 2024 Jan 5; doi: https://doi.org/10.1093/nar/gkad1040.
-        PMID: 37953380.
+        Cannon M, Stevenson J, Stahl K, Basu R, Coffman A, Kiwala S, McMichael
+        JF, Kuzma K, Morrisey D, Cotto KC, Mardis ER, Griffith OL, Griffith M,
+        Wagner AH. Nucleic Acids Research. 2024 Jan 5; doi:
+        https://doi.org/10.1093/nar/gkad1040. PMID: 37953380.
       </div>
       <div className="about-pub-item">
         <Link href="https://pubmed.ncbi.nlm.nih.gov/33237278/" target="_blank">
