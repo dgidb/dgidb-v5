@@ -13,65 +13,39 @@ import Paper from '@mui/material/Paper';
 // style
 import './Files.scss';
 
-function createData(
-  date: string,
-  interactions: string,
-  genes: string,
-  drugs: string,
-  categories: string
+function getDataObj(
+  date: string
 ) {
-  return { date, interactions, genes, drugs, categories };
+  return {
+    date,
+    interactions: 'interactions.tsv',
+    genes: 'genes.tsv',
+    drugs: 'drugs.tsv',
+    categories: 'categories.tsv'
+  };
 }
 
 const rows = [
-  createData(
-    '2023-Dec',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
+  getDataObj(
+    'latest',
   ),
-  createData(
+  getDataObj(
     '2022-Feb',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
-  createData(
+  getDataObj(
     '2021-May',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
-  createData(
+  getDataObj(
     '2021-Jan',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
-  createData(
+  getDataObj(
     '2020-Nov',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
-  createData(
+  getDataObj(
     '2020-Oct',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
-  createData(
+  getDataObj(
     '2020-Sep',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
   ),
 ];
 
