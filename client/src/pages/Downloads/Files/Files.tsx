@@ -13,40 +13,24 @@ import Paper from '@mui/material/Paper';
 // style
 import './Files.scss';
 
-function getDataObj(
-  date: string
-) {
+function getDataObj(date: string) {
   return {
     date,
     interactions: 'interactions.tsv',
     genes: 'genes.tsv',
     drugs: 'drugs.tsv',
-    categories: 'categories.tsv'
+    categories: 'categories.tsv',
   };
 }
 
 const rows = [
-  getDataObj(
-    'latest',
-  ),
-  getDataObj(
-    '2022-Feb',
-  ),
-  getDataObj(
-    '2021-May',
-  ),
-  getDataObj(
-    '2021-Jan',
-  ),
-  getDataObj(
-    '2020-Nov',
-  ),
-  getDataObj(
-    '2020-Oct',
-  ),
-  getDataObj(
-    '2020-Sep',
-  ),
+  getDataObj('latest'),
+  getDataObj('2022-Feb'),
+  getDataObj('2021-May'),
+  getDataObj('2021-Jan'),
+  getDataObj('2020-Nov'),
+  getDataObj('2020-Oct'),
+  getDataObj('2020-Sep'),
 ];
 
 export const Files = () => {
@@ -97,10 +81,7 @@ export const Files = () => {
                   </a>
                 </TableCell>
                 <TableCell align="center">
-                  <a
-                    download
-                    href={'data/' + row.date + '/' + row.categories}
-                  >
+                  <a download href={'data/' + row.date + '/' + row.categories}>
                     {row.categories}
                   </a>
                 </TableCell>
