@@ -13,6 +13,8 @@ module Types
     field :categories, resolver: Resolvers::Categories
     field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
 
+    field :dgidb_meta, Types::MetaType, null: false
+
     field :drug_suggestions, [Types::DrugSuggestionType], null: true do
       description "A searchable drug name or alias that can be completed from the supplied term"
       argument :term, String, required: true
@@ -330,6 +332,10 @@ module Types
 
     def publication(id:)
       Publication.find_by(id: id)
+    end
+
+    def dgidb_meta
+      {}
     end
   end
 end
