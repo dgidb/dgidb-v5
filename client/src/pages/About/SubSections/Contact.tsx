@@ -6,10 +6,10 @@ export const Contact = () => {
     <div className="contact-section-container doc-section">
       <div>
         <p>
-          DGIdb was initially developed at The McDonnell Genome Institute, Washington
-          University School of Medicine. If you have a source of information
-          related to the druggable genome you would like us to incorporate,
-          please contact us at{' '}
+          DGIdb was initially developed at The McDonnell Genome Institute,
+          Washington University School of Medicine. If you have a source of
+          information related to the druggable genome you would like us to
+          incorporate, please contact us at{' '}
           <Link href="mailto:help@dgidb.org">help@dgidb.org.</Link>
         </p>
         <p>
@@ -24,11 +24,7 @@ export const Contact = () => {
 
       <div className="left-section">
         <h4>
-          <Link
-            href="https://griffithlab.org"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Link href="https://griffithlab.org" target="_blank" rel="noreferrer">
             The Griffith Laboratory
           </Link>
         </h4>
