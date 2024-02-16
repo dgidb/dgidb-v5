@@ -6,7 +6,7 @@ export const Contact = () => {
     <div className="contact-section-container doc-section">
       <div>
         <p>
-          DGIdb was developed at The McDonnell Genome Institute, Washington
+          DGIdb was initially developed at The McDonnell Genome Institute, Washington
           University School of Medicine. If you have a source of information
           related to the druggable genome you would like us to incorporate,
           please contact us at{' '}
@@ -25,11 +25,11 @@ export const Contact = () => {
       <div className="left-section">
         <h4>
           <Link
-            href="http://genome.wustl.edu/"
+            href="https://griffithlab.org"
             target="_blank"
             rel="noreferrer"
           >
-            The McDonnell Genome Institute
+            The Griffith Laboratory
           </Link>
         </h4>
         <p>Washington University</p>
