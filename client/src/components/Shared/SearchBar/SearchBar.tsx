@@ -36,10 +36,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   }
 
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
-  if (
+  if ( typedSearchTerm &&
     autocompleteOptions.filter(
       (option: { suggestion: string }) => option.suggestion === typedSearchTerm
-    ).length === 0
+    ).length === 0 && typedSearchTerm.trim() !== ""
   ) {
     autocompleteOptions = [
       { suggestion: typedSearchTerm },
@@ -125,6 +125,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     }
   }, [selectedOptions]);
 
+  const handlePaste = (event: any) => {
+    const pastedOptions = event.clipboardData.getData("text").split(",").map((item: string) => { return { suggestion: item.trim() } });
+    setSelectedOptions(pastedOptions);
+    // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
+    event.preventDefault()
+  }
+
   return (
     <>
       <Box id="search-bar-container" width={isMobile ? '95%' : '75%'}>
@@ -155,6 +162,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
                 <Box>
                   <TextField
                     {...params}
+                    onPaste={handlePaste}
                     variant="standard"
                     label="Search Terms"
                   />
