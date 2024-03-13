@@ -3,6 +3,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {
   Box,
   Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -16,6 +20,12 @@ import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
+enum DelimiterTypes {
+  Comma = 'Comma Separated',
+  CommaSpace = 'Comma With Space Separated',
+  TabNewline = 'Tab or Newline Separated',
+}
+
 type SearchBarProps = {
   handleSubmit: () => void;
 };
@@ -27,6 +37,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     state.interactionMode
   );
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('');
+  const [pastingFromDocument, setPastingFromDocument] = React.useState(false);
+  const [pastedSearchDelimiter, setPastedSearchDelimiter] = React.useState('')
+
   const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType);
   let autocompleteOptions = typeAheadQuery?.data?.geneSuggestions || [];
   const drugAutocompleteOptions = typeAheadQuery?.data?.drugSuggestions || [];
@@ -36,10 +49,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   }
 
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
-  if ( typedSearchTerm &&
+  if (
+    typedSearchTerm &&
     autocompleteOptions.filter(
       (option: { suggestion: string }) => option.suggestion === typedSearchTerm
-    ).length === 0 && typedSearchTerm.trim() !== ""
+    ).length === 0 &&
+    typedSearchTerm.trim() !== ''
   ) {
     autocompleteOptions = [
       { suggestion: typedSearchTerm },
@@ -76,13 +91,35 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   const handleDemoClick = () => {
     if (searchType === SearchTypes.Gene) {
-      const geneDemoList = ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1']
+      const geneDemoList = [
+        'FLT1',
+        'FLT2',
+        'FLT3',
+        'STK1',
+        'MM1',
+        'AQP1',
+        'LOC100508755',
+        'FAKE1',
+      ];
       setSelectedOptions(convertToDropdownOptions(geneDemoList));
     } else if (searchType === SearchTypes.Drug) {
-      const drugDemoList = ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL']
+      const drugDemoList = [
+        'SUNITINIB',
+        'ZALCITABINE',
+        'TRASTUZUMAB',
+        'NOTREAL',
+      ];
       setSelectedOptions(convertToDropdownOptions(drugDemoList));
     } else if (searchType === SearchTypes.Categories) {
-      const categoriesDemoList = ['HER2', 'ERBB2', 'PTGDR', 'EGFR', 'RECK', 'KCNMA1', 'MM1']
+      const categoriesDemoList = [
+        'HER2',
+        'ERBB2',
+        'PTGDR',
+        'EGFR',
+        'RECK',
+        'KCNMA1',
+        'MM1',
+      ];
       setSelectedOptions(convertToDropdownOptions(categoriesDemoList));
     }
   };
@@ -107,30 +144,40 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   }, [selectedOptions]);
 
   const convertToDropdownOptions = (options: string[]) => {
-    return options.map((item: string) => { return { suggestion: item.trim() } })
-  }
+    return options.map((item: string) => {
+      return { suggestion: item.trim() };
+    });
+  };
 
   const handlePaste = (event: any) => {
-    let pastedText = event.clipboardData.getData('text')
-    let pastedOptions: any[] = []
+    let pastedText = event.clipboardData.getData('text');
+    let pastedOptions: any[] = [];
 
-    const commaSpaceSepOptions = pastedText.split(', ')
-    const commaSepOptions = pastedText.split(',')
-    const whitespaceRegex = /[\t\n\r\f\v]/
-    // whitespace except for spaces (since gene/drug names can have spaces)
-    const whitespaceSepOptions = pastedText.split(whitespaceRegex)
-    // try splitting by comma + space first
-    if (commaSpaceSepOptions?.length > 1) {
-      pastedOptions = convertToDropdownOptions(commaSpaceSepOptions)
-    } else if (commaSepOptions?.length > 1) {
-      pastedOptions = convertToDropdownOptions(commaSepOptions)
-    } else if (whitespaceSepOptions?.length > 1) {
-      pastedOptions = convertToDropdownOptions(whitespaceSepOptions)
+    if (pastedSearchDelimiter === DelimiterTypes.Comma) {
+      const commaSepOptions = pastedText.split(',');
+      pastedOptions = convertToDropdownOptions(commaSepOptions);
+    } else if (pastedSearchDelimiter === DelimiterTypes.CommaSpace) {
+      const commaSpaceSepOptions = pastedText.split(', ');
+      pastedOptions = convertToDropdownOptions(commaSpaceSepOptions);
+    } else if (pastedSearchDelimiter === DelimiterTypes.TabNewline) {
+      const whitespaceRegex = /[\t\n\r\f\v]/;
+      const whitespaceSepOptions = pastedText.split(whitespaceRegex);
+      pastedOptions = convertToDropdownOptions(whitespaceSepOptions);
+    } else {
+      // set message to tell user they need to select a delimiter
     }
     setSelectedOptions(pastedOptions);
     // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
+
+  const handleCheckboxSelect = (event: any) => {
+    setPastingFromDocument(event.target.checked);
+  };
+
+  const handleDelimiterChange = (event: any) => {
+    setPastedSearchDelimiter(event.target.value as string);
+  };
 
   return (
     <>
@@ -196,6 +243,30 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
             >
               Search
             </Button>
+          </Box>
+        </Box>
+        <Box display='flex' pt={5} flexWrap='wrap' height='100px' alignContent='center'>
+          <FormControlLabel
+            checked={pastingFromDocument}
+            onChange={handleCheckboxSelect}
+            control={<Checkbox />}
+            label="I am pasting search terms from an external document"
+          />
+          <Box width={isMobile ? '100%' : '50%'} display={pastingFromDocument ? '' : 'none'}>
+          <FormControl fullWidth>
+            <InputLabel id="delimiter-select-label">Select delimiter</InputLabel>
+            <Select
+              labelId="delimiter-select-label"
+              id="delimiter-select"
+              value={pastedSearchDelimiter}
+              label="Select delimiter"
+              onChange={handleDelimiterChange}
+            >
+              <MenuItem value={DelimiterTypes.Comma}>{DelimiterTypes.Comma}</MenuItem>
+              <MenuItem value={DelimiterTypes.CommaSpace}>{DelimiterTypes.CommaSpace}</MenuItem>
+              <MenuItem value={DelimiterTypes.TabNewline}>{DelimiterTypes.TabNewline}</MenuItem>
+            </Select>
+          </FormControl>
           </Box>
         </Box>
       </Box>
