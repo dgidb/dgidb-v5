@@ -76,33 +76,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   const handleDemoClick = () => {
     if (searchType === SearchTypes.Gene) {
-      setSelectedOptions([
-        { suggestion: 'FLT1' },
-        { suggestion: 'FLT2' },
-        { suggestion: 'FLT3' },
-        { suggestion: 'STK1' },
-        { suggestion: 'MM1' },
-        { suggestion: 'AQP1' },
-        { suggestion: 'LOC100508755' },
-        { suggestion: 'FAKE1' },
-      ]);
+      const geneDemoList = ['FLT1', 'FLT2', 'FLT3', 'STK1', 'MM1', 'AQP1', 'LOC100508755', 'FAKE1']
+      setSelectedOptions(convertToDropdownOptions(geneDemoList));
     } else if (searchType === SearchTypes.Drug) {
-      setSelectedOptions([
-        { suggestion: 'SUNITINIB' },
-        { suggestion: 'ZALCITABINE' },
-        { suggestion: 'TRASTUZUMAB' },
-        { suggestion: 'NOTREAL' },
-      ]);
+      const drugDemoList = ['SUNITINIB', 'ZALCITABINE', 'TRASTUZUMAB', 'NOTREAL']
+      setSelectedOptions(convertToDropdownOptions(drugDemoList));
     } else if (searchType === SearchTypes.Categories) {
-      setSelectedOptions([
-        { suggestion: 'HER2' },
-        { suggestion: 'ERBB2' },
-        { suggestion: 'PTGDR' },
-        { suggestion: 'EGFR' },
-        { suggestion: 'RECK' },
-        { suggestion: 'KCNMA1' },
-        { suggestion: 'MM1' },
-      ]);
+      const categoriesDemoList = ['HER2', 'ERBB2', 'PTGDR', 'EGFR', 'RECK', 'KCNMA1', 'MM1']
+      setSelectedOptions(convertToDropdownOptions(categoriesDemoList));
     }
   };
   const handleSearchClick = () => {
