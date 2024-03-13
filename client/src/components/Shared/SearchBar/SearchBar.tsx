@@ -13,6 +13,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import React from 'react';
@@ -21,6 +22,7 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import HelpIcon from '@mui/icons-material/Help';
 
 enum DelimiterTypes {
   Comma = 'Comma',
@@ -199,13 +201,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         <Alert severity="info">
           <AlertTitle>Verify your search terms</AlertTitle>
           <p>
-            It looks like you pasted search terms, but we don't know what
-            delimiter to separate your terms by. We have defaulted to
-            comma-separated terms.
+            It looks like you pasted search terms. We have defaulted the
+            delimiter to comma-separated terms.
           </p>
           <p style={{ marginTop: '10px' }}>
             If this is incorrect or you would like to use a different delimiter,
-            make sure to check the "Bulk search" option below and select a
+            make sure to check the “Bulk search” option below and select a
             delimiter from the drop down.
           </p>
         </Alert>
@@ -288,12 +289,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
           height="100px"
           alignContent="center"
         >
-          <FormControlLabel
-            checked={pastingFromDocument}
-            onChange={handleCheckboxSelect}
-            control={<Checkbox />}
-            label="Bulk search (I am pasting search terms from an external document)"
-          />
+          <Tooltip title="Select this option if you are pasting terms from an external document">
+            <FormControlLabel
+              checked={pastingFromDocument}
+              onChange={handleCheckboxSelect}
+              control={<Checkbox />}
+              label="Bulk search"
+            />
+          </Tooltip>
           <Box
             width={isMobile ? '100%' : '50%'}
             display={pastingFromDocument ? '' : 'none'}
