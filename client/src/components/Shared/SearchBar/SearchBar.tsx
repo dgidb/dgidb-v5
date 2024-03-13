@@ -72,6 +72,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   const handleAutocompleteChange = (event: any, value: any) => {
     if (value.length === 0) {
       setSelectedOptions([]);
+      // for clearing the paste warning, if applicable
+      setSearchWasPasted(false)
       dispatch({ type: ActionTypes.DeleteAllTerms });
     } else {
       setSelectedOptions(value);
