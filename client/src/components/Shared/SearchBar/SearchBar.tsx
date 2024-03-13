@@ -291,7 +291,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
           height="100px"
           alignContent="center"
         >
-          <Tooltip title="Select this option if you are pasting terms from an external document">
+          <Tooltip title="Select this option if you are pasting terms from an external document" arrow>
             <FormControlLabel
               checked={pastingFromDocument}
               onChange={handleCheckboxSelect}
