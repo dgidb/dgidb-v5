@@ -125,8 +125,27 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     }
   }, [selectedOptions]);
 
+  const convertToDropdownOptions = (options: string[]) => {
+    return options.map((item: string) => { return { suggestion: item.trim() } })
+  }
+
   const handlePaste = (event: any) => {
-    const pastedOptions = event.clipboardData.getData("text").split(",").map((item: string) => { return { suggestion: item.trim() } });
+    let pastedText = event.clipboardData.getData('text')
+    let pastedOptions: any[] = []
+
+    const commaSpaceSepOptions = pastedText.split(', ')
+    const commaSepOptions = pastedText.split(',')
+    const whitespaceRegex = /[\t\n\r\f\v]/
+    // whitespace except for spaces (since gene/drug names can have spaces)
+    const whitespaceSepOptions = pastedText.split(whitespaceRegex)
+    // try splitting by comma + space first
+    if (commaSpaceSepOptions?.length > 1) {
+      pastedOptions = convertToDropdownOptions(commaSpaceSepOptions)
+    } else if (commaSepOptions?.length > 1) {
+      pastedOptions = convertToDropdownOptions(commaSepOptions)
+    } else if (whitespaceSepOptions?.length > 1) {
+      pastedOptions = convertToDropdownOptions(whitespaceSepOptions)
+    }
     setSelectedOptions(pastedOptions);
     // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
     event.preventDefault()
