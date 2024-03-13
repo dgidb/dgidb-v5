@@ -298,7 +298,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
             />
           </Tooltip>
           <Box
-            width={isMobile ? '100%' : '50%'}
+            width={isMobile ? '100%' : '35%'}
             display={pastingFromDocument ? '' : 'none'}
           >
             <FormControl fullWidth>
