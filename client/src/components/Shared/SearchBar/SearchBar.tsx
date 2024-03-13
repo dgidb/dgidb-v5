@@ -167,11 +167,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       const whitespaceRegex = /[\t\n\r\f\v]/;
       const whitespaceSepOptions = pastedText.split(whitespaceRegex);
       pastedOptions = convertToDropdownOptions(whitespaceSepOptions);
-    } else {
-      // set message to tell user they need to select a delimiter
-      setSearchWasPasted(true);
     }
-    setSelectedOptions(pastedOptions);
+    setSearchWasPasted(true);
+    // make sure we persist the search terms already entered, combine any pre-existing search terms with the new pasted options
+    const newSearchOptions = selectedOptions.concat(pastedOptions)
+    // remove any duplicated terms (need to iterate through only the terms since objects are never equivalent in js, even if the contents are the same)
+    const uniqueSearchTerms = [...new Set(newSearchOptions.map(option => option.suggestion))]
+    setSelectedOptions(convertToDropdownOptions(uniqueSearchTerms));
     // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
     event.preventDefault();
   };
