@@ -2,6 +2,7 @@ import './SearchBar.scss';
 import Autocomplete from '@mui/material/Autocomplete';
 import {
   Alert,
+  AlertTitle,
   Box,
   Button,
   Checkbox,
@@ -153,10 +154,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   const handlePaste = (event: any) => {
     let pastedText = event.clipboardData.getData('text');
-    let pastedOptions: any[] = [];
+    let pastedOptions: any[] = convertToDropdownOptions([pastedText]);
+
+    const commaSepOptions = pastedText.split(',');
 
     if (pastedSearchDelimiter === DelimiterTypes.Comma) {
-      const commaSepOptions = pastedText.split(',');
       pastedOptions = convertToDropdownOptions(commaSepOptions);
     } else if (pastedSearchDelimiter === DelimiterTypes.CommaSpace) {
       const commaSpaceSepOptions = pastedText.split(', ');
@@ -165,12 +167,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       const whitespaceRegex = /[\t\n\r\f\v]/;
       const whitespaceSepOptions = pastedText.split(whitespaceRegex);
       pastedOptions = convertToDropdownOptions(whitespaceSepOptions);
+    } else {
+      pastedOptions = convertToDropdownOptions(commaSepOptions);
     }
     setSearchWasPasted(true);
     // make sure we persist the search terms already entered, combine any pre-existing search terms with the new pasted options
-    const newSearchOptions = selectedOptions.concat(pastedOptions)
+    const newSearchOptions = selectedOptions.concat(pastedOptions);
     // remove any duplicated terms (need to iterate through only the terms since objects are never equivalent in js, even if the contents are the same)
-    const uniqueSearchTerms = [...new Set(newSearchOptions.map(option => option.suggestion))]
+    const uniqueSearchTerms = [
+      ...new Set(newSearchOptions.map((option) => option.suggestion)),
+    ];
     setSelectedOptions(convertToDropdownOptions(uniqueSearchTerms));
     // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
     event.preventDefault();
@@ -191,9 +197,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     searchWasPasted && pastedSearchDelimiter === '' ? (
       <Box width="100%" pb={2}>
         <Alert severity="info">
-          It looks like you attempted to paste search terms, but we don't know
-          what delimiter to separate your terms by. Please make sure the
-          checkbox below is checked and select a delimiter from the drop down.
+          <AlertTitle>Verify your search terms</AlertTitle>
+          <p>
+            It looks like you pasted search terms, but we don't know what
+            delimiter to separate your terms by. We have defaulted to
+            comma-separated terms.
+          </p>
+          <p style={{ marginTop: '10px' }}>
+            If this is incorrect or you would like to use a different delimiter,
+            make sure to check the "Bulk search" option below and select a
+            delimiter from the drop down.
+          </p>
         </Alert>
       </Box>
     ) : (
@@ -278,7 +292,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
             checked={pastingFromDocument}
             onChange={handleCheckboxSelect}
             control={<Checkbox />}
-            label="I am pasting search terms from an external document"
+            label="Bulk search (I am pasting search terms from an external document)"
           />
           <Box
             width={isMobile ? '100%' : '50%'}
