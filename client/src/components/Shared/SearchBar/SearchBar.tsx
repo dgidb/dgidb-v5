@@ -1,6 +1,7 @@
 import './SearchBar.scss';
 import Autocomplete from '@mui/material/Autocomplete';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -38,7 +39,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   );
   const [typedSearchTerm, setTypedSearchTerm] = React.useState('');
   const [pastingFromDocument, setPastingFromDocument] = React.useState(false);
-  const [pastedSearchDelimiter, setPastedSearchDelimiter] = React.useState('')
+  const [pastedSearchDelimiter, setPastedSearchDelimiter] = React.useState('');
+  const [searchWasPasted, setSearchWasPasted] = React.useState(false);
 
   const typeAheadQuery = useGetNameSuggestions(typedSearchTerm, searchType);
   let autocompleteOptions = typeAheadQuery?.data?.geneSuggestions || [];
@@ -47,6 +49,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   if (searchType === SearchTypes.Drug) {
     autocompleteOptions = drugAutocompleteOptions;
   }
+
+  console.log(searchWasPasted);
 
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
   if (
@@ -165,6 +169,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       pastedOptions = convertToDropdownOptions(whitespaceSepOptions);
     } else {
       // set message to tell user they need to select a delimiter
+      setSearchWasPasted(true);
     }
     setSelectedOptions(pastedOptions);
     // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
@@ -173,15 +178,32 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   const handleCheckboxSelect = (event: any) => {
     setPastingFromDocument(event.target.checked);
+    // reset the selected delimiter and searchWasPasted, to avoid potential weird behaviors if a user deselects the checkbox
+    setPastedSearchDelimiter('');
+    setSearchWasPasted(false);
   };
 
   const handleDelimiterChange = (event: any) => {
     setPastedSearchDelimiter(event.target.value as string);
   };
 
+  const pasteAlert =
+    searchWasPasted && pastedSearchDelimiter === '' ? (
+      <Box width="100%" pb={2}>
+        <Alert severity="info">
+          It looks like you attempted to paste search terms, but we don't know
+          what delimiter to separate your terms by. Please make sure the
+          checkbox below is checked and select a delimiter from the drop down.
+        </Alert>
+      </Box>
+    ) : (
+      <></>
+    );
+
   return (
     <>
       <Box id="search-bar-container" width={isMobile ? '95%' : '75%'}>
+        {pasteAlert}
         <Box display="flex" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
           <Box width={isMobile ? '100%' : 'fit-content'}>
             <Select
@@ -245,28 +267,45 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
             </Button>
           </Box>
         </Box>
-        <Box display='flex' pt={5} flexWrap='wrap' height='100px' alignContent='center'>
+        <Box
+          display="flex"
+          pt={5}
+          flexWrap="wrap"
+          height="100px"
+          alignContent="center"
+        >
           <FormControlLabel
             checked={pastingFromDocument}
             onChange={handleCheckboxSelect}
             control={<Checkbox />}
             label="I am pasting search terms from an external document"
           />
-          <Box width={isMobile ? '100%' : '50%'} display={pastingFromDocument ? '' : 'none'}>
-          <FormControl fullWidth>
-            <InputLabel id="delimiter-select-label">Select delimiter</InputLabel>
-            <Select
-              labelId="delimiter-select-label"
-              id="delimiter-select"
-              value={pastedSearchDelimiter}
-              label="Select delimiter"
-              onChange={handleDelimiterChange}
-            >
-              <MenuItem value={DelimiterTypes.Comma}>{DelimiterTypes.Comma}</MenuItem>
-              <MenuItem value={DelimiterTypes.CommaSpace}>{DelimiterTypes.CommaSpace}</MenuItem>
-              <MenuItem value={DelimiterTypes.TabNewline}>{DelimiterTypes.TabNewline}</MenuItem>
-            </Select>
-          </FormControl>
+          <Box
+            width={isMobile ? '100%' : '50%'}
+            display={pastingFromDocument ? '' : 'none'}
+          >
+            <FormControl fullWidth>
+              <InputLabel id="delimiter-select-label">
+                Select delimiter
+              </InputLabel>
+              <Select
+                labelId="delimiter-select-label"
+                id="delimiter-select"
+                value={pastedSearchDelimiter}
+                label="Select delimiter"
+                onChange={handleDelimiterChange}
+              >
+                <MenuItem value={DelimiterTypes.Comma}>
+                  {DelimiterTypes.Comma}
+                </MenuItem>
+                <MenuItem value={DelimiterTypes.CommaSpace}>
+                  {DelimiterTypes.CommaSpace}
+                </MenuItem>
+                <MenuItem value={DelimiterTypes.TabNewline}>
+                  {DelimiterTypes.TabNewline}
+                </MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Box>
       </Box>
