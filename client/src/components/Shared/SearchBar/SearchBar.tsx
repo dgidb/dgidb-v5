@@ -22,9 +22,9 @@ import { SearchTypes } from 'types/types';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 enum DelimiterTypes {
-  Comma = 'Comma Separated',
-  CommaSpace = 'Comma With Space Separated',
-  TabNewline = 'Tab or Newline Separated',
+  Comma = 'Comma',
+  CommaSpace = 'Comma With Space',
+  TabNewline = 'Tab or Newline',
 }
 
 type SearchBarProps = {
@@ -49,8 +49,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
   if (searchType === SearchTypes.Drug) {
     autocompleteOptions = drugAutocompleteOptions;
   }
-
-  console.log(searchWasPasted);
 
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
   if (
