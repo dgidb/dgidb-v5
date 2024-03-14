@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     if (value.length === 0) {
       setSelectedOptions([]);
       // for clearing the paste warning, if applicable
-      setSearchWasPasted(false)
+      setSearchWasPasted(false);
       dispatch({ type: ActionTypes.DeleteAllTerms });
     } else {
       setSelectedOptions(value);
@@ -290,8 +290,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
           flexWrap="wrap"
           height="100px"
           alignContent="center"
+          justifyContent="end"
         >
-          <Tooltip title="Select this option if you are pasting terms from an external document" arrow>
+          <Tooltip
+            title="Select this option if you are pasting terms from an external document"
+            arrow
+          >
             <FormControlLabel
               checked={pastingFromDocument}
               onChange={handleCheckboxSelect}
