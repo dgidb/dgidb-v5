@@ -9,7 +9,7 @@ namespace :dgidb do
   else
     data_submodule_path = File.join(Rails.root, 'data')
   end
-  data_file = File.join(data_submodule_path, 'data.sql')
+  data_file = File.join(data_submodule_path, 'dgidb_v5_latest.sql')
   version_file = File.join(Rails.root, 'VERSION')
   database_name = Rails.configuration.database_configuration[Rails.env]['database']
   host = Rails.configuration.database_configuration[Rails.env]['host']

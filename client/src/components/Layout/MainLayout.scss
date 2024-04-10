@@ -18,6 +18,7 @@ body {
   background-color: var(--background-light);
   color: var(--text-content);
   min-height: 100vh;
+  position: relative;
 
   .content-container {
     background-color: var(--background-light);
@@ -25,10 +26,13 @@ body {
     flex-direction: column;
     align-items: stretch;
     padding: 20px;
+    padding-bottom: 75px;
+    min-height: 100%;
   }
 
   .content {
     background-color: var(--background);
+    min-height: 75vh;
   }
 }
 
@@ -117,6 +121,8 @@ footer {
   font-size: 20px;
   font-family: 'Work Sans';
   font-weight: 300;
+  position: absolute;
+  bottom: 0;
 }
 
 .ant-tabs {

@@ -45,14 +45,14 @@ export const InteractionTable: React.FC<Props> = ({
   const termColumn = {
     field: 'term',
     headerName: 'Term',
-    flex: 0.5,
+    flex: 0.65,
     minWidth: 0,
   };
 
   const geneColumn = {
     field: 'gene',
     headerName: 'Gene',
-    flex: 0.5,
+    flex: 0.65,
     minWidth: 0,
     renderCell: (params: any) => (
       <a
@@ -208,7 +208,7 @@ export const InteractionTable: React.FC<Props> = ({
 
   return !isLoading ? (
     <Box className="interaction-table-container">
-      <Box width="100%" height="500px" display="flex">
+      <Box width="100%" height="500px" display="flex" overflow="scroll">
         <DataGrid
           onRowClick={handleEvent}
           columns={columns}

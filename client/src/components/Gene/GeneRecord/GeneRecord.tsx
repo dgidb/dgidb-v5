@@ -15,20 +15,25 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import { LinearProgress, Link } from '@mui/material';
+import { Alert, LinearProgress, Link } from '@mui/material';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
 import { generateXrefLink } from 'utils/generateXrefLink';
 import { ResultTypes } from 'types/types';
+import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
+import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
 export const GeneRecord: React.FC = () => {
+  const isMobile = useGetIsMobile();
   const geneId: any = useParams().gene;
 
   // get gene attributes
   const { data: fetchedGeneData, isLoading: geneDataIsloading } =
     useGetGeneRecord(geneId);
   const geneData = fetchedGeneData?.gene;
+
+  const geneExists = geneData !== null;
 
   // get interaction data
   const { data: fetchedInteractionData, isLoading: interactionDataIsLoading } =
@@ -204,7 +209,7 @@ export const GeneRecord: React.FC = () => {
     },
   ];
 
-  return (
+  return geneExists ? (
     <Box className="content gene-record-container">
       <Box className="gene-record-header">
         <Box className="symbol">{geneData?.name}</Box>
@@ -212,8 +217,8 @@ export const GeneRecord: React.FC = () => {
           {generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}
         </Box>
       </Box>
-      <Box display="flex">
-        <Box display="block" width="35%">
+      <Box display={isMobile ? 'block' : 'flex'}>
+        <Box display="block" width={isMobile ? '100%' : '35%'}>
           {sectionsMap.map((section) => {
             return (
               <Accordion key={section.name} defaultExpanded>
@@ -241,7 +246,11 @@ export const GeneRecord: React.FC = () => {
             );
           })}
         </Box>
-        <Box ml={1} width="65%">
+        <Box
+          ml={isMobile ? 0 : 1}
+          mt={isMobile ? 2 : 0}
+          width={isMobile ? '100%' : '65%'}
+        >
           <Accordion defaultExpanded>
             <AccordionSummary
               style={{
@@ -264,6 +273,13 @@ export const GeneRecord: React.FC = () => {
           </Accordion>
         </Box>
       </Box>
+    </Box>
+  ) : (
+    <Box p={2}>
+      <Alert severity="error">
+        We could not find any results for this gene.
+      </Alert>
+      <NotFoundError />
     </Box>
   );
 };

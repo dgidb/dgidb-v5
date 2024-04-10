@@ -9,6 +9,7 @@
 
   .gene-record-header {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: end; // isn't aligning name object correctly
     margin-bottom: 0.5em;

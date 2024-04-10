@@ -13,59 +13,24 @@ import Paper from '@mui/material/Paper';
 // style
 import './Files.scss';
 
-function createData(
-  date: string,
-  interactions: string,
-  genes: string,
-  drugs: string,
-  categories: string
-) {
-  return { date, interactions, genes, drugs, categories };
+function getDataObj(date: string) {
+  return {
+    date,
+    interactions: 'interactions.tsv',
+    genes: 'genes.tsv',
+    drugs: 'drugs.tsv',
+    categories: 'categories.tsv',
+  };
 }
 
 const rows = [
-  createData(
-    '2022-Feb',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
-  createData(
-    '2021-May',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
-  createData(
-    '2021-Jan',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
-  createData(
-    '2020-Nov',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
-  createData(
-    '2020-Oct',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
-  createData(
-    '2020-Sep',
-    'interactions.tsv',
-    'genes.tsv',
-    'drugs.tsv',
-    'categories.tsv'
-  ),
+  getDataObj('latest'),
+  getDataObj('2022-Feb'),
+  getDataObj('2021-May'),
+  getDataObj('2021-Jan'),
+  getDataObj('2020-Nov'),
+  getDataObj('2020-Oct'),
+  getDataObj('2020-Sep'),
 ];
 
 export const Files = () => {
@@ -116,10 +81,7 @@ export const Files = () => {
                   </a>
                 </TableCell>
                 <TableCell align="center">
-                  <a
-                    download
-                    href={'data/' + row.date + '/' + row.interactions}
-                  >
+                  <a download href={'data/' + row.date + '/' + row.categories}>
                     {row.categories}
                   </a>
                 </TableCell>

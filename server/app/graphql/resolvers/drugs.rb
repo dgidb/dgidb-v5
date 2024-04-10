@@ -13,8 +13,10 @@ class Resolvers::Drugs < GraphQL::Schema::Resolver
     scope.where(id: value)
   end
 
-  option(:names, type: [String], description: 'Substring filtering on a list of drug names.') do |scope, value|
-    scope.where(name: value.map(&:upcase))
+  option(:names, type: [String], description: 'Left anchored filtering on a list of drug names.') do |scope, value|
+    text = 'name ILIKE ?'
+    clause = Array.new(value.size, text).join(" OR ")
+    scope.where(clause, *value.map {|v| "#{v}%"})
   end
 
   option(:name, type: String, description: 'Left anchored string search on drug name') do |scope, value|
