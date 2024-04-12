@@ -9,7 +9,6 @@ module Genome
           url_base += "/"
         end
         @normalizer_host = "#{url_base}gene/"
-        @descriptor_name = 'gene'
 
         @term_to_match_dict = {}
         @sources = {}
@@ -81,8 +80,8 @@ module Genome
           source_db_version: source_meta['HGNC']['version'],
           base_url: 'https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/',
           site_url: 'https://www.genenames.org',
-          citation: 'Tweedie S, Braschi B, Gray K, Jones TEM, Seal RL, Yates B, Bruford EA. Genenames.org: the HGNC and VGNC resources in 2021. Nucleic Acids Res. 2021 Jan 8;49(D1):D939-D946. doi: 10.1093/nar/gkaa980. PMID: 33152070; PMCID: PMC7779007.',
-          citation_short: 'Tweedie S, et al. Genenames.org: the HGNC and VGNC resources in 2021. Nucleic Acids Res. 2021 Jan 8;49(D1):D939-D946.',
+          citation: 'Seal RL, Braschi B, Gray K, Jones TEM, Tweedie S, Haim-Vilmovsky L, Bruford EA. Genenames.org: the HGNC resources in 2023. Nucleic Acids Res. 2023 Jan 6;51(D1):D1003-D1009. doi: 10.1093/nar/gkac888. PMID: 36243972; PMCID: PMC9825485.',
+          citation_short: 'Seal RL, et al. Genenames.org: the HGNC resources in 2023. Nucleic Acids Res. 2023 Jan 6;51(D1):D1003-D1009.',
           pmid: '33152070',
           pmcid: 'PMC7779007',
           doi: '10.1093/nar/gkaa980',
@@ -96,8 +95,8 @@ module Genome
           source_db_version: source_meta['Ensembl']['version'],
           base_url: 'https://ensembl.org/Homo_sapiens/Gene/Summary?g=',
           site_url: 'https://ensembl.org',
-          citation: 'Cunningham F, Allen JE, Allen J, Alvarez-Jarreta J, Amode MR, Armean IM, Austine-Orimoloye O, Azov AG, Barnes I, Bennett R, Berry A, Bhai J, Bignell A, Billis K, Boddu S, Brooks L, Charkhchi M, Cummins C, Da Rin Fioretto L, Davidson C, Dodiya K, Donaldson S, El Houdaigui B, El Naboulsi T, Fatima R, Giron CG, Genez T, Martinez JG, Guijarro-Clarke C, Gymer A, Hardy M, Hollis Z, Hourlier T, Hunt T, Juettemann T, Kaikala V, Kay M, Lavidas I, Le T, Lemos D, Marugán JC, Mohanan S, Mushtaq A, Naven M, Ogeh DN, Parker A, Parton A, Perry M, Piližota I, Prosovetskaia I, Sakthivel MP, Salam AIA, Schmitt BM, Schuilenburg H, Sheppard D, Pérez-Silva JG, Stark W, Steed E, Sutinen K, Sukumaran R, Sumathipala D, Suner MM, Szpak M, Thormann A, Tricomi FF, Urbina-Gómez D, Veidenberg A, Walsh TA, Walts B, Willhoft N, Winterbottom A, Wass E, Chakiachvili M, Flint B, Frankish A, Giorgetti S, Haggerty L, Hunt SE, IIsley GR, Loveland JE, Martin FJ, Moore B, Mudge JM, Muffato M, Perry E, Ruffier M, Tate J, Thybert D, Trevanion SJ, Dyer S, Harrison PW, Howe KL, Yates AD, Zerbino DR, Flicek P. Ensembl 2022. Nucleic Acids Res. 2022 Jan 7;50(D1):D988-D995. doi: 10.1093/nar/gkab1049. PMID: 34791404; PMCID: PMC8728283.',
-          citation_short: 'Cunningham F, et al. Ensembl 2022. Nucleic Acids Res. 2022 Jan 7;50(D1):D988-D995.',
+          citation: 'Harrison PW, Amode MR, Austine-Orimoloye O, Azov AG, Barba M, Barnes I, Becker A, Bennett R, Berry A, Bhai J, Bhurji SK, Boddu S, Branco Lins PR, Brooks L, Ramaraju SB, Campbell LI, Martinez MC, Charkhchi M, Chougule K, Cockburn A, Davidson C, De Silva NH, Dodiya K, Donaldson S, El Houdaigui B, Naboulsi TE, Fatima R, Giron CG, Genez T, Grigoriadis D, Ghattaoraya GS, Martinez JG, Gurbich TA, Hardy M, Hollis Z, Hourlier T, Hunt T, Kay M, Kaykala V, Le T, Lemos D, Lodha D, Marques-Coelho D, Maslen G, Merino GA, Mirabueno LP, Mushtaq A, Hossain SN, Ogeh DN, Sakthivel MP, Parker A, Perry M, Piližota I, Poppleton D, Prosovetskaia I, Raj S, Pérez-Silva JG, Salam AIA, Saraf S, Saraiva-Agostinho N, Sheppard D, Sinha S, Sipos B, Sitnik V, Stark W, Steed E, Suner MM, Surapaneni L, Sutinen K, Tricomi FF, Urbina-Gómez D, Veidenberg A, Walsh TA, Ware D, Wass E, Willhoft NL, Allen J, Alvarez-Jarreta J, Chakiachvili M, Flint B, Giorgetti S, Haggerty L, Ilsley GR, Keatley J, Loveland JE, Moore B, Mudge JM, Naamati G, Tate J, Trevanion SJ, Winterbottom A, Frankish A, Hunt SE, Cunningham F, Dyer S, Finn RD, Martin FJ, Yates AD. Ensembl 2024. Nucleic Acids Res. 2024 Jan 5;52(D1):D891-D899. doi: 10.1093/nar/gkad1049. PMID: 37953337; PMCID: PMC10767893.',
+          citation_short: 'Harrison PW, et al. Ensembl 2024. Nucleic Acids Res. 2024 Jan 5;52(D1):D891-D899.',
           pmid: '34791404',
           pmcid: 'PMC8728283',
           doi: '10.1093/nar/gkab1049',
