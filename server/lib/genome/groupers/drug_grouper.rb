@@ -31,7 +31,6 @@ module Genome
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
 
-        # set_response_structure
         create_sources
 
 

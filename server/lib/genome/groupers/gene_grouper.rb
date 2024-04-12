@@ -36,7 +36,6 @@ module Genome
           puts "Grouping #{claims.length} ungrouped gene claims from #{source_name}"
         end
 
-        # set_response_structure
         create_sources
 
         pbar = ProgressBar.create(title: 'Grouping genes', total: claims.size, format: "%t: %p%% %a |%B|")
