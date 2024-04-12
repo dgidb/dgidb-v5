@@ -184,12 +184,12 @@ First, load claims:
 rake dgidb:import:all
 ```
 
-Then, run grouping. By default, the groupers will expect a normalizer service to be running locally on port 8000; use the `THERAPY_URL_BASE` and `GENE_URL_BASE` environment variables to specify alternate hosts:
+Then, run grouping. By default, the groupers will expect a normalizer service to be running locally on port 8000; use the `THERAPY_HOSTNAME` and `GENE_HOSTNAME` environment variables to specify alternate hosts:
 
 ```shell
-export THERAPY_URL_BASE=http://localhost:7999  # no trailing backslash
+export THERAPY_HOSTNAME=http://localhost:7999  # no trailing backslash
 rake dgidb:group:drugs
-export GENE_URL_BASE=http://localhost:7998  # no trailing backslash
+export GENE_HOSTNAME=http://localhost:7998  # no trailing backslash
 rake dgidb:group:genes
 rake dgidb:group:interactions
 ```
