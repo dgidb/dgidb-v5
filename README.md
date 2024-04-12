@@ -135,7 +135,6 @@ lib/data
 │   ├── interactions.csv
 │   └── targets_and_families.csv
 ├── hingorani_casas
-│   ├── aag1166_Table S1.xlsx
 │   └── claims.tsv
 ├── hopkins_groom
 │   └── claims.tsv
