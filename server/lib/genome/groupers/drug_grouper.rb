@@ -4,8 +4,11 @@ module Genome
       attr_reader :term_to_match_dict
 
       def initialize
-        url_base = ENV['THERAPY_URL_BASE'] || 'http://localhost:8000'
-        @normalizer_url_root = "#{url_base}/therapy/"
+        url_base = ENV['THERAPY_HOSTNAME'] || 'http://localhost:8000'
+        if !url_base.ends_with? "/"
+          url_base += "/"
+        end
+        @normalizer_host = "#{url_base}therapy/"
 
         @term_to_match_dict = {}
 
@@ -28,7 +31,6 @@ module Genome
           puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
         end
 
-        set_response_structure
         create_sources
 
 
@@ -40,25 +42,12 @@ module Genome
           if normalized_drug.is_a? String
             normalized_id = normalized_drug
           else
-            normalized_id = normalized_drug[@descriptor_name][@id_name]
-            create_new_drug(normalized_drug[@descriptor_name]) if Drug.find_by(concept_id: normalized_id).nil?
+            normalized_id = normalized_drug['normalized_id']
+            create_new_drug(normalized_drug['therapeutic_agent'], normalized_id) if Drug.find_by(concept_id: normalized_id).nil?
           end
           add_claim_to_drug(drug_claim, normalized_id)
 
           pbar.progress += 1
-        end
-      end
-
-      def set_response_structure
-        url = URI("#{@normalizer_url_root}search?q=")
-        body = fetch_json_response(url)
-        version = body['service_meta_']['version']
-        if version < '0.4.0'
-          @descriptor_name = 'therapy_descriptor'
-          @id_name = 'therapy_id'
-        else
-          @descriptor_name = 'therapeutic_descriptor'
-          @id_name = 'therapeutic'
         end
       end
 
@@ -163,10 +152,6 @@ module Genome
           ChemIDplus: chemidplus,
           Wikidata: wikidata
         }
-      end
-
-      def get_concept_id(response)
-        response[@descriptor_name][@id_name] unless response['match_type'].zero?
       end
 
       def produce_concept_id_nomenclature(concept_id)
@@ -289,8 +274,8 @@ module Genome
         end
       end
 
-      def add_grouper_data(drug, descriptor)
-        drug_data = retrieve_normalizer_data(descriptor[@id_name])
+      def add_grouper_data(drug, drug_response, concept_id)
+        drug_data = retrieve_normalizer_data(concept_id)
 
         drug_data.each do |source_name, source_data|
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
@@ -306,15 +291,15 @@ module Genome
         end
       end
 
-      def create_new_drug(descriptor)
-        name = if descriptor.fetch('label').blank?
-                 descriptor[@id_name]
+      def create_new_drug(drug_response, concept_id)
+        name = if drug_response['label'].nil? || drug_response['label'].blank?
+                 concept_id
                else
-                 descriptor['label']
+                 drug_response['label']
                end
-        drug = Drug.where(concept_id: descriptor[@id_name], name: name.upcase).first_or_create
+        drug = Drug.where(concept_id: concept_id, name: name.upcase).first_or_create
 
-        add_grouper_data(drug, descriptor)
+        add_grouper_data(drug, drug_response, concept_id)
       end
 
       def find_drug_attribute(drug_claim_attribute)
