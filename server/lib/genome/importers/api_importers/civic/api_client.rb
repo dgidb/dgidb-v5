@@ -4,12 +4,32 @@ require "graphql/client/http"
 module Genome; module Importers; module ApiImporters; module Civic
   class ApiClient
 
-    def enumerate_variants
-      variant_edges = send_query
+    def enumerate_drugs
+      drug_edges = send_query(DrugsQuery).therapies.edges
       Enumerator.new do |y|
-        until variant_edges.empty?
-          variant_edges.each { |edge| y << edge }
-          variant_edges = send_query(variant_edges[-1].cursor)
+        until drug_edges.empty?
+          drug_edges.each { |edge| y << edge.node }
+          drug_edges = send_query(DrugsQuery, drug_edges[-1].cursor).therapies.edges
+        end
+      end
+    end
+
+    def enumerate_genes
+      gene_edges = send_query(GenesQuery).genes.edges
+      Enumerator.new do |y|
+        until gene_edges.empty?
+          gene_edges.each { |edge| y << edge.node }
+          gene_edges = send_query(GenesQuery, gene_edges[-1].cursor).genes.edges
+        end
+      end
+    end
+
+    def enumerate_evidence_items
+      evidence_items = send_query(InteractionsQuery).evidence_items.edges
+      Enumerator.new do |y|
+        until evidence_items.empty?
+          evidence_items.each { |edge| y << edge.node }
+          evidence_items = send_query(InteractionsQuery, evidence_items[-1].cursor).evidence_items.edges
         end
       end
 
@@ -29,48 +49,67 @@ module Genome; module Importers; module ApiImporters; module Civic
       Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
     end
 
-    Query = CivicApi::Client.parse <<-GRAPHQL
-      query($after: String!){
-        variants(first: 50, after: $after) {
+    DrugsQuery = CivicApi::Client.parse <<-GRAPHQL
+      query ($after: String!) {
+        therapies(first: 50, after: $after) {
           edges {
             cursor
             node {
-              gene {
-                id
-                entrezId
-                officialName
-                name
-                geneAliases
-              }
-              molecularProfiles {
-                nodes {
-                  variants {
-                    id
-                  }
-                  evidenceItems {
-                    nodes {
-                      name
-                      id
-                      significance
-                      evidenceType
-                      evidenceLevel
-                      evidenceDirection
-                      evidenceRating
-                      link
-                      therapies {
+              id
+              name
+              ncitId
+            }
+          }
+        }
+      }
+    GRAPHQL
+
+    GenesQuery = CivicApi::Client.parse <<-GRAPHQL
+      query ($after: String!) {
+        genes(first: 50, after: $after) {
+          edges {
+            cursor
+            node {
+              id
+              name
+              entrezId
+              fullName
+              featureAliases
+            }
+          }
+        }
+      }
+    GRAPHQL
+
+    InteractionsQuery = CivicApi::Client.parse <<-GRAPHQL
+      query ($after: String!) {
+        evidenceItems(first: 50, after: $after, evidenceType: PREDICTIVE) {
+          edges {
+            cursor
+            node {
+              id
+              evidenceDirection
+              evidenceRating
+              status
+              significance
+              evidenceLevel
+              molecularProfile {
+                variants {
+                  feature {
+                    featureInstance {
+                      ... on Gene {
                         name
-                        ncitId
-                        id
-                      }
-                      source {
-                        citation
-                        citationId
-                        pmcId
-                        sourceType
                       }
                     }
                   }
                 }
+              }
+              therapies {
+                name
+              }
+              source {
+                citationId
+                sourceType
               }
             }
           }
@@ -78,9 +117,9 @@ module Genome; module Importers; module ApiImporters; module Civic
       }
     GRAPHQL
 
-    def send_query(cursor = '')
-      response = CivicApi::Client.query(Query, variables: { 'after': cursor })
-      response.data.variants.edges
+    def send_query(query, cursor = '')
+      response = CivicApi::Client.query(query, variables: { 'after': cursor })
+      response.data
     end
   end
 end; end; end; end
