@@ -27,10 +27,10 @@ module Genome
 
           def importable_evidence_item?(ei)
               [
-                ei.evidence_direction != 'SUPPORTS',
-                ei.evidence_level == 'E',
-                ei.evidence_rating.present? && ei.evidence_rating <= 2
-              ].any?
+                ei.evidence_direction == 'SUPPORTS',
+                ei.evidence_level != 'E',
+                ei.evidence_rating.present? && ei.evidence_rating > 2
+              ].all?
           end
 
           def create_drug_claims
