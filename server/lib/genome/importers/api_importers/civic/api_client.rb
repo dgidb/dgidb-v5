@@ -5,11 +5,12 @@ module Genome; module Importers; module ApiImporters; module Civic
   class ApiClient
 
     def enumerate_drugs
-      drug_edges = send_query(DrugsQuery).therapies.edges
+      response = send_query(DrugsQuery)
       Enumerator.new do |y|
-        until drug_edges.empty?
-          drug_edges.each { |edge| y << edge.node }
-          drug_edges = send_query(DrugsQuery, drug_edges[-1].cursor).therapies.edges
+        response.therapies.edges.each { |edge| y << edge.node }
+        while response.therapies.page_info.has_next_page === true do
+          response.therapies.edges.each { |edge| y << edge.node }
+          response = send_query(DrugsQuery, response.therapies.page_info.end_cursor)
         end
       end
     end
@@ -52,6 +53,10 @@ module Genome; module Importers; module ApiImporters; module Civic
     DrugsQuery = CivicApi::Client.parse <<-GRAPHQL
       query ($after: String!) {
         therapies(first: 50, after: $after) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
             cursor
             node {
@@ -67,6 +72,10 @@ module Genome; module Importers; module ApiImporters; module Civic
     GenesQuery = CivicApi::Client.parse <<-GRAPHQL
       query ($after: String!) {
         genes(first: 50, after: $after) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
             cursor
             node {
@@ -84,8 +93,11 @@ module Genome; module Importers; module ApiImporters; module Civic
     InteractionsQuery = CivicApi::Client.parse <<-GRAPHQL
       query ($after: String!) {
         evidenceItems(first: 50, after: $after, evidenceType: PREDICTIVE) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
-            cursor
             node {
               id
               evidenceDirection
