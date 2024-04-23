@@ -69,9 +69,10 @@ module Genome
             @api_client.enumerate_evidence_items.each do |ei|
               next if !importable_evidence_item?(ei)
 
-              # retain molecular profiles consisting of multiple variations on the same gene
+              # retain molecular profiles consisting of multiple variations on the same gene,
+              # but skip multi-gene profiles (eg fusions)
               gene_names = ei.molecular_profile.variants.map { |v| v.feature.feature_instance.name.upcase }.uniq
-              next if gene_names.length > 1
+              next if gene_names.length != 1
               gc = GeneClaim.joins(:source).where(sources: {source_db_name: "CIViC"}, gene_claims: {name: gene_names[0]}).first
 
               drug_claims = ei.therapies.map do |therapy|
