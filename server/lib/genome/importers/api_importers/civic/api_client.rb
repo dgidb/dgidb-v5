@@ -7,33 +7,33 @@ module Genome; module Importers; module ApiImporters; module Civic
     def enumerate_drugs
       response = send_query(DrugsQuery)
       Enumerator.new do |y|
-        response.therapies.edges.each { |edge| y << edge.node }
         while response.therapies.page_info.has_next_page === true do
           response.therapies.edges.each { |edge| y << edge.node }
           response = send_query(DrugsQuery, response.therapies.page_info.end_cursor)
         end
+        response.therapies.edges.each { |edge| y << edge.node }
       end
     end
-
     def enumerate_genes
-      gene_edges = send_query(GenesQuery).genes.edges
+      response = send_query(GenesQuery)
       Enumerator.new do |y|
-        until gene_edges.empty?
-          gene_edges.each { |edge| y << edge.node }
-          gene_edges = send_query(GenesQuery, gene_edges[-1].cursor).genes.edges
+        while response.genes.page_info.has_next_page === true do
+          response.genes.edges.each { |edge| y << edge.node }
+          response = send_query(GenesQuery, response.genes.page_info.end_cursor)
         end
+        response.genes.edges.each { |edge| y << edge.node }
       end
     end
 
     def enumerate_evidence_items
-      evidence_items = send_query(InteractionsQuery).evidence_items.edges
+      response = send_query(InteractionsQuery)
       Enumerator.new do |y|
-        until evidence_items.empty?
-          evidence_items.each { |edge| y << edge.node }
-          evidence_items = send_query(InteractionsQuery, evidence_items[-1].cursor).evidence_items.edges
+        while response.evidence_items.page_info.has_next_page === true do
+          response.evidence_items.edges.each { |edge| y << edge.node }
+          response = send_query(InteractionsQuery, response.evidence_items.page_info.end_cursor)
         end
+        response.evidence_items.edges.each { |edge| y << edge.node }
       end
-
     end
 
     private
