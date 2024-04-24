@@ -44,6 +44,7 @@ module Genome
       NCIT_ID = 'NCIt ID'
       PFAM_ID = 'PFAM ID'
       TTD_ID = 'TTD ID'
+      CIVIC_TID = "CIViC Therapy ID"
     end
 
     module DrugAttributeName
@@ -75,7 +76,7 @@ module Genome
       UNIPROTKB_NAME = 'UniProtKB Entry Name'
       UNIPROTKB_PROTEIN_NAME = 'UniProtKB Protein Name'
       UNIPROTKB_GENE_NAME = 'UniProtKB Gene Name'
-      CIVIC_ID = 'CIViC ID'
+      CIVIC_GID = 'CIViC Gene ID'
       TTD_ID = 'TTD ID'
       PHARMGKB_ID = 'PharmGKB ID'
       CHEMBL_ID = 'ChEMBL ID'
