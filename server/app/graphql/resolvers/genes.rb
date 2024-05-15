@@ -30,6 +30,30 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   # TODO: search filters (Clinically Actionable, Druggable Genome, Drug Resistance)
 
+  option(:clinically_actionable, type: Boolean, description: 'Filtering on clinically actionable status of a gene.') do |scope, value|
+    if value
+      scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name = ?', 'CLINICALLY ACTIONABLE')
+    else
+      scope
+    end
+  end
+
+  option(:druggable_genome, type: Boolean, description: 'Filtering on genes in the druggable genome.') do |scope, value|
+    if value
+      scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name = ?', 'DRUGGABLE GENOME')
+    else
+      scope
+    end
+  end
+
+  option(:drug_resistance, type: Boolean, description: 'Filtering on the drug resistance status of a gene.') do |scope, value|
+    if value
+      scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name = ?', 'DRUG RESISTANCE')
+    else
+      scope
+    end
+  end
+
   # gene claim category by name
   option(:gene_claim_category, type: [String], description: "Filtering on gene claim category name.") do |scope, values|
     scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name IN (?)', values)
