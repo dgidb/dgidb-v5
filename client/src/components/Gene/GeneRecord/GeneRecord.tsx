@@ -15,7 +15,8 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import { Alert, LinearProgress, Link } from '@mui/material';
+import { Alert, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
+import { Gauge } from '@mui/x-charts/Gauge';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
@@ -23,6 +24,7 @@ import { generateXrefLink } from 'utils/generateXrefLink';
 import { ResultTypes } from 'types/types';
 import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import { GeneIcon } from 'components/Shared/SVG/GeneIcon';
 
 export const GeneRecord: React.FC = () => {
   const isMobile = useGetIsMobile();
@@ -208,6 +210,45 @@ export const GeneRecord: React.FC = () => {
       ),
     },
   ];
+
+  return (
+    <>
+      <Grid container spacing={3} sx={{height: '100%'}}>
+        <Grid item xs>
+          <Paper elevation={3} sx={{height: '100%'}}>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center' p={2}>
+            <div className='icon-container-circle'>
+              <GeneIcon height='50px' width='50px'/>
+            </div>
+            <Typography variant='h6' fontWeight='bold'>{geneData?.name}</Typography>
+            <Box className="concept-id">
+          {generateXrefLink(geneId, ResultTypes.Gene, 'concept-id-link')}
+        </Box>
+            </Box>
+
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper elevation={3}>
+          <div className='interactions-count-gauge'>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+            <Typography variant='h4' fontWeight='bold' sx={{color: 'var(--theme-primary)'}}>{interactionResults.length}</Typography>
+            <Typography fontWeight='bold' sx={{color: 'var(--theme-primary)'}}>Interactions</Typography>
+            </Box>
+          </div>
+          <InteractionTable
+                interactionResults={interactionResults}
+                isLoading={interactionDataIsLoading}
+                recordType="gene"
+              />
+          </Paper>
+        </Grid>
+        <Grid item xs>
+          <Paper elevation={3}></Paper>
+        </Grid>
+      </Grid>
+    </>
+  );
 
   return geneExists ? (
     <Box className="content gene-record-container">

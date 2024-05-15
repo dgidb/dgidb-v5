@@ -208,7 +208,7 @@ export const InteractionTable: React.FC<Props> = ({
 
   return !isLoading ? (
     <Box className="interaction-table-container">
-      <Box width="100%" height="500px" display="flex" overflow="scroll">
+      <Box width="100%" height="600px" display="flex" overflow="scroll">
         <DataGrid
           onRowClick={handleEvent}
           columns={columns}

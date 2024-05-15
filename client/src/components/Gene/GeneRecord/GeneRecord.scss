@@ -132,3 +132,28 @@
 .meta-link:active {
   text-decoration: underline !important;
 }
+
+.interactions-count-gauge {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  border: 5px solid;
+  border-color: var(--theme-primary);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container-circle {
+  display: flex;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-light);
+}
+
+.layout-container .content {
+  background: none !important;
+}
