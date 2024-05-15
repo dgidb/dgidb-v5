@@ -28,8 +28,6 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
     scope.where('name ILIKE ?', "#{value.upcase}%")
   end
 
-  # TODO: search filters (Clinically Actionable, Druggable Genome, Drug Resistance)
-
   option(:clinically_actionable, type: Boolean, description: 'Filtering on clinically actionable status of a gene.') do |scope, value|
     if value
       scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name = ?', 'CLINICALLY ACTIONABLE')
