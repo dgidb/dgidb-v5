@@ -277,6 +277,6 @@ export const DrugRecord: React.FC = () => {
       </Box>
     </Box>
   ) : (
-      <NotFoundError errorMessage='We could not find any results for this drug.' />
+    <NotFoundError errorMessage="We could not find any results for this drug." />
   );
 };

@@ -94,7 +94,12 @@ export const Routes = () => {
         { path: '/downloads', element: <Downloads /> },
         { path: '/api', element: <API /> },
         { path: '/', element: <Home /> },
-        { path: '*', element: <NotFoundError errorMessage='We are unable to find the page you are looking for.' /> },
+        {
+          path: '*',
+          element: (
+            <NotFoundError errorMessage="We are unable to find the page you are looking for." />
+          ),
+        },
       ],
     },
   ];

@@ -245,7 +245,7 @@ export const InteractionRecord: React.FC = () => {
       </Box>
     </Box>
   ) : (
-      <NotFoundError errorMessage='We could not find any results for this interaction.' />
+    <NotFoundError errorMessage="We could not find any results for this interaction." />
   );
 };
 
