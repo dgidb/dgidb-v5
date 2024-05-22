@@ -18,12 +18,7 @@ import './GeneSummary.scss';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
-import {
-  Alert,
-  IconButton,
-  Tab,
-  Tabs,
-} from '@mui/material';
+import { Alert, IconButton, Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 import CloseIcon from '@mui/icons-material/Close';
