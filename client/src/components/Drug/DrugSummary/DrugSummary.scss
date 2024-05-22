@@ -88,20 +88,6 @@
         align-items: center;
         justify-content: left;
 
-        .ant-tabs {
-          width: 100%;
-        }
-
-        .ant-tabs-tabpane {
-          padding-left: 100px;
-          div {
-            canvas {
-              height: 500px !important;
-              width: 500px !important;
-            }
-          }
-        }
-
         .score-container {
           padding-left: 10px;
         }

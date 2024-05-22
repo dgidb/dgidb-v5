@@ -2,7 +2,6 @@ import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { GeneSummary } from '../GeneSummary';
 import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 import { Box, CircularProgress, Icon, Tab, Tabs } from '@mui/material';
-import './GeneSearchResults.scss';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useContext } from 'react';
 import { useGetMatchedResults } from 'hooks/queries/useGetAmbiguousResults';

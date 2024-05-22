@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
     "@apollo/client": "^3.4.10",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -104,7 +103,20 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "unused-imports",
+      "autofix"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "./node_modules/.bin/eslint"
+    ]
   },
   "prettier": {
     "singleQuote": true
