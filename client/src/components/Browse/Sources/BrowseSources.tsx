@@ -128,7 +128,7 @@ export const BrowseSources = () => {
           </Box>
           <Box className="source-section">
             <b>License: </b>
-            <a href={src.licenseLink} target="_blank">
+            <a href={src.licenseLink} target="_blank" rel="noreferrer">
               {src.license}
             </a>
           </Box>

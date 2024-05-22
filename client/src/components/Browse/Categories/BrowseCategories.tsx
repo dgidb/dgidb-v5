@@ -138,7 +138,7 @@ export const BrowseCategories: React.FC = () => {
         {renderedCategories?.map((cat: any, index: number) => {
           if (cat.geneCount) {
             return (
-              <Accordion>
+              <Accordion key={index}>
                 <AccordionSummary
                   style={{ padding: '0 10px' }}
                   expandIcon={<ExpandMoreIcon />}
