@@ -107,10 +107,6 @@
       "react-app",
       "react-app/jest",
       "eslint:recommended"
-    ],
-    "plugins": [
-      "unused-imports",
-      "autofix"
     ]
   },
   "lint-staged": {
