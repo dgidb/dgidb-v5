@@ -23,6 +23,7 @@ import InteractionTable from 'components/Shared/InteractionTable/InteractionTabl
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 import CloseIcon from '@mui/icons-material/Close';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import useStorePreviousURL from 'hooks/shared/useStorePreviousUrl';
 
 ChartJS.register(
   CategoryScale,
@@ -190,6 +191,8 @@ interface SummaryProps {
 }
 
 export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
+  // store the url since there are links on this page that can lead to other pages with breadcrumbs
+  useStorePreviousURL();
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
   const [displayedInteractionResults, setDisplayedInteractionResults] =

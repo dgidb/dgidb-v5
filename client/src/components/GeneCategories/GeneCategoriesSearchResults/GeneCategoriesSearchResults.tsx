@@ -6,6 +6,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import './GeneCategoriesSearchResults.scss';
 import { DirectMatches } from '../DirectMatches/DirectMatches';
 import { AmbiguousMatches } from '../AmbiguousMatches/AmbiguousMatches';
+import useStorePreviousURL from 'hooks/shared/useStorePreviousUrl';
 
 interface GeneCategoriesSearchResultsProps {
   value: number;
@@ -17,6 +18,8 @@ interface GeneCategoriesSearchResultsProps {
 export const GeneCategoriesSearchResults: React.FC<
   GeneCategoriesSearchResultsProps
 > = ({ value, handleChange }) => {
+  // store the url since there are links on this page that can lead to other pages with breadcrumbs
+  useStorePreviousURL();
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetCategories(state.searchTerms);
   const directMatches = data?.geneMatches?.directMatches;

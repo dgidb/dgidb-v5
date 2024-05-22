@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetDrugRecord } from 'hooks/queries/useGetDrugRecord';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
@@ -17,7 +17,13 @@ import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 
 // components
-import { Alert, LinearProgress, Link } from '@mui/material';
+import {
+  Alert,
+  Breadcrumbs,
+  LinearProgress,
+  Link,
+  Typography,
+} from '@mui/material';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
 import { generateXrefLink } from 'utils/generateXrefLink';
@@ -283,5 +289,57 @@ export const DrugRecord: React.FC = () => {
       </Alert>
       <NotFoundError />
     </Box>
+  );
+};
+
+export const DrugRecordContainer: React.FC = () => {
+  const navigate = useNavigate();
+  const drugId = useParams().drug as string;
+
+  // get drug attributes
+  const { data: fetchedDrugData, isLoading: drugDataIsLoading } =
+    useGetDrugRecord(drugId);
+  const drugData = fetchedDrugData?.drug;
+  const previousURL = sessionStorage.getItem('previousURL');
+
+  return (
+    <>
+      {drugDataIsLoading ? (
+        <LinearProgress
+          sx={{
+            backgroundColor: 'white',
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: '#480a77',
+            },
+          }}
+          className="linear-bar"
+        />
+      ) : (
+        <>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '15px' }}>
+            <Link
+              underline="hover"
+              color="primary"
+              onClick={() => navigate('/')}
+              sx={{ cursor: 'pointer' }}
+            >
+              Home
+            </Link>
+            {previousURL && (
+              <Link
+                underline="hover"
+                color="primary"
+                href={previousURL}
+                sx={{ cursor: 'pointer' }}
+              >
+                Search Results
+              </Link>
+            )}
+            <Typography color="text.primary">{drugData?.name}</Typography>
+          </Breadcrumbs>
+          <DrugRecord />
+        </>
+      )}
+    </>
   );
 };

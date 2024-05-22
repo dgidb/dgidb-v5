@@ -1,6 +1,6 @@
 // hooks/dependencies
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetGeneRecord } from 'hooks/queries/useGetGeneRecord';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
@@ -15,7 +15,13 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import { Alert, LinearProgress, Link } from '@mui/material';
+import {
+  Alert,
+  Breadcrumbs,
+  LinearProgress,
+  Link,
+  Typography,
+} from '@mui/material';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
@@ -285,9 +291,53 @@ export const GeneRecord: React.FC = () => {
 };
 
 export const GeneRecordContainer: React.FC = () => {
+  const navigate = useNavigate();
+  const geneId: any = useParams().gene;
+
+  // get gene attributes
+  const { data: fetchedGeneData, isLoading: geneDataIsloading } =
+    useGetGeneRecord(geneId);
+  const geneData = fetchedGeneData?.gene;
+  const previousURL = sessionStorage.getItem('previousURL');
+
   return (
     <>
-      <GeneRecord />
+      {geneDataIsloading ? (
+        <LinearProgress
+          sx={{
+            backgroundColor: 'white',
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: '#480a77',
+            },
+          }}
+          className="linear-bar"
+        />
+      ) : (
+        <>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '15px' }}>
+            <Link
+              underline="hover"
+              color="primary"
+              onClick={() => navigate('/')}
+              sx={{ cursor: 'pointer' }}
+            >
+              Home
+            </Link>
+            {previousURL && (
+              <Link
+                underline="hover"
+                color="primary"
+                href={previousURL}
+                sx={{ cursor: 'pointer' }}
+              >
+                Search Results
+              </Link>
+            )}
+            <Typography color="text.primary">{geneData?.name}</Typography>
+          </Breadcrumbs>
+          <GeneRecord />
+        </>
+      )}
     </>
   );
 };
