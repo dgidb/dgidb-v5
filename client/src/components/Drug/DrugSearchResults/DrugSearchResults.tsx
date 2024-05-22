@@ -1,3 +1,4 @@
+import React from 'react';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { DrugSummary } from '../DrugSummary';
 import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
@@ -21,7 +22,7 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    ResultTypes.Drug
+    ResultTypes.Drug,
   );
 
   const drugMatches = data?.drugMatches?.directMatches;

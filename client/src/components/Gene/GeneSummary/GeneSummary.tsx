@@ -29,7 +29,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 interface CountProps {
@@ -44,7 +44,7 @@ const InteractionCount: React.FC<CountProps> = ({
   setSelectedGenes,
 }) => {
   const [hideAlert, setHideAlert] = React.useState(
-    window.localStorage.getItem('interaction-filter-tip-alert')
+    window.localStorage.getItem('interaction-filter-tip-alert'),
   );
   const handleCloseAlertTip = () => {
     setHideAlert('true');
@@ -53,7 +53,7 @@ const InteractionCount: React.FC<CountProps> = ({
   const toggleFilter = (geneName: string) => {
     if (selectedGenes.includes(geneName)) {
       setSelectedGenes(
-        selectedGenes.filter((gene: string) => gene !== geneName)
+        selectedGenes.filter((gene: string) => gene !== geneName),
       );
     } else {
       setSelectedGenes([geneName, ...selectedGenes]);
@@ -143,13 +143,13 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
     selectedGenes.length === 0
       ? geneMatches
       : geneMatches.filter((geneMatch: any) =>
-          selectedGenes.includes(geneMatch.name)
+          selectedGenes.includes(geneMatch.name),
         );
 
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-      {getWindowSize().innerWidth >= 1580 ? (
+      {windowSize.innerWidth >= 1580 ? (
         <div className="chart-section">
           <InteractionTypeGene data={filteredGeneMatches} />
           <DirectionalityGene data={filteredGeneMatches} />

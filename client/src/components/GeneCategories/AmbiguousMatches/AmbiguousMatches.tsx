@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { ErrorMessage } from 'components/Shared/ErrorMessage/ErrorMessage';
 import { LoadingSpinner } from 'components/Shared/LoadingSpinner/LoadingSpinner';
@@ -59,8 +60,8 @@ export const AmbiguousMatches: React.FC<Props> = ({
                     <AmbiguousMatchesCard match={match} />
                   ))
                 : failedMatches?.length > 0
-                ? noAmbiguousMatchesMsg
-                : noAmbiguousOrFailedMatchesMsg}
+                  ? noAmbiguousMatchesMsg
+                  : noAmbiguousOrFailedMatchesMsg}
             </Box>
           </Grid>
           {failedMatches?.length > 0 && (

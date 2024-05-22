@@ -1,0 +1,28 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+      - id: detect-private-key
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v8.8.0'
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+        additional_dependencies:
+          - 'eslint@7.29.0'
+          - 'eslint-config-airbnb@18.2.1'
+          - 'eslint-plugin-import@2.23.4'
+          - 'eslint-plugin-jsx-a11y@6.4.1'
+          - 'eslint-plugin-react@7.24.0'
+          - 'eslint-plugin-react-hooks@4.2.0'
+          - 'typescript@4.1.2'
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: 'v3.1.0'
+    hooks:
+      - id: prettier

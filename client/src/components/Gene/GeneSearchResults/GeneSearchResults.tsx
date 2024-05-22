@@ -1,3 +1,4 @@
+import React from 'react';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { GeneSummary } from '../GeneSummary';
 import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
@@ -21,7 +22,7 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    ResultTypes.Gene
+    ResultTypes.Gene,
   );
   const geneMatches = data?.geneMatches?.directMatches;
 

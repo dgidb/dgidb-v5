@@ -37,8 +37,6 @@ export const DirectionalityDrug: React.FC<Props> = ({ data }) => {
     responsive: true,
   };
 
-  const labels = ['Activating', 'Inhibiting', 'N/A'];
-
   useEffect(() => {
     let countCopy = [0, 0, 0];
     data?.forEach((drug: any) => {

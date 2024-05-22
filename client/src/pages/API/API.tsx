@@ -25,9 +25,6 @@ const buttonStyle = {
   border: 'none',
   fontSize: '10px',
 };
-const defaultStyle = {
-  backgroundColor: '#f3e5f5',
-};
 
 // queries
 const query1 = `

@@ -30,7 +30,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 interface CountProps {
@@ -45,7 +45,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
   setSelectedDrugs,
 }) => {
   const [hideAlert, setHideAlert] = React.useState(
-    window.localStorage.getItem('interaction-filter-tip-alert')
+    window.localStorage.getItem('interaction-filter-tip-alert'),
   );
   const handleCloseAlertTip = () => {
     setHideAlert('true');
@@ -54,7 +54,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
   const toggleFilter = (drugName: string) => {
     if (selectedDrugs.includes(drugName)) {
       setSelectedDrugs(
-        selectedDrugs.filter((drug: string) => drug !== drugName)
+        selectedDrugs.filter((drug: string) => drug !== drugName),
       );
     } else {
       setSelectedDrugs([drugName, ...selectedDrugs]);
@@ -144,13 +144,13 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
     selectedDrugs.length === 0
       ? drugMatches
       : drugMatches.filter((drugMatch: any) =>
-          selectedDrugs.includes(drugMatch.name)
+          selectedDrugs.includes(drugMatch.name),
         );
 
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-      {getWindowSize().innerWidth >= 1550 ? (
+      {windowSize.innerWidth >= 1550 ? (
         <div className="chart-section">
           <InteractionTypeDrug data={filteredDrugMatches} />
           <DirectionalityDrug data={filteredDrugMatches} />
@@ -220,8 +220,8 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
     } else {
       setDisplayedInteractionResults(
         interactionResults.filter((interaction: any) =>
-          selectedDrugs.includes(interaction.drug.name)
-        )
+          selectedDrugs.includes(interaction.drug.name),
+        ),
       );
     }
   }, [selectedDrugs, interactionResults]);

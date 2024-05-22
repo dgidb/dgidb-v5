@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 interface TabPanelProps {
@@ -10,6 +9,7 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
+  const unusedVar = 2;
 
   return (
     <div

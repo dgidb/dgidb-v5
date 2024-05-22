@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetCategories } from 'hooks/queries/useGetCategories';
@@ -26,7 +27,7 @@ export const GeneCategoriesSearchResults: React.FC<
   const combinedMatches = directMatches?.reduce((acc: any[], curr: any) => {
     const existing = acc.find(
       (termMatch) =>
-        termMatch.matches[0].conceptId === curr.matches[0].conceptId
+        termMatch.matches[0].conceptId === curr.matches[0].conceptId,
     );
     if (existing) {
       existing.matchingTerms.push(curr.searchTerm);

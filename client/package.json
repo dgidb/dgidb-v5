@@ -48,10 +48,11 @@
   },
   "scripts": {
     "start": "env-cmd -f ./.env.local react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run lint && react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
+    "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore --max-warnings=0",
+    "lint:warn": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
     "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "format": "yarn run prettier -- --write",
@@ -103,15 +104,65 @@
     ]
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true
+    },
     "extends": [
       "react-app",
       "react-app/jest",
       "eslint:recommended"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "import/no-unused-modules": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "no-unused-vars": "warn"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts",
+          "**/*.tsx"
+        ],
+        "rules": {
+          "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+              "vars": "all",
+              "args": "after-used",
+              "ignoreRestSiblings": true
+            }
+          ]
+        }
+      },
+      {
+        "files": [
+          "**/*.js",
+          "**/*.jsx"
+        ],
+        "rules": {
+          "no-unused-vars": [
+            "warn",
+            {
+              "vars": "all",
+              "args": "after-used",
+              "ignoreRestSiblings": true
+            }
+          ]
+        }
+      }
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "./node_modules/.bin/eslint"
+      "eslint --fix",
+      "git add"
     ]
   },
   "prettier": {

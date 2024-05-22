@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGetInteractionClaimTypes } from 'hooks/queries/useGetInteractionClaimTypes';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -43,7 +44,7 @@ export const TypesTable: React.FC = () => {
                     align="right"
                   ></TableCell>
                 </TableRow>
-              )
+              ),
             )}
           </TableBody>
         </Table>
