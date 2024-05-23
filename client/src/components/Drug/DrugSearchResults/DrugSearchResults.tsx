@@ -22,7 +22,7 @@ export const DrugSearchResults: React.FC<DrugSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    ResultTypes.Drug,
+    ResultTypes.Drug
   );
 
   const drugMatches = data?.drugMatches?.directMatches;

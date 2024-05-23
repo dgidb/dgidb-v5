@@ -13,7 +13,15 @@ import {
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
-import { Alert, Breadcrumbs, IconButton, Link, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Alert,
+  Breadcrumbs,
+  IconButton,
+  Link,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
@@ -30,7 +38,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
 interface CountProps {
@@ -45,7 +53,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
   setSelectedDrugs,
 }) => {
   const [hideAlert, setHideAlert] = React.useState(
-    window.localStorage.getItem('interaction-filter-tip-alert'),
+    window.localStorage.getItem('interaction-filter-tip-alert')
   );
   const handleCloseAlertTip = () => {
     setHideAlert('true');
@@ -54,7 +62,7 @@ const InteractionCountDrug: React.FC<CountProps> = ({
   const toggleFilter = (drugName: string) => {
     if (selectedDrugs.includes(drugName)) {
       setSelectedDrugs(
-        selectedDrugs.filter((drug: string) => drug !== drugName),
+        selectedDrugs.filter((drug: string) => drug !== drugName)
       );
     } else {
       setSelectedDrugs([drugName, ...selectedDrugs]);
@@ -144,7 +152,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
     selectedDrugs.length === 0
       ? drugMatches
       : drugMatches.filter((drugMatch: any) =>
-          selectedDrugs.includes(drugMatch.name),
+          selectedDrugs.includes(drugMatch.name)
         );
 
   return (
@@ -220,8 +228,8 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
     } else {
       setDisplayedInteractionResults(
         interactionResults.filter((interaction: any) =>
-          selectedDrugs.includes(interaction.drug.name),
-        ),
+          selectedDrugs.includes(interaction.drug.name)
+        )
       );
     }
   }, [selectedDrugs, interactionResults]);
@@ -230,7 +238,7 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
 
   return (
     <div className="drug-summary-container">
-      <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: '15px'}}>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '15px' }}>
         <Link underline="hover" color="inherit" href="/">
           Home
         </Link>

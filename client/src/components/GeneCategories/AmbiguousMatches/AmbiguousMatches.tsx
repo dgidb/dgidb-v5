@@ -60,8 +60,8 @@ export const AmbiguousMatches: React.FC<Props> = ({
                     <AmbiguousMatchesCard match={match} />
                   ))
                 : failedMatches?.length > 0
-                  ? noAmbiguousMatchesMsg
-                  : noAmbiguousOrFailedMatchesMsg}
+                ? noAmbiguousMatchesMsg
+                : noAmbiguousOrFailedMatchesMsg}
             </Box>
           </Grid>
           {failedMatches?.length > 0 && (

@@ -44,7 +44,7 @@ export const TypesTable: React.FC = () => {
                     align="right"
                   ></TableCell>
                 </TableRow>
-              ),
+              )
             )}
           </TableBody>
         </Table>

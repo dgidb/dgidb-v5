@@ -3,15 +3,12 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: [
-    'react-app',
-    'react-app/jest',
-    'eslint:recommended',
-  ],
+  extends: ['react-app', 'react-app/jest', 'eslint:recommended'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'import/no-unused-modules': 'off',
-    '@typescript-eslint/no-unused-vars': process.env.NODE_ENV === 'development' ? 'warn' : 'error',
+    '@typescript-eslint/no-unused-vars':
+      process.env.NODE_ENV === 'development' ? 'warn' : 'error',
     'no-unused-vars': process.env.NODE_ENV === 'development' ? 'warn' : 'error',
   },
   overrides: [
@@ -35,4 +32,4 @@ module.exports = {
     },
   ],
 };
-console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV);

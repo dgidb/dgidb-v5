@@ -20,9 +20,7 @@ interface Props {
   resultType: string;
 }
 
-export const AmbiguousResult: React.FC<Props> = ({
-  ambiguousTermData,
-}) => {
+export const AmbiguousResult: React.FC<Props> = ({ ambiguousTermData }) => {
   const [selectedTerm, setSelectedTerm] = useState<string[]>([]);
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const handleChange = (event: SelectChangeEvent) => {

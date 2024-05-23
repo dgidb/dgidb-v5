@@ -22,7 +22,7 @@ export const GeneSearchResults: React.FC<GeneSearchResultsProps> = ({
   const { state } = useContext(GlobalClientContext);
   const { data, isError, isLoading } = useGetMatchedResults(
     state.searchTerms,
-    ResultTypes.Gene,
+    ResultTypes.Gene
   );
   const geneMatches = data?.geneMatches?.directMatches;
 

@@ -39,7 +39,11 @@ const ReleaseInformation: React.FC = () => {
             Release Notes
           </a>
           &nbsp; &bull; &nbsp;
-          <a href="https://github.com/dgidb/dgidb-v5/releases/" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/dgidb/dgidb-v5/releases/"
+            target="_blank"
+            rel="noreferrer"
+          >
             History
           </a>
         </div>
