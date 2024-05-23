@@ -15,7 +15,7 @@ repos:
         entry: >
           bash -c '
             cd client/src || exit 1
-            yarn lint-staged --debug
+            yarn lint-staged
           '
         language: system
         files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
