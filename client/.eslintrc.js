@@ -1,6 +1,4 @@
-const env = process.env.NODE_ENV;
-
-export default {
+module.exports = {
   env: {
     browser: true,
     es6: true,
@@ -9,15 +7,16 @@ export default {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'import/no-unused-modules': 'off',
-    '@typescript-eslint/no-unused-vars': env === 'development' ? 'warn' : 'error',
-    'no-unused-vars': env === 'development' ? 'warn' : 'error',
+    '@typescript-eslint/no-unused-vars':
+      process.env.NODE_ENV === 'development' ? 'warn' : 'error',
+    'no-unused-vars': process.env.NODE_ENV === 'development' ? 'warn' : 'error',
   },
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         '@typescript-eslint/no-unused-vars': [
-          env === 'development' ? 'warn' : 'error',
+          process.env.NODE_ENV === 'development' ? 'warn' : 'error',
           { vars: 'all', args: 'after-used', ignoreRestSiblings: true },
         ],
       },
@@ -26,7 +25,7 @@ export default {
       files: ['**/*.js', '**/*.jsx'],
       rules: {
         'no-unused-vars': [
-          env === 'development' ? 'warn' : 'error',
+          process.env.NODE_ENV === 'development' ? 'warn' : 'error',
           { vars: 'all', args: 'after-used', ignoreRestSiblings: true },
         ],
       },
