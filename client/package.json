@@ -162,7 +162,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "yarn eslint"
+      "yarn lint",
+      "yarn prettier --write src"
     ]
   },
   "prettier": {
