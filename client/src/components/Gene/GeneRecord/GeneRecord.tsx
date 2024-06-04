@@ -275,12 +275,7 @@ export const GeneRecord: React.FC = () => {
       </Box>
     </Box>
   ) : (
-    <Box p={2}>
-      <Alert severity="error">
-        We could not find any results for this gene.
-      </Alert>
-      <NotFoundError />
-    </Box>
+    <NotFoundError errorMessage="We could not find any results for this gene." />
   );
 };
 
