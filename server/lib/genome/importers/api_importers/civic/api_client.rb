@@ -109,6 +109,7 @@ module Genome; module Importers; module ApiImporters; module Civic
                 variants {
                   feature {
                     featureInstance {
+                      __typename
                       ... on Gene {
                         name
                       }

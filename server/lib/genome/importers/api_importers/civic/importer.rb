@@ -71,7 +71,14 @@ module Genome
 
               # retain molecular profiles consisting of multiple variations on the same gene,
               # but skip multi-gene profiles (eg fusions)
-              gene_names = ei.molecular_profile.variants.map { |v| v.feature.feature_instance.name.upcase }.uniq
+              gene_names = ei.molecular_profile.variants.map do |variant|
+                feature_instance = variant.feature.feature_instance
+                if feature_instance.__typename == "Gene"
+                  feature_instance.name.upcase
+                else  # skip Factors for now
+                  nil
+                end
+              end.compact.uniq
               next if gene_names.length != 1
               gc = GeneClaim.joins(:source).where(sources: {source_db_name: "CIViC"}, gene_claims: {name: gene_names[0]}).first
 
