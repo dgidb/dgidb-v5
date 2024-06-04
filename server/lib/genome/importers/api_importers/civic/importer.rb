@@ -73,7 +73,7 @@ module Genome
               # but skip multi-gene profiles (eg fusions)
               gene_names = ei.molecular_profile.variants.map do |variant|
                 feature_instance = variant.feature.feature_instance
-                if feature_instance.respond_to?(:name)
+                if feature_instance.__typename == "Gene"
                   feature_instance.name.upcase
                 else  # skip Factors for now
                   nil
