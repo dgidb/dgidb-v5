@@ -112,9 +112,9 @@ export const Overview = () => {
           Therapy
         </Link>{' '}
         Normalizer services. DGIdb contains over 10,000 genes and 20,000 drugs
-        involved in nearly 70,000 drug-gene interactions or belonging to one of 43
-        potentially druggable gene categories. Users can enter a list of genes
-        to retrieve all known or potentially druggable genes in that list.
+        involved in nearly 70,000 drug-gene interactions or belonging to one of
+        43 potentially druggable gene categories. Users can enter a list of
+        genes to retrieve all known or potentially druggable genes in that list.
         Results can be filtered by source, interaction type, or gene category.
         DGIdb is built on Ruby on Rails and PostgreSQL with a flexible
         relational database schema to accommodate metadata from various sources.
