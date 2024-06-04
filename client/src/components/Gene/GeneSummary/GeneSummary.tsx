@@ -31,6 +31,7 @@ import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
+import useStorePreviousURL from 'hooks/shared/useStorePreviousUrl';
 
 ChartJS.register(
   CategoryScale,
@@ -198,6 +199,8 @@ interface SummaryProps {
 }
 
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
+  // store the url since there are links on this page that can lead to other pages with breadcrumbs
+  useStorePreviousURL();
   const isMobile = useGetIsMobile();
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedGenes, setSelectedGenes] = useState<string[]>([]);

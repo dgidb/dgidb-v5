@@ -1,14 +1,17 @@
 import React, { useContext, useEffect } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SearchTypes } from 'types/types';
 import { ActionTypes } from 'stores/Global/reducers';
 import { GeneSearchResults } from 'components/Gene/GeneSearchResults/GeneSearchResults';
 import { DrugSearchResults } from 'components/Drug/DrugSearchResults/DrugSearchResults';
 import { GeneCategoriesSearchResults } from 'components/GeneCategories/GeneCategoriesSearchResults/GeneCategoriesSearchResults';
+import { Breadcrumbs, Link, Typography } from '@mui/material';
+import './Results.scss';
 
 export const Results: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchTerms = searchParams.get('searchTerms')?.split(',');
   const searchType = searchParams.get('searchType') as SearchTypes;
@@ -45,17 +48,30 @@ export const Results: React.FC = () => {
   }, []);
 
   return (
-    <div className="results-page-container">
-      {searchType === SearchTypes.Gene ? (
-        <GeneSearchResults value={value} handleChange={handleChange} />
-      ) : searchType === SearchTypes.Drug ? (
-        <DrugSearchResults value={value} handleChange={handleChange} />
-      ) : (
-        <GeneCategoriesSearchResults
-          value={value}
-          handleChange={handleChange}
-        />
-      )}
-    </div>
+    <>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '15px' }}>
+        <Link
+          underline="hover"
+          color="primary"
+          onClick={() => navigate('/')}
+          sx={{ cursor: 'pointer' }}
+        >
+          Home
+        </Link>
+        <Typography color="text.primary">Search Results</Typography>
+      </Breadcrumbs>
+      <div className="results-page-container">
+        {searchType === SearchTypes.Gene ? (
+          <GeneSearchResults value={value} handleChange={handleChange} />
+        ) : searchType === SearchTypes.Drug ? (
+          <DrugSearchResults value={value} handleChange={handleChange} />
+        ) : (
+          <GeneCategoriesSearchResults
+            value={value}
+            handleChange={handleChange}
+          />
+        )}
+      </div>
+    </>
   );
 };
