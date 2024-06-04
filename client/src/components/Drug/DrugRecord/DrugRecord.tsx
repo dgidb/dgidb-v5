@@ -17,7 +17,7 @@ import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 
 // components
-import { Alert, LinearProgress, Link } from '@mui/material';
+import { LinearProgress, Link } from '@mui/material';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { useGetDrugInteractions } from 'hooks/queries/useGetDrugInteractions';
 import { generateXrefLink } from 'utils/generateXrefLink';

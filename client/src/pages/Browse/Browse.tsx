@@ -1,5 +1,4 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from 'react';
 import { BrowseCategories } from 'components/Browse/Categories';
 
 // styles

@@ -99,15 +99,6 @@ header {
       }
     }
   }
-
-  .ant-menu-title-content {
-    color: var(--text-content);
-  }
-
-  .ant-menu-dark.ant-menu-horizontal {
-    background-color: var(--background);
-    color: var(--text-content);
-  }
 }
 
 footer {
@@ -123,9 +114,4 @@ footer {
   font-weight: 300;
   position: absolute;
   bottom: 0;
-}
-
-.ant-tabs {
-  background-color: var(--background);
-  border-radius: 5px;
 }

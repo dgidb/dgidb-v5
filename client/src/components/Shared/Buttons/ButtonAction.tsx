@@ -1,3 +1,4 @@
+import React from 'react';
 import './ButtonAction.scss';
 
 interface Props {

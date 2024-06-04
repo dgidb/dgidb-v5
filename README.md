@@ -221,3 +221,15 @@ Start the client:
 ```shell
 yarn start
 ```
+
+Frontend style is enforced by [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/). Conformance is ensured by [pre-commit](https://pre-commit.com/#usage). Before your first commit, run
+
+```shell
+pre-commit install
+```
+
+In practice, Prettier will do most of the formatting work for you to be in accordance with ESLint. Run the following to autoformat a file:
+
+```shell
+yarn run prettier --write path/to/file
+```

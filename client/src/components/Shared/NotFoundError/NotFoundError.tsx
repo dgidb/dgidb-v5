@@ -1,3 +1,4 @@
+import React from 'react';
 import { Alert, Box, Link } from '@mui/material';
 import './NotFoundError.scss';
 import { useNavigate } from 'react-router-dom';

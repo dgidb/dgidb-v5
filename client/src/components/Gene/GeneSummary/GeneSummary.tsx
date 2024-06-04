@@ -18,18 +18,9 @@ import './GeneSummary.scss';
 import Box from '@mui/material/Box';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  IconButton,
-  Tab,
-  Tabs,
-} from '@mui/material';
+import { Alert, IconButton, Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 
 ChartJS.register(
@@ -158,7 +149,7 @@ const SummaryInfo: React.FC<InfoProps> = ({ geneMatches, selectedGenes }) => {
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-      {getWindowSize().innerWidth >= 1580 ? (
+      {windowSize.innerWidth >= 1580 ? (
         <div className="chart-section">
           <InteractionTypeGene data={filteredGeneMatches} />
           <DirectionalityGene data={filteredGeneMatches} />
@@ -198,7 +189,6 @@ interface SummaryProps {
 }
 
 export const GeneSummary: React.FC<SummaryProps> = ({ genes, isLoading }) => {
-  const isMobile = useGetIsMobile();
   const [interactionResults, setInteractionResults] = useState<any[]>([]);
   const [selectedGenes, setSelectedGenes] = useState<string[]>([]);
   const [displayedInteractionResults, setDisplayedInteractionResults] =
