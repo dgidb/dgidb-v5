@@ -13,6 +13,7 @@ import { About } from 'pages/About';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
+import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 
 const App = () => {
   const { pathname, hash, key } = useLocation();
@@ -93,7 +94,12 @@ export const Routes = () => {
         { path: '/downloads', element: <Downloads /> },
         { path: '/api', element: <API /> },
         { path: '/', element: <Home /> },
-        { path: '*', element: <Navigate to="." /> },
+        {
+          path: '*',
+          element: (
+            <NotFoundError errorMessage="We are unable to find the page you are looking for." />
+          ),
+        },
       ],
     },
   ];
