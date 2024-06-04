@@ -9,16 +9,17 @@ export const Overview = () => {
 
       <p className="about-citation">
         <Link
-          href="https://pubmed.ncbi.nlm.nih.gov/33237278/"
+          href="https://academic.oup.com/nar/article/52/D1/D1227/7416371?login=true"
           target="_blank"
           rel="noreferrer"
         >
-          Integration of the Drug-Gene Interaction Database (DGIdb 4.0) with
-          open crowdsource efforts.
+          DGIdb 5.0: rebuilding the drug-gene interaction database for precision
+          medicine and drug discovery platforms
         </Link>{' '}
-        Freshour S*, Kiwala S*, Cotto KC*, Coffman AC, McMichael JF, Song J,
-        Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2020 Nov 25;
-        doi: https://doi.org/10.1093/nar/gkaa1084. PMID: 33237278
+        Cannon M, Stevenson J, Stahl K, Basu R, Coffman A, Kiwala S, McMichael
+        JF, Kuzma K, Morrisey D, Cotto KC, Mardis ER, Griffith OL, Griffith M,
+        Wagner AH. Nucleic Acids Research. 2024 Jan 5; doi:
+        https://doi.org/10.1093/nar/gkad1040. PMID: 37953380.
       </p>
 
       <p>
@@ -110,8 +111,8 @@ export const Overview = () => {
         >
           Therapy
         </Link>{' '}
-        Normalizer services. DGIdb contains over 10,000 genes and 15,000 drugs
-        involved in over 50,000 drug-gene interactions or belonging to one of 43
+        Normalizer services. DGIdb contains over 10,000 genes and 20,000 drugs
+        involved in nearly 70,000 drug-gene interactions or belonging to one of 43
         potentially druggable gene categories. Users can enter a list of genes
         to retrieve all known or potentially druggable genes in that list.
         Results can be filtered by source, interaction type, or gene category.
