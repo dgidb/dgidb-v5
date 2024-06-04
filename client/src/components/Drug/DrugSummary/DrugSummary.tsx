@@ -13,15 +13,7 @@ import {
 import { InteractionTypeDrug } from 'components/Drug/DrugCharts';
 import { DirectionalityDrug } from 'components/Drug/DrugCharts';
 import { GeneCategories } from 'components/Drug/DrugCharts';
-import {
-  Alert,
-  Breadcrumbs,
-  IconButton,
-  Link,
-  Tab,
-  Tabs,
-  Typography,
-} from '@mui/material';
+import { Alert, IconButton, Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 
 // styles
@@ -238,12 +230,6 @@ export const DrugSummary: React.FC<SummaryProps> = ({ drugs, isLoading }) => {
 
   return (
     <div className="drug-summary-container">
-      <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '15px' }}>
-        <Link underline="hover" color="inherit" href="/">
-          Home
-        </Link>
-        <Typography color="text.primary">Search Results</Typography>
-      </Breadcrumbs>
       <h1>Drug Summary</h1>
       <div className="drug-summary-content">
         <InteractionCountDrug
