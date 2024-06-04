@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import { Navigate, Outlet, useLocation, useRoutes } from 'react-router-dom';
+import { Outlet, useLocation, useRoutes } from 'react-router-dom';
 
 import { Home } from 'pages/Home';
 import { Results } from 'pages/Results';

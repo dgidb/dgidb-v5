@@ -16,7 +16,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { truncateDecimals } from 'utils/format';
-import { Alert } from '@mui/material';
 import { NotFoundError } from 'components/Shared/NotFoundError/NotFoundError';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
 
