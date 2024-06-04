@@ -11,18 +11,20 @@ export const NotFoundError: React.FC<Props> = ({ errorMessage }) => {
 
   return (
     <Box display="flex" flexDirection="column" p={2}>
-      <Alert severity="error">{errorMessage}</Alert>
-      <Box display="flex" flexDirection="column" mt={3}>
-        <Link
-          onClick={() => navigate(-1)}
-          sx={{ cursor: 'pointer', marginBottom: '15px' }}
-        >
-          Click here to go back to the previous page.
-        </Link>
-        <Link href="/" sx={{ cursor: 'pointer' }}>
-          Click here to go to the home page.
-        </Link>
-      </Box>
+      <Alert severity="error">
+        {errorMessage}
+        <Box display="flex" flexDirection="column" mt={3}>
+          <Link
+            onClick={() => navigate(-1)}
+            sx={{ cursor: 'pointer', marginBottom: '15px' }}
+          >
+            Click here to go back to the previous page.
+          </Link>
+          <Link href="/" sx={{ cursor: 'pointer' }}>
+            Click here to go to the home page.
+          </Link>
+        </Box>
+      </Alert>
       <img
         src="/images/dgidb-404-logo.png"
         alt="404 error"
