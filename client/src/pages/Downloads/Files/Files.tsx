@@ -25,6 +25,7 @@ function getDataObj(date: string) {
 
 const rows = [
   getDataObj('latest'),
+  getDataObj('2023-Dec'),
   getDataObj('2022-Feb'),
   getDataObj('2021-May'),
   getDataObj('2021-Jan'),
