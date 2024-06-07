@@ -15,7 +15,7 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-import { Alert, LinearProgress, Link } from '@mui/material';
+import { LinearProgress, Link } from '@mui/material';
 import { useGetGeneInteractions } from 'hooks/queries/useGetGeneInteractions';
 import InteractionTable from 'components/Shared/InteractionTable/InteractionTable';
 import { dropRedundantCites } from 'utils/dropRedundantCites';
@@ -275,12 +275,7 @@ export const GeneRecord: React.FC = () => {
       </Box>
     </Box>
   ) : (
-    <Box p={2}>
-      <Alert severity="error">
-        We could not find any results for this gene.
-      </Alert>
-      <NotFoundError />
-    </Box>
+    <NotFoundError errorMessage="We could not find any results for this gene." />
   );
 };
 

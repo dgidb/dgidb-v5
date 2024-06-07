@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { ErrorMessage } from 'components/Shared/ErrorMessage/ErrorMessage';
 import { LoadingSpinner } from 'components/Shared/LoadingSpinner/LoadingSpinner';

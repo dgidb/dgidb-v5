@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGetInteractionClaimTypes } from 'hooks/queries/useGetInteractionClaimTypes';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

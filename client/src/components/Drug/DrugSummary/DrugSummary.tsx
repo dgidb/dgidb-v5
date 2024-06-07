@@ -150,7 +150,7 @@ const SummaryInfoDrug: React.FC<InfoProps> = ({
   return (
     <div className="summary-infographic-container">
       <h2>Infographics</h2>
-      {getWindowSize().innerWidth >= 1550 ? (
+      {windowSize.innerWidth >= 1550 ? (
         <div className="chart-section">
           <InteractionTypeDrug data={filteredDrugMatches} />
           <DirectionalityDrug data={filteredDrugMatches} />

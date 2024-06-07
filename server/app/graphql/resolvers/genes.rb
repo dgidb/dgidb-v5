@@ -32,7 +32,8 @@ class Resolvers::Genes < GraphQL::Schema::Resolver
 
   # gene claim category by name
   option(:gene_claim_category, type: [String], description: "Filtering on gene claim category name.") do |scope, values|
-    scope.joins(gene_claims: :gene_claim_categories).where('gene_claim_categories.name IN (?)', values)
+    lowercase_values = values.map(&:downcase)
+    scope.joins(gene_claims: :gene_claim_categories).where('LOWER(gene_claim_categories.name) IN (?)', lowercase_values)
   end
 
   option(:interaction_type, type: String, description: 'Exact filtering on interaction claim type.') do |scope, value|
