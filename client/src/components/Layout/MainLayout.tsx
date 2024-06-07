@@ -17,7 +17,6 @@ import {
   DialogTitle,
   Drawer,
   IconButton,
-  Link,
   List,
   ListItem,
   ListItemButton,
@@ -41,9 +40,6 @@ type MainLayoutProps = {
 
 const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [hideBanner, setHideBanner] = useState(
-    window.localStorage.getItem('banner-closed')
-  );
   const [showMenuDrawer, setShowMenuDrawer] = useState(false);
 
   const handleOpen = (event: any) => {
@@ -52,11 +48,6 @@ const Header: React.FC = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleCloseNotificationBanner = () => {
-    setHideBanner('true');
-    window.localStorage.setItem('banner-closed', 'true');
   };
 
   const navigate = useNavigate();
@@ -169,26 +160,6 @@ const Header: React.FC = () => {
         </div>
         {isMobile ? mobileNavMenu : desktopNavMenu}
       </Box>
-      {!hideBanner ? (
-        <Box className="header-banner">
-          <Box>
-            The previous version of DGIdb can be found at{' '}
-            <Link href="https://old.dgidb.org" color="inherit">
-              old.dgidb.org
-            </Link>{' '}
-            until June 1st, 2024.
-          </Box>
-          <IconButton
-            aria-label="close"
-            size="small"
-            onClick={handleCloseNotificationBanner}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        </Box>
-      ) : (
-        ''
-      )}
     </header>
   );
 };

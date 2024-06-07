@@ -12,6 +12,9 @@ module Types
     field :sources, resolver: Resolvers::Sources
     field :categories, resolver: Resolvers::Categories
     field :interaction_claim_types, resolver: Resolvers::InteractionClaimTypes
+    field :interactions, resolver: Resolvers::Interactions
+
+    field :service_info, Types::MetaType, null: false
 
     field :service_info, Types::MetaType, null: false
 
@@ -317,7 +320,7 @@ module Types
     end
 
     field :interaction, Types::InteractionType, null: true do
-      description "An interaction"
+      description "An interaction between a drug and a gene"
       argument :id, ID, required: true
     end
 

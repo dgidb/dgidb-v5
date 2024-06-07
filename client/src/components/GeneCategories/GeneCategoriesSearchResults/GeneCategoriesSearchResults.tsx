@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { useGetCategories } from 'hooks/queries/useGetCategories';

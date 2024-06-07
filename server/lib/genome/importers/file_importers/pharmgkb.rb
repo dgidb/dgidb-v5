@@ -23,7 +23,7 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           pmid: '34216021',
           pmcid: 'PMC8457105',
           doi: '10.1002/cpt.2350',
-          source_db_version: '2020-08-18',  # using static file, see issue #420
+          source_db_version: '2024-04-05',  # using static file, see issue #420
           source_db_name: source_db_name,
           full_name: 'PharmGKB - The Pharmacogenomics Knowledgebase',
           license: License::CC_BY_SA_4_0,

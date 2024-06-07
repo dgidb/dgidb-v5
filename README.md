@@ -87,6 +87,120 @@ rails s
 
 Navigate to `localhost:3000/api/graphiql` in your browser. If the example query provided runs successfully, then you're all set.
 
+### Data loading
+
+To perform a data load from scratch, first run the `reset` task to provide a clean, seeded DB:
+
+```shell
+rake db:reset
+```
+
+Most DGIdb data comes from static files, typically called `claims.tsv`. The data loader classes expect `server/lib/data/` to contain the following files:
+
+```
+lib/data
+├── bader_lab
+│   └── claims.tsv
+├── cancer_commons
+│   └── claims.tsv
+├── caris_molecular_intelligence
+│   └── claims.tsv
+├── cgi
+│   └── claims.tsv
+├── chembl
+│   └── chembl.db
+├── clearity_foundation_biomarkers
+│   └── claims.tsv
+├── clearity_foundation_clinical_trial
+│   └── claims.tsv
+├── cosmic
+│   └── claims.csv
+├── dgene
+│   └── claims.tsv
+├── drugbank
+│   └── claims.xml
+├── dtc
+│   └── claims.csv
+├── ensembl
+│   └── claims.tsv
+├── entrez
+│   └── claims.tsv
+├── fda
+│   └── claims.tsv
+├── foundation_one_genes
+│   └── claims.tsv
+├── go
+│   └── targets.tsv
+├── guide_to_pharmacology
+│   ├── interactions.csv
+│   └── targets_and_families.csv
+├── hingorani_casas
+│   └── claims.tsv
+├── hopkins_groom
+│   └── claims.tsv
+├── human_protein_atlas
+│   └── claims.tsv
+├── idg
+│   ├── claims.json
+│   └── claims.tsv
+├── msk_impact
+│   └── claims.tsv
+├── my_cancer_genome
+│   └── claims.tsv
+├── my_cancer_genome_clinical_trial
+│   └── claims.tsv
+├── nci
+│   ├── claims.tsv
+│   └── claims.xml
+├── oncokb
+│   ├── drug_claim.csv
+│   ├── gene_claim.csv
+│   ├── gene_claim_aliases.csv
+│   ├── interaction_claim.csv
+│   ├── interaction_claim_attributes.csv
+│   └── interaction_claim_links.csv
+├── oncomine
+│   └── claims.tsv
+├── pharmgkb
+│   └── claims.tsv
+├── russ_lampel
+│   └── claims.tsv
+├── talc
+│   └── claims.tsv
+├── tdg_clinical_trial
+│   ├── claims.tsv
+├── tempus
+│   └── claims.tsv
+├── tend
+│   └── claims.tsv
+└── ttd
+    └── claims.csv
+```
+
+First, load claims:
+
+```shell
+rake dgidb:import:all
+```
+
+Then, run grouping. By default, the groupers will expect a normalizer service to be running locally on port 8000; use the `THERAPY_HOSTNAME` and `GENE_HOSTNAME` environment variables to specify alternate hosts:
+
+```shell
+export THERAPY_HOSTNAME=http://localhost:7999  # no trailing backslash
+rake dgidb:group:drugs
+export GENE_HOSTNAME=http://localhost:7998  # no trailing backslash
+rake dgidb:group:genes
+rake dgidb:group:interactions
+```
+
+Finally, normalize remaining metadata:
+
+```shell
+rake dgidb:normalize:drug_approval_types
+rake dgidb:normalize:drug_types
+rake dgidb:normalize:populate_source_counters
+```
+
 ### Client setup
 
 Navigate to the [/client directory](/client):
@@ -106,4 +220,16 @@ Start the client:
 
 ```shell
 yarn start
+```
+
+Frontend style is enforced by [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/). Conformance is ensured by [pre-commit](https://pre-commit.com/#usage). Before your first commit, run
+
+```shell
+pre-commit install
+```
+
+In practice, Prettier will do most of the formatting work for you to be in accordance with ESLint. Run the following to autoformat a file:
+
+```shell
+yarn run prettier --write path/to/file
 ```

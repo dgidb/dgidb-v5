@@ -1,8 +1,8 @@
+import React from 'react';
 import TabPanel from 'components/Shared/TabPanel/TabPanel';
 import { DrugSummary } from '../DrugSummary';
 import AmbiguousTermsSummary from 'components/Shared/AmbiguousTermsSummary/AmbiguousTermsSummary';
 import { Box, Tab, Tabs } from '@mui/material';
-import './DrugSearchResults.scss';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { useContext } from 'react';
 import { useGetMatchedResults } from 'hooks/queries/useGetAmbiguousResults';
