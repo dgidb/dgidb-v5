@@ -22,6 +22,13 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
+import HelpIcon from '@mui/icons-material/Help';
+
+enum DelimiterTypes {
+  Comma = 'Comma',
+  CommaSpace = 'Comma With Space',
+  TabNewline = 'Tab or Newline',
+}
 
 enum DelimiterTypes {
   Comma = 'Comma',
@@ -148,6 +155,73 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
       );
     }
   }, [selectedOptions, state.searchTerms]);
+
+  const convertToDropdownOptions = (options: string[]) => {
+    return options.map((item: string) => {
+      return { suggestion: item.trim() };
+    });
+  };
+
+  const handlePaste = (event: any) => {
+    let pastedText = event.clipboardData.getData('text');
+    let pastedOptions: any[] = convertToDropdownOptions([pastedText]);
+
+    const commaSepOptions = pastedText.split(',');
+
+    if (pastedSearchDelimiter === DelimiterTypes.Comma) {
+      pastedOptions = convertToDropdownOptions(commaSepOptions);
+    } else if (pastedSearchDelimiter === DelimiterTypes.CommaSpace) {
+      const commaSpaceSepOptions = pastedText.split(', ');
+      pastedOptions = convertToDropdownOptions(commaSpaceSepOptions);
+    } else if (pastedSearchDelimiter === DelimiterTypes.TabNewline) {
+      const whitespaceRegex = /[\t\n\r\f\v]/;
+      const whitespaceSepOptions = pastedText.split(whitespaceRegex);
+      pastedOptions = convertToDropdownOptions(whitespaceSepOptions);
+    } else {
+      pastedOptions = convertToDropdownOptions(commaSepOptions);
+    }
+    setSearchWasPasted(true);
+    // make sure we persist the search terms already entered, combine any pre-existing search terms with the new pasted options
+    const newSearchOptions = selectedOptions.concat(pastedOptions);
+    // remove any duplicated terms (need to iterate through only the terms since objects are never equivalent in js, even if the contents are the same)
+    const uniqueSearchTerms = [
+      ...new Set(newSearchOptions.map((option) => option.suggestion)),
+    ];
+    setSelectedOptions(convertToDropdownOptions(uniqueSearchTerms));
+    // we don't want the code to also run what's in onInputChange for the Autocomplete since everything is handled here
+    event.preventDefault();
+  };
+
+  const handleCheckboxSelect = (event: any) => {
+    setPastingFromDocument(event.target.checked);
+    // reset the selected delimiter and searchWasPasted, to avoid potential weird behaviors if a user deselects the checkbox
+    setPastedSearchDelimiter('');
+    setSearchWasPasted(false);
+  };
+
+  const handleDelimiterChange = (event: any) => {
+    setPastedSearchDelimiter(event.target.value as string);
+  };
+
+  const pasteAlert =
+    searchWasPasted && pastedSearchDelimiter === '' ? (
+      <Box width="100%" pb={2}>
+        <Alert severity="info">
+          <AlertTitle>Verify your search terms</AlertTitle>
+          <p>
+            It looks like you pasted search terms. We have defaulted the
+            delimiter to comma-separated terms.
+          </p>
+          <p style={{ marginTop: '10px' }}>
+            If this is incorrect or you would like to use a different delimiter,
+            make sure to check the “Bulk search” option below and select a
+            delimiter from the drop down.
+          </p>
+        </Alert>
+      </Box>
+    ) : (
+      <></>
+    );
 
   const convertToDropdownOptions = (options: string[]) => {
     return options.map((item: string) => {
