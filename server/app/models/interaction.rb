@@ -51,15 +51,31 @@ class Interaction < ActiveRecord::Base
     end
   end
 
-  def calculate_interaction_score(known_drug_partners_per_gene = nil, known_gene_partners_per_drug = nil)
-    known_drug_partners_per_gene = Interaction.group(:gene_id).count if known_drug_partners_per_gene.nil?
-    average_known_drug_partners_per_gene = known_drug_partners_per_gene.values.sum / known_drug_partners_per_gene.values.size.to_f
-    known_gene_partners_per_drug = Interaction.group(:drug_id).count if known_gene_partners_per_drug.nil?
-    average_known_gene_partners_per_drug = known_gene_partners_per_drug.values.sum / known_gene_partners_per_drug.values.size.to_f
-    known_drug_partners_for_interaction_gene = known_drug_partners_per_gene[self.gene_id]
-    known_gene_partners_for_interaction_drug = known_gene_partners_per_drug[self.drug_id]
+  def calculate_interaction_score(drug_partners_per_gene = nil, gene_partners_per_drug = nil, update = false)
+    drug_partners_per_gene = Interaction.group(:gene_id).count if drug_partners_per_gene.nil?
+    avg_drug_partners_per_gene = drug_partners_per_gene.values.sum / drug_partners_per_gene.values.size.to_f
 
-    (self.publications.count + self.sources.count) * average_known_gene_partners_per_drug/known_gene_partners_for_interaction_drug * average_known_drug_partners_per_gene/known_drug_partners_for_interaction_gene
+    gene_partners_per_drug = Interaction.group(:drug_id).count if gene_partners_per_drug.nil?
+    avg_gene_partners_per_drug = gene_partners_per_drug.values.sum / gene_partners_per_drug.values.size.to_f
+
+    drug_partners_for_this_gene = drug_partners_per_gene[gene_id]
+    gene_partners_for_this_drug = gene_partners_per_drug[drug_id]
+
+    drug_specificity = avg_gene_partners_per_drug / gene_partners_for_this_drug
+    gene_specificity = avg_drug_partners_per_gene / drug_partners_for_this_gene
+    evidence_score = publications.count + sources.count
+
+    interaction_score = evidence_score * drug_specificity * gene_specificity
+
+    if update
+      self.interaction_score = interaction_score
+      self.drug_specificity = drug_specificity
+      self.gene_specificity = gene_specificity
+      self.evidence_score = evidence_score
+      save!
+    end
+
+    interaction_score
   end
 
 end

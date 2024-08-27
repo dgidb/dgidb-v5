@@ -458,7 +458,10 @@ CREATE TABLE public.interactions (
     id text NOT NULL,
     drug_id text NOT NULL,
     gene_id text NOT NULL,
-    score numeric
+    score numeric,
+    drug_specificity double precision,
+    gene_specificity double precision,
+    evidence_score integer
 );
 
 
@@ -1878,6 +1881,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220523183117'),
 ('20230104221712'),
 ('20230110183235'),
-('20230214150515');
+('20230214150515'),
+('20240826185158');
 
 
