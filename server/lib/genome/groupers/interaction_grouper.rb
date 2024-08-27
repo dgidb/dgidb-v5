@@ -93,10 +93,7 @@ module Genome
         gene_partners_per_drugeraction.group(:drug_id).count
         pbar = ProgressBar.create(title: 'Calculating interaction scores', total: count, format: "%t: %p%% %a |%B|")
         Interaction.find_each do |interaction|
-          interaction.score = interaction.calculate_interaction_score(
-            drug_partners_per_gene, gene_partners_per_drug, true
-          )
-          interaction.save!
+          interaction.calculate_interaction_score(drug_partners_per_gene, gene_partners_per_drug, true)
           pbar.progress += 1
         end
       end
