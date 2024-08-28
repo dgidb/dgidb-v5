@@ -68,7 +68,7 @@ class Interaction < ActiveRecord::Base
     interaction_score = evidence_score * drug_specificity * gene_specificity
 
     if update
-      self.interaction_score = interaction_score
+      self.score = interaction_score
       self.drug_specificity = drug_specificity
       self.gene_specificity = gene_specificity
       self.evidence_score = evidence_score

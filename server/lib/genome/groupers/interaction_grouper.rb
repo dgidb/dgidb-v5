@@ -89,8 +89,8 @@ module Genome
       def self.cache_interaction_scores
         count = Interaction.count
 
-        drug_partners_per_geneeraction.group(:gene_id).count
-        gene_partners_per_drugeraction.group(:drug_id).count
+        drug_partners_per_gene = Interaction.group(:gene_id).count
+        gene_partners_per_drug = Interaction.group(:drug_id).count
         pbar = ProgressBar.create(title: 'Calculating interaction scores', total: count, format: "%t: %p%% %a |%B|")
         Interaction.find_each do |interaction|
           interaction.calculate_interaction_score(drug_partners_per_gene, gene_partners_per_drug, true)

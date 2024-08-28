@@ -12,6 +12,9 @@ module Types
     field :publications, [Types::PublicationType], null: false
     field :sources, [Types::SourceType], null: false
     field :interaction_score, Float, null: false
+    field :drug_specificity, Float, null: false
+    field :gene_specificity, Float, null: false
+    field :evidence_score, Integer, null: false
 
     def interaction_claims
       Loaders::AssociationLoader.for(Interaction, :interaction_claims).load(object)
