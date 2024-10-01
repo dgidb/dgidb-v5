@@ -68,8 +68,8 @@ class DrugClaim < ::ActiveRecord::Base
       "https://www.guidetopharmacology.org/GRAC/LigandTextSearchForward?searchString=#{name}"
     when 'Chembl'
       "https://www.ebi.ac.uk/chembl/compound_report_card/#{name.gsub('chembl:', '')}"
-    when 'JAX-CKB'
-      'https://ckb.jax.org/'
+    when 'CKB-CORE'
+      'https://ckb.genomenon.org/'
     else
       base_url + name
     end

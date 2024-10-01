@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/https'
 
-module Genome; module Importers; module ApiImporters; module JaxCkb;
+module Genome; module Importers; module ApiImporters; module CkbCore;
   class ApiClient
     def genes
       get_json(gene_base_url)
