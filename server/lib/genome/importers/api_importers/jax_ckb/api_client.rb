@@ -22,7 +22,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
 
     def make_get_request(uri)
       res = Net::HTTP.get_response(uri)
-      raise StandardError.new("Request Failed!") unless res.code == '200'
+      raise StandardError.new("Request to #{uri} failed with code #{res.code}") unless res.code == '200'
 
       res.body
     end
@@ -47,11 +47,11 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
     end
 
     def gene_base_url
-      'https://ckb.jax.org/select2/getSelect2GenesForSearchTerm'
+      'https://ckb.genomenon.com/select2/getSelect2GenesForSearchTerm'
     end
 
     def gene_lookup_base_url(id)
-      "https://ckb.jax.org/gene/show?geneId=#{id}&tabType=GENE_LEVEL_EVIDENCE"
+      "https://ckb.genomenon.com/gene/show?geneId=#{id}&tabType=GENE_LEVEL_EVIDENCE"
     end
   end
 end; end; end; end
