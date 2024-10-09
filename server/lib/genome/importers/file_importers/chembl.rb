@@ -26,7 +26,7 @@ module Genome; module Importers; module FileImporters; module Chembl
     def get_version
       db = SQLite3::Database.open file_path
       db.results_as_hash = true
-      version = db.execute("SELECT name FROM version;")[0][0]
+      version = db.execute('SELECT substr(name, 8) AS name FROM version WHERE name LIKE "ChEMBL_%";')[0]['name']
       db.close
 
       version.match(/(\d+)$/)[0]
