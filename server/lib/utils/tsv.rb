@@ -2,11 +2,16 @@ require 'csv'
 
 module Utils
   module TSV
+
+    def self.add_tsv_header(tsv)
+      tsv << ["# Update date: #{Date.today.strftime('%Y-%b-%d')}"]
+      tsv << ["# DGIdb version: #{GithubRelease.current&.dig('tag_name')}"]
+    end
+
     def self.generate_interactions_tsv
       outfile_path = Rails.root.join('data', "interactions_#{Date.today.iso8601}.tsv")
       CSV.open(outfile_path, 'wb', col_sep: "\t") do |tsv|
-        tsv << ["# Update date: #{Date.today.strftime('%Y-%b-%d')}"]
-        tsv << ["# DGIdb version: #{GithubRelease.current&.dig('tag_name')}"]
+        add_tsv_header(tsv)
         tsv << %w[
           gene_claim_name
           gene_concept_id
@@ -85,6 +90,7 @@ module Utils
     def self.generate_categories_tsv
       outfile_path = Rails.root.join('data', "categories_#{Date.today.iso8601}.tsv")
       CSV.open(outfile_path, 'wb', col_sep: "\t") do |tsv|
+        add_tsv_header(tsv)
         tsv << %w[
           gene_claim_name
           gene_category_name
@@ -113,6 +119,7 @@ module Utils
     def self.generate_genes_tsv
       outfile_path = Rails.root.join('data', "genes_#{Date.today.iso8601}.tsv")
       CSV.open(outfile_path, 'wb', col_sep: "\t") do |tsv|
+        add_tsv_header(tsv)
         tsv << %w[
           gene_claim_name
           nomenclature
@@ -146,6 +153,7 @@ module Utils
     def self.generate_drugs_tsv
       outfile_path = Rails.root.join('data', "drugs_#{Date.today.iso8601}.tsv")
       CSV.open(outfile_path, 'wb', col_sep: "\t") do |tsv|
+        add_tsv_header(tsv)
         tsv << %w[
           drug_claim_name
           nomenclature
