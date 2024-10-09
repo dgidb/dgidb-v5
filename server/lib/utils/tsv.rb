@@ -5,6 +5,8 @@ module Utils
     def self.generate_interactions_tsv
       outfile_path = Rails.root.join('data', "interactions_#{Date.today.iso8601}.tsv")
       CSV.open(outfile_path, 'wb', col_sep: "\t") do |tsv|
+        tsv << ["# Update date: #{Date.today.strftime('%Y-%b-%d')}"]
+        tsv << ["# DGIdb version: #{GithubRelease.current&.dig('tag_name')}"]
         tsv << %w[
           gene_claim_name
           gene_concept_id
@@ -45,7 +47,19 @@ module Utils
           interactions.evidence_score AS evidence_score
         SQL
 
-        InteractionClaim.joins(:interaction_claim_types, :gene_claim, :drug_claim, :source, :interaction).joins(drug_claim: :drug, gene_claim: :gene).select(select_statement).group("gene_claims.id, drug_claims.id, interaction_claims.id, drugs.id, genes.id, interactions.id, sources.id").map do |row|
+        InteractionClaim.left_outer_joins(
+          :interaction_claim_types,
+          :gene_claim, :drug_claim,
+          :source,
+          :interaction
+        ).left_outer_joins(
+          drug_claim: :drug,
+          gene_claim: :gene
+        ).select(
+          select_statement
+        ).group(
+          "gene_claims.id, drug_claims.id, interaction_claims.id, drugs.id, genes.id, interactions.id, sources.id"
+        ).map do |row|
           tsv << [
             row.gene_claim_name,
             row.gene_concept_id,
