@@ -41,7 +41,7 @@ gem "activestorage", ">= 6.1.4.7"
 gem "nokogiri", ">= 1.13.2"
 
 # Importer dependencies
-gem "graphql-client"
+gem "graphql-client", "~> 0.23.0"
 gem "ruby-progressbar"
 gem "sqlite3", require: false
 gem "zlib", require: false
