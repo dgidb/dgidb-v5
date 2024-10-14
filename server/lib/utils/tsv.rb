@@ -4,7 +4,7 @@ module Utils
   module TSV
 
     def self.add_tsv_header(tsv)
-      tsv << ["# Update date: #{Date.today.strftime('%Y-%b-%d')}"]
+      tsv << ["# Data version: #{DATA_VERSION}"]
       tsv << ["# DGIdb version: #{GithubRelease.current&.dig('tag_name')}"]
     end
 
