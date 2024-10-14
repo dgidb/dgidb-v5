@@ -16,8 +16,6 @@ module Types
 
     field :service_info, Types::MetaType, null: false
 
-    field :service_info, Types::MetaType, null: false
-
     field :drug_suggestions, [Types::DrugSuggestionType], null: true do
       description "A searchable drug name or alias that can be completed from the supplied term"
       argument :term, String, required: true
