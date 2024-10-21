@@ -9,6 +9,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
+      trace_mode: Analytics.should_submit?(request) ? :analytics : nil
       # Query context goes here, for example:
       # current_user: current_user,
     }
