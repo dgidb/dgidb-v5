@@ -2,9 +2,7 @@ module Analytics
   extend ActiveSupport::Concern
 
   def should_submit?(req)
-    # TODO finalize conditions -- maybe just production?
-    # Rails.env.production?
-    true
+    Rails.env.production?
   end
 
   module_function :should_submit?
