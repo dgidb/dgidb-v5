@@ -41,9 +41,13 @@ export function useGetDruggableSources(sourceType: string) {
   return useQuery(
     'druggable-sources' + sourceType,
     async () => {
-      const res = await graphQLClient.request(getDruggableSourcesQuery, {
-        sourceType,
-      }, { 'dgidb-client-name': 'dgidb-frontend' });
+      const res = await graphQLClient.request(
+        getDruggableSourcesQuery,
+        {
+          sourceType,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: sourceType !== '' }
@@ -81,9 +85,13 @@ export function useGetGeneSources(sourceType: string) {
   return useQuery(
     'gene-sources' + sourceType,
     async () => {
-      const res = await graphQLClient.request(getGeneSourcesQuery, {
-        sourceType,
-      }, { 'dgidb-client-name': 'dgidb-frontend' });
+      const res = await graphQLClient.request(
+        getGeneSourcesQuery,
+        {
+          sourceType,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: sourceType !== '' }
@@ -121,9 +129,13 @@ export function useGetDrugSources(sourceType: string) {
   return useQuery(
     'drug-sources' + sourceType,
     async () => {
-      const res = await graphQLClient.request(getDrugSourcesQuery, {
-        sourceType,
-      }, { 'dgidb-client-name': 'dgidb-frontend' });
+      const res = await graphQLClient.request(
+        getDrugSourcesQuery,
+        {
+          sourceType,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: sourceType !== '' }
@@ -165,9 +177,13 @@ export function useGetInteractionSources(sourceType: string) {
   return useQuery(
     'interaction-sources' + sourceType,
     async () => {
-      const res = await graphQLClient.request(getInteractionSourcesQuery, {
-        sourceType,
-      }, { 'dgidb-client-name': 'dgidb-frontend' });
+      const res = await graphQLClient.request(
+        getInteractionSourcesQuery,
+        {
+          sourceType,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: sourceType !== '' }
