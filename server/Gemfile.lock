@@ -63,6 +63,7 @@ GEM
     airbrussh (1.5.3)
       sshkit (>= 1.6.1, != 1.7.0)
     base64 (0.2.0)
+    bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
@@ -90,7 +91,7 @@ GEM
     erubi (1.13.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
-    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0)
     fiber-storage (1.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -122,6 +123,7 @@ GEM
     marcel (1.0.4)
     method_source (1.1.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.7)
     minitest (5.25.1)
     msgpack (1.7.3)
     net-ftp (0.3.8)
@@ -143,6 +145,8 @@ GEM
     net-ssh (7.3.0)
     nio4r (2.7.3)
     nokogiri (1.16.7-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     ostruct (0.6.0)
     pg (1.2.3)
@@ -228,7 +232,8 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.1.0-arm64-darwin)
+    sqlite3 (2.1.0)
+      mini_portile2 (~> 2.8.0)
     sshkit (1.23.2)
       base64
       net-scp (>= 1.1.2)
@@ -249,6 +254,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
+  x86_64-linux
 
 DEPENDENCIES
   actionpack (>= 6.1.4.6)
