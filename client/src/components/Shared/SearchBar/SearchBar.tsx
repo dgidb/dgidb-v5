@@ -22,7 +22,6 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { useGetNameSuggestions } from 'hooks/queries/useGetNameSuggestions';
 import { SearchTypes } from 'types/types';
 import { useGetIsMobile } from 'hooks/shared/useGetIsMobile';
-import HelpIcon from '@mui/icons-material/Help';
 
 enum DelimiterTypes {
   Comma = 'Comma',
