@@ -8,10 +8,8 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      trace_mode: Analytics.should_submit?(request) ? :analytics : nil
-    }
-    result = DgidbSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    trace_mode = Analytics.get_trace_mode(request)
+    result = DgidbSchema.execute(query, variables: variables, context: { trace_mode: }, operation_name: operation_name)
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?

@@ -2,7 +2,8 @@ class DgidbSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 
-  trace_with GoogleAnalyticsTracer, mode: :analytics
+  trace_with FrontendAnalyticsTracer, mode: :frontend_analytics
+  trace_with ApiAnalyticsTracer, mode: :api_analytics
 
   use GraphQL::Batch
 

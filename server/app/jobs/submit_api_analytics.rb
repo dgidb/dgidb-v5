@@ -12,6 +12,7 @@ class SubmitApiAnalytics < SubmitAnalyticsEvent
           name: 'api_request',
           params: {
             query_type: opts[:query_type],
+            query: opts[:query],
             query_params: opts[:query_params],
             ip: opts[:user_ip]
           }
