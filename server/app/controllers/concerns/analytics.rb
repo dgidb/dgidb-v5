@@ -7,5 +7,3 @@ module Analytics
 
   module_function :should_submit?
 end
-
-

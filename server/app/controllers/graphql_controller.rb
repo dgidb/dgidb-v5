@@ -10,8 +10,6 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       trace_mode: Analytics.should_submit?(request) ? :analytics : nil
-      # Query context goes here, for example:
-      # current_user: current_user,
     }
     result = DgidbSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
