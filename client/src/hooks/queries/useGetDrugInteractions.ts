@@ -33,9 +33,13 @@ export function useGetDrugInteractions(conceptId: string) {
   return useQuery(
     'drug-interactions' + conceptId,
     async () => {
-      const res = await graphQLClient.request(getDrugInteractionsQuery, {
-        conceptId,
-      });
+      const res = await graphQLClient.request(
+        getDrugInteractionsQuery,
+        {
+          conceptId,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: conceptId !== '' }

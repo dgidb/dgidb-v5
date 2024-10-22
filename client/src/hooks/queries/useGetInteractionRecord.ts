@@ -40,7 +40,7 @@ export function useGetInteractionRecord(id: string) {
     async () => {
       const res = await graphQLClient.request(getInteractionRecordQuery, {
         id,
-      });
+      }, { 'dgidb-client-name': 'dgidb-frontend' });
       return res;
     },
     { enabled: id !== '' }

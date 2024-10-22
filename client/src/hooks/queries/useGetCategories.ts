@@ -38,9 +38,13 @@ export function useGetCategories(names: string[]) {
   return useQuery(
     'categories' + names,
     async () => {
-      const res = await graphQLClient.request(getCategoriesQuery, {
-        searchTerms: names,
-      });
+      const res = await graphQLClient.request(
+        getCategoriesQuery,
+        {
+          searchTerms: names,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: names.length > 0 }

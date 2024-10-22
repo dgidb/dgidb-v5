@@ -17,7 +17,11 @@ const getInteractionClaimTypesQuery = gql`
 
 export function useGetInteractionClaimTypes() {
   return useQuery('interaction_claim_types', async () => {
-    const res = await graphQLClient.request(getInteractionClaimTypesQuery, {});
+    const res = await graphQLClient.request(
+      getInteractionClaimTypesQuery,
+      {},
+      { 'dgidb-client-name': 'dgidb-frontend' }
+    );
     return res;
   });
 }

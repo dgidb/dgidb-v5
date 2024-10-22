@@ -112,9 +112,13 @@ export function useGetMatchedResults(names: string[], type: ResultTypes) {
   return useQuery(
     key,
     async () => {
-      const res = await graphQLClient.request(requestQuery, {
-        searchTerms: names,
-      });
+      const res = await graphQLClient.request(
+        requestQuery,
+        {
+          searchTerms: names,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: names.length > 0 }

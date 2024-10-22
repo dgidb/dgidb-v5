@@ -43,7 +43,7 @@ export function useGetDruggableSources(sourceType: string) {
     async () => {
       const res = await graphQLClient.request(getDruggableSourcesQuery, {
         sourceType,
-      });
+      }, { 'dgidb-client-name': 'dgidb-frontend' });
       return res;
     },
     { enabled: sourceType !== '' }
@@ -83,7 +83,7 @@ export function useGetGeneSources(sourceType: string) {
     async () => {
       const res = await graphQLClient.request(getGeneSourcesQuery, {
         sourceType,
-      });
+      }, { 'dgidb-client-name': 'dgidb-frontend' });
       return res;
     },
     { enabled: sourceType !== '' }
@@ -123,7 +123,7 @@ export function useGetDrugSources(sourceType: string) {
     async () => {
       const res = await graphQLClient.request(getDrugSourcesQuery, {
         sourceType,
-      });
+      }, { 'dgidb-client-name': 'dgidb-frontend' });
       return res;
     },
     { enabled: sourceType !== '' }
@@ -167,7 +167,7 @@ export function useGetInteractionSources(sourceType: string) {
     async () => {
       const res = await graphQLClient.request(getInteractionSourcesQuery, {
         sourceType,
-      });
+      }, { 'dgidb-client-name': 'dgidb-frontend' });
       return res;
     },
     { enabled: sourceType !== '' }

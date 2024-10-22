@@ -48,9 +48,13 @@ export function useGetInteractionsByGenes(names: string[]) {
   return useQuery(
     'interactions' + names,
     async () => {
-      const res = await graphQLClient.request(getInteractionsByGenesQuery, {
-        names,
-      });
+      const res = await graphQLClient.request(
+        getInteractionsByGenesQuery,
+        {
+          names,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: names.length > 0 }

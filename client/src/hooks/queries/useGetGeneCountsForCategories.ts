@@ -17,9 +17,13 @@ export const useGetGeneCountsForCategories = (sourceDbNames: String[]) => {
   return useQuery(
     'gene-counts-for-categories',
     async () => {
-      const res = await graphQLClient.request(getGeneCountsForCategoriesQuery, {
-        sourceDbNames: sourceDbNames,
-      });
+      const res = await graphQLClient.request(
+        getGeneCountsForCategoriesQuery,
+        {
+          sourceDbNames: sourceDbNames,
+        },
+        { 'dgidb-client-name': 'dgidb-frontend' }
+      );
       return res;
     },
     { enabled: true } // TODO double check
