@@ -29,7 +29,11 @@ export function useGetNameSuggestions(searchTerm: string, type: SearchTypes) {
   return useQuery(
     queryName + searchTerm,
     async () => {
-      const res = await graphQLClient.request(query, { term: searchTerm });
+      const res = await graphQLClient.request(
+        query,
+        { term: searchTerm },
+        { 'dgidb-query-type': queryName }
+      );
       return res;
     },
     { enabled: searchTerm !== '' }
