@@ -6,7 +6,7 @@ module Analytics
 
     if request.headers['dgidb-client-name'] == 'dgidb-frontend'
       :frontend_analytics
-    elsif request.headers['query'] && !requests.headers['query'].include?('IntrospectionQuery')
+    elsif request.headers['RAW_POST_DATA'] && !request.headers['RAW_POST_DATA'].include?('IntrospectionQuery')
       :api_analytics
     end
   end
