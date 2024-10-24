@@ -40,10 +40,11 @@ export function useGetCategories(names: string[]) {
     async () => {
       const res = await graphQLClient.request(
         getCategoriesQuery,
+        { searchTerms: names },
         {
-          searchTerms: names,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
+          'dgidb-query-type': 'search-genes',
+          'dgidb-genes-search-mode': 'categories',
+        }
       );
       return res;
     },

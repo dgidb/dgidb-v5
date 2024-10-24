@@ -30,13 +30,9 @@ export function useGetGeneRecord(conceptId: string) {
   return useQuery(
     'gene-record' + conceptId,
     async () => {
-      const res = await graphQLClient.request(
-        getGeneRecordQuery,
-        {
-          conceptId,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
-      );
+      const res = await graphQLClient.request(getGeneRecordQuery, {
+        conceptId,
+      });
       return res;
     },
     { enabled: conceptId !== '' }

@@ -33,13 +33,9 @@ export function useGetGeneInteractions(conceptId: string) {
   return useQuery(
     'gene-interactions' + conceptId,
     async () => {
-      const res = await graphQLClient.request(
-        getGeneInteractionsQuery,
-        {
-          conceptId,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
-      );
+      const res = await graphQLClient.request(getGeneInteractionsQuery, {
+        conceptId,
+      });
       return res;
     },
     { enabled: conceptId !== '' }

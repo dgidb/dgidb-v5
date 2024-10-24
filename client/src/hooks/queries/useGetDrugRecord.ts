@@ -31,13 +31,9 @@ export function useGetDrugRecord(conceptId: string) {
   return useQuery(
     'drug-record' + conceptId,
     async () => {
-      const res = await graphQLClient.request(
-        getDrugRecordQuery,
-        {
-          conceptId,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
-      );
+      const res = await graphQLClient.request(getDrugRecordQuery, {
+        conceptId,
+      });
       return res;
     },
     { enabled: conceptId !== '' }

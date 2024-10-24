@@ -32,7 +32,7 @@ export function useGetNameSuggestions(searchTerm: string, type: SearchTypes) {
       const res = await graphQLClient.request(
         query,
         { term: searchTerm },
-        { 'dgidb-client-name': 'dgidb-frontend' }
+        { 'dgidb-query-type': queryName }
       );
       return res;
     },

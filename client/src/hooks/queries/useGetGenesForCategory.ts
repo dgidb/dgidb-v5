@@ -27,14 +27,10 @@ export function useGetGenesForCategory(
   return useQuery(
     `genes-for-category-${categoryName}-db-${sourceDbNames}`,
     async () => {
-      const res = await graphQLClient.request(
-        getGenesForCategoryQuery,
-        {
-          categoryName: categoryName,
-          sourceDbNames: sourceDbNames,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
-      );
+      const res = await graphQLClient.request(getGenesForCategoryQuery, {
+        categoryName: categoryName,
+        sourceDbNames: sourceDbNames,
+      });
       return res;
     },
     { enabled: categoryName !== '' }

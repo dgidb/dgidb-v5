@@ -38,13 +38,9 @@ export function useGetInteractionRecord(id: string) {
   return useQuery(
     id,
     async () => {
-      const res = await graphQLClient.request(
-        getInteractionRecordQuery,
-        {
-          id,
-        },
-        { 'dgidb-client-name': 'dgidb-frontend' }
-      );
+      const res = await graphQLClient.request(getInteractionRecordQuery, {
+        id,
+      });
       return res;
     },
     { enabled: id !== '' }
