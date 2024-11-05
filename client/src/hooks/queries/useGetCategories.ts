@@ -38,9 +38,14 @@ export function useGetCategories(names: string[]) {
   return useQuery(
     'categories' + names,
     async () => {
-      const res = await graphQLClient.request(getCategoriesQuery, {
-        searchTerms: names,
-      });
+      const res = await graphQLClient.request(
+        getCategoriesQuery,
+        { searchTerms: names },
+        {
+          'dgidb-query-type': 'search-genes',
+          'dgidb-genes-search-mode': 'categories',
+        }
+      );
       return res;
     },
     { enabled: names.length > 0 }
