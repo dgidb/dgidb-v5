@@ -8,9 +8,12 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+    headers = request.headers
     context = {
       trace_mode: Analytics.get_trace_mode(request),
-      request_ip: request.remote_ip
+      request_ip: request.remote_ip,
+      query_type: headers['dgidb-query-type'],
+      genes_search_mode: headers['dgidb-genes-search-mode']
     }
     result = DgidbSchema.execute(query, variables: variables, context:, operation_name: operation_name)
     render json: result
