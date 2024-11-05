@@ -5,9 +5,9 @@ module Analytics
     return unless Rails.env.production?
 
     query_types = %w[search-genes search-drugs]
-    if request.headers['dgidb-client-name'] == 'dgidb-frontend' && query_types.include?(request.headers['dgidb-query-type'])
-      :frontend_analytics
-    elsif request.headers['RAW_POST_DATA'] && !request.headers['RAW_POST_DATA'].include?('IntrospectionQuery')
+    if request.headers['dgidb-client-name'] == 'dgidb-frontend'
+      :frontend_analytics if query_types.include?(request.headers['dgidb-query-type'])
+    else
       :api_analytics
     end
   end
