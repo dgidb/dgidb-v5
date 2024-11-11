@@ -8,7 +8,8 @@ module ApiAnalyticsTracer
     params = {
       user_ip: query.context[:request_ip],
       query: query.query_string.squish,
-      query_variables: query.provided_variables
+      query_variables: query.provided_variables,
+      client_type: request.headers['dgidb-client-name']
     }
 
     API_LOGGER.info(params)
