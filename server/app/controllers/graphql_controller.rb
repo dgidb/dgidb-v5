@@ -13,6 +13,7 @@ class GraphqlController < ApplicationController
       trace_mode: Analytics.get_trace_mode(request),
       request_ip: request.remote_ip,
       query_type: headers['dgidb-query-type'],
+      client_name: headers['dgidb-client-name'],
       genes_search_mode: headers['dgidb-genes-search-mode']
     }
     result = DgidbSchema.execute(query, variables: variables, context:, operation_name: operation_name)
