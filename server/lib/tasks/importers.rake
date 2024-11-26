@@ -77,6 +77,7 @@ namespace :dgidb do
         gene_group: false,
         drug_group: false
       )
+      puts 'Running GuideToPharmacology importer...'
       if Source.where('lower(sources.source_db_name) = ?', 'guidetopharmacology').any?
         puts 'Found existing source! Deleting...'
         Utils::Database.delete_source('GuideToPharmacology')

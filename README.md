@@ -196,7 +196,7 @@ rake dgidb:group:interactions
 Finally, normalize remaining metadata:
 
 ```shell
-rake dgidb:normalize:drug_approval_types
+rake dgidb:normalize:drug_approval_ratings
 rake dgidb:normalize:drug_types
 rake dgidb:normalize:populate_source_counters
 ```
