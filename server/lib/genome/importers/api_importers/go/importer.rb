@@ -36,13 +36,13 @@ module Genome; module Importers; module ApiImporters; module Go;
       categories.each do |category, go_id|
         start = 0
         rows = 500
-        genes = api_client.genes_for_go_id(go_id, start, rows)
-        while genes.count.positive? do
+        loop do
+          genes = api_client.genes_for_go_id(go_id, start, rows)
           genes.each do |gene|
             create_gene_claim_for_entry(gene, category) if gene['taxon_label'] == 'Homo sapiens'
           end
+          break if genes.count < rows
           start += rows
-          genes = api_client.genes_for_go_id(go_id, start, rows)
         end
       end
     end

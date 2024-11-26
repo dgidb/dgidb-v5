@@ -15,6 +15,7 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def make_get_request(uri)
+      puts uri
       res = Net::HTTP.get_response(uri)
       raise StandardError, 'Request Failed!' unless res.code == '200'
 
@@ -22,7 +23,7 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def gene_lookup_base_url(id)
-      "https://api.geneontology.org/api/bioentity/function/%22GO:#{id}%22"
+      "https://api.geneontology.org/api/bioentity/function/GO:#{id}"
     end
 
     def params(start, rows)
