@@ -15,7 +15,6 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def make_get_request(uri)
-      puts uri
       res = Net::HTTP.get_response(uri)
       raise StandardError, 'Request Failed!' unless res.code == '200'
 
