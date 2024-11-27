@@ -14,7 +14,12 @@ expected_values = {
     "drug_approval_ratings": 13332,
     "publications": 13142
 }
+
+
 def handle_warn(name, actual_value):
+    """Just because a value drops below that of a previous release doesn't mean something's wrong;
+    but it'd be good to know.
+    """
     if expected_values[name] > actual_value:
         print(f"WARNING: {name} value is {actual_value}, expected {expected_values[name]}")
 
