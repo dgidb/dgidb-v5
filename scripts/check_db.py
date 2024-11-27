@@ -1,3 +1,4 @@
+"""Perform basic checks on database to verify import success."""
 import psycopg
 
 # figures from 2024-11-27 dump
