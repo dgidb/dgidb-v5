@@ -1,5 +1,6 @@
 import psycopg
 
+# figures from 2024-11-27 dump
 expected_values = {
     "gene_claims": 81019,
     "genes": 12062,
