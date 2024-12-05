@@ -17,7 +17,6 @@ module Genome; module Importers; module ApiImporters; module Go;
     end
 
     def make_get_request(uri, is_start)
-      puts uri
       res = Net::HTTP.get_response(uri)
       if res.code == '200'
         res.body
