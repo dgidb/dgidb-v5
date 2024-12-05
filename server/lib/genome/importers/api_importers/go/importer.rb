@@ -36,13 +36,17 @@ module Genome; module Importers; module ApiImporters; module Go;
       categories.each do |category, go_id|
         start = 0
         rows = 500
-        loop do
-          genes = api_client.genes_for_go_id(go_id, start, rows)
+        genes = api_client.genes_for_go_id(go_id, start, rows)
+        while genes.count.positive? do
           genes.each do |gene|
             create_gene_claim_for_entry(gene, category) if gene['taxon_label'] == 'Homo sapiens'
           end
-          break if genes.count < rows
           start += rows
+          begin
+            genes = api_client.genes_for_go_id(go_id, start, rows)
+          rescue PagesExhaustedError => e
+            break  # inferring that a 404 indicates exhaustion of page queue
+          end
         end
       end
     end
