@@ -42,7 +42,11 @@ module Genome; module Importers; module ApiImporters; module Go;
             create_gene_claim_for_entry(gene, category) if gene['taxon_label'] == 'Homo sapiens'
           end
           start += rows
-          genes = api_client.genes_for_go_id(go_id, start, rows)
+          begin
+            genes = api_client.genes_for_go_id(go_id, start, rows)
+          rescue PagesExhaustedError => e
+            break  # inferring that a 404 indicates exhaustion of page queue
+          end
         end
       end
     end
