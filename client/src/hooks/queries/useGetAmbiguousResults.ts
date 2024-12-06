@@ -112,9 +112,14 @@ export function useGetMatchedResults(names: string[], type: ResultTypes) {
   return useQuery(
     key,
     async () => {
-      const res = await graphQLClient.request(requestQuery, {
-        searchTerms: names,
-      });
+      const res = await graphQLClient.request(
+        requestQuery,
+        { searchTerms: names },
+        {
+          'dgidb-query-type':
+            type === ResultTypes.Gene ? 'search-genes' : 'search-drugs',
+        }
+      );
       return res;
     },
     { enabled: names.length > 0 }

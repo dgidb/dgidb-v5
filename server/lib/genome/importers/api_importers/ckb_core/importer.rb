@@ -1,9 +1,9 @@
-module Genome; module Importers; module ApiImporters; module JaxCkb;
+module Genome; module Importers; module ApiImporters; module CkbCore;
   class Importer < Genome::Importers::Base
     attr_reader :new_version
 
     def initialize
-      @source_db_name = 'JAX-CKB'
+      @source_db_name = 'CKB-CORE'
     end
 
     def create_claims
@@ -15,16 +15,16 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
         {
           source_db_name: source_db_name,
           source_db_version: set_current_date_version,
-          base_url: 'https://ckb.jax.org/gene/show?geneId=',
-          site_url: 'https://ckb.jax.org',
+          base_url: 'https://ckb.genomenon.org/gene/show?geneId=',
+          site_url: 'https://ckb.genomenon.org',
           citation: 'Patterson SE, Liu R, Statz CM, Durkin D, Lakshminarayana A, Mockus SM. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4. doi: 10.1186/s40246-016-0061-7. PMID: 26772741; PMCID: PMC4715272.',
           citation_short: 'Patterson SE, et al. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4.',
           pmid: '26772741',
           pmcid: 'PMC4715272',
           doi: '10.1186/s40246-016-0061-7',
-          full_name: 'The Jackson Laboratory Clinical Knowledgebase',
+          full_name: 'The Clinical Knowledgebase',
           license: License::CC_BY_NC_SA_4_0,
-          license_link: 'https://ckb.jax.org/about/index',
+          license_link: 'https://ckb.genomenon.org/about/index',
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
@@ -46,7 +46,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
               create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION, combination_drug_name)
               create_interaction_claim_publications(interaction_claim, interaction['References'])
               create_interaction_claim_attributes(interaction_claim, interaction)
-              create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
+              create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.genomenon.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
             end
           else
             next if drug_name.upcase == 'N/A'
@@ -55,7 +55,7 @@ module Genome; module Importers; module ApiImporters; module JaxCkb;
             interaction_claim = create_interaction_claim(gene_claim, drug_claim)
             create_interaction_claim_publications(interaction_claim, interaction['References'])
             create_interaction_claim_attributes(interaction_claim, interaction)
-            create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.jax.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
+            create_interaction_claim_link(interaction_claim, "#{gene['geneName']} Gene Level Evidence", "https://ckb.genomenon.org/gene/show?geneId=#{gene['id']}&tabType=GENE_LEVEL_EVIDENCE")
           end
         end
       end

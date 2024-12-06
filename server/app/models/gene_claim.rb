@@ -61,7 +61,7 @@ class GeneClaim < ::ActiveRecord::Base
     when 'TTD'
       ttd_id = self.gene_claim_aliases.find { |a| a.nomenclature == 'TTD Target ID' }.alias
       [base_url, 'data', 'target', 'details', ttd_id].join('/')
-    when 'JAX-CKB'
+    when 'CKB-CORE'
       entrez_id = self.gene_claim_aliases.select { |a| a.nomenclature == 'CKB Entrez Id' }.first.alias
       base_url + entrez_id
     when 'GO'
