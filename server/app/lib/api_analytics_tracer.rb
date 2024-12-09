@@ -3,7 +3,7 @@ module ApiAnalyticsTracer
   def analyze_query(query: )
     query_type = query.selected_operation.selections&.first&.name
 
-    return if query_type == '__schema'
+    return super if query_type == '__schema'
 
     params = {
       user_ip: query.context[:request_ip],
