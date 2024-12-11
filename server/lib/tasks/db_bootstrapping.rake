@@ -25,11 +25,11 @@ namespace :dgidb do
       if File.exist?( '/Applications/Postgres.app' )
         puts 'Using Postgres.app'
         ENV['PATH'] = "/Applications/Postgres.app/Contents/Versions/latest/bin:#{ENV['PATH']}"
-        return
+        next
       elsif File.exist?('/opt/homebrew/bin/psql')
         puts 'Using Hombrew-installed psql'
         ENV['PATH'] = "/opt/homebrew/bin/:#{ENV['PATH']}"
-        return
+        next
       end
     end
     puts 'Warning: unable to ensure psql is available on $PATH'
@@ -49,13 +49,6 @@ namespace :dgidb do
     raise 'You must supply a path to a DB dump' unless args[:db_dump]
 
     system "psql -h #{host} -d #{database_name} -f #{args[:db_dump]}"
-    Rails.cache.clear
-  end
-
-  desc 'load the latest available remote db dump and schema into the local db, blowing away what is currently there'
-  task load_from_remote: ['setup_path', 'db:drop', 'db:create', 'db:structure:load'] do
-    download_data_dump(data_file)
-    system "psql -h #{host} -d #{database_name} -f #{data_file}"
     Rails.cache.clear
   end
 end
