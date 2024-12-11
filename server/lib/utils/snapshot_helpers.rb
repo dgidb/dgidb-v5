@@ -48,13 +48,6 @@ module Utils; module SnapshotHelpers
     system_or_die("git submodule update --init data")
   end
 
-  def download_data_dump(destination)
-    unless Dir.exist? 'data'
-      Dir.mkdir('data')
-    end
-    system_or_die("wget -O #{destination} https://nch-igm-wagner-lab-public.s3.us-east-2.amazonaws.com/dgidb_v5_latest.sql")
-  end
-
   private
 
   def system_or_die(syscall)
