@@ -25,11 +25,14 @@ namespace :dgidb do
       if File.exist?( '/Applications/Postgres.app' )
         puts 'Using Postgres.app'
         ENV['PATH'] = "/Applications/Postgres.app/Contents/Versions/latest/bin:#{ENV['PATH']}"
-      elsif File.exist?('/opt/homebrew/bin/psql')
+        return
+      if File.exist?('/opt/homebrew/bin/psql')
         puts 'Using Hombrew-installed psql'
         ENV['PATH'] = "/opt/homebrew/bin/:#{ENV['PATH']}"
+        return
       end
     end
+    puts 'Warning: unable to ensure psql is available on $PATH'
   end
 
   desc 'create a dump of the current local database'
