@@ -8,6 +8,9 @@ module Types
     field :name, String, null: true
     field :long_name, String, null: true
     field :concept_id, String, null: true
+    field :clinically_actionable, Boolean, null: true
+    field :drug_resistance, Boolean, null: true
+    field :druggable_genome, Boolean, null: true
 
     field :gene_claims, [Types::GeneClaimType], null: false
     field :interactions, [Types::InteractionType], null: false
@@ -20,6 +23,18 @@ module Types
 
     def gene_categories_with_sources (category_name: nil)
       object.gene_categories_with_sources(category_name: category_name)
+    end
+
+    def clinically_actionable
+      object.gene_categories_with_sources.any? { |category| category.name == 'CLINICALLY ACTIONABLE' }
+    end
+
+    def drug_resistance
+      object.gene_categories_with_sources.any? { |category| category.name == 'DRUG RESISTANCE' }
+    end
+
+    def druggable_genome
+      object.gene_categories_with_sources.any? { |category| category.name == 'DRUGGABLE GENOME' }
     end
 
     def gene_claims
