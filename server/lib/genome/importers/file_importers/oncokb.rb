@@ -1,11 +1,11 @@
 module Genome; module Importers; module FileImporters; module Oncokb;
   class Importer < Genome::Importers::Base
     def initialize(tsv_root_path)
-      if tsv_root_path.nil?
-        @tsv_root = 'lib/data/oncokb/'
-      else
-        @tsv_root = tsv_root_path
-      end
+      @tsv_root = if tsv_root_path.nil?
+                    "#{default_data_dir}/oncokb/"
+                  else
+                    tsv_root_path
+                  end
       @source_db_name = 'OncoKB'
       @drug_claims = {}
       @gene_claims = {}

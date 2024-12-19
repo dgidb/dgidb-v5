@@ -12,6 +12,17 @@ module Genome; module Importers; module FileImporters; module MyCancerGenomeClin
     end
 
     private
+    def default_filename
+      'clinical_trial_claims'
+    end
+
+    def handle_file_location(file_path)
+      return file_path unless file_path.nil?
+
+      src_name = "my_cancer_genome"
+      "#{default_data_dir}/#{src_name}/#{src_name}_#{default_filename}.#{default_filetype}"
+    end
+
     def create_new_source
       @source ||= Source.create(
         {

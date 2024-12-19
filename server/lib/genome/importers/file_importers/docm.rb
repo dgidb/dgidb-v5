@@ -7,7 +7,7 @@ module Genome
 
           def initialize(tsv_root_path)
             @tsv_root = if tsv_root_path.nil?
-                          'lib/data/docm/'
+                          "#{default_data_dir}/docm/"
                         else
                           tsv_root_path
                         end
@@ -49,21 +49,21 @@ module Genome
 
 
           def create_drug_claims
-            CSV.foreach("#{@tsv_root}drug_claim.csv", headers: true, col_sep: ',') do |row|
+            CSV.foreach("#{@tsv_root}docm_drug_claims.csv", headers: true, col_sep: ',') do |row|
               dc = create_drug_claim(row[0])
               @drug_claims[row[0]] = dc
             end
           end
 
           def create_gene_claims
-            CSV.foreach("#{@tsv_root}gene_claim.csv", headers: true, col_sep: ',') do |row|
+            CSV.foreach("#{@tsv_root}docm_gene_claims.csv", headers: true, col_sep: ',') do |row|
               gc = create_gene_claim(row[0], GeneNomenclature::NCBI_NAME)
               @gene_claims[row[0]] = gc
             end
           end
 
           def create_interaction_claims
-            CSV.foreach("#{@tsv_root}interaction_claim.csv", headers: true, col_sep: ',') do |row|
+            CSV.foreach("#{@tsv_root}docm_interaction_claims.csv", headers: true, col_sep: ',') do |row|
               gc = @gene_claims[row[1]]
               dc = @drug_claims[row[0]]
               next if gc.nil? || dc.nil?
@@ -71,7 +71,7 @@ module Genome
               ic = create_interaction_claim(gc, dc)
               @interaction_claims[[gc, dc]] = ic
             end
-            CSV.foreach("#{@tsv_root}interaction_claim_attributes.csv", headers: true, col_sep: ',') do |row|
+            CSV.foreach("#{@tsv_root}docm_interaction_claim_attributes.csv", headers: true, col_sep: ',') do |row|
               gc = @gene_claims[row[3]]
               dc = @drug_claims[row[2]]
               next if gc.nil? || dc.nil?
@@ -79,7 +79,7 @@ module Genome
               ic = @interaction_claims[[gc, dc]]
               create_interaction_claim_attribute(ic, row[0], row[1])
             end
-            CSV.foreach("#{@tsv_root}interaction_claim_publications.csv", headers: true, col_sep: ',') do |row|
+            CSV.foreach("#{@tsv_root}docm_interaction_claim_publications.csv", headers: true, col_sep: ',') do |row|
               gc = @gene_claims[row[3]]
               dc = @drug_claims[row[2]]
               next if gc.nil? || dc.nil?
