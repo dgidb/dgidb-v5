@@ -10,12 +10,11 @@ module Genome; module Importers; module FileImporters; module Chembl
       @source_db_name = "ChEMBL"
     end
 
-    def default_filetype
-      'db'
-    end
+    def handle_file_location(file_path)
+      return file_path unless file_path.nil?
 
-    def default_filename
-      'chembl'
+      directory = "#{default_data_dir}/chembl/"
+      Dir.glob(File.join(directory, 'chembl_*.db')).max_by { |file| file.match(/chembl_(\d+)\.db/)[1].to_i rescue 0 }
     end
 
     def create_claims

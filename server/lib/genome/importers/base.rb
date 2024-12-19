@@ -40,11 +40,15 @@ module Genome
         'claims'
       end
 
+      def default_data_dir
+        "#{Dir.home}/.local/share/wags_tails"
+      end
+
       def handle_file_location(file_path)
         return file_path unless file_path.nil?
 
-        dir_name = self.class.name.split('::')[-2].underscore
-        "lib/data/#{dir_name}/#{default_filename}.#{default_filetype}"
+        src_name = self.class.name.split('::')[-2].underscore
+        "#{default_data_dir}/#{src_name}/#{src_name}_#{default_filename}.#{default_filetype}"
       end
 
       def remove_existing_source
