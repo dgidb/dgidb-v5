@@ -17,7 +17,7 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
       return file_path unless file_path.nil?
 
       directory = "#{default_data_dir}/pharmgkb/"
-      Dir.glob(File.join(directory, 'pharmgkb_*.tsv')).max_by { |file| file.match(/chembl_(\d+)\.db/)[1].to_i rescue 0 }
+      Dir.glob(File.join(directory, 'pharmgkb_*.tsv')).max_by { |file| file.match(/pharmgkb_(\d+)\.db/)[1].to_i rescue 0 }
     end
 
 
