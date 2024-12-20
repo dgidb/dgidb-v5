@@ -2,6 +2,7 @@ import base64
 import datetime
 import logging
 import os
+import sys
 import re
 from typing import NamedTuple
 import requests
@@ -16,7 +17,13 @@ from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
 from tqdm import tqdm
 
 _logger = logging.getLogger(__name__)
-
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
 def download_s3(uri: str, outfile_path: Path, tqdm_params: dict | None = None) -> None:
     if not tqdm_params:
@@ -159,17 +166,20 @@ class DrugbankProtected(DataSource):
         r = requests.get(releases_url, timeout=HTTPS_REQUEST_TIMEOUT)
         r.raise_for_status()
         try:
-            latest = r.json()[0]
-            url = latest["url"]
-            version = (
-                re.match(
-                    r"https:\/\/go.drugbank.com\/releases\/(.*)\/downloads\/all-full-database",
-                    url,
-                )
-                .groups()[0]
-                .replace("-", ".")
-            )
-            return version, url
+            data = r.json()
+            for release in data:
+                if release["url"].endswith("all-full-database"):
+                    version = (
+                        re.match(
+                            r"https:\/\/go.drugbank.com\/releases\/(.*)\/downloads\/all-full-database",
+                            release["url"],
+                        )
+                        .groups()[0]
+                        .replace("-", ".")
+                    )
+                    return version, release["url"]
+            msg = f"Unable to parse release data for full DB from {releases_url}"
+            raise RemoteDataError(msg)
         except (KeyError, IndexError) as e:
             msg = "Unable to parse latest DrugBank version number from releases API endpoint"
             raise RemoteDataError(msg) from e
@@ -368,6 +378,7 @@ class HumanProteinAtlas(UnversionedS3Data):
 
 class Idg(UnversionedS3Data):
     _src_name = "idg"
+    _filetype = "json"
 
 
 class MskImpact(UnversionedS3Data):
