@@ -19,11 +19,10 @@ from tqdm import tqdm
 _logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout)
-    ]
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
 )
+
 
 def download_s3(uri: str, outfile_path: Path, tqdm_params: dict | None = None) -> None:
     if not tqdm_params:
