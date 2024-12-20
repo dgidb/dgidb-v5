@@ -21,11 +21,11 @@ cd dgidb-v5
 
 ### Server setup
 
-First, you may need to switch your Ruby version with RVM to match the version declared in the first few lines of the [Gemfile](server/Gemfile). For example, to switch to version 3.0.4:
+First, you may need to switch your Ruby version with RVM to match the version declared in the first few lines of the [Gemfile](server/Gemfile). For example, to switch to version 3.1.0:
 
 ```shell
-rvm install 3.0.4
-rvm 3.0.4
+rvm install 3.1.0
+rvm 3.1.0
 ```
 
 From the repo root, enter the [server subdirectory](server/):
@@ -55,22 +55,10 @@ pg_ctl -D /opt/homebrew/var/postgres start
 # on older macs you may need to use a different path instead, eg "pg_ctl -D /usr/local/var/postgres start"
 ```
 
-Database initialization utilities are in-progress, so for now, the easiest way to get a working database is to manually create it using the `psql` command. First, enter the psql console:
+The database must be constructed manually. This command will also vary, but it should be something like this:
 
 ```
-psql -d postgres  # if you are opening psql for the first time, you'll need to connect to the database 'postgres'
-# should produce a prompt like the following:
-# psql (14.2)
-# Type "help" for help.
-#
-# jss009=#
-```
-
-Within the psql console, create the DGIdb database, then quit:
-
-```
-CREATE DATABASE dgidb;
-\q
+createdb -U postgres dgidb
 ```
 
 Next, back in the main shell, import a database dump file (ask on Slack if you need the latest file):
@@ -95,100 +83,32 @@ To perform a data load from scratch, first run the `reset` task to provide a cle
 rake db:reset
 ```
 
-Most DGIdb data comes from static files, typically called `claims.tsv`. The data loader classes expect `server/lib/data/` to contain the following files:
+A Python script is available to deposit all data in the proper location. Assuming you're still in the `server/` subdirectory:
 
-```
-lib/data
-├── bader_lab
-│   └── claims.tsv
-├── cancer_commons
-│   └── claims.tsv
-├── caris_molecular_intelligence
-│   └── claims.tsv
-├── cgi
-│   └── claims.tsv
-├── chembl
-│   └── chembl.db
-├── clearity_foundation_biomarkers
-│   └── claims.tsv
-├── clearity_foundation_clinical_trial
-│   └── claims.tsv
-├── cosmic
-│   └── claims.csv
-├── dgene
-│   └── claims.tsv
-├── drugbank
-│   └── claims.xml
-├── dtc
-│   └── claims.csv
-├── ensembl
-│   └── claims.tsv
-├── entrez
-│   └── claims.tsv
-├── fda
-│   └── claims.tsv
-├── foundation_one_genes
-│   └── claims.tsv
-├── go
-│   └── targets.tsv
-├── guide_to_pharmacology
-│   ├── interactions.csv
-│   └── targets_and_families.csv
-├── hingorani_casas
-│   └── claims.tsv
-├── hopkins_groom
-│   └── claims.tsv
-├── human_protein_atlas
-│   └── claims.tsv
-├── idg
-│   ├── claims.json
-│   └── claims.tsv
-├── msk_impact
-│   └── claims.tsv
-├── my_cancer_genome
-│   └── claims.tsv
-├── my_cancer_genome_clinical_trial
-│   └── claims.tsv
-├── nci
-│   ├── claims.tsv
-│   └── claims.xml
-├── oncokb
-│   ├── drug_claim.csv
-│   ├── gene_claim.csv
-│   ├── gene_claim_aliases.csv
-│   ├── interaction_claim.csv
-│   ├── interaction_claim_attributes.csv
-│   └── interaction_claim_links.csv
-├── oncomine
-│   └── claims.tsv
-├── pharmgkb
-│   └── claims.tsv
-├── russ_lampel
-│   └── claims.tsv
-├── talc
-│   └── claims.tsv
-├── tdg_clinical_trial
-│   ├── claims.tsv
-├── tempus
-│   └── claims.tsv
-├── tend
-│   └── claims.tsv
-└── ttd
-    └── claims.csv
+```shell
+cd ../scripts
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 download_files.py
 ```
 
-First, load claims:
+Note that this script can also be used to replace data files from sources that supply new data updates (e.g. ChEMBL).
+
+Then, load claims:
 
 ```shell
 rake dgidb:import:all
 ```
 
-Then, run grouping. By default, the groupers will expect a normalizer service to be running locally on port 8000; use the `THERAPY_HOSTNAME` and `GENE_HOSTNAME` environment variables to specify alternate hosts:
+Then, run grouping. See documentation for the [therapy](https://github.com/cancervariants/therapy-normalization) and [gene](https://gene-normalizer.readthedocs.io/stable/) normalizers for more.
+
+By default, the groupers will expect a normalizer service to be running locally on port 8000; use the `THERAPY_HOSTNAME` and `GENE_HOSTNAME` environment variables to specify alternate hosts:
 
 ```shell
-export THERAPY_HOSTNAME=http://localhost:7999  # no trailing backslash
+export THERAPY_HOSTNAME=http://localhost:7999
 rake dgidb:group:drugs
-export GENE_HOSTNAME=http://localhost:7998  # no trailing backslash
+export GENE_HOSTNAME=http://localhost:7998
 rake dgidb:group:genes
 rake dgidb:group:interactions
 ```
