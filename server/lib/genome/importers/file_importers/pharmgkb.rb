@@ -13,6 +13,20 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
 
     private
 
+    def handle_file_location(file_path)
+      return file_path unless file_path.nil?
+
+      directory = "#{default_data_dir}/pharmgkb/"
+      Dir.glob(File.join(directory, 'pharmgkb_*.tsv')).max_by { |file| file.match(/pharmgkb_(\d+)\.db/)[1].to_i rescue 0 }
+    end
+
+
+    def get_version
+      match = @file_path.match(/(\d{8})/)
+      match ? match[1] : nil
+    end
+
+
     def create_new_source
       @source ||= Source.create(
         {
@@ -23,7 +37,7 @@ module Genome; module Importers; module FileImporters; module Pharmgkb;
           pmid: '34216021',
           pmcid: 'PMC8457105',
           doi: '10.1002/cpt.2350',
-          source_db_version: '2024-04-05',  # using static file, see issue #420
+          source_db_version: get_version,
           source_db_name: source_db_name,
           full_name: 'PharmGKB - The Pharmacogenomics Knowledgebase',
           license: License::CC_BY_SA_4_0,

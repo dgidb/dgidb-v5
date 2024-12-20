@@ -11,8 +11,15 @@ module Genome; module Importers; module FileImporters; module Drugbank;
       @source_db_name = 'DrugBank'
     end
 
-    def default_filetype
-      'xml'
+    def handle_file_location(file_path)
+      return file_path unless file_path.nil?
+
+      directory = "#{default_data_dir}/drugbank/"
+      Dir.glob(File.join(directory, 'drugbank_*.xml'))
+           .max_by do |file|
+             match = file.match(/drugbank_(\d+)\.(\d+)\.(\d+)\.xml/)
+             match ? [match[1].to_i, match[2].to_i, match[3].to_i] : [0, 0, 0]
+           end
     end
 
     def run_parser
