@@ -34,7 +34,7 @@ module Genome; module Importers; module FileImporters; module ClearityFoundation
     def handle_file_location(file_path)
       return file_path unless file_path.nil?
 
-      "#{Dir.home}/.local/share/wags_tails/clearity_foundation/clearity_foundation_clinical_trial_claims.tsv"
+      "#{default_data_dir}/clearity_foundation/clearity_foundation_clinical_trial_claims.tsv"
     end
 
     def create_interaction_claims

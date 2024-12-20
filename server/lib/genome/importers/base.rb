@@ -1,4 +1,5 @@
 require 'csv'
+require 'open3'
 
 module Genome
   module Importers
@@ -41,7 +42,14 @@ module Genome
       end
 
       def default_data_dir
-        "#{Dir.home}/.local/share/wags_tails"
+        begin
+          stdout, stderr, process_status = Open3.capture3('wags-tails path')
+        rescue Errno::ENOENT
+          raise 'wags-tails executable not found. Is it on your $PATH? See README.'
+        end
+        raise "wags-tails path lookup failed with code #{stderr}." unless process_status.success?
+
+        stdout.chomp
       end
 
       def handle_file_location(file_path)
