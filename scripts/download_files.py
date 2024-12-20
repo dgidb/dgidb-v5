@@ -24,41 +24,30 @@ logging.basicConfig(
 )
 
 
-def download_s3(uri: str, outfile_path: Path, tqdm_params: dict | None = None) -> None:
-    if not tqdm_params:
-        tqdm_params = {}
-    _logger.info("Downloading %s from %s...", outfile_path.name, uri)
-
-    bucket, key = uri.removeprefix("s3://").split("/", 1)
-
-    s3 = boto3.client("s3")
-    try:
-        response = s3.head_object(Bucket=bucket, Key=key)
-    except ClientError as e:
-        _logger.error("Encountered ClientError downloading %s: %s", uri, e.response)
-        raise e
-
-    file_size = response["ContentLength"]
-
-    with tqdm(total=file_size, **tqdm_params) as progress_bar:
-        s3.download_file(
-            Bucket=bucket,
-            Key=key,
-            Filename=outfile_path,
-            Callback=lambda bytes_amount: progress_bar.update(bytes_amount),
-        )
-
-
 class UnversionedS3Data(UnversionedDataSource):
     _datatype = "claims"
     _filetype = "tsv"  # most of this data is TSV, can manually set otherwise
 
     def _download_data(self, version: str, outfile: Path) -> None:
-        download_s3(
-            f"s3://nch-igm-wagner-lab/dgidb/source_data/{self._src_name}/{self._src_name}_{self._datatype}.{self._filetype}",
-            outfile,
-            self._tqdm_params,
-        )
+        uri = f"s3://nch-igm-wagner-lab/dgidb/source_data/{self._src_name}/{self._src_name}_{self._datatype}.{self._filetype}"
+        _logger.info("Downloading %s from %s...", outfile.name, uri)
+        bucket, key = uri.removeprefix("s3://").split("/", 1)
+        s3 = boto3.client("s3")
+        try:
+            response = s3.head_object(Bucket=bucket, Key=key)
+        except ClientError as e:
+            _logger.error("Encountered ClientError downloading %s: %s", uri, e.response)
+            raise e
+
+        file_size = response["ContentLength"]
+
+        with tqdm(total=file_size, **self._tqdm_params) as progress_bar:
+            s3.download_file(
+                Bucket=bucket,
+                Key=key,
+                Filename=outfile,
+                Callback=lambda bytes_amount: progress_bar.update(bytes_amount),
+            )
 
     def get_latest(
         self, from_local: bool = False, force_refresh: bool = False
