@@ -83,17 +83,19 @@ To perform a data load from scratch, first run the `reset` task to provide a cle
 rake db:reset
 ```
 
-A Python script is available to deposit all data in the proper location. Assuming you're still in the `server/` subdirectory:
+Some Python libraries are required for importing data. From the repo root, create a Python virtual environment and install required dependencies:
 
 ```shell
-cd ../scripts
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python3 download_files.py
+pip install -r scripts/requirements.txt
 ```
 
-Note that this script can also be used to replace data files from sources that supply new data updates (e.g. ChEMBL).
+A Python script is supplied to ensure that primary source data is available. This can also be used to acquire new versions of data that supply discrete releases (like ChEMBL):
+
+```
+python3 scripts/download_files.py
+```
 
 Then, load claims:
 
