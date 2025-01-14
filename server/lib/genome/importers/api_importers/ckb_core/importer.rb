@@ -15,14 +15,14 @@ module Genome; module Importers; module ApiImporters; module CkbCore;
         {
           source_db_name: source_db_name,
           source_db_version: set_current_date_version,
-          base_url: 'https://ckb.genomenon.org/gene/show?geneId=',
-          site_url: 'https://ckb.genomenon.org',
+          base_url: 'https://ckb-core.genomenon.com/gene/show?geneId=',
+          site_url: 'https://ckb-core.genomenon.com',
           citation: 'Patterson SE, Liu R, Statz CM, Durkin D, Lakshminarayana A, Mockus SM. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4. doi: 10.1186/s40246-016-0061-7. PMID: 26772741; PMCID: PMC4715272.',
           citation_short: 'Patterson SE, et al. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4.',
           pmid: '26772741',
           pmcid: 'PMC4715272',
           doi: '10.1186/s40246-016-0061-7',
-          full_name: 'The Clinical Knowledgebase',
+          full_name: 'The Cancer Knowledgebase',
           license: License::CC_BY_NC_SA_4_0,
           license_link: 'https://ckb.genomenon.org/about/index',
         }
