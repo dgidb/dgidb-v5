@@ -4,51 +4,132 @@ module Genome
       attr_reader :term_to_match_dict
 
       def initialize
+        super
         url_base = ENV['THERAPY_HOSTNAME'] || 'http://localhost:8000'
-        if !url_base.ends_with? "/"
-          url_base += "/"
-        end
+        url_base += '/' unless url_base.ends_with? '/'
+
+        @entity_type = 'drug'
+        @normalizer_entity_type = 'therapy'
         @normalizer_host = "#{url_base}therapy/"
-
-        @term_to_match_dict = {}
-
-        @sources = {}
       end
 
-      def run(source_id = nil)
+      def group_claims(source_id = nil)
         claims = DrugClaim.eager_load(:drug_claim_aliases, :drug_claim_attributes).where(drug_id: nil)
         claims = claims.where(source_id: source_id) unless source_id.nil?
-        if source_id.nil?
-          puts "Grouping #{claims.length} ungrouped drug claims"
-        else
-          begin
-            source = Source.find(source_id)
-          rescue ActiveRecord::RecordNotFound
-            puts 'Unrecognized source ID provided'
-            return
-          end
-          source_name = source.source_db_name
-          puts "Grouping #{claims.length} ungrouped drug claims from #{source_name}"
-        end
 
+        print_grouping_message(claims, source_id)
         create_sources
-
 
         pbar = ProgressBar.create(title: 'Grouping drugs', total: claims.size, format: "%t: %p%% %a |%B|")
         claims.each do |drug_claim|
-          normalized_drug = normalize_claim(drug_claim.name, drug_claim.drug_claim_aliases)
-          next if normalized_drug.nil?
-
-          if normalized_drug.is_a? String
-            normalized_id = normalized_drug
-          else
-            normalized_id = normalized_drug['normalized_id']
-            create_new_drug(normalized_drug['therapeutic_agent'], normalized_id) if Drug.find_by(concept_id: normalized_id).nil?
-          end
-          add_claim_to_drug(drug_claim, normalized_id)
+          group_drug_claim(drug_claim)
 
           pbar.progress += 1
         end
+      end
+
+      private
+
+      def find_drug_attribute(drug_claim_attribute)
+        drug_attribute = DrugAttribute.where(
+          'upper(name) = ? and upper(value) = ?',
+          drug_claim_attribute.name.upcase,
+          drug_claim_attribute.value.upcase
+        ).first
+        if drug_attribute.nil?
+          drug_attribute = DrugAttribute.where(
+            'lower(name) = ? and lower(value) = ?',
+            drug_claim_attribute.name.downcase,
+            drug_claim_attribute.value.downcase
+          ).first
+        end
+        drug_attribute
+      end
+
+      def add_claim_attributes(claim, drug)
+        drug_attributes = drug.drug_attributes.pluck(:name, :value)
+                              .map { |drug_attribute| drug_attribute.map(&:upcase) }
+                              .to_set
+        claim.drug_claim_attributes.each do |dca|
+          if drug_attributes.member? [dca.name.upcase, dca.value.upcase]
+            drug_attribute = find_drug_attribute(dca)
+          else
+            drug_attribute = DrugAttribute.create(
+              name: dca.name,
+              value: dca.value,
+              drug: drug
+            )
+          end
+          unless drug_attribute.sources.member? claim.source
+            drug_attribute.sources << claim.source
+            drug_attribute.save
+          end
+        end
+      end
+
+      def add_claim_aliases(claim, drug)
+        drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
+        drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
+        unless claim.name == drug.name || claim.name == drug.concept_id || claim.source.source_db_name == 'Drugs@FDA'
+          drug_claim_aliases.append(claim.name)
+        end
+        drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
+          if (drug_aliases.member? claim_alias) || claim_alias == drug.name || claim_alias == drug.concept_id.upcase
+            next
+          end
+
+          DrugAlias.create(alias: claim_alias, drug: drug)
+        end
+      end
+
+      def add_claim_approval_ratings(claim, drug)
+        claim.drug_claim_approval_ratings.each do |rating|
+          DrugApprovalRating.where(
+            rating: rating.rating,
+            drug_id: drug.id,
+            source_id: claim.source_id
+          ).first_or_create
+        end
+      end
+
+      def add_application(claim, drug)
+        DrugApplication.create(app_no: claim.name, drug: drug)
+      end
+
+      def add_claim_to_drug(claim, drug_concept_id)
+        drug = Drug.find_by(concept_id: drug_concept_id)
+        return if drug.nil?
+
+        claim.drug_id = drug.id
+        claim.save
+        add_claim_attributes(claim, drug)
+        add_claim_aliases(claim, drug)
+        add_claim_approval_ratings(claim, drug)
+        add_application(claim, drug) if claim.source.source_db_name == 'Drugs@FDA'
+      end
+
+      def group_drug_claim(drug_claim)
+        normalized_id = normalize_claim(drug_claim, drug_claim.drug_claim_aliases)
+        return if normalized_id.nil?
+
+        create_new_drug(normalized_id) if Drug.find_by(concept_id: normalized_id).nil?
+        add_claim_to_drug(drug_claim, normalized_id)
+      end
+
+      def normalizable_ids
+        [
+          DrugNomenclature::RXNORM_ID,
+          DrugNomenclature::NCIT_ID,
+          DrugNomenclature::DRUGBANK_ID,
+          DrugNomenclature::CHEMBL_ID,
+          DrugNomenclature::PUBCHEM_COMPOUND_ID,
+          DrugNomenclature::HEMONC_ID,
+          DrugNomenclature::CHEMIDPLUS_ID,
+          DrugNomenclature::WIKIDATA_ID,
+          DrugNomenclature::GTOP_LIGAND_ID,
+          DrugNomenclature::PUBCHEM_SUBSTANCE_ID,
+          DrugNomenclature::DRUGSATFDA_ID
+        ]
       end
 
       def create_sources
@@ -207,18 +288,13 @@ module Genome
           }
           rating = lookup[value]
         end
-        DrugClaimApprovalRating.where(
-          rating: rating,
-          drug_claim_id: claim.id
-        ).first_or_create unless rating.nil?
+        DrugClaimApprovalRating.where(rating: rating, drug_claim_id: claim.id).first_or_create unless rating.nil?
       end
 
       def add_grouper_claim_attributes(claim, record)
         approval_ratings = record.fetch('approval_ratings', [])
-        unless approval_ratings.nil?
-          approval_ratings.to_set.each do |rating|
-            add_grouper_claim_approval_rating(claim, rating)
-          end
+        approval_ratings&.to_set&.each do |rating|
+          add_grouper_claim_approval_rating(claim, rating)
         end
 
         record.fetch('approval_year', []).to_set.each do |year|
@@ -228,7 +304,7 @@ module Genome
         indications = record.fetch('has_indication')
         return unless indications.nil?
 
-        indications.filter_map { |ind| ind['label'].upcase unless ind['label'].nil? }.to_set.each do |indication|
+        indications.filter_map { |ind| ind['label']&.upcase }.to_set.each do |indication|
           DrugClaimAttribute.create(name: DrugAttributeName::INDICATION, value: indication, drug_claim_id: claim.id)
         end
       end
@@ -256,28 +332,23 @@ module Genome
             produce_concept_id_nomenclature(record['concept_id'])
           )
         end
-
         unless record['label'].nil? || record['label'] == claim_name
           add_grouper_claim_alias(record['label'], claim_name, claim.id, DrugNomenclature::PRIMARY_NAME)
         end
-
         prune_alias_list(record.fetch('aliases', [])).each do |value|
           add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::ALIAS)
         end
-
         prune_alias_list(record.fetch('trade_names', [])).each do |value|
           add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::TRADE_NAME)
         end
-
         prune_alias_list(record.fetch('xrefs', [])).each do |value|
           add_grouper_claim_alias(value, claim_name, claim.id, DrugNomenclature::XREF)
         end
       end
 
-      def add_grouper_data(drug, drug_response, concept_id)
-        drug_data = retrieve_normalizer_data(concept_id)
-
-        drug_data.each do |source_name, source_data|
+      def add_grouper_data(drug, concept_id)
+        retrieve_grouper_records(concept_id).each do |source_name, source_data|
+          # skip sources that we already import in DGIdb
           next if %w[DrugBank ChEMBL GuideToPHARMACOLOGY].include?(source_name)
 
           source = @sources[source_name.to_sym]
@@ -291,90 +362,12 @@ module Genome
         end
       end
 
-      def create_new_drug(drug_response, concept_id)
-        name = if drug_response['label'].nil? || drug_response['label'].blank?
-                 concept_id
-               else
-                 drug_response['label']
-               end
+      def create_new_drug(concept_id)
+        drug_response = retrieve_normalizer_response(concept_id)
+        name = get_normalized_name(drug_response)
         drug = Drug.where(concept_id: concept_id, name: name.upcase).first_or_create
 
-        add_grouper_data(drug, drug_response, concept_id)
-      end
-
-      def find_drug_attribute(drug_claim_attribute)
-        drug_attribute = DrugAttribute.where(
-          'upper(name) = ? and upper(value) = ?',
-          drug_claim_attribute.name.upcase,
-          drug_claim_attribute.value.upcase
-        ).first
-        if drug_attribute.nil?
-          drug_attribute = DrugAttribute.where(
-            'lower(name) = ? and lower(value) = ?',
-            drug_claim_attribute.name.downcase,
-            drug_claim_attribute.value.downcase
-          ).first
-        end
-        drug_attribute
-      end
-
-      def add_claim_attributes(claim, drug)
-        drug_attributes = drug.drug_attributes.pluck(:name, :value)
-                              .map { |drug_attribute| drug_attribute.map(&:upcase) }
-                              .to_set
-        claim.drug_claim_attributes.each do |drug_claim_attribute|
-          if drug_attributes.member? [drug_claim_attribute.name.upcase, drug_claim_attribute.value.upcase]
-            drug_attribute = find_drug_attribute(drug_claim_attribute)
-          else
-            drug_attribute = DrugAttribute.create(
-              name: drug_claim_attribute.name,
-              value: drug_claim_attribute.value,
-              drug: drug
-            )
-          end
-          unless drug_attribute.sources.member? claim.source
-            drug_attribute.sources << claim.source
-            drug_attribute.save
-          end
-        end
-      end
-
-      def add_claim_approval_ratings(claim, drug)
-        claim.drug_claim_approval_ratings.each do |rating|
-          DrugApprovalRating.where(
-            rating: rating.rating,
-            drug_id: drug.id,
-            source_id: claim.source_id
-          ).first_or_create
-        end
-      end
-
-      def add_claim_aliases(claim, drug)
-        drug_aliases = drug.drug_aliases.pluck(:alias).map(&:upcase).to_set
-        drug_claim_aliases = claim.drug_claim_aliases.pluck(:alias)
-        unless claim.name == drug.name || claim.name == drug.concept_id || claim.source.source_db_name == 'Drugs@FDA'
-          drug_claim_aliases.append(claim.name)
-        end
-        drug_claim_aliases.map(&:upcase).to_set.each do |claim_alias|
-          next if drug_aliases.member? claim_alias || claim_alias == drug.name || claim_alias == drug.concept_id.upcase
-          DrugAlias.create(alias: claim_alias, drug: drug)
-        end
-      end
-
-      def add_application(claim, drug)
-        DrugApplication.create(app_no: claim.name, drug: drug)
-      end
-
-      def add_claim_to_drug(claim, drug_concept_id)
-        drug = Drug.find_by(concept_id: drug_concept_id)
-        return if drug.nil?
-
-        claim.drug_id = drug.id
-        claim.save
-        add_claim_attributes(claim, drug)
-        add_claim_aliases(claim, drug)
-        add_claim_approval_ratings(claim, drug)
-        add_application(claim, drug) if claim.source.source_db_name == 'Drugs@FDA'
+        add_grouper_data(drug, concept_id)
       end
     end
   end
