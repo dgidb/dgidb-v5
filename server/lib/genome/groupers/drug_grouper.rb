@@ -31,19 +31,8 @@ module Genome
       private
 
       def find_drug_attribute(drug_claim_attribute)
-        drug_attribute = DrugAttribute.where(
-          'upper(name) = ? and upper(value) = ?',
-          drug_claim_attribute.name.upcase,
-          drug_claim_attribute.value.upcase
-        ).first
-        if drug_attribute.nil?
-          drug_attribute = DrugAttribute.where(
-            'lower(name) = ? and lower(value) = ?',
-            drug_claim_attribute.name.downcase,
-            drug_claim_attribute.value.downcase
-          ).first
-        end
-        drug_attribute
+        DrugAttribute.where('name ILIKE ? AND value ILIKE ?', drug_claim_attribute.name, drug_claim_attribute.value)
+                     .first
       end
 
       def add_claim_attributes(claim, drug)

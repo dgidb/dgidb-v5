@@ -76,7 +76,7 @@ module Genome
         end
 
         groups['concept_ids'] = concept_ids
-                                .sort_by! { |_, nomenclature| normalizable_ids.index(nomenclature) || Float::INFINITY }
+                                .sort_by { |_, nomenclature| normalizable_ids.index(nomenclature) || Float::INFINITY }
                                 .map { |concept_id| concept_id[0] }
         groups
       end
