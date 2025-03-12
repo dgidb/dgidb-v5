@@ -96,6 +96,9 @@ module Genome
       # So, we just take the first `LABEL` match we saw (arbitrarily).
       # Experimentally, these lower conditions happen ~not at all, but we want to have
       # them to fall back on just in case.
+      #
+      # @param claim_aliases [Array<String>] list of alias terms associated with a claim
+      # @return [String, nil] the normalized concept ID, if it's available, nil otherwise
       def normalize_claim_by_aliases(claim_aliases)
         alias_responses = {}
         match_votes = {
@@ -131,9 +134,9 @@ module Genome
         end
 
         if !best_match.nil?
-          alias_responses[best_match]
+          get_concept_id(alias_responses[best_match])
         elsif !best_default.nil?
-          alias_responses[best_default]
+          get_concept_id(alias_responses[best_default])
         end
       end
 
@@ -145,6 +148,10 @@ module Genome
       # in the search above.
       # Failing that, try to match based on consensus of other alias terms.
       # See `normalize_claim_by_aliases()`.
+      #
+      # @param claim [DrugClaim, GeneClaim] the concept claim to normalize
+      # @param claim_aliases [Array<DrugClaim>, Array<GeneClaim>] the list of associated aliases
+      # @return [String, nil] normalized concept ID if available
       def normalize_claim(claim, claim_aliases)
         term_search_groups = get_claim_search_groups(claim, claim_aliases)
 
