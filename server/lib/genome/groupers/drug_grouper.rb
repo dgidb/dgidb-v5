@@ -99,7 +99,10 @@ module Genome
 
       def group_drug_claim(drug_claim)
         normalized_id = normalize_claim(drug_claim, drug_claim.drug_claim_aliases)
-        return if normalized_id.nil?
+        if normalized_id.nil?
+          Rails.logger.debugger "Unable to group drug claim for `#{drug_claim.name}` from #{drug_claim.source.source_db_name}"
+          return
+        end
 
         create_new_drug(normalized_id) if Drug.find_by(concept_id: normalized_id).nil?
         add_claim_to_drug(drug_claim, normalized_id)

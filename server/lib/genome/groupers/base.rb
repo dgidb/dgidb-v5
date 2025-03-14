@@ -161,7 +161,7 @@ module Genome
           return normalized_id unless normalized_id.nil?
         end
 
-        normalize_claim_by_aliases(term_search_groups['aliases'])
+        normalize_claim_by_aliases(term_search_groups['aliases']) unless term_search_groups['aliases'].empty?
       end
 
       def get_concept_id(response)

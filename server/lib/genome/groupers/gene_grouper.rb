@@ -285,7 +285,10 @@ module Genome
 
       def group_gene_claim(gene_claim)
         normalized_id = normalize_claim(gene_claim, gene_claim.gene_claim_aliases)
-        return if normalized_id.nil?
+        if normalized_id.nil?
+          Rails.logger.debugger "Unable to group gene claim for `#{gene_claim.name}` from #{gene_claim.source.source_db_name}"
+          return
+        end
 
         create_new_gene(normalized_id) if Gene.find_by(concept_id: normalized_id).nil?
         add_claim_to_gene(gene_claim, normalized_id)
