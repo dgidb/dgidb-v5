@@ -93,9 +93,9 @@ module Genome
       # try to break the tie by looking at the votes for the next-best kind of match
       # 4) if a gene has four aliases, and two match as `LABELS` to different genes, and
       # the other two match as `ALIASES` to two different genes, we can't break any ties.
-      # So, we just take the first `LABEL` match we saw (arbitrarily).
-      # Experimentally, these lower conditions happen ~not at all, but we want to have
-      # them to fall back on just in case.
+      # We will refuse to group at this point.
+      #
+      # Experimentally, these lower conditions happen ~not at all.
       #
       # @param claim_aliases [Array<String>] list of alias terms associated with a claim
       # @return [String, nil] the normalized concept ID, if it's available, nil otherwise
@@ -111,13 +111,12 @@ module Genome
           match_type = response['match_type']
           next if response.nil? || match_type.zero?
 
-          concept_id = response[@entity_type]['id']
+          concept_id = get_concept_id(response)
           alias_responses[concept_id] = response unless alias_responses.key?(concept_id)
           match_votes[match_type][concept_id] += 1
         end
 
         # tally votes
-        best_default = nil
         best_match = nil
         match_votes.keys.sort.reverse.each do |match_type|
           next unless best_match.nil?
@@ -126,18 +125,13 @@ module Genome
           next if most_votes.nil?
 
           highest_vote_getters = match_votes[match_type].select { |_key, value| value == most_votes }.keys
-          if highest_vote_getters.length == 1
-            best_match = highest_vote_getters[0]
-          elsif highest_vote_getters.length > 1 && best_default.nil?
-            best_default = highest_vote_getters[0]
-          end
+
+          best_match = highest_vote_getters[0] if highest_vote_getters.length == 1
         end
 
-        if !best_match.nil?
-          get_concept_id(alias_responses[best_match])
-        elsif !best_default.nil?
-          get_concept_id(alias_responses[best_default])
-        end
+        concept_id = get_concept_id(alias_responses[best_match]) unless best_match.nil?
+        Rails.logger.debug "Resolving #{@entity_type} aliases #{claim_aliases} to #{concept_id}"
+        concept_id
       end
 
       # Normalize claim based on name/alias terms. Return normalized concept ID
