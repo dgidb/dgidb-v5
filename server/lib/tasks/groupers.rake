@@ -28,7 +28,7 @@ namespace :dgidb do
     task genes: :environment do
       time = Benchmark.measure do
         Utils::Logging.without_sql do
-          Genome::Groupers::GeneGrouper.new.run
+          Genome::Groupers::GeneGrouper.new.group_claims
         end
       end
       puts "Grouped genes in #{time.real.truncate(2)}s"
@@ -38,7 +38,7 @@ namespace :dgidb do
     task drugs: :environment do
       time = Benchmark.measure do
         Utils::Logging.without_sql do
-          Genome::Groupers::DrugGrouper.new.run
+          Genome::Groupers::DrugGrouper.new.group_claims
         end
       end
       puts "Grouped drugs in #{time.real.truncate(2)}s"
