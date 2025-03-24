@@ -52,7 +52,7 @@ module Genome; module Importers; module ApiImporters; module Civic
 
     DrugsQuery = CivicApi::Client.parse <<-GRAPHQL
       query ($after: String!) {
-        therapies(first: 50, after: $after) {
+        therapies(first: 50, hasLinkedEvidence: true, after: $after) {
           pageInfo {
             endCursor
             hasNextPage
