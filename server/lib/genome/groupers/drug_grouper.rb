@@ -100,7 +100,7 @@ module Genome
       def group_drug_claim(drug_claim)
         normalized_id = normalize_claim(drug_claim, drug_claim.drug_claim_aliases)
         if normalized_id.nil?
-          Rails.logger.debugger "Unable to group drug claim for `#{drug_claim.name}` from #{drug_claim.source.source_db_name}"
+          Rails.logger.debug "Unable to group drug claim for `#{drug_claim.name}` from #{drug_claim.source.source_db_name}"
           return
         end
 
