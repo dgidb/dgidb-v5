@@ -1,5 +1,16 @@
 """Perform basic checks on database to verify import success."""
+
+import logging
+
 import psycopg
+
+
+logging.basicConfig(
+    filename="dgidb_db_checks.log",
+    format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s",
+)
+_logger = logging.getLogger(__package__)
+_logger.setLevel(logging.INFO)
 
 # figures from 2024-11-27 dump
 expected_values = {
@@ -22,10 +33,12 @@ def handle_warn(name, actual_value):
     but it'd be good to know.
     """
     if expected_values[name] > actual_value:
-        print(f"WARNING: {name} value is {actual_value}, expected {expected_values[name]}")
+        msg = f"WARNING: {name} value is {actual_value}, expected {expected_values[name]}"
+        print(msg)
+        _logger.info(msg)
 
 
-def check_value(name, query):
+def check_value(cur, name, query):
     cur.execute(query)
     value = cur.fetchone()[0]
     print(f"# {name}: {value}")
@@ -33,17 +46,20 @@ def check_value(name, query):
 
 with psycopg.connect("dbname=dgidb user=postgres") as conn:
     with conn.cursor() as cur:
-        check_value("gene_claims", "SELECT COUNT(*) FROM gene_claims;")
-        check_value("genes", "SELECT COUNT(*) FROM genes;")
-        check_value("drug_claims", "SELECT COUNT(*) FROM drug_claims;")
-        check_value("drugs", "SELECT COUNT(*) FROM drugs;")
-        check_value("interaction_claims", "SELECT COUNT(*) FROM interaction_claims;")
-        check_value("interactions", "SELECT COUNT(*) FROM interactions;")
+        check_value(cur, "gene_claims", "SELECT COUNT(*) FROM gene_claims;")
+        check_value(cur, "genes", "SELECT COUNT(*) FROM genes;")
+        check_value(cur, "drug_claims", "SELECT COUNT(*) FROM drug_claims;")
+        check_value(cur, "drugs", "SELECT COUNT(*) FROM drugs;")
+        check_value(cur, "interaction_claims", "SELECT COUNT(*) FROM interaction_claims;")
+        check_value(cur, "interactions", "SELECT COUNT(*) FROM interactions;")
 
-        check_value("sources", "SELECT COUNT(*) FROM sources;")
+        check_value(cur, "sources", "SELECT COUNT(*) FROM sources;")
 
-        check_value("gene_category_claims", "SELECT COUNT(*) FROM gene_claim_categories_gene_claims;")
-        check_value("gene_categorizations", "SELECT COUNT(*) FROM gene_categories_genes;")
+        check_value(cur, "gene_category_claims", "SELECT COUNT(*) FROM gene_claim_categories_gene_claims;")
+        check_value(cur, "gene_categorizations", "SELECT COUNT(*) FROM gene_categories_genes;")
 
-        check_value("drug_approval_ratings", "SELECT COUNT(*) FROM drug_approval_ratings;")
-        check_value("publications", "SELECT COUNT(*) FROM publications;")
+        check_value(cur, "drug_approval_ratings", "SELECT COUNT(*) FROM drug_approval_ratings;")
+        check_value(cur, "publications", "SELECT COUNT(*) FROM publications;")
+
+
+"SELECT COUNT(*), s.source_db_name FROM interaction_claims_publications icp LEFT JOIN interaction_claims ic ON ic.id = icp.interaction_claim_id LEFT JOIN sources s ON s.id = ic.source_id GROUP BY s.source_db_name;"

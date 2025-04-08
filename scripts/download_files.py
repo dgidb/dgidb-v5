@@ -114,6 +114,48 @@ class Dgene(UnversionedS3Data):
     _src_name = "dgene"
 
 
+class CkbCoreGeneClaims(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "gene_claims"
+    _filetype = "csv"
+
+
+class CkbCoreGeneClaimAliases(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "gene_claim_aliases"
+    _filetype = "csv"
+
+
+class CkbCoreDrugClaims(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "drug_claims"
+    _filetype = "csv"
+
+
+class CkbCoreInteractionClaims(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "interaction_claims"
+    _filetype = "csv"
+
+
+class CkbCoreInteractionClaimAttributes(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "interaction_claim_attributes"
+    _filetype = "csv"
+
+
+class CkbCoreInteractionClaimLinks(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "interaction_claim_links"
+    _filetype = "csv"
+
+
+class CkbCoreInteractionClaimPublications(UnversionedS3Data):
+    _src_name = "ckb_core"
+    _datatype = "interaction_claim_publications"
+    _filetype = "csv"
+
+
 class DocmDrugClaims(UnversionedS3Data):
     _src_name = "docm"
     _datatype = "drug_claims"
