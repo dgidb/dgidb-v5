@@ -15,10 +15,17 @@ _logger.setLevel(logging.INFO)
 # figures from 2024-11-27 dump
 expected_values = {
     "gene_claims": 81019,
-    "genes": 12062,
+    "gene_claim_attributes": 24484,
+    "gene_claim_aliases": 454613,
     "drug_claims": 130616,
-    "drugs": 39581,
+    "drug_claim_attributes": 10267,
+    "drug_claim_aliases": 100000,
     "interaction_claims": 98920,
+    "interaction_claim_attributes": 118673,
+    "interaction_claim_types_interaction_claims": 35705,
+    "interaction_claims_publications": 26670,
+    "genes": 12062,
+    "drugs": 39581,
     "interactions": 69907,
     "sources": 45,
     "gene_category_claims": 33066,
@@ -47,10 +54,18 @@ def check_value(cur, name, query):
 with psycopg.connect("dbname=dgidb user=postgres") as conn:
     with conn.cursor() as cur:
         check_value(cur, "gene_claims", "SELECT COUNT(*) FROM gene_claims;")
-        check_value(cur, "genes", "SELECT COUNT(*) FROM genes;")
+        check_value(cur, "gene_claim_attributes", "SELECT COUNT(*) FROM gene_claim_attributes;")
+        check_value(cur, "gene_claim_aliases", "SELECT COUNT(*) FROM gene_claim_aliases;")
         check_value(cur, "drug_claims", "SELECT COUNT(*) FROM drug_claims;")
-        check_value(cur, "drugs", "SELECT COUNT(*) FROM drugs;")
+        check_value(cur, "drug_claim_attributes", "SELECT COUNT(*) FROM drug_claim_attributes;")
+        check_value(cur, "drug_claim_aliases", "SELECT COUNT(*) FROM drug_claim_aliases;")
         check_value(cur, "interaction_claims", "SELECT COUNT(*) FROM interaction_claims;")
+        check_value(cur, "interaction_claim_attributes", "SELECT COUNT(*) FROM interaction_claim_attributes;")
+        check_value(cur, "interaction_claim_types_interaction_claims", "SELECT COUNT(*) FROM interaction_claim_types_interaction_claims;")
+        check_value(cur, "interaction_claims_publications", "SELECT COUNT(*) FROM interaction_claims_publications;")
+
+        check_value(cur, "genes", "SELECT COUNT(*) FROM genes;")
+        check_value(cur, "drugs", "SELECT COUNT(*) FROM drugs;")
         check_value(cur, "interactions", "SELECT COUNT(*) FROM interactions;")
 
         check_value(cur, "sources", "SELECT COUNT(*) FROM sources;")
@@ -60,6 +75,3 @@ with psycopg.connect("dbname=dgidb user=postgres") as conn:
 
         check_value(cur, "drug_approval_ratings", "SELECT COUNT(*) FROM drug_approval_ratings;")
         check_value(cur, "publications", "SELECT COUNT(*) FROM publications;")
-
-
-"SELECT COUNT(*), s.source_db_name FROM interaction_claims_publications icp LEFT JOIN interaction_claims ic ON ic.id = icp.interaction_claim_id LEFT JOIN sources s ON s.id = ic.source_id GROUP BY s.source_db_name;"
