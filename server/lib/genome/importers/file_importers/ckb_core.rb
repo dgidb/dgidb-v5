@@ -24,7 +24,7 @@ module Genome; module Importers; module FileImporters; module CkbCore;
       @source ||= Source.create(
         {
           source_db_name: source_db_name,
-          source_db_version: set_current_date_version,
+          source_db_version: '2024-11-27',
           base_url: 'https://ckb-core.genomenon.com/gene/show?geneId=',
           site_url: 'https://ckb-core.genomenon.com',
           citation: 'Patterson SE, Liu R, Statz CM, Durkin D, Lakshminarayana A, Mockus SM. The clinical trial landscape in oncology and connectivity of somatic mutational profiles to targeted therapies. Hum Genomics. 2016 Jan 16;10:4. doi: 10.1186/s40246-016-0061-7. PMID: 26772741; PMCID: PMC4715272.',
