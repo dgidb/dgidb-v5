@@ -34,7 +34,7 @@ module Genome; module Importers; module FileImporters; module CkbCore;
           doi: '10.1186/s40246-016-0061-7',
           full_name: 'The Cancer Knowledgebase',
           license: License::CC_BY_NC_SA_4_0,
-          license_link: 'https://ckb.genomenon.org/about/index',
+          license_link: 'https://ckb.genomenon.org/about/index'
         }
       )
       @source.source_types << SourceType.find_by(type: 'interaction')
