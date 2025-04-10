@@ -60,7 +60,7 @@ module Genome
             if ev_item.source.citation_id.present? && ev_item.source.source_type == 'PUBMED'
               create_interaction_claim_publication(ic, ev_item.source.citation_id)
             end
-            create_interaction_claim_link(ic, "ev_itemD#{ev_item.id}", "https://civicdb.org/evidence/#{ev_item.id}")
+            create_interaction_claim_link(ic, "EID#{ev_item.id}", "https://civicdb.org/evidence/#{ev_item.id}")
           end
 
           # current policy is to skip items with poor rating/level, anything that doesn't support the claim,
