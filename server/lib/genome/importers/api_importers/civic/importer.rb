@@ -25,17 +25,17 @@ module Genome
             drug.name.upcase != 'N/A' && !drug.name.include?(';')
           end
 
-          def importable_evidence_item?(ei)
+          def importable_evidence_item?(ev_item)
               [
-                ei.evidence_direction == 'SUPPORTS',
-                ei.evidence_level != 'E',
-                ei.evidence_rating.present? && ei.evidence_rating > 2
+                ev_item.evidence_direction == 'SUPPORTS',
+                ev_item.evidence_level != 'E',
+                ev_item.evidence_rating.present? && ev_item.evidence_rating > 2
               ].all?
           end
 
           def create_drug_claims
             @api_client.enumerate_drugs.each do |drug|
-              next if !importable_drug?(drug)
+              next unless importable_drug?(drug)
 
               dc = create_drug_claim(drug.name.upcase, DrugNomenclature::PRIMARY_NAME)
               create_drug_claim_alias(dc, "civic.tid:#{drug.id}", DrugNomenclature::CIVIC_TID)
@@ -55,39 +55,40 @@ module Genome
             end
           end
 
-          def create_entries_for_evidence_item(ei, dc, gc)
-            ic = create_interaction_claim(gc, dc)
-            if ei.source.citation_id.present? && ei.source.source_type == 'PubMed'
-              create_interaction_claim_publication(ic, ei.source.citation_id)
+          def create_entries_for_evidence_item(ev_item, drug_claim, gene_claim)
+            ic = create_interaction_claim(gene_claim, drug_claim)
+            if ev_item.source.citation_id.present? && ev_item.source.source_type == 'PUBMED'
+              create_interaction_claim_publication(ic, ev_item.source.citation_id)
             end
-            create_interaction_claim_link(ic, "EID#{ei.id}", "https://civicdb.org/evidence/#{ei.id}")
+            create_interaction_claim_link(ic, "ev_itemD#{ev_item.id}", "https://civicdb.org/evidence/#{ev_item.id}")
           end
 
           # current policy is to skip items with poor rating/level, anything that doesn't support the claim,
           # or any item with >1 genes (e.g. a fusion)
           def create_interaction_claims
             @api_client.enumerate_evidence_items.each do |ei|
-              next if !importable_evidence_item?(ei)
+              next unless importable_evidence_item?(ei)
 
               # retain molecular profiles consisting of multiple variations on the same gene,
               # but skip multi-gene profiles (eg fusions)
               gene_names = ei.molecular_profile.variants.map do |variant|
                 feature_instance = variant.feature.feature_instance
-                if feature_instance.__typename == "Gene"
+                if feature_instance.__typename == 'Gene'
                   feature_instance.name.upcase
                 else  # skip Factors for now
                   nil
                 end
               end.compact.uniq
               next if gene_names.length != 1
-              gc = GeneClaim.joins(:source).where(sources: {source_db_name: "CIViC"}, gene_claims: {name: gene_names[0]}).first
+
+              gc = GeneClaim.joins(:source).where(sources: { source_db_name: 'CIViC' }, gene_claims: { name: gene_names[0] }).first
 
               drug_claims = ei.therapies.map do |therapy|
                 drug_name = therapy.name.upcase
-                DrugClaim.joins(:source).where(sources: { source_db_name: "CIViC" }, drug_claims: { name: drug_name }).first
+                DrugClaim.joins(:source).where(sources: { source_db_name: 'CIViC' }, drug_claims: { name: drug_name }).first
               end
               drug_claims = drug_claims.uniq.compact
-              next if drug_claims.length == 0
+              next if drug_claims.empty?
 
               create_gene_claim_category(gc, 'DRUG RESISTANCE') if ei.significance.downcase == 'resistance'
               create_gene_claim_category(gc, 'CLINICALLY ACTIONABLE') if ei.evidence_level == 'A'
