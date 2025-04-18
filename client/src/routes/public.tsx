@@ -8,8 +8,8 @@ import { BrowseCategories } from 'components/Browse/Categories';
 import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
-import { MainLayout } from 'components/Layout';
-import { About } from 'pages/About';
+import { MainLayout, AboutLayout } from 'components/Layout';
+import { Introduction as AboutIntroduction, WhoWeAre as AboutWhoWeAre } from 'pages/About/Overview';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
@@ -90,7 +90,25 @@ export const Routes = () => {
         { path: '/results', element: <Results /> },
         { path: '/browse/categories', element: <BrowseCategories /> },
         { path: '/browse/sources', element: <BrowseSources /> },
-        { path: '/about', element: <About /> },
+        // { path: '/about', element: <Introduction /> },
+        {
+          path: '/about/overview',
+          element: <AboutLayout />,
+          children: [
+            {
+              index: true,
+              element: <AboutIntroduction />
+            },
+            {
+              path: 'introduction',
+              element: <AboutIntroduction />
+            },
+            {
+              path: 'who-we-are',
+              element: <AboutWhoWeAre />
+            }
+          ]
+        },
         { path: '/downloads', element: <Downloads /> },
         { path: '/api', element: <API /> },
         { path: '/', element: <Home /> },
