@@ -9,7 +9,7 @@ import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout, AboutLayout } from 'components/Layout';
-import { Introduction as AboutIntroduction, WhoWeAre as AboutWhoWeAre } from 'pages/About/Overview';
+import { Introduction as AboutIntroduction, WhoWeAre as AboutWhoWeAre, Clients as AboutClients } from 'pages/About/Overview';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
@@ -106,6 +106,10 @@ export const Routes = () => {
             {
               path: 'who-we-are',
               element: <AboutWhoWeAre />
+            },
+            {
+              path: 'clients',
+              element: <AboutClients />
             }
           ]
         },

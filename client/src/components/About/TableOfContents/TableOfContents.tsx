@@ -20,7 +20,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                 <Box className="toc-section-header"><h4>Overview</h4></Box>
                 <List>
                     <ListItem><Link href="/about/overview/introduction">Introduction</Link></ListItem>
-                    <ListItem><Link href="/about/overview/clients">Client Libs</Link></ListItem>
+                    <ListItem><Link href="/about/overview/clients">Clients</Link></ListItem>
                     <ListItem><Link href="/about/overview/who-we-are">Who We Are</Link></ListItem>
                     <ListItem>Stats</ListItem>
                     <ListItem>Data Accessibility</ListItem>
