@@ -21,9 +21,10 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                 <Box className="toc-section-header"><h4>Overview</h4></Box>
                 <List>
                     <ListItem><Link href="/about/overview/introduction">Introduction</Link></ListItem>
-                    <ListItem><Link href="/about/overview/clients">Clients</Link></ListItem>
                     <ListItem><Link href="/about/overview/about-us">About Us</Link></ListItem>
-                    <ListItem><Link href="/about/overview/stats">Stats</Link></ListItem>
+                    <ListItem><Link href="/about/overview/druggable-genome">The Druggable Genome</Link></ListItem>
+                    <ListItem><Link href="/about/overview/clients">Known Data Clients</Link></ListItem>
+                    <ListItem><Link href="/about/overview/stats">Data Statistics</Link></ListItem>
                     <ListItem>Data Accessibility</ListItem>
                 </List>
             </Box>
