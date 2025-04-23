@@ -1,13 +1,13 @@
 import React from 'react';
 import { Divider, Link } from '@mui/material';
 import { Email, GitHub, Home, LinkedIn } from '@mui/icons-material';
-import './WhoWeAre.scss';
+import './AboutUs.scss';
 
-export const WhoWeAre: React.FC = () => {
+export const AboutUs: React.FC = () => {
     return (
         <>
-            <h1>Who We Are</h1>
-            <p>DGIdb is actively maintained by the <Link href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab" target="_blank" rel="noopener">Wagner Lab</Link> at the Institute for Genomic Medicine at Nationwide Children’s Hospital in Columbus, OH, and the <Link href="https://griffithlab.org" target="_blank" rel="noopener">Griffith Lab</Link> at The McDonnell Genome Institute at the Washington University School of Medicine in St. Louis, MO. </p>
+            <h1>About Us</h1>
+            <p>DGIdb is actively maintained by the <Link href="https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab" target="_blank" rel="noopener">Wagner Lab</Link> at the Institute for Genomic Medicine at Nationwide Children’s Hospital in Columbus, OH, and the <Link href="https://griffithlab.org" target="_blank" rel="noopener">Griffith Lab</Link> at the Washington University School of Medicine in St. Louis, MO. </p>
             <Divider />
             <h2>Current Contributors</h2>
             <div className="contributors">
