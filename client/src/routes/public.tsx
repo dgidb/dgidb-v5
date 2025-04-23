@@ -9,7 +9,7 @@ import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout, AboutLayout } from 'components/Layout';
-import { Introduction as AboutIntroduction, AboutUs as AboutUs, Clients as AboutClients, AboutStats as AboutStats, InteractionScore as AboutInteractionScore, DataModel as AboutDataModel } from 'pages/About/Overview';
+import { Introduction as AboutIntroduction, AboutUs as AboutUs, Clients as AboutClients, AboutStats as AboutStats, InteractionScore as AboutInteractionScore, DataModel as AboutDataModel, Grouping as AboutGrouping } from 'pages/About/Overview';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
@@ -122,6 +122,10 @@ export const Routes = () => {
             {
               path: 'data-model',
               element: <AboutDataModel />
+            },
+            {
+              path: 'grouping',
+              element: <AboutGrouping />
             }
           ]
         },

@@ -1,4 +1,4 @@
-import { Link, Paper } from '@mui/material';
+import { Link } from '@mui/material';
 import React from 'react';
 import { NoteBox } from 'components/About/NoteBox/NoteBox';
 
