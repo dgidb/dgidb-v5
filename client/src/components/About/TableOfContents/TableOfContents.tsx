@@ -25,7 +25,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                     <ListItem><Link href="/about/overview/druggable-genome">The Druggable Genome</Link></ListItem>
                     <ListItem><Link href="/about/overview/clients">Known Data Clients</Link></ListItem>
                     <ListItem><Link href="/about/overview/stats">Data Statistics</Link></ListItem>
-                    <ListItem>Data Accessibility</ListItem>
+                    <ListItem><Link href="/about/overview/data-accessibility">Data Accessibility</Link></ListItem>
                 </List>
             </Box>
             <Box className='toc-section'>
@@ -34,7 +34,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                     <ListItem><Link href="/about/overview/data-model">Data Model</Link></ListItem>
                     <ListItem><Link href="/about/overview/grouping">Grouping</Link></ListItem>
                     <ListItem><Link href="/about/overview/interaction-score">Interaction Score</Link></ListItem>
-                    <ListItem>Interaction Directionality</ListItem>
+                    <ListItem><Link href="/about/overview/types-and-directionality">Interaction Types</Link></ListItem>
                     <ListItem>Gene Categories</ListItem>
                     <ListItem>Sources</ListItem>
                     <ListItem>Help and Contributing</ListItem>

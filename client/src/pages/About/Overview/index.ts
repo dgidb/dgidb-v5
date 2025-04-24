@@ -5,4 +5,6 @@ export * from './Stats';
 export * from './InteractionScore';
 export * from './DataModel';
 export * from './Grouping';
-export * from './DruggableGenome'
+export * from './DruggableGenome';
+export * from './DataAccessibility';
+export * from './TypesAndDirectionality'

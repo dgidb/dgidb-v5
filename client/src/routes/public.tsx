@@ -9,7 +9,7 @@ import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
 import { MainLayout, AboutLayout } from 'components/Layout';
-import { Introduction as AboutIntroduction, AboutUs as AboutUs, Clients as AboutClients, AboutStats as AboutStats, InteractionScore as AboutInteractionScore, DataModel as AboutDataModel, Grouping as AboutGrouping, AboutDruggableGenome } from 'pages/About/Overview';
+import { Introduction as AboutIntroduction, AboutUs as AboutUs, Clients as AboutClients, AboutStats as AboutStats, InteractionScore as AboutInteractionScore, DataModel as AboutDataModel, Grouping as AboutGrouping, AboutDruggableGenome, AboutDataAccesibility, AboutTypesAndDirectionality } from 'pages/About/Overview';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
@@ -130,7 +130,16 @@ export const Routes = () => {
             {
               path: 'druggable-genome',
               element: <AboutDruggableGenome />
+            },
+            {
+              path: 'data-accessibility',
+              element: <AboutDataAccesibility />
+            },
+            {
+              path: 'types-and-directionality',
+              element: <AboutTypesAndDirectionality />
             }
+
           ]
         },
         { path: '/downloads', element: <Downloads /> },
