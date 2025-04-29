@@ -35,8 +35,6 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                     <ListItem><Link href="/about/overview/grouping">Grouping</Link></ListItem>
                     <ListItem><Link href="/about/overview/interaction-score">Interaction Score</Link></ListItem>
                     <ListItem><Link href="/about/overview/types-and-directionality">Interaction Types</Link></ListItem>
-                    <ListItem>Gene Categories</ListItem>
-                    <ListItem>Sources</ListItem>
                 </List>
             </Box>
             <Box className='toc-section'>
