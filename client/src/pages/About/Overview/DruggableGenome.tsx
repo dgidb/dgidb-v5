@@ -12,7 +12,7 @@ export const AboutDruggableGenome: React.FC = () => {
       <p>
         Druggability refers to the potential of a protein to interact with drugs
         or other chemical compounds based on its structural characteristics. As
-        originally described by Russ Lampel in 2006, a protein is considered
+        originally described by Russ and Lampel in 2006, a protein is considered
         druggable if its structure supports interactions with small molecules or
         other therapeutic agents. Proteins lacking structural features or a
         favorable location for physical interaction, or those that cannot be

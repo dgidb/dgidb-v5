@@ -9,10 +9,9 @@ export const ContactUs: React.FC = () => {
       <h3>General Inquiries</h3>
       <p>
         DGIdb is maintained by the Wagner Lab at Nationwide Children’s Hospital
-        in Columbus, OH and The McDonnell Genome Institute at the Washington
-        University School of Medicine in St. Louis, MO. For general inquiries
-        regarding DGIdb, please email{' '}
-        <Link href="mailto:help@dgidb.org">help@dgidb.org</Link>.
+        in Columbus, OH and The Griffith Lab at the Washington University School
+        of Medicine in St. Louis, MO. For general inquiries regarding DGIdb,
+        please email <Link href="mailto:help@dgidb.org">help@dgidb.org</Link>.
       </p>
 
       <h3>Troubleshooting</h3>
