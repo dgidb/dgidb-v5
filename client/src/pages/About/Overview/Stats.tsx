@@ -20,27 +20,26 @@ export const AboutStats: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Function to fetch the stats from the endpoint
+        // Fetch stats from counts controller endpoint
         const fetchStats = async () => {
             try {
                 const response = await fetch('http://localhost:3000/api/counts');
                 
-                // Check if the response is successful (status code 200-299)
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
 
-                const data = await response.json();  // Parse the JSON response
-                setStats(data);  // Set the data from the API
-                setLoading(false);  // Set loading to false when data is fetched
+                const data = await response.json();  
+                setStats(data);  
+                setLoading(false);  
             } catch (error) {
-                setError('Failed to fetch data.');  // Handle errors if the request fails
+                setError('Failed to fetch data.');
                 setLoading(false);
             }
         };
 
         fetchStats();
-    }, []);  // Empty dependency array ensures the request runs once when the component mounts
+    }, []);  
 
     if (loading) {
         return <div>Loading...</div>;
