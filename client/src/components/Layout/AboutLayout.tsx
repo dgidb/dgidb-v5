@@ -1,8 +1,5 @@
 import { Box } from '@mui/material';
-import {
-  AboutPageName,
-  TableOfContents,
-} from 'components/About/TableOfContents/TableOfContents';
+import { TableOfContents } from 'components/About/TableOfContents/TableOfContents';
 import * as React from 'react';
 import { Outlet } from 'react-router-dom';
 import './AboutLayout.scss';
@@ -12,7 +9,7 @@ export const AboutLayout: React.FC = () => {
     <div className={'about-container'}>
       <div className="about-page-container">
         <Box className="about-toc-sidebar">
-          <TableOfContents pageName={AboutPageName.Introduction} />
+          <TableOfContents />
         </Box>
         <Box className="about-content-container">
           <Box className="about-content-width-limiter">

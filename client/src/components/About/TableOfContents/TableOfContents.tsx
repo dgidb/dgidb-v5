@@ -4,18 +4,6 @@ import './TableOfContents.scss';
 
 import { useLocation } from 'react-router-dom';
 
-export enum AboutPageName {
-  Introduction = 'Introduction',
-  Clients = 'Clients',
-  AboutUs = 'AboutUs',
-  Stats = 'Stats',
-  InteractionScore = 'InteractionScore',
-}
-
-interface TableOfContentsProps {
-  pageName: AboutPageName;
-}
-
 interface TocLinkProps {
   path: string;
   name: string;
@@ -32,9 +20,7 @@ const TocItemLink: React.FC<TocLinkProps> = ({ path, name }) => {
   );
 };
 
-export const TableOfContents: React.FC<TableOfContentsProps> = ({
-  pageName,
-}) => {
+export const TableOfContents: React.FC = () => {
   return (
     <>
       <Box className="toc-section">
