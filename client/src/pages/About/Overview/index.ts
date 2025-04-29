@@ -9,4 +9,4 @@ export * from './DruggableGenome';
 export * from './DataAccessibility';
 export * from './TypesAndDirectionality';
 export * from './ContactUs';
-export * from './Contributing'
+export * from './Contributing';

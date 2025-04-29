@@ -1,13 +1,11 @@
-import { Paper } from "@mui/material";
-import React, { ReactNode } from "react";
+import { Paper } from '@mui/material';
+import React, { ReactNode } from 'react';
 import './NoteBox.scss';
 
 interface NoteBoxProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const NoteBox: React.FC<NoteBoxProps> = ({ children }) => (
-    <Paper className="about-note-box">
-        {children}
-    </Paper>
-)
+  <Paper className="about-note-box">{children}</Paper>
+);
