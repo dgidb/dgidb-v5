@@ -18,12 +18,13 @@ export const AboutStats: React.FC = () => {
     const [stats, setStats] = useState<StatsData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const urlDomain = process.env.REACT_APP_DOMAIN;
 
     useEffect(() => {
         // Fetch stats from counts controller endpoint
         const fetchStats = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/counts');
+                const response = await fetch(`${urlDomain}/api/counts`);
                 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
