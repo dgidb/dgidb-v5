@@ -7,4 +7,6 @@ export * from './DataModel';
 export * from './Grouping';
 export * from './DruggableGenome';
 export * from './DataAccessibility';
-export * from './TypesAndDirectionality'
+export * from './TypesAndDirectionality';
+export * from './ContactUs';
+export * from './Contributing'

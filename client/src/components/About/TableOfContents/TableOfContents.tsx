@@ -29,7 +29,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                 </List>
             </Box>
             <Box className='toc-section'>
-                <Box className="toc-section-header"><h4>Help</h4></Box>
+                <Box className="toc-section-header"><h4>Data Structure</h4></Box>
                 <List>
                     <ListItem><Link href="/about/overview/data-model">Data Model</Link></ListItem>
                     <ListItem><Link href="/about/overview/grouping">Grouping</Link></ListItem>
@@ -37,9 +37,17 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) =>
                     <ListItem><Link href="/about/overview/types-and-directionality">Interaction Types</Link></ListItem>
                     <ListItem>Gene Categories</ListItem>
                     <ListItem>Sources</ListItem>
-                    <ListItem>Help and Contributing</ListItem>
                 </List>
             </Box>
+            <Box className='toc-section'>
+                <Box className="toc-section-header"><h4>Support</h4></Box>
+                <List>
+                    <ListItem><Link href="/about/overview/contact-us">Contact Us</Link></ListItem>
+                    <ListItem><Link href="/about/overview/contributing">Contributing to DGIdb</Link></ListItem>
+
+                </List>
+            </Box>
+                    
         </>
     )
 }
