@@ -92,7 +92,7 @@ const Header: React.FC = () => {
             </MenuItem>
           </Menu>
         </li>
-        <li onClick={() => navigate('/about')}>About</li>
+        <li onClick={() => navigate('/about/overview/introduction')}>About</li>
         <li onClick={() => navigate('/downloads')}>Downloads</li>
       </ul>
     </nav>

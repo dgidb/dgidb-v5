@@ -8,8 +8,21 @@ import { BrowseCategories } from 'components/Browse/Categories';
 import { GeneRecord, GeneRecordContainer } from 'components/Gene/GeneRecord';
 import { DrugRecord } from 'components/Drug/DrugRecord';
 
-import { MainLayout } from 'components/Layout';
-import { About } from 'pages/About';
+import { MainLayout, AboutLayout } from 'components/Layout';
+import {
+  Introduction as AboutIntroduction,
+  AboutUs as AboutUs,
+  Clients as AboutClients,
+  AboutStats as AboutStats,
+  InteractionScore as AboutInteractionScore,
+  DataModel as AboutDataModel,
+  Grouping as AboutGrouping,
+  AboutDruggableGenome,
+  AboutDataAccesibility,
+  AboutTypesAndDirectionality,
+  ContactUs as AboutContactUs,
+  Contributing as AboutContributing,
+} from 'pages/About/Overview';
 import { Downloads } from 'pages/Downloads';
 import { API } from 'pages/API';
 import { InteractionRecord } from 'components/Interaction/InteractionRecord';
@@ -90,7 +103,65 @@ export const Routes = () => {
         { path: '/results', element: <Results /> },
         { path: '/browse/categories', element: <BrowseCategories /> },
         { path: '/browse/sources', element: <BrowseSources /> },
-        { path: '/about', element: <About /> },
+        // { path: '/about', element: <Introduction /> },
+        {
+          path: '/about/overview',
+          element: <AboutLayout />,
+          children: [
+            {
+              index: true,
+              element: <AboutIntroduction />,
+            },
+            {
+              path: 'introduction',
+              element: <AboutIntroduction />,
+            },
+            {
+              path: 'about-us',
+              element: <AboutUs />,
+            },
+            {
+              path: 'clients',
+              element: <AboutClients />,
+            },
+            {
+              path: 'stats',
+              element: <AboutStats />,
+            },
+            {
+              path: 'interaction-score',
+              element: <AboutInteractionScore />,
+            },
+            {
+              path: 'data-model',
+              element: <AboutDataModel />,
+            },
+            {
+              path: 'grouping',
+              element: <AboutGrouping />,
+            },
+            {
+              path: 'druggable-genome',
+              element: <AboutDruggableGenome />,
+            },
+            {
+              path: 'data-accessibility',
+              element: <AboutDataAccesibility />,
+            },
+            {
+              path: 'types-and-directionality',
+              element: <AboutTypesAndDirectionality />,
+            },
+            {
+              path: 'contact-us',
+              element: <AboutContactUs />,
+            },
+            {
+              path: 'contributing',
+              element: <AboutContributing />,
+            },
+          ],
+        },
         { path: '/downloads', element: <Downloads /> },
         { path: '/api', element: <API /> },
         { path: '/', element: <Home /> },
