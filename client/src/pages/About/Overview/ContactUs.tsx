@@ -1,6 +1,5 @@
 import { Link } from '@mui/material';
 import React from 'react';
-import { NoteBox } from 'components/About/NoteBox/NoteBox';
 
 export const ContactUs: React.FC = () => {
   return (
