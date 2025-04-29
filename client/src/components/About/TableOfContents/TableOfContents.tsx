@@ -1,51 +1,97 @@
 import React from 'react';
-import { Box, Divider, Drawer, Link, List, ListItem, Toolbar } from '@mui/material';
+import { Box, Link, List, ListItem } from '@mui/material';
 import './TableOfContents.scss';
 
+import { useLocation } from 'react-router-dom';
+
 export enum AboutPageName {
-    Introduction = "Introduction",
-    Clients = "Clients",
-    AboutUs = "AboutUs",
-    Stats = "Stats",
-    InteractionScore = "InteractionScore"
+  Introduction = 'Introduction',
+  Clients = 'Clients',
+  AboutUs = 'AboutUs',
+  Stats = 'Stats',
+  InteractionScore = 'InteractionScore',
 }
 
 interface TableOfContentsProps {
-    pageName: AboutPageName
+  pageName: AboutPageName;
 }
 
-export const TableOfContents: React.FC<TableOfContentsProps> = ({ pageName }) => {
-    return (
-        <>
-            <Box className="toc-section">
-                <Box className="toc-section-header"><h4>Overview</h4></Box>
-                <List>
-                    <ListItem><Link href="/about/overview/introduction">Introduction</Link></ListItem>
-                    <ListItem><Link href="/about/overview/about-us">About Us</Link></ListItem>
-                    <ListItem><Link href="/about/overview/druggable-genome">The Druggable Genome</Link></ListItem>
-                    <ListItem><Link href="/about/overview/clients">Known Data Clients</Link></ListItem>
-                    <ListItem><Link href="/about/overview/stats">Data Statistics</Link></ListItem>
-                    <ListItem><Link href="/about/overview/data-accessibility">Data Accessibility</Link></ListItem>
-                </List>
-            </Box>
-            <Box className='toc-section'>
-                <Box className="toc-section-header"><h4>Data Structure</h4></Box>
-                <List>
-                    <ListItem><Link href="/about/overview/data-model">Data Model</Link></ListItem>
-                    <ListItem><Link href="/about/overview/grouping">Grouping</Link></ListItem>
-                    <ListItem><Link href="/about/overview/interaction-score">Interaction Score</Link></ListItem>
-                    <ListItem><Link href="/about/overview/types-and-directionality">Interaction Types</Link></ListItem>
-                </List>
-            </Box>
-            <Box className='toc-section'>
-                <Box className="toc-section-header"><h4>Support</h4></Box>
-                <List>
-                    <ListItem><Link href="/about/overview/contact-us">Contact Us</Link></ListItem>
-                    <ListItem><Link href="/about/overview/contributing">Contributing to DGIdb</Link></ListItem>
-
-                </List>
-            </Box>
-                    
-        </>
-    )
+interface TocLinkProps {
+  path: string;
+  name: string;
 }
+
+const TocItemLink: React.FC<TocLinkProps> = ({ path, name }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  return (
+    <ListItem className={currentPath === path ? 'active' : ''}>
+      <Link href={path}>{name}</Link>
+    </ListItem>
+  );
+};
+
+export const TableOfContents: React.FC<TableOfContentsProps> = ({
+  pageName,
+}) => {
+  return (
+    <>
+      <Box className="toc-section">
+        <Box className="toc-section-header">
+          <h4>Overview</h4>
+        </Box>
+        <List>
+          <TocItemLink
+            path="/about/overview/introduction"
+            name="Introduction"
+          />
+          <TocItemLink path="/about/overview/about-us" name="About Us" />
+          <TocItemLink
+            path="/about/overview/druggable-genome"
+            name="The Druggable Genome"
+          />
+          <TocItemLink
+            path="/about/overview/clients"
+            name="Known Data Clients"
+          />
+          <TocItemLink path="/about/overview/stats" name="Data Statistics" />
+          <TocItemLink
+            path="/about/overview/data-accessibility"
+            name="Data Accessibility"
+          />
+        </List>
+      </Box>
+      <Box className="toc-section">
+        <Box className="toc-section-header">
+          <h4>Data Structure</h4>
+        </Box>
+        <List>
+          <TocItemLink path="/about/overview/data-model" name="Data Model" />
+          <TocItemLink path="/about/overview/grouping" name="Grouping" />
+          <TocItemLink
+            path="/about/overview/interaction-score"
+            name="Interaction Score"
+          />
+          <TocItemLink
+            path="/about/overview/types-and-directionality"
+            name="Interaction Types"
+          />
+        </List>
+      </Box>
+      <Box className="toc-section">
+        <Box className="toc-section-header">
+          <h4>Support</h4>
+        </Box>
+        <List>
+          <TocItemLink path="/about/overview/contact-us" name="Contact Us" />
+          <TocItemLink
+            path="/about/overview/contributing"
+            name="Contributing to DGIdb"
+          />
+        </List>
+      </Box>
+    </>
+  );
+};
+
