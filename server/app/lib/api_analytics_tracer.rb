@@ -5,6 +5,7 @@ module ApiAnalyticsTracer
 
     return super if query_type == '__schema'
 
+
     params = {
       user_ip: query.context[:request_ip],
       query: query.query_string.squish,
