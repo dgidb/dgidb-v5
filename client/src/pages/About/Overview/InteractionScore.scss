@@ -1,0 +1,14 @@
+.contributors {
+  display: flex;
+  flex-direction: row;
+
+  .left-section {
+    float: left;
+    width: 50%;
+  }
+
+  .right-section {
+    float: left;
+    width: 50%;
+  }
+}

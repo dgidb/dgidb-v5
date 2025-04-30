@@ -1,4 +1,5 @@
 require 'csv'
+require 'open3'
 
 module Genome
   module Importers
@@ -40,11 +41,22 @@ module Genome
         'claims'
       end
 
+      def default_data_dir
+        begin
+          stdout, stderr, process_status = Open3.capture3('wags-tails path')
+        rescue Errno::ENOENT
+          raise 'wags-tails executable not found. Is it on your $PATH? See README.'
+        end
+        raise "wags-tails path lookup failed with code #{stderr}." unless process_status.success?
+
+        stdout.chomp
+      end
+
       def handle_file_location(file_path)
         return file_path unless file_path.nil?
 
-        dir_name = self.class.name.split('::')[-2].underscore
-        "lib/data/#{dir_name}/#{default_filename}.#{default_filetype}"
+        src_name = self.class.name.split('::')[-2].underscore
+        "#{default_data_dir}/#{src_name}/#{src_name}_#{default_filename}.#{default_filetype}"
       end
 
       def remove_existing_source

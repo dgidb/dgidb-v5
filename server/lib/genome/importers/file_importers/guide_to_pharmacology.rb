@@ -1,14 +1,14 @@
 include ActionView::Helpers::SanitizeHelper
 
 module Genome; module Importers; module FileImporters; module GuideToPharmacology;
-  # gene_file_path should point to `targets_and_families.csv`
-  # interaction_file_path should point to `interactions.csv`
+  # gene_file_path should point to `gtop_targets_and_families_*.tsv`
+  # interaction_file_path should point to `gtop_interactions_*.tsv`
   class Importer < Genome::Importers::Base
     attr_reader :interaction_file_path, :gene_file_path, :target_to_entrez
 
     def initialize(interaction_file_path, gene_file_path)
-      @interaction_file_path = interaction_file_path
-      @gene_file_path = gene_file_path
+      @interaction_file_path = handle_gtop_file_location(interaction_file_path, "interactions")
+      @gene_file_path = handle_gtop_file_location(gene_file_path, "targets_and_families")
       @target_to_entrez = {}
       @source_db_name = 'GuideToPharmacology'
     end
@@ -19,6 +19,16 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     private
+
+    def handle_gtop_file_location(file_path, datatype)
+      return file_path unless file_path.nil?
+
+      raise "Unrecognized GtoP datatype: #{datatype}" unless %w[targets_and_families interactions].include? datatype
+
+      directory = "#{default_data_dir}/guidetopharmacology/"
+      Dir.glob(File.join(directory, "gtop_#{datatype}_*.tsv"))
+         .max_by { |file| file.match(/gtop_#{datatype}_(\d+)\.db/)[1].to_i rescue 0 }
+    end
 
     def get_version
       version = ''
@@ -57,7 +67,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     def import_gene_claims
       refseq_id_pattern = /^((AC|AP|NC|NG|NM|NP|NR|NT|NW|XM|XP|XR|YP|ZP)_\d+|(NZ\_[A-Z]{4}\d+))(\.\d+)?$/
 
-      CSV.foreach(gene_file_path, headers: true, skip_lines: /GtoPdb Version/) do |line|
+      CSV.foreach(gene_file_path, headers: true, skip_lines: /GtoPdb Version/, col_sep: "\t") do |line|
         gene_lui = line['Human Entrez Gene']
         next if blank?(gene_lui) || gene_lui.include?('|')
 
@@ -111,7 +121,7 @@ module Genome; module Importers; module FileImporters; module GuideToPharmacolog
     end
 
     def import_interaction_claims
-      CSV.foreach(interaction_file_path, headers: true, skip_lines: /GtoPdb Version/) do |line|
+      CSV.foreach(interaction_file_path, headers: true, skip_lines: /GtoPdb Version/, col_sep: "\t") do |line|
         next unless valid_interaction_line?(line)
 
         gene_claim = create_gene_claim("NCBIGENE:#{line['Target ID']}", GeneNomenclature::NCBI_ID)

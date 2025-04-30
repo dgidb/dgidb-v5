@@ -25,6 +25,8 @@ module Genome; module Importers; module FileImporters; module Nci;
               license_link: 'https://www.cancer.gov/policies/copyright-reuse',
           }
       )
+      @source.source_types << SourceType.find_by(type: 'interaction')
+      @source.save
     end
 
     def create_interaction_claims

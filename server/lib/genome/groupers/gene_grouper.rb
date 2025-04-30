@@ -4,14 +4,13 @@ module Genome
       attr_reader :term_to_match_dict
 
       def initialize
+        super
         url_base = ENV['GENE_HOSTNAME'] || 'http://localhost:8000'
-        if !url_base.ends_with? "/"
-          url_base += "/"
-        end
-        @normalizer_host = "#{url_base}gene/"
+        url_base += '/' unless url_base.ends_with? '/'
 
-        @term_to_match_dict = {}
-        @sources = {}
+        @entity_type = 'gene'
+        @normalizer_entity_type = 'gene'
+        @normalizer_host = "#{url_base}gene/"
 
         @source_gene_type_names = {
           Ensembl: GeneAttributeName::ENSEMBL_TYPE,
@@ -20,40 +19,22 @@ module Genome
         }
       end
 
-      def run(source_id = nil)
+      def group_claims(source_id = nil)
         claims = GeneClaim.eager_load(:gene_claim_aliases, :gene_claim_attributes).where(gene_id: nil)
         claims = claims.where(source_id: source_id) unless source_id.nil?
-        if source_id.nil?
-          puts "Grouping #{claims.length} ungrouped gene claims"
-        else
-          begin
-            source = Source.find(source_id)
-          rescue ActiveRecord::RecordNotFound
-            puts 'Unrecognized source ID provided'
-            return
-          end
-          source_name = source.source_db_name
-          puts "Grouping #{claims.length} ungrouped gene claims from #{source_name}"
-        end
 
+        print_grouping_message(claims, source_id)
         create_sources
 
         pbar = ProgressBar.create(title: 'Grouping genes', total: claims.size, format: "%t: %p%% %a |%B|")
         claims.each do |gene_claim|
-          normalized_gene = normalize_claim(gene_claim.name, gene_claim.gene_claim_aliases)
-          next if normalized_gene.nil?
-
-          if normalized_gene.is_a? String
-            normalized_id = normalized_gene
-          else
-            normalized_id = normalized_gene['normalized_id']
-            create_new_gene(normalized_gene['gene'], normalized_id) if Gene.find_by(concept_id: normalized_id).nil?
-          end
-          add_claim_to_gene(gene_claim, normalized_id)
+          group_gene_claim(gene_claim)
 
           pbar.progress += 1
         end
       end
+
+      private
 
       def create_sources
         gene_source_type = SourceType.find_by(type: 'gene')
@@ -193,36 +174,6 @@ module Genome
         )
       end
 
-      def add_grouper_data(gene, descriptor, normalized_id)
-        gene_data = retrieve_normalizer_data(normalized_id)
-        gene_data.each do |source_name, source_data|
-          source = @sources[source_name.to_sym]
-
-          source_data['records'].each do |record|
-            claim = create_gene_claim(record, source)
-            add_grouper_claim_aliases(claim, record)
-            add_grouper_claim_attribute(claim, record)
-
-            add_claim_to_gene(claim, gene.concept_id)
-          end
-        end
-      end
-
-      def create_new_gene(gene_response, normalized_id)
-        name = if gene_response.fetch('label').blank?
-                 normalized_id
-               else
-                 gene_response['label']
-               end
-        gene = Gene.where(
-          concept_id: normalized_id,
-          name: name,
-          long_name: retrieve_extension(gene_response, 'approved_name')
-        ).first_or_create
-
-        add_grouper_data(gene, gene_response, normalized_id)
-      end
-
       def add_claim_attributes(claim, gene)
         gene_attributes = gene.gene_attributes.pluck(:name, :value)
                               .map { |gene_attribute| gene_attribute.map(&:upcase) }
@@ -294,6 +245,53 @@ module Genome
         add_claim_attributes(claim, gene)
         add_claim_categories(claim, gene)
         claim.save
+      end
+
+      def add_grouper_data(gene, normalized_id)
+        gene_data = retrieve_grouper_records(normalized_id)
+        gene_data.each do |source_name, source_data|
+          source = @sources[source_name.to_sym]
+
+          source_data['records'].each do |record|
+            claim = create_gene_claim(record, source)
+            add_grouper_claim_aliases(claim, record)
+            add_grouper_claim_attribute(claim, record)
+
+            add_claim_to_gene(claim, gene.concept_id)
+          end
+        end
+      end
+
+      def create_new_gene(concept_id)
+        gene_response = retrieve_normalizer_response(concept_id)
+        name = get_normalized_name(gene_response)
+        gene = Gene.where(
+          concept_id: concept_id,
+          name: name,
+          long_name: retrieve_extension(gene_response, 'approved_name')
+        ).first_or_create
+
+        add_grouper_data(gene, concept_id)
+      end
+
+      def normalizable_ids
+        [
+          GeneNomenclature::HGNC_ID,
+          GeneNomenclature::NCBI_ID,
+          GeneNomenclature::ENSEMBL_ID
+        ]
+      end
+
+
+      def group_gene_claim(gene_claim)
+        normalized_id = normalize_claim(gene_claim, gene_claim.gene_claim_aliases)
+        if normalized_id.nil?
+          Rails.logger.debug "Unable to group gene claim for `#{gene_claim.name}` from #{gene_claim.source.source_db_name}"
+          return
+        end
+
+        create_new_gene(normalized_id) if Gene.find_by(concept_id: normalized_id).nil?
+        add_claim_to_gene(gene_claim, normalized_id)
       end
     end
   end
