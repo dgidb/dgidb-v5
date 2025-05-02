@@ -14,7 +14,7 @@ const getDruggableSourcesQuery = gql`
       nodes {
         sourceDbName
         sourceDbVersion
-        baseUrl
+        siteUrl
         categoriesInSource {
           name
           geneCount
@@ -62,7 +62,7 @@ const getGeneSourcesQuery = gql`
       nodes {
         sourceDbName
         sourceDbVersion
-        baseUrl
+        siteUrl
         geneClaimsCount
         geneClaimsInGroupsCount
         citation
@@ -102,7 +102,7 @@ const getDrugSourcesQuery = gql`
       nodes {
         sourceDbName
         sourceDbVersion
-        baseUrl
+        siteUrl
         drugClaimsCount
         drugClaimsInGroupsCount
         citation
@@ -142,7 +142,7 @@ const getInteractionSourcesQuery = gql`
       nodes {
         sourceDbName
         sourceDbVersion
-        baseUrl
+        siteUrl
         drugClaimsCount
         drugClaimsInGroupsCount
         geneClaimsCount

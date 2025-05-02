@@ -23,28 +23,31 @@ module Genome
       PRIMARY_NAME = 'Primary Name'
 
       DEVELOPMENT_NAME = 'Development Name'
-      ALIAS = 'ALIAS'
+      ALIAS = 'Alias'
       TRADE_NAME = 'Trade Name'
       GENERIC_NAME = 'Generic Name'
       XREF = 'Xref'
-
-      RXNORM_ID = 'RxNorm ID'
-      HEMONC_ID = 'HemOnc ID'
-      DRUGSATFDA_ID = 'Drugs@FDA ID'
-      CHEMIDPLUS_ID = 'ChemIDplus ID'
-      WIKIDATA_ID = 'Wikidata ID'
       CONCEPT_ID = 'Concept ID'
-      GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'
-      GTOP_LIGAND_ID = 'GuideToPharmacology Ligand ID'
+
+      # IDs generally recognized by thera-py
+      RXNORM_ID = 'RxNorm ID'
+      NCIT_ID = 'NCIt ID'
       DRUGBANK_ID = 'DrugBank ID'
-      PHARMGKB_ID = 'PharmGKB ID'
       CHEMBL_ID = 'ChEMBL ID'
       PUBCHEM_COMPOUND_ID = 'PubChem Compound ID'
+      HEMONC_ID = 'HemOnc ID'
+      CHEMIDPLUS_ID = 'ChemIDplus ID'
+      WIKIDATA_ID = 'Wikidata ID'
+      GTOP_LIGAND_ID = 'GuideToPharmacology Ligand ID'
       PUBCHEM_SUBSTANCE_ID = 'PubChem Substance ID'
-      NCIT_ID = 'NCIt ID'
+      DRUGSATFDA_ID = 'Drugs@FDA ID'
+
+      # other resource-specific stuff
+      GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'
+      PHARMGKB_ID = 'PharmGKB ID'
       PFAM_ID = 'PFAM ID'
       TTD_ID = 'TTD ID'
-      CIVIC_TID = "CIViC Therapy ID"
+      CIVIC_TID = 'CIViC Therapy ID'
     end
 
     module DrugAttributeName
@@ -66,13 +69,17 @@ module Genome
       SYNONYM = 'Gene Synonym'
       DESCRIPTION = 'Description'
       PREVIOUS_SYMBOL = 'Previous Symbol'
+      CONCEPT_ID = 'Concept ID'
 
-      NCBI_NAME = 'NCBI Gene Name'
+      # IDs generally recognzied by the gene normalizer
       NCBI_ID = 'NCBI Gene ID'
-      REFSEQ_ACC = 'RefSeq Accession'
-      ENSEMBL_ID = 'Ensembl Gene ID'
       HGNC_ID = 'HGNC ID'
+      ENSEMBL_ID = 'Ensembl Gene ID'
       UNIPROTKB_ID = 'UniProtKB ID'
+      REFSEQ_ACC = 'RefSeq Accession'
+
+      # other resource-specific stuff
+      NCBI_NAME = 'NCBI Gene Name'
       UNIPROTKB_NAME = 'UniProtKB Entry Name'
       UNIPROTKB_PROTEIN_NAME = 'UniProtKB Protein Name'
       UNIPROTKB_GENE_NAME = 'UniProtKB Gene Name'
@@ -82,7 +89,6 @@ module Genome
       CHEMBL_ID = 'ChEMBL ID'
       GTOP_ID = 'GuideToPharmacology ID'
       GENBANK_ID = 'GenBank Protein ID'
-      CONCEPT_ID = 'Concept ID'
     end
 
     module GeneAttributeName

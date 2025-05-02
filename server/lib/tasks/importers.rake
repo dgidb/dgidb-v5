@@ -72,8 +72,8 @@ namespace :dgidb do
     # Guide to Pharmacology is a special case because it needs two input files
     def run_gtop_import(args)
       args.with_defaults(
-        interaction_file_path: 'lib/data/guide_to_pharmacology/interactions.csv',
-        gene_file_path: 'lib/data/guide_to_pharmacology/targets_and_families.csv',
+        interaction_file_path: nil,
+        gene_file_path: nil,
         gene_group: false,
         drug_group: false
       )

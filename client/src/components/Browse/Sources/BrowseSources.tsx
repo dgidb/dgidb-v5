@@ -84,7 +84,9 @@ export const BrowseSources = () => {
     return (
       <>
         <Box className="source-item-name">
-          <a href={src.baseUrl}>{src.sourceDbName}</a>
+          <a href={src.siteUrl} target="_blank" rel="noopener noreferrer">
+            {src.sourceDbName}
+          </a>
           <Box className="source-versioning">
             Version: {src.sourceDbVersion}
           </Box>
