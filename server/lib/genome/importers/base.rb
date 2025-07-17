@@ -185,9 +185,23 @@ module Genome
       end
 
       def create_interaction_claim_publication_by_pmcid(interaction_claim, pmcid)
-        uri = URI.parse("https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?ids=#{pmcid}&format=json&tool=DGIdb&email=help@dgidb.org")
+        uri = URI.parse("https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?ids=#{pmcid}&format=json&tool=DGIdb&email=help@dgidb.org")
         response_body = PMID.make_get_request(uri)
-        pmid = JSON.parse(response_body)['records'][0]['pmid']
+
+        if response_body.blank?
+          Rails.logger.error "Empty response from #{uri.inspect}"
+          return
+        end
+        begin
+          payload = JSON.parse(response_body)
+          pmid = payload.fetch("records").fetch(0).fetch("pmid")
+        rescue JSON::ParserError => e
+          Rails.logger.error "Invalid JSON from #{uri}: #{e.message}. Raw body:\n#{response_body}"
+          return
+        rescue KeyError => e
+          Rails.logger.error "Unexpected JSON structure from #{uri}: #{e.message}. Full payload:\n#{payload.inspect}"
+          return
+        end
         create_interaction_claim_publication(interaction_claim, pmid) unless pmid.nil?
       end
 

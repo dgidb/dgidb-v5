@@ -4,7 +4,10 @@ module PMID
     begin
       uri = URI(url)
       res = Net::HTTP.get_response(uri)
-      raise StandardError.new(res.body) unless res.code == '200'
+      unless res.code == '200'
+        Rails.logger.error "Non-OK response code #{res.code} from #{uri.inspect}"
+        raise StandardError.new(res.body)
+      end
       res.body
     rescue
       if (retries += 1) <= 3
