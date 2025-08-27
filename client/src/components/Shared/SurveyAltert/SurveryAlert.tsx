@@ -15,7 +15,7 @@ export const SurveyAlert: React.FC = () => {
           <img
             src="/images/survey.png"
             alt="Survey Logo"
-            style={{ width: 93, height: 71 }} //this is just 50% scale for the image, preserving aspect ratio
+            style={{ width: '50%', height: 'auto' }}
           />
         }
       >
