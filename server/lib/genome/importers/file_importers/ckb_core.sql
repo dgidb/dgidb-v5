@@ -1,6 +1,7 @@
--- We aren't currently able to get everything we need from the OncoKB API endpoint;
--- These queries make it easier to transfer data from the DGIdb v4 database by
+-- We aren't currently able to get everything we need from the CKB API endpoint;
+-- These queries make it easier to transfer data from a previous DGIdb database by
 -- producing outputs that, when exported as CSVs, can be ingested by a file importer.
+-- Note that to use this script, you'd have to change the home directory path.
 
 -- gene claim
 COPY (SELECT gc.name, gc.nomenclature

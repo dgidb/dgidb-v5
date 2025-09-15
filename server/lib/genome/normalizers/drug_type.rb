@@ -71,18 +71,18 @@ module Genome
       end
 
       private_class_method def self.antineoplastic_source_names
-        [
-          'CGI',
-          'CKB',
-          'CancerCommons',
-          'CIViC',
-          'ClearityFoundationBiomarkers',
-          'ClearityFoundationClinicalTrial',
-          'DoCM',
-          'MyCancerGenome',
-          'MyCancerGenomeClinicalTrial',
-          'OncoKB',
-          'TALC'
+        %w[
+          CGI
+          CKB-CORE
+          CancerCommons
+          CIViC
+          ClearityFoundationBiomarkers
+          ClearityFoundationClinicalTrial
+          DoCM
+          MyCancerGenome
+          MyCancerGenomeClinicalTrial
+          OncoKB
+          TALC
         ]
       end
     end
