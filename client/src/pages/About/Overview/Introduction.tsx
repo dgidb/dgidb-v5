@@ -1,6 +1,8 @@
-import { Link } from '@mui/material';
+import { Box, Divider, Link } from '@mui/material';
 import React from 'react';
 import { NoteBox } from 'components/About/NoteBox/NoteBox';
+import { Citation } from './Citation/Citation';
+import { pastCitations, preferredCitation } from './Citation/citations';
 
 export const Introduction: React.FC = () => {
   return (
@@ -31,26 +33,21 @@ export const Introduction: React.FC = () => {
           If you find DGIdb helpful in your scholarly projects, please cite the
           following:
         </p>
-        <p className="citation">
-          Matthew Cannon, James Stevenson, Kathryn Stahl, Rohit Basu, Adam
-          Coffman, Susanna Kiwala, Joshua F McMichael, Kori Kuzma, Dorian
-          Morrissey, Kelsy Cotto, Elaine R Mardis, Obi L Griffith, Malachi
-          Griffith, Alex H Wagner,{' '}
-          <b>
-            DGIdb 5.0: rebuilding the drug–gene interaction database for
-            precision medicine and drug discovery platforms
-          </b>
-          , <em>Nucleic Acids Research</em>, Volume 52, Issue D1, 5 January
-          2024, Pages D1227–D1235,{' '}
-          <Link
-            href="https://doi.org/10.1093/nar/gkad1040"
-            target="_blank"
-            rel="noopener"
-          >
-            https://doi.org/10.1093/nar/gkad1040
-          </Link>
-        </p>
+        <Citation {...preferredCitation} />
       </NoteBox>
+      <Box mt={5}>
+        <NoteBox>
+          <h4>Previous Works</h4>
+          <p>For previous versions of DGIdb, refer to the citations below.</p>
+
+          {pastCitations.map((citation) => (
+            <Box key={citation.doi} mb={2}>
+              <Citation {...citation} />
+              <Divider sx={{ margin: '15px' }} />
+            </Box>
+          ))}
+        </NoteBox>
+      </Box>
     </>
   );
 };
