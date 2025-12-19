@@ -1,4 +1,4 @@
-import { Box, Divider, Link } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import React from 'react';
 import { NoteBox } from 'components/About/NoteBox/NoteBox';
 import { Citation } from './Citation/Citation';
