@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Stats.scss';
+import MedicationIcon from '@mui/icons-material/Medication';
+import CachedIcon from '@mui/icons-material/Cached';
+import CategoryIcon from '@mui/icons-material/Category';
+import SourceIcon from '@mui/icons-material/Source';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import StatsCard from 'components/About/StatsCard/StatsCard';
 
 interface StatsData {
   drug_claims: number;
@@ -54,41 +60,47 @@ export const AboutStats: React.FC = () => {
     <>
       <h1>Data Statistics</h1>
       <p>Live counts of claims and groups for data in DGIdb:</p>
-      <p>
-        <b>Drug Claims: </b>
-        {stats?.drug_claims}
-        <br />
-        <b>Drug Groups: </b>
-        {stats?.drugs}
-        <br />
-        <br />
-        <b>Gene Claims: </b>
-        {stats?.gene_claims}
-        <br />
-        <b>Gene Groups: </b>
-        {stats?.genes}
-        <br />
-        <br />
-        <b>Interaction Claims: </b>
-        {stats?.interaction_claims}
-        <br />
-        <b>Interaction Groups: </b>
-        {stats?.interactions}
-        <br />
-        <br />
-        <b>Gene Category Claims: </b>
-        {stats?.gene_categorization_claims}
-        <br />
-        <b>Gene Category Groups: </b>
-        {stats?.gene_categorizations}
-        <br />
-        <br />
-        <b>Sources: </b>
-        {stats?.sources}
-        <br />
-        <b>Publications: </b>
-        {stats?.publications}
-        <br />
+      <p className="stats-grid">
+        <StatsCard
+          claimsCount={stats?.drug_claims || 0}
+          groupsCount={stats?.drugs || 0}
+          icon={<MedicationIcon />}
+          title="Drugs"
+          variant="entity"
+        />
+        <StatsCard
+          claimsCount={stats?.gene_claims || 0}
+          groupsCount={stats?.genes || 0}
+          icon={<MedicationIcon />}
+          title="Genes"
+          variant="entity"
+        />
+        <StatsCard
+          claimsCount={stats?.interaction_claims || 0}
+          groupsCount={stats?.interactions || 0}
+          icon={<CachedIcon />}
+          title="Interactions"
+          variant="entity"
+        />
+        <StatsCard
+          claimsCount={stats?.gene_categorization_claims || 0}
+          groupsCount={stats?.gene_categorizations || 0}
+          icon={<CategoryIcon />}
+          title="Gene Category"
+          variant="entity"
+        />
+        <StatsCard
+          claimsCount={stats?.sources || 0}
+          groupsCount={0}
+          icon={<SourceIcon />}
+          title="Sources"
+        />
+        <StatsCard
+          claimsCount={stats?.publications || 0}
+          groupsCount={0}
+          icon={<LibraryBooksIcon />}
+          title="Publications"
+        />
       </p>
     </>
   );
