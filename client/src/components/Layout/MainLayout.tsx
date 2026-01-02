@@ -111,7 +111,7 @@ const Header: React.FC = () => {
     },
     {
       text: 'About',
-      navPath: '/about',
+      navPath: '/about/overview/introduction',
       icon: <InfoIcon />,
     },
     {
