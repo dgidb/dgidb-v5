@@ -24,12 +24,13 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         <h4>{title}</h4>
       </span>
       {variant === 'entity' ? (
-        <span className='stats-subtext'>
-          <b className='bold-count'>{claimsCount}</b> Claims across <b className='bold-count'>{groupsCount}</b> Groups
+        <span className="stats-subtext">
+          <b className="bold-count">{claimsCount}</b> Claims across{' '}
+          <b className="bold-count">{groupsCount}</b> Groups
         </span>
       ) : (
-        <span className='stats-subtext'>
-          <b className='bold-count'>{claimsCount}</b> {title.toLowerCase()}
+        <span className="stats-subtext">
+          <b className="bold-count">{claimsCount}</b> {title.toLowerCase()}
         </span>
       )}
     </Paper>

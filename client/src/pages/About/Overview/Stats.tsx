@@ -9,10 +9,7 @@ import StatsCard from 'components/About/StatsCard/StatsCard';
 import { ReactComponent as GeneSvg } from 'assets/icons/dna-icon.svg';
 import SvgIcon from '@mui/material/SvgIcon';
 
-const GeneIcon = () => (
-  <SvgIcon component={GeneSvg} viewBox="0 0 24 24" />
-);
-
+const GeneIcon = () => <SvgIcon component={GeneSvg} viewBox="0 0 24 24" />;
 
 interface StatsData {
   drug_claims: number;
