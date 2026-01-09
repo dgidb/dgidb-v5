@@ -6,6 +6,13 @@ import CategoryIcon from '@mui/icons-material/Category';
 import SourceIcon from '@mui/icons-material/Source';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import StatsCard from 'components/About/StatsCard/StatsCard';
+import { ReactComponent as GeneSvg } from 'assets/icons/dna-icon.svg';
+import SvgIcon from '@mui/material/SvgIcon';
+
+const GeneIcon = () => (
+  <SvgIcon component={GeneSvg} viewBox="0 0 24 24" />
+);
+
 
 interface StatsData {
   drug_claims: number;
@@ -71,7 +78,7 @@ export const AboutStats: React.FC = () => {
         <StatsCard
           claimsCount={stats?.gene_claims || 0}
           groupsCount={stats?.genes || 0}
-          icon={<MedicationIcon />}
+          icon={<GeneIcon />}
           title="Genes"
           variant="entity"
         />
