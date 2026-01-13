@@ -12,3 +12,12 @@
     width: 50%;
   }
 }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-rows: repeat(1, 1fr);
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  margin-bottom: 30px;
+}

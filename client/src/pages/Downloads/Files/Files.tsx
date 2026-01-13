@@ -13,9 +13,10 @@ import Paper from '@mui/material/Paper';
 // style
 import './Files.scss';
 
-function getDataObj(date: string) {
+function getDataObj(date: string, label?: string) {
   return {
     date,
+    label: label ?? date,
     interactions: 'interactions.tsv',
     genes: 'genes.tsv',
     drugs: 'drugs.tsv',
@@ -24,7 +25,7 @@ function getDataObj(date: string) {
 }
 
 const rows = [
-  getDataObj('latest'),
+  getDataObj('latest', 'latest (2024-Dec)'),
   getDataObj('2024-Dec'),
   getDataObj('2024-Jun'),
   getDataObj('2023-Dec'),
@@ -63,7 +64,7 @@ export const Files = () => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.date}
+                  {row.label}
                 </TableCell>
                 <TableCell align="center">
                   <a
