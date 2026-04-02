@@ -10,6 +10,7 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ClientError
 from wags_tails.base_source import DataSource, UnversionedDataSource, RemoteDataError
+from wags_tails.chembl import ChemblData
 from wags_tails.utils.storage import get_latest_local_file
 from wags_tails.utils.downloads import HTTPS_REQUEST_TIMEOUT, download_http, handle_zip
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
@@ -519,15 +520,23 @@ for SourceClass in [
     CancerCommons,
     Caris,
     Cgi,
+    ChemblData,
+    CkbCoreDrugClaims,
+    CkbCoreGeneClaimAliases,
+    CkbCoreGeneClaims,
+    CkbCoreInteractionClaimAttributes,
+    CkbCoreInteractionClaimLinks,
+    CkbCoreInteractionClaimPublications,
+    CkbCoreInteractionClaims,
     ClearityFoundationBiomarkers,
     ClearityFoundationClinicalTrial,
     Cosmic,
     Dgene,
     DocmDrugClaims,
     DocmGeneClaims,
-    DocmInteractionClaims,
     DocmInteractionClaimAttributes,
     DocmInteractionClaimPublications,
+    DocmInteractionClaims,
     DrugbankProtected,
     Dtc,
     Fda,
@@ -542,11 +551,11 @@ for SourceClass in [
     MyCancerGenomeClinicalTrial,
     Nci,
     OncoKbDrugClaims,
-    OncoKbGeneClaims,
     OncoKbGeneClaimAliases,
-    OncoKbInteractionClaims,
-    OncoKbInteractionClaimLinks,
+    OncoKbGeneClaims,
     OncoKbInteractionClaimAttributes,
+    OncoKbInteractionClaimLinks,
+    OncoKbInteractionClaims,
     Oncomine,
     PharmGkbRelations,
     RussLampel,
