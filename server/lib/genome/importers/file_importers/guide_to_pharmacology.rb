@@ -20,7 +20,7 @@ module Genome
               gene_file_path, 'targets_and_families'
             )
             @source_db_name = 'GuideToPharmacology'
-            @valid_gtop_ids = Set.new
+            @gene_claims_by_gtop_id = {}
           end
 
           def create_claims
@@ -130,42 +130,38 @@ module Genome
             'vgic' => 'ION CHANNEL'
           }
 
-          def import_target_row(row)
-            # skip if missing NCBI ID -- some targets are quite sparsely described
-            # and maybe don't refer to a human context
-            ncbi_lui = row['Human Entrez Gene']&.strip
-            return if ncbi_lui.blank? || ncbi_lui.include?('|')
-
-            # skip if missing target ID (this is probably impossible)
-            gtop_lui = row['Target id']&.strip
-            raise "Missing Target id for row: #{row.inspect}" if gtop_lui.blank?
-
-            @valid_gtop_ids.add(gtop_lui)
-            gene_claim = create_gene_claim("IUPHAR.RECEPTOR:#{gtop_lui}", GeneNomenclature::GTOP_ID)
-
-            create_alias_if_present(gene_claim, row['HGNC id'], GeneNomenclature::HGNC_ID, prefix: 'hgnc:')
-            create_alias_if_present(gene_claim, row['HGNC name'], GeneNomenclature::NAME)
-            create_alias_if_present(gene_claim, row['HGNC symbol'], GeneNomenclature::SYMBOL,
-                                    reject_numeric_only: true)
-            create_alias_if_present(gene_claim, row['Target name'], GeneNomenclature::NAME)
-
-            create_refseq_aliases(gene_claim, row['Human nucleotide RefSeq'])
-            create_refseq_aliases(gene_claim, row['Human protein RefSeq'])
-
-            create_prefixed_aliases(gene_claim, row['Human SwissProt'], GeneNomenclature::UNIPROTKB_ID,
-                                    prefix: 'uniprot:')
-
-            create_gene_claim_attribute(gene_claim, GeneAttributeName::GTOP_FAMILY_NAME, row['Family name'])
-            create_gene_claim_attribute(gene_claim, GeneAttributeName::GTOP_FAMILY_ID,
-                                        "iuphar.family:#{row['Family id']}")
-
-            create_gene_claim_category(gene_claim, CATEGORY_LOOKUP[row['Type']]) if CATEGORY_LOOKUP.key? row['Type']
-          end
-
           def import_gene_claims
             CSV.foreach(gene_file_path, headers: true,
                                         skip_lines: /GtoPdb Version/, col_sep: "\t") do |row|
-              import_target_row(row)
+              # skip if missing NCBI ID -- some targets are quite sparsely described
+              # and maybe don't refer to a human context
+              ncbi_lui = row['Human Entrez Gene']&.strip
+              next if ncbi_lui.blank? || ncbi_lui.include?('|')
+
+              # skip if missing target ID (this is probably impossible)
+              gtop_lui = row['Target id']&.strip
+              raise "Missing Target id for row: #{row.inspect}" if gtop_lui.blank?
+
+              gene_claim = create_gene_claim("IUPHAR.RECEPTOR:#{gtop_lui}", GeneNomenclature::GTOP_ID)
+              @gene_claims_by_gtop_id[gtop_lui] = gene_claim
+
+              create_alias_if_present(gene_claim, row['HGNC id'], GeneNomenclature::HGNC_ID, prefix: 'hgnc:')
+              create_alias_if_present(gene_claim, row['HGNC name'], GeneNomenclature::NAME)
+              create_alias_if_present(gene_claim, row['HGNC symbol'], GeneNomenclature::SYMBOL,
+                                      reject_numeric_only: true)
+              create_alias_if_present(gene_claim, row['Target name'], GeneNomenclature::NAME)
+
+              create_refseq_aliases(gene_claim, row['Human nucleotide RefSeq'])
+              create_refseq_aliases(gene_claim, row['Human protein RefSeq'])
+
+              create_prefixed_aliases(gene_claim, row['Human SwissProt'], GeneNomenclature::UNIPROTKB_ID,
+                                      prefix: 'uniprot:')
+
+              create_gene_claim_attribute(gene_claim, GeneAttributeName::GTOP_FAMILY_NAME, row['Family name'])
+              create_gene_claim_attribute(gene_claim, GeneAttributeName::GTOP_FAMILY_ID,
+                                          "iuphar.family:#{row['Family id']}")
+
+              create_gene_claim_category(gene_claim, CATEGORY_LOOKUP[row['Type']]) if CATEGORY_LOOKUP.key? row['Type']
             end
           end
 
@@ -174,10 +170,9 @@ module Genome
                                                skip_lines: /GtoPdb Version/, col_sep: "\t") do |line|
               next unless valid_interaction_line?(line)
 
-              gene_claim = create_gene_claim(
-                "NCBIGENE:#{line['Target ID']}", GeneNomenclature::NCBI_ID
-              )
-              create_gene_claim_aliases(gene_claim, line)
+              target_id = line['Target ID']&.strip
+              gene_claim = @gene_claims_by_gtop_id[target_id]
+              next unless gene_claim
 
               drug_claim = create_drug_claim("iuphar.ligand:#{line['Ligand ID']}".upcase,
                                              DrugNomenclature::GTOP_LIGAND_ID)
@@ -186,13 +181,9 @@ module Genome
                 create_drug_claim_attribute(drug_claim,
                                             DrugAttributeName::SPECIES_NAME, line['Ligand Species'])
               end
-              if line['Approved'] == 't'
-                create_drug_claim_approval_rating(drug_claim,
-                                                  'Approved')
-              end
+              create_drug_claim_approval_rating(drug_claim, 'Approved') if line['Approved'] == 't'
 
-              interaction_claim = create_interaction_claim(gene_claim,
-                                                           drug_claim)
+              interaction_claim = create_interaction_claim(gene_claim, drug_claim)
               type = line['Type'].downcase
               unless type == 'none'
                 create_interaction_claim_type(interaction_claim,
@@ -200,13 +191,10 @@ module Genome
               end
               unless blank?(line['Pubmed ID'])
                 line['Pubmed ID'].split('|').each do |pmid|
-                  create_interaction_claim_publication(
-                    interaction_claim, pmid
-                  )
+                  create_interaction_claim_publication(interaction_claim, pmid)
                 end
               end
-              create_interaction_claim_attributes(interaction_claim,
-                                                  line)
+              create_interaction_claim_attributes(interaction_claim, line)
               create_interaction_claim_link(interaction_claim, 'Ligand Biological Activity',
                                             "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=#{line['Ligand ID']}&tab=biology")
             end
@@ -227,33 +215,9 @@ module Genome
             target_id = line['Target ID']&.strip
             return false if target_id.blank?
 
-            return false unless @valid_gtop_ids.include?(target_id)
+            return false unless @gene_claims_by_gtop_id.key?(target_id)
 
             true
-          end
-
-          def create_gene_claim_aliases(gene_claim, line)
-            unless blank?(line['Target'])
-              create_gene_claim_alias(gene_claim, line['Target'],
-                                      GeneNomenclature::NAME)
-            end
-            unless blank?(line['Target Ensembl Gene ID'])
-              line['Target Ensembl Gene ID'].split('|').each do |ensembl_id|
-                create_gene_claim_alias(gene_claim,
-                                        "ensembl:#{ensembl_id}", GeneNomenclature::NCBI_ID)
-              end
-            end
-            unless blank?(line['Target Gene Symbol'])
-              line['Target Gene Symbol'].split('|').each do |gene_symbol|
-                create_gene_claim_alias(gene_claim, gene_symbol, GeneNomenclature::SYMBOL)
-              end
-            end
-            return if blank?(line['Target UniProt ID'])
-
-            line['Target UniProt ID'].split('|').each do |uniprot_id|
-              create_gene_claim_alias(gene_claim,
-                                      "uniprot:#{uniprot_id}", GeneNomenclature::UNIPROTKB_ID)
-            end
           end
 
           def strip_tags(drug_alias)
