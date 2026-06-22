@@ -40,9 +40,9 @@ module Genome
             directory = "#{default_data_dir}/guidetopharmacology/"
             Dir.glob(File.join(directory, "gtop_#{datatype}_*.tsv"))
                .max_by do |file|
-              file.match(/gtop_#{datatype}_(\d+)\.db/)[1].to_i
-            rescue StandardError
-              0
+              file[/gtop_#{datatype}_(\d+\.\d+)\.tsv/, 1]
+                .split('.')
+                .map(&:to_i)
             end
           end
 
