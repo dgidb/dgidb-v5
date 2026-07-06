@@ -1,43 +1,84 @@
 // dependencies
 import React from 'react';
+import { useGetDataReleases } from 'hooks/queries/useGetDataReleases';
+import type {
+  GithubDataRelease,
+  GithubReleaseAsset,
+} from 'hooks/queries/useGetDataReleases';
 
 // components
+import { Link, Paper, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { LoadingSpinner } from 'components/Shared/LoadingSpinner/LoadingSpinner';
 
 // style
 import './Files.scss';
 
-function getDataObj(date: string, label?: string) {
-  return {
-    date,
-    label: label ?? date,
-    interactions: 'interactions.tsv',
-    genes: 'genes.tsv',
-    drugs: 'drugs.tsv',
-    categories: 'categories.tsv',
-  };
+function getReleaseLabel(release: GithubDataRelease, index: number): string {
+  const name = release.name || release.tag_name;
+  return index === 0 ? `latest (${name})` : name;
 }
 
-const rows = [
-  getDataObj('latest', 'latest (2024-Dec)'),
-  getDataObj('2024-Dec'),
-  getDataObj('2024-Jun'),
-  getDataObj('2023-Dec'),
-  getDataObj('2022-Feb'),
-  getDataObj('2021-May'),
-  getDataObj('2021-Jan'),
-  getDataObj('2020-Nov'),
-  getDataObj('2020-Oct'),
-  getDataObj('2020-Sep'),
-];
+function getAsset(
+  release: GithubDataRelease,
+  filename: string
+): GithubReleaseAsset | undefined {
+  return release.assets.find((asset) => asset.name === filename);
+}
 
-export const Files = () => {
+function getSqlDownloadAsset(
+  release: GithubDataRelease
+): GithubReleaseAsset | undefined {
+  return release.assets.find((asset) => /\.sql(\.gz)?$/i.test(asset.name));
+}
+
+function renderAssetLink(asset: GithubReleaseAsset | undefined) {
+  if (!asset) {
+    return '-';
+  }
+
+  return (
+    <a download href={asset.browser_download_url}>
+      {asset.name}
+    </a>
+  );
+}
+
+export const Files: React.FC = () => {
+  const { data: releases = [], isError, isLoading } = useGetDataReleases();
+
+  if (isLoading) {
+    return (
+      <div className="about-section-container doc-section">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="about-section-container doc-section">
+        <Typography className="downloads-message">
+          Data releases could not be loaded from GitHub. View releases directly
+          at{' '}
+          <Link
+            href="https://github.com/dgidb/dgidb-data/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            dgidb-data releases
+          </Link>
+          .
+        </Typography>
+      </div>
+    );
+  }
+
   return (
     <div className="about-section-container doc-section">
       <p>
@@ -55,42 +96,44 @@ export const Files = () => {
               <TableCell align="center">Genes</TableCell>
               <TableCell align="center">Drugs</TableCell>
               <TableCell align="center">Categories</TableCell>
+              <TableCell align="center">SQL</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {releases.map((release, index) => (
               <TableRow
-                key={row.date}
+                key={release.tag_name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.label}
+                  {getReleaseLabel(release, index)}
                 </TableCell>
                 <TableCell align="center">
-                  <a
-                    download
-                    href={'data/' + row.date + '/' + row.interactions}
-                  >
-                    {row.interactions}
-                  </a>
+                  {renderAssetLink(getAsset(release, 'interactions.tsv'))}
                 </TableCell>
                 <TableCell align="center">
-                  <a download href={'data/' + row.date + '/' + row.genes}>
-                    {row.genes}
-                  </a>
+                  {renderAssetLink(getAsset(release, 'genes.tsv'))}
                 </TableCell>
                 <TableCell align="center">
-                  <a download href={'data/' + row.date + '/' + row.drugs}>
-                    {row.drugs}
-                  </a>
+                  {renderAssetLink(getAsset(release, 'drugs.tsv'))}
                 </TableCell>
                 <TableCell align="center">
-                  <a download href={'data/' + row.date + '/' + row.categories}>
-                    {row.categories}
-                  </a>
+                  {renderAssetLink(getAsset(release, 'categories.tsv'))}
+                </TableCell>
+                <TableCell align="center">
+                  {renderAssetLink(getSqlDownloadAsset(release))}
                 </TableCell>
               </TableRow>
             ))}
+            {releases.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Typography>
+                    No data releases are currently available.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
