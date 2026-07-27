@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Genome
   class DataImporter
     module License
@@ -48,6 +49,7 @@ module Genome
       PFAM_ID = 'PFAM ID'
       TTD_ID = 'TTD ID'
       CIVIC_TID = 'CIViC Therapy ID'
+      MOA_TID = 'MOalmanac Therapy ID'
     end
 
     module DrugAttributeName

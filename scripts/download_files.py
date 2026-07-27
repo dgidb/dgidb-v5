@@ -11,6 +11,7 @@ import boto3
 from botocore.exceptions import ClientError
 from wags_tails.base_source import DataSource, UnversionedDataSource, RemoteDataError
 from wags_tails.chembl import ChemblData
+from wags_tails.moa import MoaData
 from wags_tails.utils.storage import get_latest_local_file
 from wags_tails.utils.downloads import HTTPS_REQUEST_TIMEOUT, download_http, handle_zip
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
@@ -547,6 +548,7 @@ for SourceClass in [
     HumanProteinAtlas,
     Idg,
     MskImpact,
+    MoaData,
     MyCancerGenome,
     MyCancerGenomeClinicalTrial,
     Nci,
