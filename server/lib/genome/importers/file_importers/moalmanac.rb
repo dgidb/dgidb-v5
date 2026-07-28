@@ -142,14 +142,14 @@ module Genome
                 # special case -- pull out ABL1 interaction for BCR-ABL1 fusions
                 next unless genes.map { |g| g['name'] }.sort == %w[ABL1 BCR]
 
-                gene_records = [genes.find { |g| g['name'] == 'ABL1' }]
+                gene_record = [genes.find { |g| g['name'] == 'ABL1' }].first
               elsif genes&.length == 1
-                gene_records = genes
+                gene_record = genes.first
               else
                 next
               end
 
-              drug_records.product(gene_records).each do |drug_record, gene_record|
+              drug_records.each do |drug_record|
                 ingest_interaction(gene_record, drug_record, statement)
               end
             end
