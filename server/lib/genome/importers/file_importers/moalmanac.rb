@@ -73,7 +73,12 @@ module Genome
 
           def ingest_gene(gene_record)
             gene_claim = create_gene_claim(gene_record['name'], GeneNomenclature::SYMBOL)
-            create_gene_claim_alias(gene_claim, gene_record['primaryCoding']['code'], GeneNomenclature::HGNC_ID)
+            if gene_record.dig(
+              'primaryCoding', 'code'
+            )
+              create_gene_claim_alias(gene_claim, gene_record['primaryCoding']['code'],
+                                      GeneNomenclature::HGNC_ID)
+            end
             gene_claim
           end
 
@@ -89,10 +94,13 @@ module Genome
               create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::COMBINATION,
                                                  combo_therapy_value)
             end
-            return unless statement.key? 'indication'
+            if statement.key? 'indication'
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::INDICATION,
+                                                 statement['indication']['description'])
+            end
+            return unless statement.dig('indication', 'document', 'documentType') == 'Regulatory approval'
 
-            create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::INDICATION,
-                                               statement['indication']['description'])
+            create_drug_claim_approval_rating(drug_claim, 'Approved')
           end
 
           def create_interaction_claims
@@ -115,8 +123,6 @@ module Genome
                   'ER negative',
                   'PR positive',
                   'PR negative',
-                  'CD19 +',
-                  'CD22 +',
                   'dMMR'
                 ]
                 ignored_patterns = [
@@ -136,9 +142,16 @@ module Genome
 
               genes = biomarkers.first['genes']
 
-              if genes&.length != 1
-                next if genes.nil?
-
+              if genes.nil?
+                biomarker = biomarkers.first
+                if biomarker['name'] == 'CD22 +'
+                  gene_record = { 'name' => 'CD22' }
+                elsif biomarker['name'] == 'CD19 +'
+                  gene_record = { 'name' => 'CD19' }
+                else
+                  next
+                end
+              elsif genes&.length != 1
                 # special case -- pull out ABL1 interaction for BCR-ABL1 fusions
                 next unless genes.map { |g| g['name'] }.sort == %w[ABL1 BCR]
 
