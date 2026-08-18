@@ -285,6 +285,78 @@ class DrugbankProtected(DataSource):
         return latest_file, latest_version
 
 
+class DrugRepurposingHubData(DataSource):
+    _src_name = "drug_repurposing_hub"
+    _filetype = "txt"
+
+    @staticmethod
+    def _get_latest_version() -> tuple[str, str]:
+        # broad ssl things currently broken
+        # for now just redownload every time
+        # downloads_url = "https://repo-hub.broadinstitute.org/repurposing"
+        # r = requests.get(downloads_url, timeout=HTTPS_REQUEST_TIMEOUT)
+        # r.raise_for_status()
+        # match = re.search(
+        #     r'<span[^>]*class="rep-download-update-txt"[^>]*>.*?'
+        #     r'<a[^>]*href="([^"]+)"[^>]*>(\d{1,2}/\d{1,2}/\d{4})</a>',
+        #     r.text,
+        #     re.DOTALL,
+        # )
+        #
+        # if match:
+        #     url = f"https://repo-hub.broadinstitute.org/{match.group(1)}"
+        #     date = datetime.datetime.strptime(match.group(2), "%m/%d/%Y").strftime(
+        #         DATE_VERSION_PATTERN
+        #     )
+        #     return date, url
+        # raise RemoteDataError()
+        return (
+            "20250818",
+            "https://repo-hub.broadinstitute.org/public/data/repo-drug-annotation-20250818.txt",
+        )
+
+    def _download_data(self, url: str, outfile: Path) -> None:
+        download_http(
+            url,
+            outfile,
+            handler=handle_zip,
+            tqdm_params=self._tqdm_params,
+        )
+
+    def get_latest(
+        self, from_local: bool = False, force_refresh: bool = False
+    ) -> tuple[Path, str]:
+        """Get path to latest version of data, and its version value
+
+        :param from_local: if True, use latest available local file
+        :param force_refresh: if True, fetch and return data from remote regardless of
+            whether a local copy is present
+        :return: Path to location of data, and version value of it
+        :raise ValueError: if both ``force_refresh`` and ``from_local`` are True
+        """
+        if force_refresh and from_local:
+            msg = "Cannot set both `force_refresh` and `from_local`"
+            raise ValueError(msg)
+
+        if from_local:
+            file_path, version = self._get_latest_local_file(
+                "drug_repurposing_hub_*.txt"
+            )
+            return file_path, version
+
+        latest_version, latest_url = self._get_latest_version()
+        latest_file = self.data_dir / f"drug_repurposing_hub_{latest_version}.txt"
+        if (not force_refresh) and latest_file.exists():
+            _logger.debug(
+                "Found existing file, %s, matching latest version %s.",
+                latest_file.name,
+                latest_version,
+            )
+            return latest_file, latest_version
+        self._download_data(latest_url, latest_file)
+        return latest_file, latest_version
+
+
 class Dtc(UnversionedS3Data):
     _src_name = "dtc"
     _filetype = "csv"
@@ -444,7 +516,7 @@ class PharmGkbRelations(DataSource):
 
     def _download_data(self, version: str, outfile: Path) -> None:
         download_http(
-            "https://api.pharmgkb.org/v1/download/file/data/relationships.zip",
+            "https://api.clinpgx.org/v1/download/file/data/relationships.zip",
             outfile,
             handler=handle_zip,
             tqdm_params=self._tqdm_params,
@@ -539,6 +611,7 @@ for SourceClass in [
     DocmInteractionClaimPublications,
     DocmInteractionClaims,
     DrugbankProtected,
+    DrugRepurposingHubData,
     Dtc,
     Fda,
     FoundationOneGenes,
