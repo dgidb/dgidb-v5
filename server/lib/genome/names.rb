@@ -45,7 +45,7 @@ module Genome
 
       # other resource-specific stuff
       GTOP_LIGAND_NAME = 'GuideToPharmacology Ligand Name'
-      PHARMGKB_ID = 'PharmGKB ID'
+      CLINPGX_ID = 'ClinPGx ID'
       PFAM_ID = 'PFAM ID'
       TTD_ID = 'TTD ID'
       CIVIC_TID = 'CIViC Therapy ID'
@@ -87,7 +87,7 @@ module Genome
       UNIPROTKB_GENE_NAME = 'UniProtKB Gene Name'
       CIVIC_GID = 'CIViC Gene ID'
       TTD_ID = 'TTD ID'
-      PHARMGKB_ID = 'PharmGKB ID'
+      CLINPGX_ID = 'ClinPGx ID'
       CHEMBL_ID = 'ChEMBL ID'
       GTOP_ID = 'GuideToPharmacology ID'
       GENBANK_ID = 'GenBank Protein ID'

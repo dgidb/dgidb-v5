@@ -430,8 +430,8 @@ class Nci(UnversionedS3Data):
     _src_name = "nci"
 
 
-class PharmGkbRelations(DataSource):
-    _src_name = "pharmgkb"
+class ClinPgxRelations(DataSource):
+    _src_name = "clinpgx"
     _filetype = "tsv"
 
     @staticmethod
@@ -444,7 +444,7 @@ class PharmGkbRelations(DataSource):
 
     def _download_data(self, version: str, outfile: Path) -> None:
         download_http(
-            "https://api.pharmgkb.org/v1/download/file/data/relationships.zip",
+            "https://api.clinpgx.org/v1/download/file/data/relationships.zip",
             outfile,
             handler=handle_zip,
             tqdm_params=self._tqdm_params,
@@ -559,7 +559,7 @@ for SourceClass in [
     OncoKbInteractionClaimLinks,
     OncoKbInteractionClaims,
     Oncomine,
-    PharmGkbRelations,
+    ClinPgxRelations,
     RussLampel,
     Talc,
     Tdg,
