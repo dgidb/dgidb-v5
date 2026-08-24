@@ -122,6 +122,7 @@ GEM
     erubi (1.13.1)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
+    ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
     fiber-storage (1.0.1)
@@ -187,11 +188,14 @@ GEM
       net-protocol
     net-ssh (7.3.2)
     nio4r (2.7.5)
+    nokogiri (1.19.3-aarch64-linux-gnu)
+      racc (~> 1.4)
     nokogiri (1.19.3-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.3)
+    pg (1.6.3-aarch64-linux)
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-linux)
     pp (0.6.3)
@@ -289,6 +293,7 @@ GEM
       graphql (> 1.8)
       search_object (~> 1.2.5)
     securerandom (0.4.1)
+    sqlite3 (2.9.3-aarch64-linux-gnu)
     sqlite3 (2.9.3-arm64-darwin)
     sqlite3 (2.9.3-x86_64-linux-gnu)
     sshkit (1.25.0)
@@ -318,6 +323,7 @@ GEM
     zlib (3.2.3)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-23
   arm64-darwin-25
   x86_64-linux
