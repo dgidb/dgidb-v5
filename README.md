@@ -8,9 +8,8 @@ A from-scratch rewrite of the [Drug-Gene Interaction Database](https://dgidb.org
 
 First, make sure you have all of the following installed:
 
-- [RVM](https://rvm.io/rvm/install#any-other-system) -- choose the stable version
+- [mise](https://mise.jdx.dev/). The easiest method is `brew install mise`. You will likely also want to [automatically activate it in your shell](https://mise.jdx.dev/getting-started.html#activate-mise).
 - PostgreSQL, either from [here](https://wiki.postgresql.org/wiki/Homebrew) or [here](http://postgresapp.com)
-- [NPM/Node](https://nodejs.org/en/download/)
 
 Clone and enter the repository:
 
@@ -19,27 +18,20 @@ git clone https://github.com/dgidb/dgidb-v5
 cd dgidb-v5
 ```
 
-### Server setup
-
-First, you may need to switch your Ruby version with RVM to match the version declared in the first few lines of the [Gemfile](server/Gemfile). For example, to switch to version 3.1.0:
+Then install the correct versions of node, ruby, and python by running the following:
 
 ```shell
-rvm install 3.1.0
-rvm 3.1.0
+mise trust
+mise install
 ```
+This will also automaticaly set up and activate a python virtualenv.
+
+### Server setup
 
 From the repo root, enter the [server subdirectory](server/):
 
 ```shell
 cd server
-```
-
-If RVM is properly installed, you should expect to encounter a warning message here:
-
-```
-RVM used your Gemfile for selecting Ruby, it is all fine - Heroku does that too,
-you can ignore these warnings with 'rvm rvmrc warning ignore ./Gemfile'.
-To ignore the warning for all files run 'rvm rvmrc warning ignore allGemfiles'.
 ```
 
 Next, install Rails and other required gems with `bundle`:
@@ -55,13 +47,13 @@ pg_ctl -D /opt/homebrew/var/postgres start
 # on older macs you may need to use a different path instead, eg "pg_ctl -D /usr/local/var/postgres start"
 ```
 
-The database must be constructed manually. This command will also vary, but it should be something like this:
+Create the database and load in the schema:
 
-```
-createdb -U postgres dgidb
+```shell
+rails db:setup
 ```
 
-Next, back in the main shell, import a database dump file (ask on Slack if you need the latest file):
+Next, import a database dump file (ask on Slack if you need the latest file):
 
 ```shell
 psql -d dgidb -f dgidb_dump_20220526.psql  # provide path to data dump
@@ -83,18 +75,16 @@ To perform a data load from scratch, first run the `reset` task to provide a cle
 rake db:reset
 ```
 
-Some Python libraries are required for importing data. From the repo root, create a Python virtual environment and install required dependencies:
+Some Python libraries are required for importing data. From the repo root, install required dependencies:
 
 ```shell
-python3 -m venv .venv
-source .venv/bin/activate
 pip install -r scripts/requirements.txt
 ```
 
 A Python script is supplied to ensure that primary source data is available. This can also be used to acquire new versions of data that supply discrete releases (like ChEMBL):
 
 ```
-python3 scripts/download_files.py
+python scripts/download_files.py
 ```
 
 Then, load claims:
