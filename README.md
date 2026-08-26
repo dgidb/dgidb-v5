@@ -145,3 +145,38 @@ In practice, Prettier will do most of the formatting work for you to be in accor
 ```shell
 yarn run prettier --write path/to/file
 ```
+
+## Run with Docker
+
+The published images support Linux on AMD64 and ARM64. Docker selects the correct image automatically, including on Apple silicon. The application image contains Rails, the production React bundle, and Thruster. The database image contains PostgreSQL 18 with the DGIdb dataset already loaded. Docker Compose is the only runtime dependency.
+
+Download [compose.yaml](./compose.yaml) and [.env.example](./.env.example) from the same DGIdb release into an empty directory. Create the environment file and replace its placeholder with a random secret; `openssl rand -hex 64` is one way to generate it.
+
+```shell
+cp .env.example .env
+```
+
+Pull and start the public images; no source checkout or image build is needed:
+
+```shell
+docker compose pull
+docker compose up --detach
+docker compose logs --follow db app
+```
+
+Open `http://localhost:8080`. The database is read-only, starts from the dataset built into its image, and is not exposed to the host.
+
+To update the application or dataset, repeat `docker compose pull` and `docker compose up --detach`. There is no database volume or startup import: changing the database image changes the dataset. Set `DGIDB_APPLICATION_IMAGE` and `DGIDB_DATABASE_IMAGE` in `.env` when you want to pin published tags or digests instead of `latest`.
+
+Thruster listens over HTTP in the supplied Compose configuration. Terminate TLS at the deployment platform or load balancer.
+
+### Publishing container images
+
+Maintainers build and push both Linux architectures with the standalone build configuration:
+
+```shell
+docker login ghcr.io
+DGIDB_DATA_RELEASE=2026-06b docker compose -f compose.build.yaml build --push
+```
+
+The database is initialized and loaded entirely during this build. Use a concrete `DGIDB_DATA_RELEASE` tag so the result is reproducible. Set `DGIDB_APPLICATION_IMAGE` or `DGIDB_DATABASE_IMAGE` to publish a non-`latest` image tag. Docker Desktop supplies cross-architecture emulation on Apple silicon. After first publishing each package, set its GHCR visibility to public so users can pull it without signing in.
