@@ -8,7 +8,6 @@ require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
 require "action_view/railtie"
-require "action_cable/engine"
 require "propshaft"
 
 # Require the gems listed in Gemfile, including any gems
