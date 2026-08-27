@@ -1,5 +1,5 @@
+.env
 client/package-lock.json
-client/yarn.lock
 client/.yarn/*
 server/data
 server/lib/data
@@ -8,8 +8,8 @@ server/config/master.key
 docs/build
 *.DS_Store
 *.lock
+!client/yarn.lock
 *.log
-client/yarn.lock
 
 .ruby-version
 

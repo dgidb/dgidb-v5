@@ -459,8 +459,8 @@ class Nci(UnversionedS3Data):
     _src_name = "nci"
 
 
-class PharmGkbRelations(DataSource):
-    _src_name = "pharmgkb"
+class ClinPgxRelations(DataSource):
+    _src_name = "clinpgx"
     _filetype = "tsv"
 
     @staticmethod
@@ -589,7 +589,7 @@ for SourceClass in [
     OncoKbInteractionClaimLinks,
     OncoKbInteractionClaims,
     Oncomine,
-    PharmGkbRelations,
+    ClinPgxRelations,
     RussLampel,
     Talc,
     Tdg,

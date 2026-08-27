@@ -1,0 +1,16 @@
+.git
+.github
+.venv
+**/.DS_Store
+
+client/build
+client/node_modules
+client/.yarn/install-state.gz
+
+server/.bundle
+server/log/*
+server/public/*
+server/storage/*
+server/tmp/*
+server/vendor
+server/config/master.key
