@@ -40,7 +40,11 @@ module Genome
             'CN' => 'CN',
             'DEMETER2_COM' => 'DEM2',
             'AVANA_PUBLIC_18Q2' => 'CRISPR',
-            'MUTPOOL' => 'MUTpool'
+            'MUTPOOL' => 'MUTpool',
+            'MUT' => 'RMUTmis',
+            'MUTMIS' => 'RMUTmis',
+            'MUTHOT' => 'RMUThot',
+            'MUTDMG' => 'RMUTdmg'
           }.freeze
 
           def ingest_ncbi_feature(feature_name, prefix)
@@ -92,9 +96,14 @@ module Genome
               return if gene_name.empty?
 
               gene_claim = create_gene_claim(gene_name)
-            when 'CN', 'DEMETER2_COM', 'AVANA_PUBLIC_18Q2', 'MUTPOOL'
+            when 'CN', 'DEMETER2_COM', 'AVANA_PUBLIC_18Q2', 'MUTPOOL', 'MUT', 'MUTDMG', 'MUTHOT', 'MUTMIS'
               prefix = NCBI_FEATURE_PREFIXES.fetch(normalized_feature_set)
               gene_claim = ingest_ncbi_feature(feature_name, prefix)
+            when 'METHYL'
+              gene_name = feature_name.sub(/\AMETHYL_/i, '').strip
+              return if gene_name.empty?
+
+              gene_claim = create_gene_claim(gene_name)
             end
             gene_claim
           end
@@ -106,6 +115,11 @@ module Genome
             DEMETER2_COM
             AVANA_PUBLIC_18Q2
             MUTPOOL
+            MUT
+            MUTDMG
+            MUTHOT
+            MUTMIS
+            METHYL
           ].freeze
 
           PEARSON_SCORE_CUTOFF = 0.2
