@@ -2,21 +2,21 @@ import base64
 import datetime
 import logging
 import os
-import sys
 import re
-from typing import NamedTuple
-import requests
+import sys
 from pathlib import Path
+from typing import NamedTuple
+
 import boto3
+import requests
 from botocore.exceptions import ClientError
-from wags_tails.base_source import DataSource, UnversionedDataSource, RemoteDataError
+from tqdm import tqdm
+from wags_tails.base_source import DataSource, RemoteDataError, UnversionedDataSource
 from wags_tails.chembl import ChemblData
 from wags_tails.moa import MoaData
-from wags_tails.utils.storage import get_latest_local_file
 from wags_tails.utils.downloads import HTTPS_REQUEST_TIMEOUT, download_http, handle_zip
+from wags_tails.utils.storage import get_latest_local_file
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
-
-from tqdm import tqdm
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -489,6 +489,10 @@ class OncoKbInteractionClaimAttributes(UnversionedS3Data):
 
 class Oncomine(UnversionedS3Data):
     _src_name = "oncomine"
+
+
+class Prism(UnversionedS3Data):
+    _src_name = "prism"
 
 
 class RussLampel(UnversionedS3Data):
