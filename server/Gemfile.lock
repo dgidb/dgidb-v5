@@ -81,6 +81,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
+    benchmark (0.5.0)
     bigdecimal (4.1.2)
     bootsnap (1.24.1)
       msgpack (~> 1.2)
@@ -330,6 +331,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt_pbkdf
+  benchmark
   bootsnap (>= 1.4.4)
   capistrano
   capistrano-rails
