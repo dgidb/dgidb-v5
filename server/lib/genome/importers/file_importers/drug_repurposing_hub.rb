@@ -11,7 +11,6 @@ module Genome
             return file_path unless file_path.nil?
 
             directory = "#{default_data_dir}/drug_repurposing_hub/"
-            puts directory
             Dir.glob(File.join(directory, 'drug_repurposing_hub_annotations_*.txt')).select do |path|
               File.basename(path) =~ /^drug_repurposing_hub_annotations_(\d{8})\.txt$/
             end.max_by do |path|
