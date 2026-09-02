@@ -122,6 +122,39 @@ module Genome
             METHYL
           ].freeze
 
+          FEATURE_SET_DESCRIPTIONS = {
+            'PROT' => 'Protein abundance (PROT)',
+            'GE' => 'Gene expression (GE)',
+            'CN' => 'Copy number (CN)',
+            'DEMETER2_COM' => 'RNAi gene dependency (DEMETER2_COM)',
+            'AVANA_PUBLIC_18Q2' => 'CRISPR gene dependency (AVANA_PUBLIC_18Q2)',
+            'MUTPOOL' => 'Pooled mutation status (MUTpool)',
+            'MUT' => 'Mutation status (MUT)',
+            'MUTDMG' => 'Damaging mutation status (MUTdmg)',
+            'MUTHOT' => 'Hotspot mutation status (MUThot)',
+            'MUTMIS' => 'Missense mutation status (MUTmis)',
+            'METHYL' => 'DNA methylation (METHYL)'
+          }.freeze
+
+          def interaction_context_value(feature_set, feature_name)
+            normalized_feature_set = feature_set.strip.upcase
+            description = FEATURE_SET_DESCRIPTIONS.fetch(normalized_feature_set)
+
+            "#{description} (#{feature_set.strip}); original feature: #{feature_name.strip}"
+          end
+
+          def assay_details_value(pearson_score:, sample_size: nil, screen_id: nil, dose: nil)
+            details = [
+              'ATLANTIS predictive model',
+              "Pearson score: #{pearson_score}"
+            ]
+
+            details << "sample size: #{sample_size}" if sample_size.to_s.strip != ''
+            details << "screen: #{screen_id}" if screen_id.to_s.strip != ''
+            details << "dose: #{dose}" if dose.to_s.strip != ''
+
+            details.join('; ')
+          end
           PEARSON_SCORE_CUTOFF = 0.2
 
           def create_interaction_claims
@@ -136,7 +169,22 @@ module Genome
               next if gene_claim.nil?
 
               drug_claim = create_drug_claim(row['name'])
-              create_interaction_claim(gene_claim, drug_claim)
+              interaction_claim = create_interaction_claim(gene_claim, drug_claim)
+              context_value = interaction_context_value(
+                feature_set,
+                row['top_feature']
+              )
+              create_interaction_claim_attribute(interaction_claim, DataImporter::InteractionAttributeName::CONTEXT,
+                                                 context_value)
+
+              assay_value = assay_details_value(
+                pearson_score: row['pearson_score'].strip,
+                sample_size: row['sample_size'],
+                screen_id: row['screen_id'],
+                dose: row['dose']
+              )
+              create_interaction_claim_attribute(interaction_claim, DataImporter::InteractionAttributeName::ASSAY,
+                                                 assay_value)
             end
           end
         end

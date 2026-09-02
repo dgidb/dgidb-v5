@@ -116,6 +116,7 @@ module Genome
     module InteractionAttributeName
       ALTERATION = 'Alteration'
       APPROVAL_STATUS = 'Approval Status'
+      ASSAY = 'Assay'
       CLINICAL_TRIAL_ID = 'Clinical Trial ID'
       CLINICAL_TRIAL_NAME = 'Clinical Trial Name'
       COMBINATION = 'Combination Therapy'
