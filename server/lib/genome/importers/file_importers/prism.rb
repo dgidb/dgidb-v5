@@ -63,6 +63,8 @@ module Genome
             gene_claim
           end
 
+          # Feature names include a bunch of extra window dressing;
+          # We need to parse out the actual genomic feature differently depending on feature set type
           def ingest_feature(feature_name, feature_set)
             normalized_feature_set = feature_set.strip.upcase
             case normalized_feature_set
@@ -108,6 +110,7 @@ module Genome
             gene_claim
           end
 
+          # Only attempt ingest from these feature sets
           INCLUDED_FEATURE_SETS = %w[
             PROT
             GE
@@ -121,6 +124,10 @@ module Genome
             MUTMIS
             METHYL
           ].freeze
+
+          # QC cutoff taken directly from Corsello et al
+          # 'Models with Pearson correlations greater than 0.2 are considered to be strong models.'
+          PEARSON_SCORE_CUTOFF = 0.2
 
           FEATURE_SET_DESCRIPTIONS = {
             'PROT' => 'Protein abundance (PROT)',
@@ -136,6 +143,7 @@ module Genome
             'METHYL' => 'DNA methylation (METHYL)'
           }.freeze
 
+          # eg "Gene expression (GE); original feature: Exp_EGFR (ENSG00000146648)"
           def interaction_context_value(feature_set, feature_name)
             normalized_feature_set = feature_set.strip.upcase
             description = FEATURE_SET_DESCRIPTIONS.fetch(normalized_feature_set)
@@ -143,6 +151,7 @@ module Genome
             "#{description} (#{feature_set.strip}); original feature: #{feature_name.strip}"
           end
 
+          # eg "ATLANTIS predictive model; Pearson score: 0.42; sample size: 123; screen: MTS010; dose: 2.5 µM"
           def assay_details_value(pearson_score:, sample_size: nil, screen_id: nil, dose: nil)
             details = [
               'ATLANTIS predictive model',
@@ -155,7 +164,6 @@ module Genome
 
             details.join('; ')
           end
-          PEARSON_SCORE_CUTOFF = 0.2
 
           def create_interaction_claims
             CSV.foreach(file_path, headers: true, col_sep: "\t", skip_lines: /^#/) do |row|
@@ -174,7 +182,7 @@ module Genome
                 feature_set,
                 row['top_feature']
               )
-              create_interaction_claim_attribute(interaction_claim, DataImporter::InteractionAttributeName::CONTEXT,
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::CONTEXT,
                                                  context_value)
 
               assay_value = assay_details_value(
@@ -183,7 +191,7 @@ module Genome
                 screen_id: row['screen_id'],
                 dose: row['dose']
               )
-              create_interaction_claim_attribute(interaction_claim, DataImporter::InteractionAttributeName::ASSAY,
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ASSAY,
                                                  assay_value)
             end
           end
