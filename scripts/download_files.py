@@ -285,6 +285,37 @@ class DrugbankProtected(DataSource):
         return latest_file, latest_version
 
 
+class DrugRepurposingHubData(DataSource):
+    _src_name = "drug_repurposing_hub"
+    _filetype = "txt"
+
+    # NOTE/TODO
+    # broad ssl cert things currently broken?
+    # for now need to check/redownload manually
+
+    def _get_latest_version(self) -> str:
+        downloads_url = "https://repo-hub.broadinstitute.org/repurposing"
+        r = requests.get(downloads_url, timeout=HTTPS_REQUEST_TIMEOUT)
+        r.raise_for_status()
+        match = re.search(
+            r'<span[^>]*class="rep-download-update-txt"[^>]*>.*?'
+            r'<a[^>]*href="([^"]+)"[^>]*>(\d{1,2}/\d{1,2}/\d{4})</a>',
+            r.text,
+            re.DOTALL,
+        )
+
+        if match:
+            date = datetime.datetime.strptime(match.group(2), "%m/%d/%Y").strftime(
+                DATE_VERSION_PATTERN
+            )
+            return date
+        raise RemoteDataError()
+
+    def _download_data(self, version: str, outfile: Path) -> None:
+        url = f"https://repo-hub.broadinstitute.org/public/data/repo-drug-annotation-{version}.txt"
+        download_http(url, outfile, tqdm_params=self._tqdm_params)
+
+
 class Dtc(UnversionedS3Data):
     _src_name = "dtc"
     _filetype = "csv"
@@ -543,6 +574,7 @@ for SourceClass in [
     DocmInteractionClaimPublications,
     DocmInteractionClaims,
     DrugbankProtected,
+    DrugRepurposingHubData,
     Dtc,
     Fda,
     FoundationOneGenes,
