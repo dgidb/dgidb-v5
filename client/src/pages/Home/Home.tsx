@@ -6,8 +6,6 @@ import SearchBar from 'components/Shared/SearchBar/SearchBar';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
-import { Box, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { SurveyAlert } from 'components/Shared/SurveyAlert/SurveryAlert';
 import { NewsFeed } from 'components/Shared/NewsFeed';
 
@@ -58,13 +56,13 @@ export const Home: React.FC = () => {
       <SurveyAlert />
       <div className="home-page-container">
         <div className="home-page-content">
-        <div className="home-blurb">
-          An open-source search engine for drug-gene interactions and the
-          druggable genome.
+          <div className="home-blurb">
+            An open-source search engine for drug-gene interactions and the
+            druggable genome.
+          </div>
+          <SearchBar handleSubmit={handleSubmit} />
+          <NewsFeed />
         </div>
-        <SearchBar handleSubmit={handleSubmit} />
-        <NewsFeed />
-      </div>
       </div>
     </div>
   );

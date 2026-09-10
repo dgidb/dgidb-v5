@@ -218,7 +218,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   return (
     <>
-      <Box id="search-bar-container" width={isMobile ? '95%' : '75%'}>
+      <Box id="search-bar-container" width={isMobile ? '95%' : '100%'}>
         {pasteAlert}
         <Box display="flex" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
           <Box width={isMobile ? '100%' : 'fit-content'}>

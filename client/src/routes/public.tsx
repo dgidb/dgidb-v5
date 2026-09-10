@@ -11,9 +11,9 @@ import { DrugRecord } from 'components/Drug/DrugRecord';
 import { MainLayout, AboutLayout } from 'components/Layout';
 import {
   Introduction as AboutIntroduction,
-  AboutUs as AboutUs,
+  AboutUs,
   Clients as AboutClients,
-  AboutStats as AboutStats,
+  AboutStats,
   InteractionScore as AboutInteractionScore,
   DataModel as AboutDataModel,
   Grouping as AboutGrouping,

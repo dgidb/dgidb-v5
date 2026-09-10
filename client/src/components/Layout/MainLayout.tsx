@@ -24,7 +24,6 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ReleaseInformation from 'components/Shared/ReleaseInformation/ReleaseInformation';

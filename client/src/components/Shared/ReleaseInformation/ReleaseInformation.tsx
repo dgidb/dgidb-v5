@@ -40,9 +40,7 @@ const ReleaseInformation: React.FC = () => {
             Release Notes
           </ExternalLink>
           &nbsp; &bull; &nbsp;
-          <ExternalLink
-            href="https://github.com/dgidb/dgidb-v5/releases/"
-          >
+          <ExternalLink href="https://github.com/dgidb/dgidb-v5/releases/">
             History
           </ExternalLink>
         </div>
