@@ -62,7 +62,7 @@ export const Home: React.FC = () => {
           <Box className="home-blurb">
             <Typography variant="h6">
               An open-source search engine for{' '}
-              <strong>drug-gene interaction</strong> and the{' '}
+              <strong>drug-gene interactions</strong> and the{' '}
               <strong>druggable genome</strong>.
             </Typography>
           </Box>
