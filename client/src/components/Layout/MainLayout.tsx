@@ -94,6 +94,7 @@ const Header: React.FC = () => {
         </li>
         <li onClick={() => navigate('/about/overview/introduction')}>About</li>
         <li onClick={() => navigate('/downloads')}>Downloads</li>
+        <li onClick={() => navigate('/api')}>API</li>
       </ul>
     </nav>
   );

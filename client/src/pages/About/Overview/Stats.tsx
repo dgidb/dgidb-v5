@@ -8,21 +8,9 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import StatsCard from 'components/About/StatsCard/StatsCard';
 import { ReactComponent as GeneSvg } from 'assets/icons/dna-icon.svg';
 import SvgIcon from '@mui/material/SvgIcon';
+import { getStats, StatsData } from 'utils/stats';
 
 const GeneIcon = () => <SvgIcon component={GeneSvg} viewBox="0 0 24 24" />;
-
-interface StatsData {
-  drug_claims: number;
-  drugs: number;
-  gene_claims: number;
-  genes: number;
-  interaction_claims: number;
-  interactions: number;
-  gene_categorization_claims: number;
-  gene_categorizations: number;
-  sources: number;
-  publications: number;
-}
 
 export const AboutStats: React.FC = () => {
   const [stats, setStats] = useState<StatsData | null>(null);
@@ -31,27 +19,36 @@ export const AboutStats: React.FC = () => {
   const urlDomain = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
-    // Fetch stats from counts controller endpoint
-    const fetchStats = async () => {
+    if (!urlDomain) {
+      setError('API domain is not configured.');
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const loadStats = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch(`${urlDomain}/api/counts`);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await response.json();
+        const data = await getStats(urlDomain, controller.signal);
         setStats(data);
-        setLoading(false);
       } catch (error) {
-        setError('Failed to fetch data.');
-        setLoading(false);
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          setError('Failed to fetch data.');
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchStats();
-  }, []);
+    void loadStats();
 
+    return () => controller.abort();
+  }, [urlDomain]);
   if (loading) {
     return <div>Loading...</div>;
   }
