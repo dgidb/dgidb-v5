@@ -6,16 +6,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 75vh;
+
+  .home-page-content {
+    max-width: 900px;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
 
   .home-blurb {
-    margin-top: 160px;
+    margin: 50px 0px;
     font-size: 20px;
     font-family: 'Work Sans';
     font-weight: 300;
-    width: 50%;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -23,7 +30,6 @@
 
   .search-container {
     min-height: 40px;
-    right: 340px;
     margin-top: 20px;
 
     .search-subcontainer {

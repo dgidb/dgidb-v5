@@ -9,6 +9,7 @@ import { ActionTypes } from 'stores/Global/reducers';
 import { Box, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { SurveyAlert } from 'components/Shared/SurveyAltert/SurveryAlert';
+import { NewsFeed } from 'components/Shared/NewsFeed';
 
 // styles
 // todo: introduce dark mode back later
@@ -56,29 +57,14 @@ export const Home: React.FC = () => {
     <div>
       <SurveyAlert />
       <div className="home-page-container">
-        <SearchBar handleSubmit={handleSubmit} />
+        <div className="home-page-content">
         <div className="home-blurb">
           An open-source search engine for drug-gene interactions and the
           druggable genome.
         </div>
-        <Box className="home-links">
-          <Grid container width="300px" justifyContent="space-between">
-            <Link className="home-link" to="/api">
-              API
-            </Link>
-            <Link className="home-link" to="/downloads">
-              Downloads
-            </Link>
-            <a
-              className="home-link"
-              href="https://github.com/dgidb/dgidb-v5"
-              rel="noreferrer"
-              target="_blank"
-            >
-              GitHub
-            </a>
-          </Grid>
-        </Box>
+        <SearchBar handleSubmit={handleSubmit} />
+        <NewsFeed />
+      </div>
       </div>
     </div>
   );
