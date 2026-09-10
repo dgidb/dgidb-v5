@@ -33,7 +33,7 @@ const newsItems: NewsItem[] = [
         <p>
           Version 5.0.13 of DGIdb is now live, introducing three new interaction
           sources (MOAlmanac, Drug Repurposing Hub, and PRISM Repurposing Study)
-          and adding a number of internal maintenance efforts. A new data
+          and adding a number of internal maintenance fixes. A new data
           release (<code>2026-09</code>) is also included, and can be accessed
           on the <Link to="/downloads">Downloads</Link> page.
         </p>
