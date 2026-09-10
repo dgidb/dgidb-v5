@@ -14,6 +14,8 @@ import { NewsFeed } from 'components/Shared/NewsFeed';
 // import SunIcon from 'components/Shared/SVG/SunIcon';
 // import MoonIcon from 'components/Shared/SVG/MoonIcon';
 import './Home.scss';
+import { Box, Typography } from '@mui/material';
+import { CountsBanner } from 'components/Shared/CountsBanner/CountsBanner';
 
 export const Home: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
@@ -52,18 +54,22 @@ export const Home: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <Box>
       <SurveyAlert />
-      <div className="home-page-container">
-        <div className="home-page-content">
-          <div className="home-blurb">
-            An open-source search engine for drug-gene interactions and the
-            druggable genome.
-          </div>
+      <Box className="home-page-container">
+        <Box className="home-page-content">
+          <CountsBanner />
+          <Box className="home-blurb">
+            <Typography variant="h6">
+              An open-source search engine for{' '}
+              <strong>drug-gene interaction</strong> and the{' '}
+              <strong>druggable genome</strong>.
+            </Typography>
+          </Box>
           <SearchBar handleSubmit={handleSubmit} />
           <NewsFeed />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
