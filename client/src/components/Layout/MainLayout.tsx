@@ -24,6 +24,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ReleaseInformation from 'components/Shared/ReleaseInformation/ReleaseInformation';
@@ -94,6 +95,7 @@ const Header: React.FC = () => {
         </li>
         <li onClick={() => navigate('/about/overview/introduction')}>About</li>
         <li onClick={() => navigate('/downloads')}>Downloads</li>
+        <li onClick={() => navigate('/api')}>API</li>
       </ul>
     </nav>
   );

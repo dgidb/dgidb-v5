@@ -5,7 +5,7 @@ import TableDownloader from 'components/Shared/TableDownloader/TableDownloader';
 import { useContext } from 'react';
 import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { DirectMatchCard } from '../DirectMatchCard/DirectMatchCard';
-import { LoadingSpinner } from 'components/Shared/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from 'components/Shared/common/LoadingSpinner';
 
 interface Props {
   directMatches: any[];

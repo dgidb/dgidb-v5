@@ -285,7 +285,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         </Box>
         <Box
           display="flex"
-          pt={5}
+          pt={1}
           flexWrap="wrap"
           height="100px"
           alignContent="center"

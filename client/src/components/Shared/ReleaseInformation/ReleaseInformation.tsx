@@ -1,3 +1,4 @@
+import { ExternalLink } from '../common/ExternalLink';
 import './ReleaseInformation.scss';
 import React, { useState, useEffect } from 'react';
 
@@ -35,17 +36,15 @@ const ReleaseInformation: React.FC = () => {
           DGIdb {currentRelease.name} (
           {new Date(currentRelease.published_at).toLocaleString().split(',')[0]}
           )&nbsp; &bull; &nbsp;
-          <a href={currentRelease.html_url} target="_blank" rel="noreferrer">
+          <ExternalLink href={currentRelease.html_url}>
             Release Notes
-          </a>
+          </ExternalLink>
           &nbsp; &bull; &nbsp;
-          <a
+          <ExternalLink
             href="https://github.com/dgidb/dgidb-v5/releases/"
-            target="_blank"
-            rel="noreferrer"
           >
             History
-          </a>
+          </ExternalLink>
         </div>
       )}
     </div>

@@ -8,7 +8,7 @@ import { GlobalClientContext } from 'stores/Global/GlobalClient';
 import { ActionTypes } from 'stores/Global/reducers';
 import { Box, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { SurveyAlert } from 'components/Shared/SurveyAltert/SurveryAlert';
+import { SurveyAlert } from 'components/Shared/SurveyAlert/SurveryAlert';
 import { NewsFeed } from 'components/Shared/NewsFeed';
 
 // styles
