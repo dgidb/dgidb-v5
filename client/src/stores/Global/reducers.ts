@@ -19,15 +19,10 @@ export enum ActionTypes {
   AddGeneDemoTerms = 'GENE_DEMO_TERMS',
   AddCategoryDemoTerms = 'CATEGORY_DEMO_TERMS',
   AddDrugDemoTerms = 'DRUG_DEMO_TERMS',
-  HideDisclaimer = 'HIDE_DISCLAIMER',
-  ShowDisclaimer = 'SHOW_DISCLAIMER',
-  EnableDarkMode = 'ENABLE_DARK_MODE',
-  DisableDarkMode = 'DISABLE_DARK_MODE',
+  SetTheme = 'SET_THEME',
   SetByDrug = 'SET_INTERACTIONS_BY_DRUG',
   SetByGene = 'SET_INTERACTIONS_BY_GENE',
   SetGeneCategories = 'SET_GENE_CATEGORIES',
-  BrandPage = 'BRAND_PAGE',
-  ContentPage = 'CONTENT_PAGE',
 }
 
 // search terms
@@ -106,18 +101,13 @@ export const interactionModeReducer = (
 
 // theme settings
 export interface themeSettingsType {
-  showDisclaimer: boolean;
-  darkModeEnabled: boolean;
-  brandTheme: boolean;
+  mode: ThemeMode;
 }
 
+export type ThemeMode = 'light' | 'dark';
+
 type ThemeSettingsPayload = {
-  [ActionTypes.HideDisclaimer]: undefined;
-  [ActionTypes.ShowDisclaimer]: undefined;
-  [ActionTypes.EnableDarkMode]: undefined;
-  [ActionTypes.DisableDarkMode]: undefined;
-  [ActionTypes.BrandPage]: undefined;
-  [ActionTypes.ContentPage]: undefined;
+  [ActionTypes.SetTheme]: ThemeMode;
 };
 
 export type ThemeSettingsActions =
@@ -127,20 +117,9 @@ export const themeSettingsReducer = (
   state: themeSettingsType,
   action: InteractionModeActions | SearchTermsActions | ThemeSettingsActions
 ) => {
-  let stateCopy = Object.assign({}, state);
   switch (action.type) {
-    case ActionTypes.HideDisclaimer:
-      return { ...stateCopy, showDisclaimer: false };
-    case ActionTypes.ShowDisclaimer:
-      return { ...stateCopy, showDisclaimer: true };
-    case ActionTypes.EnableDarkMode:
-      return { ...stateCopy, darkModeEnabled: true };
-    case ActionTypes.DisableDarkMode:
-      return { ...stateCopy, darkModeEnabled: false };
-    case ActionTypes.BrandPage:
-      return { ...stateCopy, brandTheme: true };
-    case ActionTypes.ContentPage:
-      return { ...stateCopy, brandTheme: false };
+    case ActionTypes.SetTheme:
+      return { ...state, mode: action.payload };
     default:
       return state;
   }

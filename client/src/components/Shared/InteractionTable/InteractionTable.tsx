@@ -248,9 +248,9 @@ export const InteractionTable: React.FC<Props> = ({
   ) : (
     <LinearProgress
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-progress-track)',
         '& .MuiLinearProgress-bar': {
-          backgroundColor: '#480a77',
+          backgroundColor: 'var(--color-brand)',
         },
       }}
       className="linear-bar"

@@ -33,6 +33,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CategoryIcon from '@mui/icons-material/Category';
 import SourceIcon from '@mui/icons-material/Source';
+import MoonIcon from 'components/Shared/SVG/MoonIcon';
+import SunIcon from 'components/Shared/SVG/SunIcon';
+import { ActionTypes } from 'stores/Global/reducers';
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -52,6 +55,23 @@ const Header: React.FC = () => {
 
   const navigate = useNavigate();
   const isMobile = useGetIsMobile();
+  const { state, dispatch } = useContext(GlobalClientContext);
+  const isDarkMode = state.themeSettings.mode === 'dark';
+
+  const toggleTheme = () => {
+    dispatch({ type: ActionTypes.SetTheme, payload: isDarkMode ? 'light' : 'dark' });
+  };
+
+  const themeToggle = (
+    <IconButton
+      aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="theme-toggle"
+      color="inherit"
+      onClick={toggleTheme}
+    >
+      {isDarkMode ? <SunIcon width={20} /> : <MoonIcon width={20} />}
+    </IconButton>
+  );
 
   const desktopNavMenu = (
     <nav>
@@ -123,8 +143,9 @@ const Header: React.FC = () => {
 
   const mobileNavMenu = (
     <>
-      <IconButton onClick={() => setShowMenuDrawer(true)}>
-        <MenuIcon htmlColor="white" />
+      {themeToggle}
+      <IconButton className="menu-toggle" onClick={() => setShowMenuDrawer(true)}>
+        <MenuIcon />
       </IconButton>
       <Drawer
         anchor="right"
@@ -158,7 +179,9 @@ const Header: React.FC = () => {
         <div className="header-logo" onClick={() => navigate('/')}>
           DGIdb
         </div>
-        {isMobile ? mobileNavMenu : desktopNavMenu}
+        <div className="header-actions">
+          {isMobile ? mobileNavMenu : <>{themeToggle}{desktopNavMenu}</>}
+        </div>
       </Box>
     </header>
   );
@@ -233,26 +256,8 @@ const DisclaimerPopup: React.FC = () => {
 };
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { state } = useContext(GlobalClientContext);
-
-  let theme;
-
-  if (state.themeSettings.darkModeEnabled) {
-    if (state.themeSettings.brandTheme) {
-      theme = 'dark-home';
-    } else {
-      theme = 'dark';
-    }
-  } else {
-    if (state.themeSettings.brandTheme) {
-      theme = 'light-home';
-    } else {
-      theme = 'light';
-    }
-  }
-
   return (
-    <div className={'layout-container'} data-theme={theme}>
+    <div className="layout-container">
       <DisclaimerPopup />
       <Header />
       <div className="content-container">
