@@ -16,6 +16,8 @@ interface Props {
   data: any;
 }
 
+const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
+
 export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
   const [chartData, setChartData] = useState<any>({
     labels: ['inhibitor', 'antagonist', 'antibody', 'agonist'],
@@ -50,8 +52,6 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
       },
     },
   };
-
-  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
     if (data?.length) {
