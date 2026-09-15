@@ -119,7 +119,7 @@ namespace :dgidb do
       Genome::Normalizers::InteractionClaimType.normalize_types
       Rake::Task['dgidb:update:tsv']
       puts 'Exporting source TSVs...'
-      Utils::TSV.update_druggable_gene_tsvs_archive
+      Utils::Tsv.update_druggable_gene_tsvs_archive
       puts 'Clearing cache...'
       Rails.cache.clear
     end
@@ -127,17 +127,17 @@ namespace :dgidb do
     desc 'update tsv files'
     task tsv: :environment do
       puts 'Exporting categories...'
-      Utils::TSV.generate_categories_tsv
+      Utils::Tsv.generate_categories_tsv
       puts 'Exporting interactions...'
-      Utils::TSV.generate_interaction_claims_tsv
+      Utils::Tsv.generate_interaction_claims_tsv
       puts 'Exporting genes...'
-      Utils::TSV.generate_genes_tsv
+      Utils::Tsv.generate_genes_tsv
       puts 'Exporting drugs...'
-      Utils::TSV.generate_drugs_tsv
+      Utils::Tsv.generate_drugs_tsv
     end
     # desc 'generate a complete druggable categories tsv file'
     # task categories_tsv: :environment do
-    #   Utils::TSV.generate_categories_tsv
+    #   Utils::Tsv.generate_categories_tsv
     # end
   end
 end

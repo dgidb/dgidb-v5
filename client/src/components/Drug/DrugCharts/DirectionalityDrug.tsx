@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import { DIRECTIONALITY_LABELS, normalizeDirectionalities } from 'utils/format';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,10 +12,8 @@ interface Props {
 }
 
 export const DirectionalityDrug: React.FC<Props> = ({ data }) => {
-  const [count, setCount] = useState<number[]>([0, 0, 0]);
-
   const [chartData, setChartData] = useState<any>({
-    labels: ['Activating', 'Inhibiting', 'N/A'],
+    labels: DIRECTIONALITY_LABELS,
     datasets: [
       {
         data: [0, 0, 0],
@@ -38,40 +37,35 @@ export const DirectionalityDrug: React.FC<Props> = ({ data }) => {
   };
 
   useEffect(() => {
-    let countCopy = [0, 0, 0];
+    const directionalityCounts = [0, 0, 0];
     data?.forEach((drug: any) => {
       drug?.interactions?.forEach((int: any) => {
-        if (!int.interactionTypes.length) {
-          countCopy[2] = count[2]++;
-        } else {
-          int.interactionTypes.forEach((type: any) => {
-            if (type.directionality === 'INHIBITORY') {
-              countCopy[1] = count[1]++;
-            } else {
-              countCopy[0] = count[0]++;
-            }
-          });
-        }
-        setCount(countCopy);
-        setChartData({
-          labels: ['Activating', 'Inhibiting', 'N/A'],
-          datasets: [
-            {
-              data: countCopy,
-              backgroundColor: [
-                '#480A77',
-                '#8075FF',
-                '#89E8F1',
-                '#FA198B',
-                '#4BC6B9',
-                '#F0EFF4',
-                '#D1CFE2',
-                '#BAA898',
-              ],
-            },
-          ],
-        });
+        normalizeDirectionalities(int.interactionTypes).forEach(
+          (directionality) => {
+            const directionalityIndex =
+              DIRECTIONALITY_LABELS.indexOf(directionality);
+            directionalityCounts[directionalityIndex]++;
+          }
+        );
       });
+    });
+    setChartData({
+      labels: DIRECTIONALITY_LABELS,
+      datasets: [
+        {
+          data: directionalityCounts,
+          backgroundColor: [
+            '#480A77',
+            '#8075FF',
+            '#89E8F1',
+            '#FA198B',
+            '#4BC6B9',
+            '#F0EFF4',
+            '#D1CFE2',
+            '#BAA898',
+          ],
+        },
+      ],
     });
   }, [data]);
 

@@ -1,3 +1,5 @@
+require 'benchmark'
+
 namespace :dgidb do
   namespace :group do
     def delete_all

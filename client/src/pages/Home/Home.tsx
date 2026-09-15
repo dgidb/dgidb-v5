@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 // components
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
@@ -31,26 +31,9 @@ export const Home: React.FC = () => {
     });
   };
 
-  const [isToggling, setIsToggling] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isToggling) {
-      if (state.themeSettings.darkModeEnabled) {
-        dispatch({ type: ActionTypes.DisableDarkMode });
-      } else {
-        dispatch({ type: ActionTypes.EnableDarkMode });
-      }
-    }
-  }, [isToggling]);
-
-  // allow for toggling again once dark mode setting is updated
-  useEffect(() => {
-    setIsToggling(false);
-  }, [state.themeSettings.darkModeEnabled]);
-
   useEffect(() => {
     dispatch({ type: ActionTypes.BrandPage });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

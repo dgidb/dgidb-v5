@@ -10,7 +10,7 @@ import { GeneCategoriesSearchResults } from 'components/GeneCategories/GeneCateg
 export const Results: React.FC = () => {
   const { state, dispatch } = useContext(GlobalClientContext);
   const [searchParams] = useSearchParams();
-  const searchTerms = searchParams.get('searchTerms')?.split(',');
+  const searchTermsParam = searchParams.get('searchTerms') ?? '';
   const searchType = searchParams.get('searchType') as SearchTypes;
 
   const [value, setValue] = React.useState(0);
@@ -21,28 +21,34 @@ export const Results: React.FC = () => {
 
   useEffect(() => {
     // update search type based on search params
-    if (searchParams) {
-      if (searchType === SearchTypes.Gene) {
-        dispatch({ type: ActionTypes.SetByGene });
-      }
-      if (searchType === SearchTypes.Drug) {
-        dispatch({ type: ActionTypes.SetByDrug });
-      } else if (searchType === SearchTypes.Categories) {
-        dispatch({ type: ActionTypes.SetGeneCategories });
+    if (searchType !== state.interactionMode) {
+      switch (searchType) {
+        case SearchTypes.Gene:
+          dispatch({ type: ActionTypes.SetByGene });
+          break;
+        case SearchTypes.Drug:
+          dispatch({ type: ActionTypes.SetByDrug });
+          break;
+        case SearchTypes.Categories:
+          dispatch({ type: ActionTypes.SetGeneCategories });
+          break;
       }
     }
+
     // populate search terms based on search params if the params don't match what's in the state
-    if (
-      searchParams &&
-      searchTerms?.toString() !== state?.searchTerms?.toString()
-    ) {
-      state.searchTerms = [];
-      const terms = searchParams.get('searchTerms')?.split(',');
-      terms?.forEach((term) =>
-        dispatch({ type: ActionTypes.AddTerm, payload: term })
-      );
+    if (searchTermsParam !== state.searchTerms.join(',')) {
+      dispatch({
+        type: ActionTypes.SetTerms,
+        payload: searchTermsParam ? searchTermsParam.split(',') : [],
+      });
     }
-  }, []);
+  }, [
+    dispatch,
+    searchTermsParam,
+    searchType,
+    state.interactionMode,
+    state.searchTerms,
+  ]);
 
   return (
     <div className="results-page-container">

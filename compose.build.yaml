@@ -1,0 +1,21 @@
+services:
+  app:
+    image: ${DGIDB_APPLICATION_IMAGE:-ghcr.io/dgidb/dgidb-v5:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+      platforms:
+        - linux/amd64
+        - linux/arm64
+
+  db:
+    image: ${DGIDB_DATABASE_IMAGE:-ghcr.io/dgidb/dgidb-v5-database:latest}
+    build:
+      context: .
+      dockerfile: docker/postgres.Dockerfile
+      args:
+        DGIDB_DATA_RELEASE: ${DGIDB_DATA_RELEASE:-latest}
+      platforms:
+        - linux/amd64
+        - linux/arm64

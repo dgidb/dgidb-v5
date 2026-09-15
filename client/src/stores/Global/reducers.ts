@@ -13,6 +13,7 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export enum ActionTypes {
   AddTerm = 'ADD_TERM',
+  SetTerms = 'SET_TERMS',
   DeleteTerm = 'DELETE_TERM',
   DeleteLastTerm = 'DELETE_LAST_TERM',
   DeleteAllTerms = 'DELETE_ALL_TERMS',
@@ -33,6 +34,7 @@ export enum ActionTypes {
 // search terms
 type SearchTermsPayload = {
   [ActionTypes.AddTerm]: string;
+  [ActionTypes.SetTerms]: string[];
   [ActionTypes.AddGeneDemoTerms]: undefined;
   [ActionTypes.AddCategoryDemoTerms]: undefined;
   [ActionTypes.AddDrugDemoTerms]: undefined;
@@ -52,6 +54,8 @@ export const searchTermsReducer = (
   switch (action.type) {
     case ActionTypes.AddTerm:
       return [...stateCopy, action.payload];
+    case ActionTypes.SetTerms:
+      return action.payload;
     case ActionTypes.AddGeneDemoTerms:
       return [
         'FLT1',
