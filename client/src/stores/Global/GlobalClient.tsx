@@ -54,7 +54,11 @@ const mainReducer = (
 });
 
 const GlobalClient: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(mainReducer, undefined, createInitialState);
+  const [state, dispatch] = useReducer(
+    mainReducer,
+    undefined,
+    createInitialState
+  );
 
   useEffect(() => {
     document.documentElement.dataset.theme = state.themeSettings.mode;

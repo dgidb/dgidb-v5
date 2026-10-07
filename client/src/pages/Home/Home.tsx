@@ -1,5 +1,5 @@
 // hooks/dependencies
-import React, {  useContext } from 'react';
+import React, { useContext } from 'react';
 
 // components
 import SearchBar from 'components/Shared/SearchBar/SearchBar';
