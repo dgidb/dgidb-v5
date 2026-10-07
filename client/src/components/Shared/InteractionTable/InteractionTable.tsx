@@ -117,7 +117,6 @@ export const InteractionTable: React.FC<Props> = ({
     {
       field: 'interactionScore',
       headerName: 'Interaction Score',
-      type: 'number',
       flex: 0.6,
       minWidth: 0,
     },
@@ -158,7 +157,6 @@ export const InteractionTable: React.FC<Props> = ({
     {
       field: 'interactionScore',
       headerName: 'Interaction Score',
-      type: 'number',
       flex: 0.6,
       minWidth: 0,
     },
@@ -242,6 +240,7 @@ export const InteractionTable: React.FC<Props> = ({
             toolbarContainer: 'footer',
           }}
           rowSelection={false}
+          showColumnVerticalBorder
           getRowHeight={() => 'auto'}
         />
       </Box>
