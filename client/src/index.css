@@ -42,23 +42,23 @@
 }
 
 [data-theme='dark'] {
-  --color-surface-page: #ffffff;
-  --color-surface-subtle: #f7f5ff;
-  --color-surface-raised: #dfdde9;
+  --color-surface-page: #120c1a;
+  --color-surface-subtle: #2c2133;
+  --color-surface-raised: #180a20;
   --color-surface-inverse: #180a20;
-  --color-text: #313635;
-  --color-text-strong: #26282e;
-  --color-text-muted: #545454;
-  --color-text-on-brand: #ffffff;
-  --color-brand: #480a77;
+  --color-text: #bac9c7;
+  --color-text-strong: #cec9d9;
+  --color-text-muted: #8075ff;
+  --color-text-on-brand: #ffffff; 
+  --color-brand: #480a77; 
   --color-brand-secondary: #180a20;
-  --color-link: #2589bd;
-  --color-accent: #8075ff;
-  --color-banner: #f0e7c0;
-  --color-border: #ffffff;
-  --color-progress-track: #ffffff;
-  --color-code: #c7254e;
-  --color-tooltip-surface: #f5f5f9;
+  --color-link: #2589bd; /* TODO ??? */
+  --color-accent: #8075ff; /* TODO ??? */
+  --color-banner: #f0e7c0; /* TODO ??? */
+  --color-border: #120c1a; /* TODO ??? */
+  --color-progress-track: #120c1a; /* TODO ??? */
+  --color-code: #c7254e; /* TODO ??? */
+  --color-tooltip-surface: #f5f5f9; /* TODO ??? */
   --color-tooltip-text: rgba(0, 0, 0, 0.87);
   --color-tooltip-border: #dadde9;
   --color-overlay: rgba(0, 0, 0, 0.2);
