@@ -44,6 +44,8 @@ type MainLayoutProps = {
 const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showMenuDrawer, setShowMenuDrawer] = useState(false);
+  // Enable once the dark-mode palette is ready for release.
+  const showThemeToggle = false;
 
   const handleOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -59,7 +61,10 @@ const Header: React.FC = () => {
   const isDarkMode = state.themeSettings.mode === 'dark';
 
   const toggleTheme = () => {
-    dispatch({ type: ActionTypes.SetTheme, payload: isDarkMode ? 'light' : 'dark' });
+    dispatch({
+      type: ActionTypes.SetTheme,
+      payload: isDarkMode ? 'light' : 'dark',
+    });
   };
 
   const themeToggle = (
@@ -143,8 +148,11 @@ const Header: React.FC = () => {
 
   const mobileNavMenu = (
     <>
-      {themeToggle}
-      <IconButton className="menu-toggle" onClick={() => setShowMenuDrawer(true)}>
+      {showThemeToggle && themeToggle}
+      <IconButton
+        className="menu-toggle"
+        onClick={() => setShowMenuDrawer(true)}
+      >
         <MenuIcon />
       </IconButton>
       <Drawer
@@ -180,7 +188,14 @@ const Header: React.FC = () => {
           DGIdb
         </div>
         <div className="header-actions">
-          {isMobile ? mobileNavMenu : <>{themeToggle}{desktopNavMenu}</>}
+          {isMobile ? (
+            mobileNavMenu
+          ) : (
+            <>
+              {showThemeToggle && themeToggle}
+              {desktopNavMenu}
+            </>
+          )}
         </div>
       </Box>
     </header>

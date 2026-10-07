@@ -41,6 +41,7 @@
   --link: var(--color-link);
 }
 
+/* In progress -- must be completed before adding toggle button back */
 [data-theme='dark'] {
   --color-surface-page: #120c1a;
   --color-surface-subtle: #2c2133;
