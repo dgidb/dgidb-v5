@@ -43,7 +43,7 @@
 
   .data-box {
     padding: 1rem;
-    border: solid white 1px;
+    border: solid var(--color-border) 1px;
 
     .box-title {
       color: var(--text-primary);
@@ -57,7 +57,7 @@
 
       table > tbody > tr {
         line-height: 1.6rem;
-        border: 1px black;
+        border: 1px solid var(--color-text-strong);
       }
 
       .box-item {

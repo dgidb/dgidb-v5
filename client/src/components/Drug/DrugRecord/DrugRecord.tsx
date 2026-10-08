@@ -77,9 +77,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--color-progress-track)',
                     '& .MuiLinearProgress-bar': {
-                      backgroundColor: '#480a77',
+                      backgroundColor: 'var(--color-brand)',
                     },
                   }}
                   className="linear-bar"
@@ -115,9 +115,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--color-progress-track)',
                     '& .MuiLinearProgress-bar': {
-                      backgroundColor: '#480a77',
+                      backgroundColor: 'var(--color-brand)',
                     },
                   }}
                   className="linear-bar"
@@ -153,9 +153,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--color-progress-track)',
                     '& .MuiLinearProgress-bar': {
-                      backgroundColor: '#480a77',
+                      backgroundColor: 'var(--color-brand)',
                     },
                   }}
                   className="linear-bar"
@@ -194,9 +194,9 @@ export const DrugRecord: React.FC = () => {
               ) : drugDataIsLoading ? (
                 <LinearProgress
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--color-progress-track)',
                     '& .MuiLinearProgress-bar': {
-                      backgroundColor: '#480a77',
+                      backgroundColor: 'var(--color-brand)',
                     },
                   }}
                   className="linear-bar"
