@@ -104,6 +104,7 @@ export const InteractionTable: React.FC<Props> = ({
       headerName: 'Regulatory Approval',
       flex: 0.8,
       minWidth: 0,
+      maxWidth: 180,
     },
     {
       field: 'indication',
@@ -243,6 +244,12 @@ export const InteractionTable: React.FC<Props> = ({
           }}
           rowSelection={false}
           getRowHeight={() => 'auto'}
+          sx={{
+            '& .MuiDataGrid-columnSeparator': {
+              visibility: 'visible',
+              opacity: 1
+            }
+          }}
         />
       </Box>
     </Box>
