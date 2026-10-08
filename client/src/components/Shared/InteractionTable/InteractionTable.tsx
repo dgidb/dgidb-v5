@@ -247,8 +247,8 @@ export const InteractionTable: React.FC<Props> = ({
           sx={{
             '& .MuiDataGrid-columnSeparator': {
               visibility: 'visible',
-              opacity: 1
-            }
+              opacity: 1,
+            },
           }}
         />
       </Box>
