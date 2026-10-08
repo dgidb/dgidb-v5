@@ -3,7 +3,7 @@
     padding-left: 24px;
   }
   li:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--color-overlay);
   }
   .toc-section-header {
     padding: 24px 24px 0px 24px;
@@ -12,6 +12,6 @@
     }
   }
   .active {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--color-overlay);
   }
 }

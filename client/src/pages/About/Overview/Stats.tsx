@@ -50,7 +50,7 @@ export const AboutStats: React.FC = () => {
     };
 
     fetchStats();
-  }, []);
+  }, [urlDomain]);
 
   if (loading) {
     return <div>Loading...</div>;
