@@ -1,0 +1,32 @@
+name: dgidb
+
+services:
+  db:
+    image: ${DGIDB_DATABASE_IMAGE:-ghcr.io/dgidb/dgidb-v5-database:latest}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "dgidb", "-d", "dgidb"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    restart: unless-stopped
+
+  app:
+    image: ${DGIDB_APPLICATION_IMAGE:-ghcr.io/dgidb/dgidb-v5:latest}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?Set SECRET_KEY_BASE in .env}
+      RDS_HOSTNAME: db
+      RDS_PORT: 5432
+      RDS_USERNAME: dgidb
+    ports:
+      - "${DGIDB_HTTP_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD", "ruby", "-rnet/http", "-e", "exit(Net::HTTP.get_response(URI('http://127.0.0.1/up')).is_a?(Net::HTTPSuccess) ? 0 : 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+    restart: unless-stopped

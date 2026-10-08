@@ -1,81 +1,80 @@
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* #480a77 */
-
-/* 412f50
-2c2133 */
-
-:root {
-  --background: #180a20;
-  --background-light: #3c3143;
-  --theme-primary: #480a77;
-  --text-primary: white;
-  --text-primary-low: #dedede;
-  --logo-gradient-1: #f7f7f8;
-  --logo-gradient-2: #ada7bd;
-  --medium-screen: 1200px;
-  --small-screen: 740px;
-  --chart-fill-1: #480a77;
-  --chart-fill-2: #4bc6b9;
-  --chart-fill-3: #8075ff;
-  --chart-fill-4: #90f1ef;
-  --chart-fill-5: #fa198b;
-  --chart-fill-6: #ffa69e;
-  --chart-fill-7: #efc7e5;
-}
-
+/*
+ * Theme tokens. Components use semantic custom properties rather than literal
+ * colors. Dark mode currently mirrors light mode until its final palette is
+ * selected; update only the dark block when that work is ready.
+ */
+:root,
 [data-theme='light'] {
-  --background: white;
-  --soft-background: #f7f5ff;
-  --background-light: #dfdde9;
-  --text-content: #313635;
-  --text-primary: #26282e;
-  --text-accent: #545454;
-  --header-gradient-1: #480a77;
-  --header-gradient-2: #180a20;
-  --logo-gradient-1: #f7f7f8;
-  --logo-gradient-2: #ada7bd;
-  --link: #2589bd;
+  --color-surface-page: #ffffff;
+  --color-surface-subtle: #f7f5ff;
+  --color-surface-raised: #dfdde9;
+  --color-surface-inverse: #180a20;
+  --color-text: #313635;
+  --color-text-strong: #26282e;
+  --color-text-muted: #545454;
+  --color-text-on-brand: #ffffff;
+  --color-brand: #480a77;
+  --color-brand-secondary: #180a20;
+  --color-link: #2589bd;
+  --color-accent: #8075ff;
+  --color-banner: #f0e7c0;
+  --color-border: #ffffff;
+  --color-progress-track: #ffffff;
+  --color-code: #c7254e;
+  --color-tooltip-surface: #f5f5f9;
+  --color-tooltip-text: rgba(0, 0, 0, 0.87);
+  --color-tooltip-border: #dadde9;
+  --color-overlay: rgba(0, 0, 0, 0.2);
+  --color-logo-start: #f7f7f8;
+  --color-logo-end: #ada7bd;
+  --background: var(--color-surface-page);
+  --soft-background: var(--color-surface-subtle);
+  --background-light: var(--color-surface-raised);
+  --text-content: var(--color-text);
+  --text-primary: var(--color-text-strong);
+  --text-accent: var(--color-text-muted);
+  --theme-primary: var(--color-brand);
+  --header-gradient-1: var(--color-brand);
+  --header-gradient-2: var(--color-brand-secondary);
+  --logo-gradient-1: var(--color-logo-start);
+  --logo-gradient-2: var(--color-logo-end);
+  --link: var(--color-link);
 }
 
-[data-theme='light-home'] {
-  --background: white;
-  --soft-background: #f7f5ff;
-  --background-light: #dfdde9;
-  --text-content: #313635;
-  --text-primary: #26282e;
-  --header-gradient-1: #480a77;
-  --header-gradient-2: #180a20;
-  --logo-gradient-1: #f7f7f8;
-  --logo-gradient-2: #ada7bd;
-}
-
+/* In progress -- must be completed before adding toggle button back */
 [data-theme='dark'] {
-  --text-accent: #8075ff;
-  --background: #120c1a;
-  --box-border: #392073;
-  --box: #21163a;
-  --highlight: #63516e;
-  --theme-primary: #480a77;
-  --text-primary: #cec9d9;
-  --white: #ffffff;
-  --text-content: #bac9c7;
-  --text-gray: ##928b9e;
-  --background-dark: #180a20;
-}
-
-[data-theme='dark-home'] {
-  --background: #120c1a;
-  --highlight: #b3a8b9;
-  --theme-primary: #480a77;
-  --text-content: #c9dbd9;
-  --soft-background: #2c2133;
-  --text-primary: #e8eaed;
-  --text-accent: #8075ff;
+  --color-surface-page: #120c1a;
+  --color-surface-subtle: #2c2133;
+  --color-surface-raised: #180a20;
+  --color-surface-inverse: #180a20;
+  --color-text: #bac9c7;
+  --color-text-strong: #cec9d9;
+  --color-text-muted: #8075ff;
+  --color-text-on-brand: #ffffff; 
+  --color-brand: #480a77; 
+  --color-brand-secondary: #180a20;
+  --color-link: #2589bd; /* TODO ??? */
+  --color-accent: #8075ff; /* TODO ??? */
+  --color-banner: #f0e7c0; /* TODO ??? */
+  --color-border: #120c1a; /* TODO ??? */
+  --color-progress-track: #120c1a; /* TODO ??? */
+  --color-code: #c7254e; /* TODO ??? */
+  --color-tooltip-surface: #f5f5f9; /* TODO ??? */
+  --color-tooltip-text: rgba(0, 0, 0, 0.87);
+  --color-tooltip-border: #dadde9;
+  --color-overlay: rgba(0, 0, 0, 0.2);
+  --color-logo-start: #f7f7f8;
+  --color-logo-end: #ada7bd;
+  --background: var(--color-surface-page);
+  --soft-background: var(--color-surface-subtle);
+  --background-light: var(--color-surface-raised);
+  --text-content: var(--color-text);
+  --text-primary: var(--color-text-strong);
+  --text-accent: var(--color-text-muted);
+  --theme-primary: var(--color-brand);
+  --header-gradient-1: var(--color-brand);
+  --header-gradient-2: var(--color-brand-secondary);
+  --logo-gradient-1: var(--color-logo-start);
+  --logo-gradient-2: var(--color-logo-end);
+  --link: var(--color-link);
 }

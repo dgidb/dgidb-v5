@@ -53,7 +53,7 @@
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore --config .eslintrc.js",
-    "lint:warn": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:warn": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
     "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "format": "yarn run prettier -- --write",

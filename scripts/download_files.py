@@ -2,20 +2,21 @@ import base64
 import datetime
 import logging
 import os
-import sys
 import re
-from typing import NamedTuple
-import requests
+import sys
 from pathlib import Path
-import boto3
-from botocore.exceptions import ClientError
-from wags_tails.base_source import DataSource, UnversionedDataSource, RemoteDataError
-from wags_tails.chembl import ChemblData
-from wags_tails.utils.storage import get_latest_local_file
-from wags_tails.utils.downloads import HTTPS_REQUEST_TIMEOUT, download_http, handle_zip
-from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
+from typing import NamedTuple
 
+import boto3
+import requests
+from botocore.exceptions import ClientError
 from tqdm import tqdm
+from wags_tails.base_source import DataSource, RemoteDataError, UnversionedDataSource
+from wags_tails.chembl import ChemblData
+from wags_tails.moa import MoaData
+from wags_tails.utils.downloads import HTTPS_REQUEST_TIMEOUT, download_http, handle_zip
+from wags_tails.utils.storage import get_latest_local_file
+from wags_tails.utils.versioning import DATE_VERSION_PATTERN, parse_file_version
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -284,6 +285,37 @@ class DrugbankProtected(DataSource):
         return latest_file, latest_version
 
 
+class DrugRepurposingHubData(DataSource):
+    _src_name = "drug_repurposing_hub"
+    _filetype = "txt"
+
+    # NOTE/TODO
+    # broad ssl cert things currently broken?
+    # for now need to check/redownload manually
+
+    def _get_latest_version(self) -> str:
+        downloads_url = "https://repo-hub.broadinstitute.org/repurposing"
+        r = requests.get(downloads_url, timeout=HTTPS_REQUEST_TIMEOUT)
+        r.raise_for_status()
+        match = re.search(
+            r'<span[^>]*class="rep-download-update-txt"[^>]*>.*?'
+            r'<a[^>]*href="([^"]+)"[^>]*>(\d{1,2}/\d{1,2}/\d{4})</a>',
+            r.text,
+            re.DOTALL,
+        )
+
+        if match:
+            date = datetime.datetime.strptime(match.group(2), "%m/%d/%Y").strftime(
+                DATE_VERSION_PATTERN
+            )
+            return date
+        raise RemoteDataError()
+
+    def _download_data(self, version: str, outfile: Path) -> None:
+        url = f"https://repo-hub.broadinstitute.org/public/data/repo-drug-annotation-{version}.txt"
+        download_http(url, outfile, tqdm_params=self._tqdm_params)
+
+
 class Dtc(UnversionedS3Data):
     _src_name = "dtc"
     _filetype = "csv"
@@ -429,8 +461,8 @@ class Nci(UnversionedS3Data):
     _src_name = "nci"
 
 
-class PharmGkbRelations(DataSource):
-    _src_name = "pharmgkb"
+class ClinPgxRelations(DataSource):
+    _src_name = "clinpgx"
     _filetype = "tsv"
 
     @staticmethod
@@ -443,7 +475,7 @@ class PharmGkbRelations(DataSource):
 
     def _download_data(self, version: str, outfile: Path) -> None:
         download_http(
-            "https://api.pharmgkb.org/v1/download/file/data/relationships.zip",
+            "https://api.clinpgx.org/v1/download/file/data/relationships.zip",
             outfile,
             handler=handle_zip,
             tqdm_params=self._tqdm_params,
@@ -488,6 +520,10 @@ class OncoKbInteractionClaimAttributes(UnversionedS3Data):
 
 class Oncomine(UnversionedS3Data):
     _src_name = "oncomine"
+
+
+class Prism(UnversionedS3Data):
+    _src_name = "prism"
 
 
 class RussLampel(UnversionedS3Data):
@@ -538,6 +574,7 @@ for SourceClass in [
     DocmInteractionClaimPublications,
     DocmInteractionClaims,
     DrugbankProtected,
+    DrugRepurposingHubData,
     Dtc,
     Fda,
     FoundationOneGenes,
@@ -547,6 +584,7 @@ for SourceClass in [
     HumanProteinAtlas,
     Idg,
     MskImpact,
+    MoaData,
     MyCancerGenome,
     MyCancerGenomeClinicalTrial,
     Nci,
@@ -557,7 +595,7 @@ for SourceClass in [
     OncoKbInteractionClaimLinks,
     OncoKbInteractionClaims,
     Oncomine,
-    PharmGkbRelations,
+    ClinPgxRelations,
     RussLampel,
     Talc,
     Tdg,

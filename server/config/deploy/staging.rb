@@ -1,7 +1,7 @@
 server "100.21.172.112", user: 'ubuntu', roles: %w{web db app}
 
 set :branch, 'staging'
-set :rbenv_ruby, '3.1.2'
+set :rbenv_ruby, '4.0.3'
 
 set :rails_env, 'production'
 
@@ -14,4 +14,3 @@ if !ENV['CI']
       auth_methods: %w(publickey)
   }
 end
-

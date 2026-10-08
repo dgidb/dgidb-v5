@@ -1,27 +1,27 @@
 html,
 body {
-  background-color: var(--background);
+  background-color: var(--color-surface-page);
   margin: 0;
   font-family: 'Lato';
-  color: var(--text-content);
+  color: var(--color-text);
 
   h1,
   h2,
   h3,
   h4,
   h5 {
-    color: var(--text-content);
+    color: var(--color-text);
   }
 }
 
 .layout-container {
-  background-color: var(--background-light);
-  color: var(--text-content);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
   min-height: 100vh;
   position: relative;
 
   .content-container {
-    background-color: var(--background-light);
+    background-color: var(--color-surface-raised);
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -31,15 +31,15 @@ body {
   }
 
   .content {
-    background-color: var(--background);
+    background-color: var(--color-surface-page);
     min-height: 75vh;
   }
 }
 
 header {
   background: -webkit-linear-gradient(
-    var(--header-gradient-1),
-    var(--header-gradient-2)
+    var(--color-brand),
+    var(--color-brand-secondary)
   );
 
   .header-logo {
@@ -49,8 +49,8 @@ header {
     line-height: 80px;
     margin: 3px 0 0 20px;
     background: -webkit-linear-gradient(
-      var(--logo-gradient-1),
-      var(--logo-gradient-2)
+      var(--color-logo-start),
+      var(--color-logo-end)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -62,7 +62,7 @@ header {
     text-transform: none;
     font-size: 18px;
     font-weight: 100;
-    color: var(--background);
+    color: var(--color-text-on-brand);
   }
 
   .header-banner {
@@ -70,7 +70,7 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 15px;
-    background-color: #f0e7c0;
+    background-color: var(--color-banner);
     padding: 10px;
   }
 
@@ -83,7 +83,7 @@ header {
     height: 80px;
 
     ul {
-      color: white;
+      color: var(--color-text-on-brand);
       display: flex;
       justify-content: flex-end;
       list-style: none;
@@ -102,8 +102,8 @@ header {
 }
 
 footer {
-  background-color: var(--theme-primary);
-  color: white;
+  background-color: var(--color-brand);
+  color: var(--color-text-on-brand);
   margin-top: auto;
   width: 100%;
   display: flex;
@@ -114,4 +114,14 @@ footer {
   font-weight: 300;
   position: absolute;
   bottom: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle,
+.menu-toggle {
+  color: var(--color-text-on-brand) !important;
 }

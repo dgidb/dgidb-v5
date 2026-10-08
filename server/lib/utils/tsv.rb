@@ -1,7 +1,7 @@
 require 'csv'
 
 module Utils
-  module TSV
+  module Tsv
 
     def self.add_tsv_header(tsv)
       tsv << ["# Data version: #{DATA_VERSION}"]

@@ -20,43 +20,67 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     private
 
     module PharosApi
-      endpoint = 'https://pharos-api.ncats.io/graphql'
-      HTTP = GraphQL::Client::HTTP.new(endpoint) do
+      ENDPOINT = 'https://pharos-api.ncats.io/graphql'
+      HTTP = GraphQL::Client::HTTP.new(ENDPOINT) do
         def headers(_context)
           { 'User-Agent': 'DGIdb.org Pharos importer' }
         end
       end
 
-      begin
-        Schema = GraphQL::Client.load_schema(HTTP)
-        Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+      class << self
+        def client
+          initialize_client
+          const_get(:Client, false) if const_defined?(:Client, false)
+        end
 
-        Query = PharosApi::Client.parse <<-GRAPHQL
-          query($filter: IFilter, $skip: Int, $top: Int) {
-            targets(filter: $filter) {
-              targets(skip: $skip, top: $top) {
-                uniprot
-                name
-                sym
-                fam
-                preferredSymbol
+        def query
+          initialize_client
+          const_get(:Query, false) if const_defined?(:Query, false)
+        end
+
+        private
+
+        def initialize_client
+          return if const_defined?(:Client, false) && const_defined?(:Query, false)
+
+          schema = GraphQL::Client.load_schema(HTTP)
+          client = GraphQL::Client.new(schema:, execute: HTTP)
+          query = client.parse <<-GRAPHQL
+            query($filter: IFilter, $skip: Int, $top: Int) {
+              targets(filter: $filter) {
+                targets(skip: $skip, top: $top) {
+                  uniprot
+                  name
+                  sym
+                  fam
+                  preferredSymbol
+                }
               }
             }
-          }
-        GRAPHQL
-      rescue KeyError => e
-        Rails.logger.warn("Error initializing Pharos GraphQL client: #{e.message}")
-        Schema = nil
-        Client = nil
-        Query = nil
+          GRAPHQL
+          const_set(:Schema, schema)
+          const_set(:Client, client)
+          const_set(:Query, query)
+        rescue StandardError => e
+          Rails.logger.warn("Error initializing Pharos GraphQL client: #{e.message}")
+          remove_client_constants
+        end
+
+        def remove_client_constants
+          %i[Schema Client Query].each do |constant|
+            remove_const(constant) if const_defined?(constant, false)
+          end
+        end
       end
     end
 
 
     def send_query(category, skip, top)
-      return [] unless PharosApi::Schema && PharosApi::Client && PharosApi::Query
+      client = PharosApi.client
+      query = PharosApi.query
+      return [] unless client && query
 
-      response = PharosApi::Client.query(PharosApi::Query, variables: {
+      response = client.query(query, variables: {
         'filter': {
           'term': category
         },
@@ -67,4 +91,3 @@ module Genome; module Importers; module ApiImporters; module Pharos;
     end
   end
 end; end; end; end
-
