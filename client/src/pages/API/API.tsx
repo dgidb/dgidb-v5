@@ -16,8 +16,7 @@ import {
   Button,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-const CopyToClipboard = require('react-copy-to-clipboard');
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 const buttonStyle = {
   color: 'var(--text-content)',
