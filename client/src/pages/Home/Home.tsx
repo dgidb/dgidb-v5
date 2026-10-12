@@ -10,7 +10,7 @@ import { NewsFeed } from 'components/Shared/NewsFeed';
 
 // styles
 import './Home.scss';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { CountsBanner } from 'components/Shared/CountsBanner/CountsBanner';
 
 export const Home: React.FC = () => {
