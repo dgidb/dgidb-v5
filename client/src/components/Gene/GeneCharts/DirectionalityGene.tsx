@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { DIRECTIONALITY_LABELS, normalizeDirectionalities } from 'utils/format';
+import { chartColors } from 'config/theme';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -17,16 +18,7 @@ export const DirectionalityGene: React.FC<Props> = ({ data }) => {
     datasets: [
       {
         data: [0, 0, 0],
-        backgroundColor: [
-          '#480A77',
-          '#8075FF',
-          '#89E8F1',
-          '#FA198B',
-          '#4BC6B9',
-          '#F0EFF4',
-          '#D1CFE2',
-          '#BAA898',
-        ],
+        backgroundColor: chartColors,
       },
     ],
   });
@@ -54,16 +46,7 @@ export const DirectionalityGene: React.FC<Props> = ({ data }) => {
       datasets: [
         {
           data: directionalityCounts,
-          backgroundColor: [
-            '#480A77',
-            '#8075FF',
-            '#89E8F1',
-            '#FA198B',
-            '#4BC6B9',
-            '#F0EFF4',
-            '#D1CFE2',
-            '#BAA898',
-          ],
+          backgroundColor: chartColors,
         },
       ],
     });

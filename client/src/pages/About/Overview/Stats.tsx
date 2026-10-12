@@ -46,7 +46,6 @@ export const AboutStats: React.FC = () => {
     };
 
     void loadStats();
-
     return () => controller.abort();
   }, [urlDomain]);
   if (loading) {
