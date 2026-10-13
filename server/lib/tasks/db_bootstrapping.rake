@@ -4,11 +4,11 @@ require_relative '../utils/snapshot_helpers'
 include Utils::SnapshotHelpers
 
 namespace :dgidb do
-  if Rails.env.production?
-    data_submodule_path = File.join(Rails.root, 'public', 'data')
-  else
-    data_submodule_path = File.join(Rails.root, 'data')
-  end
+  data_submodule_path = if Rails.env.production?
+                          File.join(Rails.root, 'public', 'data')
+                        else
+                          File.join(Rails.root, 'data')
+                        end
   data_file = File.join(data_submodule_path, 'dgidb_v5_latest.sql')
   database_name = Rails.configuration.database_configuration[Rails.env]['database']
   host = Rails.configuration.database_configuration[Rails.env]['host']
@@ -22,7 +22,7 @@ namespace :dgidb do
   desc 'set up path for macs running Postgres.app'
   task :setup_path do
     if RbConfig::CONFIG['host_os'] =~ /darwin/
-      if File.exist?( '/Applications/Postgres.app' )
+      if File.exist?('/Applications/Postgres.app')
         puts 'Using Postgres.app'
         ENV['PATH'] = "/Applications/Postgres.app/Contents/Versions/latest/bin:#{ENV['PATH']}"
         next
@@ -45,10 +45,11 @@ namespace :dgidb do
   end
 
   desc 'load a local db dump and schema into the local db, blowing away what is currently there'
-  task :load_from_local, [:db_dump] => ['setup_path', 'db:drop', 'db:create', 'db:structure:load'] do |_t, args|
+  task :load_from_local, [:db_dump] => ['setup_path', 'db:drop', 'db:create', 'db:schema:load'] do |_t, args|
     raise 'You must supply a path to a DB dump' unless args[:db_dump]
 
-    system "psql -h #{host} -d #{database_name} -f #{args[:db_dump]}"
+    system('psql', '-h', host, '-d', database_name, '-v', 'ON_ERROR_STOP=1',
+           '-f', args[:db_dump], exception: true)
     Rails.cache.clear
   end
 end
