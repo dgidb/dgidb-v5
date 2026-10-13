@@ -193,6 +193,8 @@ module Genome
               )
               create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::ASSAY,
                                                  assay_value)
+              create_interaction_claim_attribute(interaction_claim, InteractionAttributeName::EV_TYPE,
+                                                 'Computationally inferred biomarker association (PRISM/ATLANTIS)')
             end
           end
         end
