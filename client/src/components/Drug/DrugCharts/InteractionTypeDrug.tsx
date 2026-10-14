@@ -9,12 +9,15 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { chartColors } from 'config/theme';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 interface Props {
   data: any;
 }
+
+const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
 export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
   const [chartData, setChartData] = useState<any>({
@@ -23,16 +26,7 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
       {
         label: '',
         data: [0, 0, 0, 0],
-        backgroundColor: [
-          '#480A77',
-          '#8075FF',
-          '#89E8F1',
-          '#FA198B',
-          '#4BC6B9',
-          '#F0EFF4',
-          '#D1CFE2',
-          '#BAA898',
-        ],
+        backgroundColor: chartColors,
       },
     ],
   });
@@ -50,8 +44,6 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
       },
     },
   };
-
-  const labels = ['inhibitor', 'antagonist', 'antibody', 'agonist'];
 
   useEffect(() => {
     if (data?.length) {
@@ -84,16 +76,7 @@ export const InteractionTypeDrug: React.FC<Props> = ({ data }) => {
           {
             label: '',
             data: dataArray,
-            backgroundColor: [
-              '#480A77',
-              '#8075FF',
-              '#89E8F1',
-              '#FA198B',
-              '#4BC6B9',
-              '#F0EFF4',
-              '#D1CFE2',
-              '#BAA898',
-            ],
+            backgroundColor: chartColors,
           },
         ],
       });

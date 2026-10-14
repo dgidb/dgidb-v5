@@ -37,7 +37,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           working-directory: ./server
-          ruby-version: '3.1'
+          ruby-version: '4.0.3'
           bundler-cache: true
 
       - name: Deploy

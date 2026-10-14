@@ -5,7 +5,7 @@ import React from 'react';
 import './InteractionTable.scss';
 import { Box, LinearProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { truncateDecimals } from 'utils/format';
+import { normalizeDirectionalities, truncateDecimals } from 'utils/format';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PublicationsTooltip, SourcesTooltip } from '../Tooltip/Tooltip';
 import { ResultTypes } from 'types/types';
@@ -28,6 +28,7 @@ interface InteractionTableRow {
   indication?: string[] | undefined;
   interactionScore: number | undefined;
   interactionTypes: string | undefined;
+  directionality: string;
   pmids: any[] | undefined;
   sources: string[] | undefined;
 }
@@ -81,12 +82,29 @@ export const InteractionTable: React.FC<Props> = ({
     ),
   };
 
+  const interactionTypesColumn = {
+    field: 'interactionTypes',
+    headerName: 'Interaction Types',
+    flex: 1,
+    minWidth: 0,
+    filterable: true,
+  };
+
+  const directionalityColumn = {
+    field: 'directionality',
+    headerName: 'Directionality',
+    flex: 0.8,
+    minWidth: 0,
+    filterable: true,
+  };
+
   const searchColumns = [
     {
       field: 'regulatoryApproval',
       headerName: 'Regulatory Approval',
       flex: 0.8,
       minWidth: 0,
+      maxWidth: 180,
     },
     {
       field: 'indication',
@@ -95,21 +113,19 @@ export const InteractionTable: React.FC<Props> = ({
       minWidth: 0,
       renderCell: (params: any) => <>{params.row.indication?.join(', ')}</>,
     },
+    interactionTypesColumn,
+    directionalityColumn,
     {
       field: 'interactionScore',
       headerName: 'Interaction Score',
+      type: 'number',
       flex: 0.6,
       minWidth: 0,
     },
   ];
 
   const recordColumns = [
-    {
-      field: 'interactionTypes',
-      headerName: 'Interaction Types',
-      flex: 1,
-      minWidth: 0,
-    },
+    interactionTypesColumn,
     {
       field: 'pmids',
       headerName: 'PMIDs',
@@ -143,6 +159,7 @@ export const InteractionTable: React.FC<Props> = ({
     {
       field: 'interactionScore',
       headerName: 'Interaction Score',
+      type: 'number',
       flex: 0.6,
       minWidth: 0,
     },
@@ -190,6 +207,9 @@ export const InteractionTable: React.FC<Props> = ({
             return interactionType.type;
           })
           .join(', '),
+        directionality: normalizeDirectionalities(
+          interaction?.interactionTypes
+        ).join(', '),
         pmids: interaction?.publications,
         sources: interaction?.sources,
       };
@@ -223,17 +243,22 @@ export const InteractionTable: React.FC<Props> = ({
             toolbarContainer: 'footer',
           }}
           rowSelection={false}
-          showColumnVerticalBorder
           getRowHeight={() => 'auto'}
+          sx={{
+            '& .MuiDataGrid-columnSeparator': {
+              visibility: 'visible',
+              opacity: 1,
+            },
+          }}
         />
       </Box>
     </Box>
   ) : (
     <LinearProgress
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-progress-track)',
         '& .MuiLinearProgress-bar': {
-          backgroundColor: '#480a77',
+          backgroundColor: 'var(--color-brand)',
         },
       }}
       className="linear-bar"

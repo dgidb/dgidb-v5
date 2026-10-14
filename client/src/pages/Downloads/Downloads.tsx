@@ -2,7 +2,7 @@
 import React from 'react';
 
 // components
-import { Box, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 
 // styles
 import './Downloads.scss';
@@ -19,6 +19,13 @@ export const Downloads = () => {
               Downloads
             </Typography>
           </Box>
+          <Alert severity="warning" className="downloads-data-notice">
+            <AlertTitle>Data update notice:</AlertTitle>
+            An issue affecting the import of a subset of GuideToPharmacology
+            records in the 2024-12 data file has been corrected. To ensure
+            analyses use the most complete current dataset, please update to the
+            latest DGIdb file.
+          </Alert>
           <Info />
         </div>
         <div className="doc-section">

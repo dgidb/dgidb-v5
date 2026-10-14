@@ -7,6 +7,10 @@
     margin-bottom: 0.7em;
   }
 
+  .downloads-data-notice {
+    margin-bottom: 1em;
+  }
+
   background-color: var(--background);
   display: flex;
   color: var(--text-content);
@@ -42,7 +46,7 @@
       }
 
       .about-citation {
-        color: #8075ff;
+        color: var(--color-accent);
         font-size: 0.8rem;
         font-weight: 400;
       }

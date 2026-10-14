@@ -1,8 +1,9 @@
-import React, { createContext, useReducer, Dispatch } from 'react';
+import React, { createContext, useEffect, useReducer, Dispatch } from 'react';
 import {
   searchTermsReducer,
   SearchTermsActions,
   themeSettingsType,
+  ThemeMode,
   themeSettingsReducer,
   ThemeSettingsActions,
   interactionModeReducer,
@@ -16,15 +17,22 @@ type InitialStateType = {
   themeSettings: themeSettingsType;
 };
 
-const initialState: InitialStateType = {
+export const THEME_STORAGE_KEY = 'dgidb-theme';
+
+const getInitialThemeMode = (): ThemeMode => {
+  const savedMode = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return savedMode === 'dark' ? 'dark' : 'light';
+};
+
+const createInitialState = (): InitialStateType => ({
   interactionMode: SearchTypes.Gene,
   searchTerms: [],
   themeSettings: {
-    showDisclaimer: false,
-    darkModeEnabled: false,
-    brandTheme: false,
+    mode: getInitialThemeMode(),
   },
-};
+});
+
+const initialState = createInitialState();
 
 const GlobalClientContext = createContext<{
   state: InitialStateType;
@@ -46,7 +54,16 @@ const mainReducer = (
 });
 
 const GlobalClient: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(mainReducer, initialState);
+  const [state, dispatch] = useReducer(
+    mainReducer,
+    undefined,
+    createInitialState
+  );
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = state.themeSettings.mode;
+    window.localStorage.setItem(THEME_STORAGE_KEY, state.themeSettings.mode);
+  }, [state.themeSettings.mode]);
 
   return (
     <GlobalClientContext.Provider value={{ state, dispatch }}>

@@ -84,7 +84,7 @@ export const BrowseCategories: React.FC = () => {
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
     setRenderedCategories(categoriesArray);
-  }, [checkedList]);
+  }, [checkedList, data?.sources?.nodes]);
 
   const onChange = (event: any) => {
     if (checkedList.includes(event.target.id)) {
