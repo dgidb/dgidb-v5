@@ -50,7 +50,7 @@ const newsItems: NewsItem[] = [
         <p>
           Our manuscript describing our Model Context Protocol (MCP) server for
           DGIdb is now{' '}
-          <ExternalLink href="https://academic.oup.com/bioinformatics/article/42/9/btag632/8768654#573833832">
+          <ExternalLink href="https://academic.oup.com/bioinformatics/article/42/9/btag632/8768654">
             published at Bioinformatics
           </ExternalLink>
           ! We introduce the server and describe example pipelines for drug
