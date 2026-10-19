@@ -59,5 +59,9 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}'],
+      env: { jest: true },
+    },
   ],
 };
