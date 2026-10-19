@@ -52,6 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     autocompleteOptions = drugAutocompleteOptions;
   }
 
+  const typedCommaTerms = typedSearchTerm
+    .split(',')
+    .map((term) => term.trim())
+    .filter(Boolean);
+  const typedCommaTermCount = new Set(typedCommaTerms).size;
+  const showTypedCommaAlert = typedCommaTerms.length > 1;
+
   // support searching for terms that the API may not return (add user's typed term to options if it's not already there)
   if (
     typedSearchTerm &&
@@ -91,8 +98,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
     }
   };
 
-  const handleInputChange = (event: any) => {
-    setTypedSearchTerm(event.target.value as string);
+  const handleInputChange = (_: React.SyntheticEvent, value: string) => {
+    setTypedSearchTerm(value);
+  };
+
+  const handleTypedCommaChoice = (splitTerms: boolean) => {
+    const terms = splitTerms ? typedCommaTerms : [typedSearchTerm.trim()];
+    const uniqueTerms = [
+      ...new Set([
+        ...selectedOptions.map((option) => option.suggestion),
+        ...terms,
+      ]),
+    ];
+    setSelectedOptions(convertToDropdownOptions(uniqueTerms));
+    setTypedSearchTerm('');
   };
 
   const handleDemoClick = () => {
@@ -218,8 +237,33 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
 
   return (
     <>
-      <Box id="search-bar-container" width={isMobile ? '95%' : '75%'}>
+      <Box id="search-bar-container" width={isMobile ? '95%' : '100%'}>
         {pasteAlert}
+        {showTypedCommaAlert && (
+          <Box width="100%" pb={2}>
+            <Alert severity="info" role="status">
+              <AlertTitle>Search as separate terms?</AlertTitle>
+              This input contains commas, which can also be part of a name. You
+              can split it into separate search terms or keep it as one term.
+              <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => handleTypedCommaChoice(true)}
+                >
+                  Split into {typedCommaTermCount}{' '}
+                  {typedCommaTermCount === 1 ? 'term' : 'terms'}
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => handleTypedCommaChoice(false)}
+                >
+                  Keep as one term
+                </Button>
+              </Box>
+            </Alert>
+          </Box>
+        )}
         <Box display="flex" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
           <Box width={isMobile ? '100%' : 'fit-content'}>
             <Select
@@ -240,6 +284,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
             <Autocomplete
               multiple
               filterSelectedOptions
+              clearOnBlur={!showTypedCommaAlert}
               id="tags-standard"
               options={autocompleteOptions}
               getOptionLabel={(option: any) => option.suggestion}
@@ -254,6 +299,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
                 </Box>
               )}
               value={selectedOptions}
+              inputValue={typedSearchTerm}
               onInputChange={handleInputChange}
               onChange={handleAutocompleteChange}
               isOptionEqualToValue={(option, value) =>
@@ -285,7 +331,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSubmit }) => {
         </Box>
         <Box
           display="flex"
-          pt={5}
+          pt={1}
           flexWrap="wrap"
           height="100px"
           alignContent="center"
