@@ -7,7 +7,7 @@ import { getStats, StatsData } from 'utils/stats';
 import './CountsBanner.scss';
 
 export const CountsBanner: React.FC = () => {
-  const urlDomain = process.env.REACT_APP_DOMAIN;
+  const urlDomain = import.meta.env.VITE_DOMAIN;
   const [stats, setStats] = useState<StatsData | null>(null);
   useEffect(() => {
     if (!urlDomain) {
