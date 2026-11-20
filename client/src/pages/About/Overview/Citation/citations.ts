@@ -1,14 +1,22 @@
 export const preferredCitation = {
   authors:
-    'Matthew Cannon, James Stevenson, Kathryn Stahl, Rohit Basu, Adam Coffman, Susanna Kiwala, Joshua F McMichael, Kori Kuzma, Dorian Morrissey, Kelsy Cotto, Elaine R Mardis, Obi L Griffith, Malachi Griffith, Alex H Wagner',
-  title:
-    'DGIdb 5.0: rebuilding the drug–gene interaction database for precision medicine and drug discovery platforms',
+    'Matthew Cannon, James S Stevenson, Adam Coffman, Susanna Kiwala, Rohit Basu, Daniel Puthawala, Kathryn Perry, Anastasia Bratulin, Lars Schimmelpfennig, Joshua F McMichael, Samara L Potter, Elaine Mardis, Malachi Griffith, Obi L Griffith, Alex H Wagner',
+  title: 'DGIdb in 2026: an interoperable resource for the druggable genome',
   journal: 'Nucleic Acids Research',
-  volumeIssuePages: 'Volume 52, Issue D1, 5 January 2024, Pages D1227–D1235,',
-  doi: 'https://doi.org/10.1093/nar/gkad1040',
+  volumeIssuePages: 'Advance article, 19 November 2026, gkag1191,',
+  doi: 'https://doi.org/10.1093/nar/gkag1191',
 };
 
 export const pastCitations = [
+  {
+    authors:
+      'Matthew Cannon, James Stevenson, Kathryn Stahl, Rohit Basu, Adam Coffman, Susanna Kiwala, Joshua F McMichael, Kori Kuzma, Dorian Morrissey, Kelsy Cotto, Elaine R Mardis, Obi L Griffith, Malachi Griffith, Alex H Wagner',
+    title:
+      'DGIdb 5.0: rebuilding the drug–gene interaction database for precision medicine and drug discovery platforms',
+    journal: 'Nucleic Acids Research',
+    volumeIssuePages: 'Volume 52, Issue D1, 5 January 2024, Pages D1227–D1235,',
+    doi: 'https://doi.org/10.1093/nar/gkad1040',
+  },
   {
     authors:
       'Sharon L Freshour, Susanna Kiwala, Kelsy C Cotto, Adam C Coffman, Joshua F McMichael, Jonathan J Song, Malachi Griffith, Obi L Griffith, Alex H Wagner',

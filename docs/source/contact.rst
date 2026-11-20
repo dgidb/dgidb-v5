@@ -6,7 +6,7 @@ Get in touch
 
 DGIdb was developed at The McDonnell Genome Institute, Washington University School of Medicine. If you have a source of information related to the druggable genome you would like us to incorporate, please contact us at `help@dgidb.org <mailto:help@dgidb.org>`_.
 
-`Integration of the Drug–Gene Interaction Database (DGIdb 4.0) with open crowdsource efforts <https://doi.org/10.1093/nar/gkaa1084>`_. Freshour S, Kiwala S, Cotto KC, Coffman AC, McMichael JF, Song J, Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2020 Nov 25; doi: https://doi.org/10.1093/nar/gkaa1084. PMID: `33237278 <https://pubmed.ncbi.nlm.nih.gov/33237278/>`_
+`DGIdb in 2026: an interoperable resource for the druggable genome <https://doi.org/10.1093/nar/gkag1191>`_. Cannon M, Stevenson JS, Coffman A, Kiwala S, Basu R, Puthawala D, Perry K, Bratulin A, Schimmelpfennig L, McMichael JF, Potter SL, Mardis E, Griffith M, Griffith OL, Wagner AH. Nucleic Acids Research. 2026 Nov 19; doi: https://doi.org/10.1093/nar/gkag1191. PMID: `43053331 <https://pubmed.ncbi.nlm.nih.gov/43053331/>`_
 
 Current contributors
 --------------------

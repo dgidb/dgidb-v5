@@ -25,6 +25,33 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 
 const newsItems: NewsItem[] = [
   {
+    id: 'dgidb-2026-paper-published',
+    title: 'DGIdb 2026 update published in Nucleic Acids Research',
+    date: '2026-11-19',
+    body: (
+      <>
+        <p>
+          Our latest update,{' '}
+          <ExternalLink href="https://doi.org/10.1093/nar/gkag1191">
+            DGIdb in 2026: an interoperable resource for the druggable genome
+          </ExternalLink>
+          , is now out as an advance article in <em>Nucleic Acids Research</em>!
+          The paper describes three new interaction sources (Molecular Oncology
+          Almanac, PRISM Repurposing Dataset, and the Broad Institute Drug
+          Repurposing Hub), the dgiPy and dgiR client libraries for Python and
+          R, versioned Docker images, and a public repository of current and
+          historical data releases.
+        </p>
+        <p>
+          If you use DGIdb in your work, please cite this paper. The full
+          citation is on the{' '}
+          <Link to="/about/overview/introduction">About</Link> page.
+        </p>
+      </>
+    ),
+  },
+
+  {
     id: '5-0-13-released',
     title: 'DGIdb 5.0.13 released',
     date: '2026-09-12',
