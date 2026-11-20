@@ -6,7 +6,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import SourceIcon from '@mui/icons-material/Source';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import StatsCard from 'components/About/StatsCard/StatsCard';
-import { ReactComponent as GeneSvg } from 'assets/icons/dna-icon.svg';
+import GeneSvg from 'assets/icons/dna-icon.svg?react';
 import SvgIcon from '@mui/material/SvgIcon';
 import { getStats, StatsData } from 'utils/stats';
 
@@ -16,7 +16,7 @@ export const AboutStats: React.FC = () => {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const urlDomain = process.env.REACT_APP_DOMAIN;
+  const urlDomain = import.meta.env.VITE_DOMAIN;
 
   useEffect(() => {
     if (!urlDomain) {
